@@ -15,6 +15,7 @@
 |---|---|
 | `ARK_API_KEY` | 必需，方舟控制台 → API Key 管理 |
 | `SEEDREAM_OUT_DIR` | 图片输出目录，默认 `~/Downloads/seedream` |
+| `SEEDREAM_RESOURCE_MODE` | 交付方式：`local`（默认）下载到本地，`url` 只返回 24 小时内有效的链接 |
 | `ARK_BASE_URL` | 默认 `https://ark.cn-beijing.volces.com/api/v3` |
 
 参数说明见工具描述（`src/seedream_mcp/server.py`），接口细节以[图片生成 API 文档](https://ark.volcengine.com/region:cn-beijing/docs/ark/image-generation-api)为准。

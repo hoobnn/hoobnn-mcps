@@ -1,6 +1,6 @@
 [project]
 name = "seedream-mcp"
-version = "0.1.0"
+version = "0.2.0"
 description = "火山方舟 Seedream 5.0（pro / lite）图片生成 MCP server"
 readme = "README.md"
 license = "MIT"

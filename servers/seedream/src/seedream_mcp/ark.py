@@ -69,8 +69,9 @@ def check(o, fam):
     return None
 
 
-def build_body(o, model):
-    body = {"model": model, "response_format": "b64_json", "watermark": o["watermark"]}
+def build_body(o, model, mode="local"):
+    body = {"model": model, "response_format": "url" if mode == "url" else "b64_json",
+            "watermark": o["watermark"]}
     if o["prompt"]:
         body["prompt"] = o["prompt"]
     if o["images"]:
@@ -118,7 +119,9 @@ def post(body, timeout):
 
 
 def save(resp, out_dir):
-    out_dir.mkdir(parents=True, exist_ok=True)
+    """out_dir 为 None 时不落盘，只收集图片 URL。"""
+    if out_dir:
+        out_dir.mkdir(parents=True, exist_ok=True)
     files, layers, errors = [], [], []
     for i, d in enumerate(resp.get("data") or []):
         if d.get("error"):
@@ -126,6 +129,13 @@ def save(resp, out_dir):
             continue
         ext = "jpg" if d.get("output_format") == "jpeg" else d.get("output_format") or "png"
         z = d.get("z_index")
+        if not out_dir:
+            if d.get("url"):
+                files.append(d["url"])
+                if z is not None:
+                    layers.append({k: d.get(k) for k in ("z_index", "name", "description", "size", "bounding_box")}
+                                  | {"url": d["url"]})
+            continue
         path = out_dir / (f"layer-{z:02d}.{ext}" if z is not None else f"image-{i + 1:02d}.{ext}")
         if d.get("b64_json"):
             path.write_bytes(base64.b64decode(d["b64_json"]))
@@ -137,18 +147,19 @@ def save(resp, out_dir):
         if z is not None:
             layers.append({k: d.get(k) for k in ("z_index", "name", "description", "size", "bounding_box")}
                           | {"file": str(path)})
-    if layers:
+    if layers and out_dir:
         (out_dir / "layers.json").write_text(json.dumps(layers, ensure_ascii=False, indent=2))
     return files, layers, errors
 
 
-def generate(o, out_dir, timeout=300):
+def generate(o, out_dir, timeout=300, mode="local"):
+    """mode=local 下载到 out_dir；mode=url 只返回 24 小时内有效的图片 URL，不落盘。"""
     model = MODELS.get(o["model"], o["model"])
     result = {"ok": False, "model": model, "files": [], "layers": [], "usage": None,
               "errors": [], "error": None, "out_dir": None}
     try:
         err = check(o, family(model))
-        body = None if err else build_body(o, model)
+        body = None if err else build_body(o, model, mode)
     except InputError as e:
         err = str(e)
     if err:
@@ -162,9 +173,11 @@ def generate(o, out_dir, timeout=300):
     if resp.get("error"):
         result["error"] = f"{resp['error'].get('code')}: {resp['error'].get('message')}"
         return result
+    if mode == "url":
+        out_dir = None
     files, layers, errors = save(resp, out_dir)
     result.update(ok=bool(files), files=files, layers=layers, errors=errors,
-                  usage=resp.get("usage"), out_dir=str(out_dir))
+                  usage=resp.get("usage"), out_dir=str(out_dir) if out_dir else None)
     if not files:
         result["error"] = "没有生成任何图片"
     return result
