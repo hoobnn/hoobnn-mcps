@@ -1,4 +1,4 @@
-"""stdio MCP server：提供 generate_image、chat、list_models 三个工具。
+"""stdio MCP server：生图、对话、语音合成、语音识别、视频生成和模型列表。
 
 环境变量：DASHSCOPE_API_KEY（必需）、BAILIAN_OUT_DIR（默认 ~/Downloads/ali-bailian）、
 BAILIAN_RESOURCE_MODE（local 下载到本地，url 只返回链接；默认 local）、DASHSCOPE_BASE_URL（可选）。
@@ -10,7 +10,7 @@ from pathlib import Path
 
 from mcp.server.mcpserver import MCPServer
 
-from . import dashscope
+from . import dashscope, media
 
 OUT_ROOT = Path(os.environ.get("BAILIAN_OUT_DIR", "~/Downloads/ali-bailian")).expanduser()
 MODE = os.environ.get("BAILIAN_RESOURCE_MODE", "local").strip().lower()
@@ -18,6 +18,10 @@ if MODE not in ("local", "url"):
     raise SystemExit(f"BAILIAN_RESOURCE_MODE 只能是 local 或 url，当前是 {MODE!r}")
 
 mcp = MCPServer("ali-bailian")
+
+
+def target_dir(out_dir):
+    return Path(out_dir).expanduser() if out_dir else OUT_ROOT / time.strftime("%Y%m%d-%H%M%S")
 
 
 @mcp.tool()
@@ -66,8 +70,7 @@ def generate_image(
     opts = dict(prompt=prompt, model=model, images=images or [], size=size, n=n, group=group,
                 negative_prompt=negative_prompt, prompt_extend=prompt_extend, seed=seed, thinking=thinking,
                 watermark=watermark)
-    target = Path(out_dir).expanduser() if out_dir else OUT_ROOT / time.strftime("%Y%m%d-%H%M%S")
-    return dashscope.generate_image(opts, target, mode=MODE)
+    return dashscope.generate_image(opts, target_dir(out_dir), mode=MODE)
 
 
 @mcp.tool()
@@ -115,10 +118,125 @@ def chat(
 
 
 @mcp.tool()
+def text_to_speech(
+    text: str,
+    voice: str = "Cherry",
+    instructions: str | None = None,
+    language: str | None = None,
+    model: str | None = None,
+    out_dir: str | None = None,
+) -> dict:
+    """用千问 TTS 把文字合成语音，保存为 wav（24kHz 单声道），返回文件路径。
+
+    - text：要朗读的文字。长文本会自动按句切段合成再拼接成一个文件（url 交付方式下不拼接，需自己分段，
+      每段 250 字以内）。
+    - voice：系统音色，默认 Cherry。女声：Cherry 芊悦（阳光亲切）、Serena 苏瑶（温柔）、Chelsie 千雪（二次元）、
+      Momo 茉兔（撒娇搞怪）、Vivian 十三（可爱小暴躁）、Mia 乖小妹（乖巧）、Bellona 燕铮莺（洪亮清晰）、
+      Bunny 萌小姬（萝莉）、Elias 墨讲师（讲课）、Nini 邻家妹妹（软糯）、Seren 小婉（助眠）、Stella 少女阿月（甜）；
+      男声：Ethan 晨煦（标准普通话、阳光）、Moon 月白（率性帅气）、Eldric Sage 沧明子（沉稳老者）、
+      Mochi 沙小弥（小大人）、Vincent 田叔（烟嗓）、Neil 阿闻（新闻主持）、Arthur 徐大爷（讲故事）、Pip 顽屁小孩。
+    - instructions：用自然语言控制语速、情绪、语气、角色，如「语速稍快，语气兴奋」「像深夜电台主持人一样低沉
+      缓慢」。传了会自动改用 qwen3-tts-instruct-flash。
+    - language：Chinese、English、Japanese、Korean、French、German、Russian、Italian、Spanish、Portuguese，
+      不传自动识别。中英混读不用设。
+    - model：不传时按是否有 instructions 自动选 qwen3-tts-flash / qwen3-tts-instruct-flash。
+    - out_dir：输出目录，默认 BAILIAN_OUT_DIR 下按时间戳新建。
+
+    按字符计费。返回 ok、model、files、chunks（分了几段）、usage、error。url 交付方式下 files 是 24 小时内有效的链接。
+    """
+    opts = dict(text=text, voice=voice, instructions=instructions, language=language, model=model)
+    return media.text_to_speech(opts, target_dir(out_dir), mode=MODE)
+
+
+@mcp.tool()
+def speech_to_text(
+    audio: str,
+    context: str | None = None,
+    language: str | None = None,
+    itn: bool = False,
+    model: str = "qwen3-asr-flash",
+) -> dict:
+    """用千问 ASR 把一段音频转成文字，同时返回识别出的语种和情绪。
+
+    - audio：本地绝对路径或 URL。本地文件支持 mp3、wav、m4a、aac、flac、ogg、opus、amr、webm，不超过 10MB，
+      时长不超过 5 分钟。更长的音频先切段再分别识别。
+    - context：背景文字，提高专有名词、人名、术语的识别准确率，如「这是一段关于 Kubernetes 和 Istio 的技术分享」。
+    - language：已知语种时指定（zh、en、ja、ko、yue 等），能提高准确率；不传自动识别。
+    - itn：是否把口语数字转成阿拉伯数字（如「二零二六年」→「2026年」），默认不转。
+    - model：默认 qwen3-asr-flash，也可写 fun-asr-flash-2026-06-15 等其他 ASR 模型 ID。
+
+    按音频时长计费。返回 ok、model、text、language、emotion、usage、error。
+    """
+    return media.speech_to_text(dict(audio=audio, context=context, language=language, itn=itn, model=model))
+
+
+@mcp.tool()
+def generate_video(
+    prompt: str = "",
+    model: str = "wan",
+    first_frame: str | None = None,
+    last_frame: str | None = None,
+    reference_images: list[str] | None = None,
+    reference_videos: list[str] | None = None,
+    reference_audios: list[str] | None = None,
+    file: str | None = None,
+    resolution: str = "1080P",
+    ratio: str = "adaptive",
+    duration: int | None = None,
+    audio: bool = True,
+    prompt_extend: bool | None = None,
+    seed: int | None = None,
+    watermark: bool = False,
+    wait: int = 90,
+    out_dir: str | None = None,
+) -> dict:
+    """用万相 3.0 生成视频（mp4，30fps，默认带同步音频）。异步任务：提交后最多等 wait 秒，没完成就返回 task_id，
+    之后用 query_video 继续等。生成通常要一到几分钟，分辨率越高、时长越长越慢。
+
+    模型：model="wan"（默认）→ wan3.0-video；"wan-fast" → wan3.0-video-prime，能力相同、速度明显更快。
+
+    按传入的素材决定玩法（素材都可以是本地绝对路径或 URL，本地文件会自动上传到百炼临时存储）：
+    - 文生视频：只给 prompt。
+    - 首帧生视频：first_frame；首尾帧生视频：first_frame + last_frame。
+    - 多主体参考：reference_images（最多 10 张）、reference_videos（最多 5 段）、reference_audios（最多 5 段，
+      如指定配音或音乐），prompt 里用「图1」「视频1」「音频1」按各自顺序指代。
+    - 视频续写：只传 1 段 reference_videos，prompt 写「将视频1向后延长……」，输入加输出总长不超过 30 秒。
+    - file：参考文档（如产品资料 pptx / pdf），让模型据此做宣传视频。
+    prompt 最多 2 万字，可以写分镜、镜头运动、台词和音效。
+
+    参数：
+    - resolution：1080P（默认）/ 720P / 480P。ratio：adaptive（默认，跟随素材或由模型决定）、16:9、9:16、
+      1:1、4:3、3:4、21:9。
+    - duration：2–30 秒，-1 让模型自己决定；不传用模型默认值。
+    - audio：是否生成音轨（人声、音效、配乐），默认生成。
+    - prompt_extend：是否让模型改写扩充提示词，默认开。seed：随机种子。watermark：是否加水印，默认不加。
+    - wait：本次调用最多等多少秒，默认 90；设 0 只提交不等。部分客户端的工具调用超时在 2 分钟左右，不要设太大。
+    - out_dir：输出目录，默认 BAILIAN_OUT_DIR 下按时间戳新建。
+
+    按输出视频的秒数计费，分辨率越高越贵，生成前先和用户确认时长和分辨率。
+    返回 ok、model、task_id、status（PENDING / RUNNING / SUCCEEDED / FAILED）、files、usage、error。
+    """
+    opts = dict(prompt=prompt, model=model, first_frame=first_frame, last_frame=last_frame,
+                reference_images=reference_images or [], reference_videos=reference_videos or [],
+                reference_audios=reference_audios or [], file=file, resolution=resolution, ratio=ratio,
+                duration=duration, audio=audio, prompt_extend=prompt_extend, seed=seed, watermark=watermark)
+    return media.generate_video(opts, target_dir(out_dir), wait, mode=MODE)
+
+
+@mcp.tool()
+def query_video(task_id: str, wait: int = 90, out_dir: str | None = None) -> dict:
+    """查询 generate_video 的任务，最多等 wait 秒（默认 90，设 0 只查一次）。完成后下载视频，返回文件路径。
+
+    任务结果保留 24 小时。返回字段同 generate_video。
+    """
+    return media.query_video(task_id, target_dir(out_dir), wait, mode=MODE)
+
+
+@mcp.tool()
 def list_models(keyword: str | None = None) -> dict:
     """列出当前 API Key 能调用的百炼模型 ID，可按关键字过滤（不区分大小写），如 "image"、"qwen3.8"、"deepseek"。
 
-    列表包含语言、生图、语音、向量等所有模型。返回 ok、models、error。
+    列表包含语言、生图、语音、向量等走 OpenAI 兼容接口的模型；视频模型（万相 3.0）不在其中。返回 ok、models、error。
     """
     return dashscope.list_models(keyword)
 

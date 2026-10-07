@@ -5,7 +5,7 @@ hoobnn 的个人 MCP server 集合。每个 server 是 `servers/<name>/` 下的�
 | Server | 作用 |
 |---|---|
 | [`seedream`](servers/seedream) | 火山方舟 Seedream 5.0（pro / lite）生图：文生图、多图参考、组图、联网搜索、图层拆分、交互编辑、透明背景 |
-| [`ali-bailian`](servers/ali-bailian) | 阿里云百炼：千问 / 万相 / Z-Image 生图与编辑，调用千问及百炼托管的 DeepSeek、Kimi、GLM 等语言模型 |
+| [`ali-bailian`](servers/ali-bailian) | 阿里云百炼：千问 / 万相 / Z-Image 生图与编辑，千问 TTS 与 ASR，万相 3.0 视频生成，调用千问及百炼托管的 DeepSeek、Kimi、GLM 等语言模型 |
 
 ## 安装
 

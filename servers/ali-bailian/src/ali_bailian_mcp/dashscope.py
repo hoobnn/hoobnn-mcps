@@ -1,4 +1,4 @@
-"""百炼 DashScope 接口：生图（multimodal-generation 同步接口）、对话（OpenAI 兼容接口）、模型列表。只依赖标准库。"""
+"""百炼 DashScope 通用请求，以及生图（multimodal-generation 同步接口）、对话（OpenAI 兼容接口）、模型列表。只依赖标准库。"""
 
 import base64
 import json
@@ -41,7 +41,7 @@ def encode_image(src):
     return f"data:image/{mime};base64," + base64.b64encode(p.read_bytes()).decode()
 
 
-def request(path, body=None, timeout=300):
+def request(path, body=None, timeout=300, headers=None):
     """返回 (json, error)。body 为 None 时发 GET。"""
     key = os.environ.get("DASHSCOPE_API_KEY")
     if not key:
@@ -49,7 +49,7 @@ def request(path, body=None, timeout=300):
     req = urllib.request.Request(
         HOST + path,
         data=json.dumps(body).encode() if body is not None else None,
-        headers={"Content-Type": "application/json", "Authorization": f"Bearer {key}"},
+        headers={"Content-Type": "application/json", "Authorization": f"Bearer {key}", **(headers or {})},
     )
     try:
         with urllib.request.urlopen(req, timeout=timeout) as r:
