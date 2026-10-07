@@ -9,21 +9,31 @@ hoobnn 的个人 MCP server 集合。每个 server 是 `servers/<name>/` 下的�
 
 ## 安装
 
-用 `uvx` 直接从 GitHub 运行，不需要预先安装。以 seedream 为例，其他 server 把 `seedream` 换成对应目录名（命令是 `<name>-mcp`）：
+用 `uv tool install` 从 GitHub 装到本机，命令在 `~/.local/bin/<name>-mcp`：
 
 ```bash
-# Claude Code
-claude mcp add seedream -s user -- uvx --from "git+https://github.com/hoobnn/hoobnn-mcps#subdirectory=servers/seedream" seedream-mcp
-claude mcp add ali-bailian -s user -- uvx --from "git+https://github.com/hoobnn/hoobnn-mcps#subdirectory=servers/ali-bailian" ali-bailian-mcp
-# Codex
-codex mcp add seedream -- uvx --from "git+https://github.com/hoobnn/hoobnn-mcps#subdirectory=servers/seedream" seedream-mcp
+uv tool install "git+https://github.com/hoobnn/hoobnn-mcps#subdirectory=servers/seedream"
+uv tool install "git+https://github.com/hoobnn/hoobnn-mcps#subdirectory=servers/ali-bailian"
+uv tool upgrade seedream-mcp ali-bailian-mcp     # 推送新代码后更新
 ```
 
-其他客户端按 stdio server 配置：`command` 写 `uvx`，`args` 写 `["--from", "git+https://github.com/hoobnn/hoobnn-mcps#subdirectory=servers/<name>", "<name>-mcp"]`。GUI 客户端找不到 `PATH` 时，`command` 改写 `uvx` 的绝对路径（`which uvx`）。
+不用 `uvx --from git+...` 直接运行：它每次启动都要联网确认最新提交，要 2–4 秒，`codex exec`、`opencode run` 这类无头调用会在 server 起来前就开始回答，拿不到工具。装好后启动约 0.3 秒。
 
-uvx 会缓存已解析的版本；要拉取最新代码，在 `uvx` 后加一次 `--refresh` 运行（例如 `uvx --refresh --from "git+..." seedream-mcp`）。
+各客户端的 MCP 配置里写绝对路径，避免 GUI 客户端找不到 `PATH`：
 
-key 等环境变量不写进配置，由客户端从 shell 环境继承；客户端不继承时，在配置的 `env` 里补上。
+```bash
+claude mcp add seedream -s user -- ~/.local/bin/seedream-mcp
+codex mcp add seedream -- ~/.local/bin/seedream-mcp
+grok mcp add -s user seedream ~/.local/bin/seedream-mcp
+agy mcp add seedream ~/.local/bin/seedream-mcp
+pi mcp add seedream -- ~/.local/bin/seedream-mcp
+opencode mcp add --global seedream -- ~/.local/bin/seedream-mcp
+hermes mcp add seedream --command ~/.local/bin/seedream-mcp
+```
+
+其他客户端按 stdio server 配置：`command` 写上面的绝对路径，不带参数。
+
+key 等环境变量不写进配置，由客户端从 shell 环境继承。Codex 和 Hermes 会过滤环境变量，要显式转发变量名而不是写值：Codex 在 `[mcp_servers.<name>]` 里加 `env_vars = ["ARK_API_KEY", ...]`，Hermes 在 `env` 里写 `ARK_API_KEY: ${ARK_API_KEY}`。Codex 的工具调用默认 60 秒超时，生图和视频建议设 `tool_timeout_sec = 300`。
 
 ## 新增一个 server
 
