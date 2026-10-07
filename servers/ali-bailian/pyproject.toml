@@ -1,0 +1,15 @@
+[project]
+name = "ali-bailian-mcp"
+version = "0.1.0"
+description = "阿里云百炼（DashScope）生图与语言模型 MCP server"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.10"
+dependencies = ["mcp>=2.3,<3"]
+
+[project.scripts]
+ali-bailian-mcp = "ali_bailian_mcp.server:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
