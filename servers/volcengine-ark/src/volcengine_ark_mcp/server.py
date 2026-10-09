@@ -1,7 +1,8 @@
 """stdio MCP server：Seedream、Seedance、方舟语言/搜索/向量与本地任务恢复。
 
-环境变量：ARK_API_KEY（必需）、SEEDREAM_OUT_DIR（默认 ~/Downloads/seedream）、
-SEEDREAM_RESOURCE_MODE（local 下载到本地，url 只返回链接；默认 local）、ARK_BASE_URL（可选）。
+环境变量：ARK_API_KEY（必需）、ARK_OUT_DIR（默认 ~/Downloads/volcengine-ark）、
+ARK_RESOURCE_MODE（local 下载到本地，url 只返回链接；默认 local）、ARK_BASE_URL（可选）。
+旧名 SEEDREAM_OUT_DIR / SEEDREAM_RESOURCE_MODE / SEEDREAM_JOB_DIR 在新名未设置时仍然生效。
 """
 
 import os
@@ -13,12 +14,16 @@ from mcp.server.mcpserver import MCPServer
 
 from . import ark, products
 
-OUT_ROOT = Path(os.environ.get("SEEDREAM_OUT_DIR", "~/Downloads/seedream")).expanduser()
-MODE = os.environ.get("SEEDREAM_RESOURCE_MODE", "local").strip().lower()
-if MODE not in ("local", "url"):
-    raise SystemExit(f"SEEDREAM_RESOURCE_MODE 只能是 local 或 url，当前是 {MODE!r}")
+def env(name, default):
+    return os.environ.get(f"ARK_{name}") or os.environ.get(f"SEEDREAM_{name}") or default
 
-mcp = MCPServer("seedream")
+
+OUT_ROOT = Path(env("OUT_DIR", "~/Downloads/volcengine-ark")).expanduser()
+MODE = env("RESOURCE_MODE", "local").strip().lower()
+if MODE not in ("local", "url"):
+    raise SystemExit(f"ARK_RESOURCE_MODE 只能是 local 或 url，当前是 {MODE!r}")
+
+mcp = MCPServer("volcengine-ark")
 
 
 @mcp.tool()
@@ -53,7 +58,7 @@ def generate_image(
       宽高比 1/16–16。图层拆分默认 auto（按原图尺寸，夹在 1K–2K）。
     - output_format：png 或 jpeg。图层拆分时只影响底图，图层总是 png。
     - watermark：是否加「AI 生成」水印，默认不加。
-    - out_dir：输出目录，默认 SEEDREAM_OUT_DIR 下按时间戳新建。交付方式为 url 时忽略。
+    - out_dir：输出目录，默认 ARK_OUT_DIR 下按时间戳新建。交付方式为 url 时忽略。
 
     场景写法：
     - 图层拆分：prompt 可留空自动拆主要元素；要指定拆哪些，用 0–1000 的归一化坐标框选，如
@@ -65,7 +70,7 @@ def generate_image(
 
     按成功生成的张数计费：组图和图层拆分会一次产出多张（图层拆分底图和每层各算一张，一张照片自动拆分实测
     产出 11 张），调用前先和用户确认数量。同步调用，单图约半分钟，组图或图层拆分要一两分钟。
-    返回 job_id、job_state、artifacts、request_id、ok、files、layers、usage、errors（组图里单张失败）、error。交付方式由 SEEDREAM_RESOURCE_MODE 决定：
+    返回 job_id、job_state、artifacts、request_id、ok、files、layers、usage、errors（组图里单张失败）、error。交付方式由 ARK_RESOURCE_MODE 决定：
     local 时 files 是本地路径，url 时 files 是 24 小时内有效的图片链接，需要长期保存要及时下载。
     """
     opts = dict(prompt=prompt or None, model=model, images=images or [], size=size,

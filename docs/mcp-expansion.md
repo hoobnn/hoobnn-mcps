@@ -6,9 +6,9 @@
 
 | 功能 | 官方契约核对 | 实现 | 测试 |
 |---|---|---|---|
-| Seedance生成、任务查询、编辑/延长提示词与高级参数 | 已阅读官方文档 | 已写入seedream包 | 待用户开启测试阶段 |
-| 方舟Chat / Responses、多模态、深度思考、搜索、JSON | 已阅读官方文档 | 已写入seedream包 | 同上 |
-| 方舟文本/多模态向量 | 已阅读官方文档 | 已写入seedream包 | 同上 |
+| Seedance生成、任务查询、编辑/延长提示词与高级参数 | 已阅读官方文档 | 已写入volcengine-ark包 | 待用户开启测试阶段 |
+| 方舟Chat / Responses、多模态、深度思考、搜索、JSON | 已阅读官方文档 | 已写入volcengine-ark包 | 同上 |
+| 方舟文本/多模态向量 | 已阅读官方文档 | 已写入volcengine-ark包 | 同上 |
 | 百炼Qwen复刻、设计、分页列表和音色查找 | 已阅读官方文档 | 已写入ali-bailian包 | 同上 |
 | 百炼HappyHorse视频编辑、wan2.2-s2v数字人 | 已阅读官方文档 | 已写入ali-bailian包 | 同上 |
 | 百炼文本/多模态向量、文本重排序 | 已阅读官方文档 | 已写入ali-bailian包 | 同上 |
@@ -20,9 +20,9 @@
 
 ## 关键设计决策
 
-- 保留原MCP入口、配置和工具名；seedream包扩展为方舟入口，不新增重复账号配置。
+- 保留原MCP入口、配置和工具名；seedream包扩展为方舟入口（0.4起改名volcengine-ark，保留seedream-mcp命令别名），不新增重复账号配置。
 - 每个包独立安装，标准库任务模块分别内置在两个包内，无需GitHub外的共享包。两个 `jobs.py` 维护同一实现。
-- 恢复目录默认位于 `~/.local/share/<server>-mcp/jobs`，可通过 `BAILIAN_JOB_DIR` / `SEEDREAM_JOB_DIR` 设置。
+- 恢复目录默认位于 `~/.local/share/<server>-mcp/jobs`，可通过 `BAILIAN_JOB_DIR` / `ARK_JOB_DIR` 设置。
 - 生成请求前留档为unknown；同步超时未收到完整结果，不自动重试。异步任务拿到task_id后持久化，再查询交付。
 - 图片响应留档后按产物逐项交付；Seedream内联Base64缓存到任务目录，防止本地输出失败后必须再次生成。
 - 成功产物用SHA-256验证后跳过，临时文件下载完成再原子替换。部分生成失败不自动补生成。

@@ -1,6 +1,10 @@
-# seedream-mcp
+# volcengine-ark-mcp
 
-调用火山方舟 Seedream 5.0 生成和编辑图片的 MCP server，提供一个 `generate_image` 工具，图片直接存到本地。
+调用火山方舟（Volcengine Ark）的 MCP server：Seedream 5.0 生成和编辑图片、Seedance 视频、对话与多模态理解、联网搜索和向量化，产物直接存到本地。
+
+原名 `seedream-mcp`（PyPI 上该名已被他人占用），0.4 起改名；`seedream-mcp` 命令作为别名保留，旧客户端配置可继续使用。
+
+## Seedream 图片生成
 
 | 模型 | 参数 | 独有能力 |
 |---|---|---|
@@ -14,15 +18,17 @@
 | 变量 | 说明 |
 |---|---|
 | `ARK_API_KEY` | 必需，方舟控制台 → API Key 管理 |
-| `SEEDREAM_OUT_DIR` | 图片输出目录，默认 `~/Downloads/seedream` |
-| `SEEDREAM_RESOURCE_MODE` | 交付方式：`local`（默认）下载到本地，`url` 只返回 24 小时内有效的链接 |
+| `ARK_OUT_DIR` | 输出目录，默认 `~/Downloads/volcengine-ark` |
+| `ARK_RESOURCE_MODE` | 交付方式：`local`（默认）下载到本地，`url` 只返回 24 小时内有效的链接 |
 | `ARK_BASE_URL` | 默认 `https://ark.cn-beijing.volces.com/api/v3` |
 
-参数说明见工具描述（`src/seedream_mcp/server.py`），接口细节以[图片生成 API 文档](https://ark.volcengine.com/region:cn-beijing/docs/ark/image-generation-api)为准。
+旧变量名 `SEEDREAM_OUT_DIR`、`SEEDREAM_RESOURCE_MODE`、`SEEDREAM_JOB_DIR` 在对应 `ARK_*` 未设置时仍生效。
+
+参数说明见工具描述（`src/volcengine_ark_mcp/server.py`），接口细节以[图片生成 API 文档](https://ark.volcengine.com/region:cn-beijing/docs/ark/image-generation-api)为准。
 
 ## 0.3 方舟扩展（未测试）
 
-保留 `seedream-mcp` 入口和原有生图工具，同时接入方舟其他能力，无需新建MCP配置。
+保留原有生图工具，同时接入方舟其他能力，无需新建MCP配置。
 
 | 工具 | 能力 | 官方来源 |
 |---|---|---|
@@ -61,7 +67,7 @@
 
 ### 本地恢复
 
-`SEEDREAM_JOB_DIR` 默认 `~/.local/share/seedream-mcp/jobs`。生成前创建记录，响应收到后保留完整响应，内联图片先缓存再交付。
+`ARK_JOB_DIR` 默认 `~/.local/share/volcengine-ark-mcp/jobs`。生成前创建记录，响应收到后保留完整响应，内联图片先缓存再交付。
 组图逐项记录错误，下载失败可单独补交付；图层记录和 `layers.json` 随恢复更新。部分生成失败会返回 `partial`，不会重新生成失败项。
 视频保存原 `task_id`，通过云端查询刷新URL。临时URL或云端任务过期可能无法恢复。
 
