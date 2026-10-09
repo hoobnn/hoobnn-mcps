@@ -5,7 +5,7 @@ hoobnn 的个人 MCP server 集合。每个 server 是 `servers/<name>/` 下的�
 | Server | 作用 |
 |---|---|
 | [`seedream`](servers/seedream) | 火山方舟：Seedream图像、Seedance视频、语言与多模态理解、联网搜索、向量化和任务恢复（新增接入未测试） |
-| [`doubao-speech`](servers/doubao-speech) | 火山引擎豆包语音：语音合成 2.0（语音指令、方言、字幕）、录音文件识别极速版、seed-audio 音频生成（音效、配乐、多角色对白） |
+| [`doubao-speech`](servers/doubao-speech) | 豆包语音：合成、复刻、音色设计、识别、音频生成、播客、实时对话3.0、同传、翻译、妙记、词表及控制台管理 |
 | [`ali-bailian`](servers/ali-bailian) | 阿里云百炼：图像、语言、TTS/ASR、音色复刻与设计、视频生成/编辑/数字人、向量与重排序、任务恢复（新增接入未测试） |
 
 ## 安装

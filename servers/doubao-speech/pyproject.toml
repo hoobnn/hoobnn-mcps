@@ -1,11 +1,11 @@
 [project]
 name = "doubao-speech-mcp"
-version = "0.1.0"
-description = "火山引擎豆包语音：语音合成、语音识别、音频生成 MCP server"
+version = "0.2.0"
+description = "火山引擎豆包语音全产品 HTTP / WebSocket MCP server"
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.10"
-dependencies = ["mcp>=2.3,<3"]
+dependencies = ["mcp>=2.3,<3", "websockets>=15,<17", "protobuf>=6.31.1,<7"]
 
 [project.scripts]
 doubao-speech-mcp = "doubao_speech_mcp.server:main"
