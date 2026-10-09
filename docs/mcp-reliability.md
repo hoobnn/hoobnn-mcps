@@ -1,6 +1,6 @@
 # MCP 构建与稳定性调整
 
-检查日期：2026-10-10。版本：`volcengine-ark-mcp 0.5.0`、`ali-bailian-mcp 0.4.0`、`doubao-speech-mcp 0.3.1`。
+检查日期：2026-10-10。版本：`volcengine-ark-mcp 0.5.1`、`ali-bailian-mcp 0.4.1`、`doubao-speech-mcp 0.3.2`。
 
 ## 结论
 

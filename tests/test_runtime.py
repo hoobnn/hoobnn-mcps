@@ -220,6 +220,21 @@ class MCPBoundary(unittest.IsolatedAsyncioTestCase):
         with self.assertRaises(asyncio.CancelledError):
             await task
 
+    async def test_worker_deadline_precedes_outer_timer(self):
+        server = ReliableMCPServer("test")
+        @server.tool()
+        def expire_worker() -> dict:
+            transport.operation.get().deadline = time.monotonic() - 1
+            transport.checkpoint()
+            return {"ok": True}
+        try:
+            result = await server.call_tool("expire_worker", {})
+            self.assertTrue(result.is_error)
+            self.assertEqual(result.structured_content["error_code"], "deadline_exceeded")
+            self.assertFalse(result.structured_content["retryable"])
+        finally:
+            server.executor.shutdown(wait=True)
+
     async def test_timed_out_noncooperative_worker_keeps_physical_slot(self):
         server = ReliableMCPServer("test")
         server.workers = 1

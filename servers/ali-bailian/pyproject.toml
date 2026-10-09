@@ -1,6 +1,6 @@
 [project]
 name = "ali-bailian-mcp"
-version = "0.4.0"
+version = "0.4.1"
 description = "阿里云百炼图像、语言、语音、定制音色、视频、向量与任务恢复 MCP server"
 readme = "README.md"
 license = "MIT"

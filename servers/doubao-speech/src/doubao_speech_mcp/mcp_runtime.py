@@ -20,6 +20,11 @@ from . import transport
 logger = logging.getLogger(__name__)
 COMPACT_TOOLS = {"chat", "query_video", "embed", "rerank", "get_job", "recover_job"}
 
+
+def deadline_payload():
+    return {"ok": False, "error_code": "deadline_exceeded", "retryable": False,
+            "error": "调用超过总超时预算；已提交任务请查询或恢复，不要直接重新生成"}
+
 SHORT_DESCRIPTIONS = {
     ("volcengine-ark", "generate_image"): "Seedream 生成或编辑图片。model=pro（默认）或flash支持layers/transparent，最多10张参考图；fast仅pro支持；lite支持group/web_search/3K/4K，最多14张参考图，参考数+group<=15。images为本地路径或URL；layers/transparent只能传1张。size默认2K，宽高比写入prompt。按成功张数计费，组图/图层会生成多张。返回job_id、job_state、files、artifacts、usage；recover_job只补交付。完整尺寸、图层与提示词用法见get_tool_help。",
     ("ali-bailian", "generate_image"): "百炼生成或编辑图片。model=qwen（默认）、wan或z，也可传完整ID。qwen默认3.0支持文字和编辑，最多3张参考图、n<=6；wan最多9张参考图，非组图n<=4、group<=12；4K仅pro无参考非组图支持；z仅文生图，单张。images为本地路径或URL，size为档位或宽*高，默认不加watermark。返回job_id、job_state、files、artifacts、usage，交付失败可recover_job补下载。多张按生成数量计费。完整参数与限制见get_tool_help。",
@@ -125,7 +130,16 @@ class ReliableMCPServer(MCPServer):
                     future = executor.submit(contextvars.copy_context().run, functools.partial(fn, **arguments))
                     # Cancellation cancels queued work. Running workers keep their
                     # physical slot until they actually exit, even after timeout.
-                    result = await asyncio.wrap_future(future)
+                    try:
+                        result = await asyncio.wrap_future(future)
+                    except TimeoutError:
+                        current = transport.operation.get()
+                        if current is None or time.monotonic() < current.deadline:
+                            raise
+                        # A cooperative worker can reach its deadline before
+                        # fail_after fires. Normalize before the SDK wraps it.
+                        current.cancelled.set()
+                        result = deadline_payload()
                 if isinstance(result, dict):
                     result = dict(result)
                     result.setdefault("ok", True)
@@ -188,8 +202,7 @@ class ReliableMCPServer(MCPServer):
         except TimeoutError:
             current.cancelled.set()
             outcome = "timeout"
-            payload = {"ok": False, "error_code": "deadline_exceeded", "retryable": False,
-                       "error": "调用超过总超时预算；已提交任务请查询或恢复，不要直接重新生成"}
+            payload = deadline_payload()
             return CallToolResult(content=[TextContent(type="text", text=json.dumps(payload, ensure_ascii=False))],
                                   structured_content=payload, is_error=True)
         except asyncio.CancelledError:
