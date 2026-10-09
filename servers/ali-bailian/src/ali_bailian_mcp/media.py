@@ -10,13 +10,13 @@ import wave
 from pathlib import Path
 
 from .dashscope import InputError, request
+from .jobs import download as atomic_download
 
 TTS_MODELS = {"flash": "qwen3-tts-flash", "instruct": "qwen3-tts-instruct-flash"}
 VIDEO_MODELS = {"wan": "wan3.0-video", "wan-fast": "wan3.0-video-prime"}
 AUDIO_MIME = {"mp3": "mpeg", "wav": "wav", "m4a": "mp4", "aac": "aac", "flac": "flac", "ogg": "ogg",
               "opus": "opus", "amr": "amr", "webm": "webm"}
 TTS_CHUNK = 250  # qwen3-tts 单次上限 512 token，按字符保守切分
-TERMINAL = ("SUCCEEDED", "FAILED", "CANCELED", "UNKNOWN")
 
 
 def is_remote(src):
@@ -33,9 +33,7 @@ def local_file(src, limit_mb):
 
 
 def download(url, path):
-    path.parent.mkdir(parents=True, exist_ok=True)
-    urllib.request.urlretrieve(url, path)
-    return str(path)
+    return atomic_download(url, path)
 
 
 def upload(src, model):
@@ -45,7 +43,7 @@ def upload(src, model):
     if err:
         raise InputError(f"获取上传凭证失败：{err}")
     d = resp["data"]
-    key = f"{d['upload_dir']}/{p.name}"
+    key = f"{d['upload_dir']}/{uuid.uuid4().hex}-{p.name}"
     fields = {"OSSAccessKeyId": d["oss_access_key_id"], "Signature": d["signature"], "policy": d["policy"],
               "x-oss-object-acl": d["x_oss_object_acl"], "x-oss-forbid-overwrite": d["x_oss_forbid_overwrite"],
               "key": key, "success_action_status": "200"}
@@ -87,62 +85,128 @@ def split_text(text, limit=TTS_CHUNK):
 
 
 def concat_wav(files, out):
+    expected = None
     with wave.open(str(out), "wb") as w:
         for i, f in enumerate(files):
             with wave.open(str(f), "rb") as r:
                 if i == 0:
                     w.setparams(r.getparams())
-                w.writeframes(r.readframes(r.getnframes()))
+                    expected = (r.getnchannels(), r.getsampwidth(), r.getframerate(), r.getcomptype())
+                elif (r.getnchannels(), r.getsampwidth(), r.getframerate(), r.getcomptype()) != expected:
+                    raise ValueError("分段WAV采样参数不一致，不能直接拼接")
+                frames = r.readframes(r.getnframes())
+                if not frames:
+                    raise ValueError("分段WAV没有音频帧")
+                w.writeframes(frames)
 
 
 def text_to_speech(o, out_dir, mode="local"):
+    from .products import STORE
     model = TTS_MODELS.get(o["model"] or ("instruct" if o["instructions"] else "flash"), o["model"])
-    result = {"ok": False, "model": model, "files": [], "chunks": 0, "usage": None, "error": None}
     text = (o["text"] or "").strip()
     if not text:
-        result["error"] = "缺少 text"
-        return result
+        return {"ok": False, "error": "缺少text"}
+    if not model or not model.startswith("qwen3-tts-") or "realtime" in model:
+        return {"ok": False, "error": "此工具仅支持非实时qwen3-tts模型，其他模型使用不同接口"}
     if o["instructions"] and "instruct" not in model:
-        result["error"] = "instructions 只有 qwen3-tts-instruct-flash 支持，去掉 model 参数或设 model=\"instruct\""
-        return result
+        return {"ok": False, "error": "instructions需qwen3-tts-instruct-flash"}
     chunks = split_text(text)
     if mode == "url" and len(chunks) > 1:
-        result["error"] = f"文本约 {len(text)} 字，需要分 {len(chunks)} 段合成再拼接，url 交付方式下请分段调用（每段 {TTS_CHUNK} 字以内）"
-        return result
+        return {"ok": False, "error": "url交付方式请分段调用，每段250字符以内"}
+    resume = {"options": {**o, "model": model},
+              "chunks": [{"text": text, "state": "unsubmitted", "usage": 0} for text in chunks]}
+    job = STORE.create("tts", model, out_dir, mode, resume=resume,
+                       summary={"voice": o["voice"], "chunks": len(chunks)})
+    job["state"] = "partial"
+    STORE.save(job)
+    return resume_tts(job)
 
-    urls, chars = [], 0
-    for c in chunks:
-        inp = {"text": c, "voice": o["voice"]}
-        if o["language"]:
-            inp["language_type"] = o["language"]
-        if o["instructions"]:
-            inp["instructions"] = o["instructions"]
-            inp["optimize_instructions"] = True
-        resp, err = request("/api/v1/services/aigc/multimodal-generation/generation", {"model": model, "input": inp}, 120)
-        if not err and resp.get("code"):
-            err = f"{resp['code']}: {resp.get('message')}"
-        if err:
-            result["error"] = err if len(chunks) == 1 else f"第 {len(urls) + 1}/{len(chunks)} 段合成失败：{err}"
-            return result
-        urls.append(resp["output"]["audio"]["url"])
-        chars += (resp.get("usage") or {}).get("characters", 0)
-    result.update(chunks=len(chunks), usage={"characters": chars})
 
-    if mode == "url":
-        result.update(ok=True, files=urls)
-        return result
+def resume_tts(job):
+    """Continue only known, not-yet-submitted chunks; ambiguous requests are never retried."""
+    from .products import STORE
+    import tempfile
+    plan = job["resume"]
+    opts = plan["options"]
+    final = job.get("result", {}).get("speech_file")
+    if job["state"] == "delivered" and final:
+        from .jobs import fingerprint
+        if Path(final).is_file() and fingerprint(final) == job["result"].get("speech_integrity"):
+            return STORE.result(job)
+    for i, chunk in enumerate(plan["chunks"]):
+        if chunk["state"] == "unknown":
+            job.update(state="unknown", error=f"第{i + 1}段请求状态未知，禁止自动重复合成；已完成部分保留")
+            STORE.save(job)
+            return STORE.result(job)
+        if chunk["state"] == "unsubmitted":
+            inp = {"text": chunk["text"], "voice": opts["voice"]}
+            if opts["language"]:
+                inp["language_type"] = opts["language"]
+            if opts["instructions"]:
+                inp.update(instructions=opts["instructions"], optimize_instructions=True)
+            chunk["state"] = "unknown"
+            STORE.save(job)  # Crash during request is ambiguous, not safe to resubmit.
+            response, error = request("/api/v1/services/aigc/multimodal-generation/generation",
+                                      {"model": job["model"], "input": inp}, 120)
+            if not error and response.get("code"):
+                error = f"{response['code']}: {response.get('message')}"
+            if error:
+                # Definitive rejection can be retried only by explicit recover_job.
+                definitive = error.startswith(("HTTP 4", "未设置")) or bool(response and response.get("code"))
+                chunk["state"] = "unsubmitted" if definitive else "unknown"
+                job.update(state="partial" if definitive else "unknown", error=f"第{i + 1}段：{error}")
+                STORE.save(job)
+                return STORE.result(job)
+            url = ((response.get("output") or {}).get("audio") or {}).get("url")
+            if not url:
+                job.update(state="unknown", error="合成响应缺少audio.url，不能自动重新合成")
+                STORE.save(job)
+                return STORE.result(job)
+            chunk.update(state="generated", url=url, usage=(response.get("usage") or {}).get("characters", 0))
+            job["request_id"] = response.get("request_id")
+            chunk["request_id"] = response.get("request_id")
+            STORE.save(job)
+        STORE.add(job, f"part-{i + 1:02d}.wav", url=chunk["url"])
+        job["usage"] = {"characters": sum(c["usage"] for c in plan["chunks"])}
+        delivered = STORE.deliver(job)
+        if delivered["job_state"] == "download_failed":
+            job["result"]["chunks"] = sum(c["state"] == "generated" for c in plan["chunks"])
+            STORE.save(job)
+            return STORE.result(job)
+        # Still partial until EVERY generation and the final merge have finished.
+        job["state"] = "partial"
+        STORE.save(job)
+    job["result"]["chunks"] = len(plan["chunks"])
+    if job["mode"] == "url":
+        job.update(state="delivered", error=None)
+        STORE.save(job)
+        return STORE.result(job)
+    target = Path(job["out_dir"]) / "speech.wav"
+    target.parent.mkdir(parents=True, exist_ok=True)
+    fd, tmp = tempfile.mkstemp(prefix=".speech-", suffix=".wav", dir=target.parent)
+    import os
+    os.close(fd)
     try:
-        # 单段也重写一遍：接口返回的 wav 头是流式占位长度（0x7fffffff），播放器会算错时长
-        parts = [download(u, out_dir / f"part-{i + 1:02d}.wav") for i, u in enumerate(urls)]
-        concat_wav(parts, out_dir / "speech.wav")
-        for f in parts:
-            Path(f).unlink()
-        result["files"] = [str(out_dir / "speech.wav")]
-    except (urllib.error.URLError, TimeoutError, wave.Error) as e:
-        result["error"] = f"下载或拼接音频失败：{e}"
+        parts = [str(target.parent / f"part-{i + 1:02d}.wav") for i in range(len(plan["chunks"]))]
+        concat_wav(parts, tmp)
+        os.replace(tmp, target)
+        from .jobs import fingerprint
+        job["result"]["speech_file"] = str(target)
+        job["result"]["speech_integrity"] = fingerprint(target)
+        with wave.open(str(target), "rb") as audio:
+            job["result"]["duration"] = audio.getnframes() / audio.getframerate()
+            job["result"]["sample_rate"] = audio.getframerate()
+        job.update(state="delivered", error=None)
+        STORE.save(job)
+        result = STORE.result(job)
+        result["files"] = [str(target)]
         return result
-    result["ok"] = True
-    return result
+    except (OSError, ValueError, wave.Error) as exc:
+        job.update(state="download_failed", error=f"拼接音频失败：{exc}")
+        STORE.save(job)
+        return STORE.result(job)
+    finally:
+        Path(tmp).unlink(missing_ok=True)
 
 
 # ---------- 语音识别 ----------
@@ -226,50 +290,56 @@ def generate_video(o, out_dir, wait, mode="local"):
     except InputError as e:
         result["error"] = str(e)
         return result
-    headers = {"X-DashScope-Async": "enable"}
-    if oss:
-        headers["X-DashScope-OssResourceResolve"] = "enable"
-    resp, err = request("/api/v1/services/aigc/video-generation/video-synthesis", body, 60, headers)
-    if not err and resp.get("code"):
-        err = f"{resp['code']}: {resp.get('message')}"
-    if err:
-        result["error"] = err
-        return result
-    result["task_id"] = resp["output"]["task_id"]
-    return poll_video(result, out_dir, wait, mode)
+    from .products import submit_video
+    return submit_video(body, out_dir, wait, mode, oss=oss)
 
 
-def query_video(task_id, out_dir, wait, mode="local"):
-    result = {"ok": False, "model": None, "task_id": task_id, "status": None, "files": [], "usage": None, "error": None}
-    return poll_video(result, out_dir, wait, mode)
+def query_video(task_id, out_dir, wait, mode="local", job_id=None):
+    from .products import STORE
+    if not 0 <= wait <= 90 or not task_id:
+        return {"ok": False, "error": "需task_id，wait范围0–90秒"}
+    if job_id:
+        def handle(job):
+            if job["kind"] != "video" or job["task_id"] != task_id:
+                raise ValueError("job_id与视频任务不匹配")
+            return poll_job(job, wait)
+        return STORE.recover(job_id, handle)
+    job = STORE.create("video", None, out_dir, mode)
+    job.update(task_id=task_id, state="running")
+    STORE.save(job)
+    return poll_job(job, wait)
 
 
-def poll_video(result, out_dir, wait, mode):
-    deadline = time.monotonic() + max(wait, 0)
+def poll_job(job, wait=0):
+    from .products import STORE
+    from urllib.parse import quote
+    deadline = time.monotonic() + max(0, min(wait, 90))
     while True:
-        resp, err = request(f"/api/v1/tasks/{result['task_id']}", timeout=30)
-        if err:
-            result["error"] = err
-            return result
-        out = resp.get("output") or {}
-        result.update(status=out.get("task_status"), usage=resp.get("usage"))
-        if result["status"] in TERMINAL or time.monotonic() >= deadline:
-            break
-        time.sleep(min(10, max(deadline - time.monotonic(), 1)))
-
-    if result["status"] == "SUCCEEDED":
-        url = out.get("video_url")
-        if mode == "url":
-            result["files"] = [url]
-        else:
-            try:
-                result["files"] = [download(url, out_dir / "video.mp4")]
-            except (urllib.error.URLError, TimeoutError) as e:
-                result["error"] = f"视频已生成但下载失败：{e}，24 小时内可用 query_video 重新获取"
-                return result
-        result["ok"] = True
-    elif result["status"] in ("PENDING", "RUNNING"):
-        result["error"] = f"视频还在生成（{result['status']}），稍后用 query_video(task_id=\"{result['task_id']}\") 继续等"
-    else:
-        result["error"] = f"{out.get('code', result['status'])}: {out.get('message', '任务失败')}"
-    return result
+        response, error = request("/api/v1/tasks/" + quote(job["task_id"], safe=""),
+                                  timeout=max(1, min(30, deadline - time.monotonic())) if wait else 30)
+        if error:
+            job["error"] = error
+            STORE.save(job)
+            return STORE.result(job)
+        out = response.get("output") or {}
+        status = out.get("task_status")
+        job.update(usage=response.get("usage"), request_id=response.get("request_id"), error=None)
+        job["result"] = {"status": status, "response": response}
+        if status == "SUCCEEDED":
+            url = out.get("video_url") or (out.get("results") or {}).get("video_url")
+            if not url:
+                job.update(state="unknown", error="任务成功但缺少video_url")
+                STORE.save(job)
+                return STORE.result(job)
+            STORE.add(job, "video.mp4", url=url)
+            return STORE.deliver(job)
+        if status in ("FAILED", "CANCELED", "UNKNOWN"):
+            job.update(state="failed" if status != "UNKNOWN" else "unknown",
+                       error=f"{out.get('code', status)}: {out.get('message', '任务失败或未知')}")
+            STORE.save(job)
+            return STORE.result(job)
+        job["state"] = "running" if status in ("PENDING", "RUNNING") else "unknown"
+        STORE.save(job)
+        if time.monotonic() >= deadline:
+            return STORE.result(job)
+        time.sleep(min(5, max(0, deadline - time.monotonic())))

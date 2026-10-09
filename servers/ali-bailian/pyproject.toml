@@ -1,7 +1,7 @@
 [project]
 name = "ali-bailian-mcp"
-version = "0.2.0"
-description = "阿里云百炼（DashScope）生图、语言模型、语音、视频 MCP server"
+version = "0.3.0"
+description = "阿里云百炼图像、语言、语音、定制音色、视频、向量与任务恢复 MCP server"
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.10"

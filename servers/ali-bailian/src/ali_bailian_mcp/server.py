@@ -1,4 +1,4 @@
-"""stdio MCP server：生图、对话、语音合成、语音识别、视频生成和模型列表。
+"""stdio MCP server：百炼图像、语言、语音、定制音色、视频、检索与任务恢复。
 
 环境变量：DASHSCOPE_API_KEY（必需）、BAILIAN_OUT_DIR（默认 ~/Downloads/ali-bailian）、
 BAILIAN_RESOURCE_MODE（local 下载到本地，url 只返回链接；默认 local）、DASHSCOPE_BASE_URL（可选）。
@@ -6,11 +6,12 @@ BAILIAN_RESOURCE_MODE（local 下载到本地，url 只返回链接；默认 loc
 
 import os
 import time
+import uuid
 from pathlib import Path
 
 from mcp.server.mcpserver import MCPServer
 
-from . import dashscope, media
+from . import dashscope, media, products
 
 OUT_ROOT = Path(os.environ.get("BAILIAN_OUT_DIR", "~/Downloads/ali-bailian")).expanduser()
 MODE = os.environ.get("BAILIAN_RESOURCE_MODE", "local").strip().lower()
@@ -21,7 +22,7 @@ mcp = MCPServer("ali-bailian")
 
 
 def target_dir(out_dir):
-    return Path(out_dir).expanduser() if out_dir else OUT_ROOT / time.strftime("%Y%m%d-%H%M%S")
+    return Path(out_dir).expanduser() if out_dir else OUT_ROOT / (time.strftime("%Y%m%d-%H%M%S") + "-" + uuid.uuid4().hex[:8])
 
 
 @mcp.tool()
@@ -64,7 +65,7 @@ def generate_image(
     - out_dir：输出目录，默认 BAILIAN_OUT_DIR 下按时间戳新建。交付方式为 url 时忽略。
 
     按成功生成的张数计费，n 和 group 越大越贵，批量生成前先和用户确认数量。同步调用，单张通常十几秒到一分钟。
-    返回 ok、model、files、text（模型改写后的提示词，有的话）、usage、error。交付方式由 BAILIAN_RESOURCE_MODE
+    返回 job_id、job_state、artifacts、request_id、ok、model、files、text（模型改写后的提示词，有的话）、usage、error。交付方式由 BAILIAN_RESOURCE_MODE
     决定：local 时 files 是本地路径，url 时 files 是 24 小时内有效的图片链接，需要长期保存要及时下载。
     """
     opts = dict(prompt=prompt, model=model, images=images or [], size=size, n=n, group=group,
@@ -139,10 +140,10 @@ def text_to_speech(
       缓慢」。传了会自动改用 qwen3-tts-instruct-flash。
     - language：Chinese、English、Japanese、Korean、French、German、Russian、Italian、Spanish、Portuguese，
       不传自动识别。中英混读不用设。
-    - model：不传时按是否有 instructions 自动选 qwen3-tts-flash / qwen3-tts-instruct-flash。
+    - model：不传时自动选 flash/instruct。自定义音色必须传创建返回的target_model（非实时VC/VD），不能用默认模型。
     - out_dir：输出目录，默认 BAILIAN_OUT_DIR 下按时间戳新建。
 
-    按字符计费。返回 ok、model、files、chunks（分了几段）、usage、error。url 交付方式下 files 是 24 小时内有效的链接。
+    按字符计费。返回 job_id、job_state、artifacts、request_id、ok、model、files、chunks（分了几段）、usage、error。url 交付方式下 files 是 24 小时内有效的链接。
     """
     opts = dict(text=text, voice=voice, instructions=instructions, language=language, model=model)
     return media.text_to_speech(opts, target_dir(out_dir), mode=MODE)
@@ -214,7 +215,7 @@ def generate_video(
     - out_dir：输出目录，默认 BAILIAN_OUT_DIR 下按时间戳新建。
 
     按输出视频的秒数计费，分辨率越高越贵，生成前先和用户确认时长和分辨率。
-    返回 ok、model、task_id、status（PENDING / RUNNING / SUCCEEDED / FAILED）、files、usage、error。
+    返回 job_id、job_state、artifacts、request_id、ok、model、task_id、status（PENDING / RUNNING / SUCCEEDED / FAILED）、files、usage、error。
     """
     opts = dict(prompt=prompt, model=model, first_frame=first_frame, last_frame=last_frame,
                 reference_images=reference_images or [], reference_videos=reference_videos or [],
@@ -224,12 +225,12 @@ def generate_video(
 
 
 @mcp.tool()
-def query_video(task_id: str, wait: int = 90, out_dir: str | None = None) -> dict:
+def query_video(task_id: str, wait: int = 90, out_dir: str | None = None, job_id: str | None = None) -> dict:
     """查询 generate_video 的任务，最多等 wait 秒（默认 90，设 0 只查一次）。完成后下载视频，返回文件路径。
 
-    任务结果保留 24 小时。返回字段同 generate_video。
+    任务结果保留时间以服务端为准。job_id可复用原输出目录并跳过完整文件；返回字段同generate_video。
     """
-    return media.query_video(task_id, target_dir(out_dir), wait, mode=MODE)
+    return media.query_video(task_id, target_dir(out_dir), wait, mode=MODE, job_id=job_id)
 
 
 @mcp.tool()
@@ -239,6 +240,125 @@ def list_models(keyword: str | None = None) -> dict:
     列表包含语言、生图、语音、向量等走 OpenAI 兼容接口的模型；视频模型（万相 3.0）不在其中。返回 ok、models、error。
     """
     return dashscope.list_models(keyword)
+
+
+@mcp.tool()
+def clone_voice(audio: str, target_model: str = "qwen3-tts-vc-2026-01-22", preferred_name: str = "custom_voice",
+                text: str | None = None, language: str | None = None) -> dict:
+    """用Qwen声音复刻创建固定音色。audio为本地wav/mp3/m4a（10MB以内）、公开URL或data URL，建议清晰单人录音。
+    target_model默认非实时VC模型；preferred_name为1–16位字母/数字/下划线；text可提供准确录音文本。
+    返回voice和target_model，合成时必须把两者传给text_to_speech，不能沿用默认flash模型。
+    会产生音色创建费用，不自动重试创建；模型支持与录音时长由服务端校验。新增功能尚未测试。
+    """
+    return products.clone_voice(audio, target_model, preferred_name, text, language)
+
+
+@mcp.tool()
+def design_voice(voice_prompt: str, preview_text: str, target_model: str = "qwen3-tts-vd-2026-01-26",
+                 preferred_name: str = "custom_voice", out_dir: str | None = None) -> dict:
+    """通过中文/英文描述创建Qwen音色并保存试听wav。voice_prompt最多2048字符，preview_text为试听台词。
+    返回voice、target_model和试听files/job_id；后续text_to_speech必须指定这两个字段。
+    会产生音色创建费用；试听保存失败用recover_job补交付，不能再次调用design_voice代替恢复。尚未测试。
+    """
+    return products.design_voice(voice_prompt, preview_text, target_model, preferred_name, target_dir(out_dir), MODE)
+
+
+@mcp.tool()
+def list_voices(kind: str = "clone", page_index: int = 0, page_size: int = 20, prefix: str | None = None) -> dict:
+    """分页查询自定义音色。kind=clone（Qwen复刻）/design（Qwen设计）/cosyvoice（CosyVoice与Qwen-Audio共享音色接口）。
+    page_index从0起，page_size=1–100；prefix仅cosyvoice支持。保留目标模型等官方字段。不会创建或删除音色。
+    """
+    return products.list_voices(kind, page_index, page_size, prefix)
+
+
+@mcp.tool()
+def get_voice(voice: str, kind: str = "clone", max_pages: int = 10) -> dict:
+    """查找音色。Qwen没有单独的详情接口，clone/design从分页列表查找，最多max_pages页；cosyvoice走query_voice。
+    达到页数上限会明确返回尚不能判断，不能视为音色不存在。
+    """
+    return products.get_voice(voice, kind, max_pages)
+
+
+@mcp.tool()
+def edit_video(video: str, prompt: str, reference_images: list[str] | None = None,
+               resolution: str = "720P", audio_setting: str = "auto", watermark: bool = False,
+               seed: int | None = None, wait: int = 0, out_dir: str | None = None) -> dict:
+    """HappyHorse视频指令编辑：修改风格/元素，video为本地文件或公开URL，reference_images最多5张本地图片/URL。
+    输入视频3–60秒，输出最多15秒，超15秒只取前15秒；详细文件限制见官方接口。
+    resolution=720P/1080P；audio_setting=origin保留原音轨、auto由模型决定。
+    异步计费任务，wait=0默认只提交，最多90秒；query_video或recover_job接续，返回task_id/job_id。尚未测试。
+    """
+    return products.edit_video(video, prompt, reference_images or [], resolution, audio_setting,
+                               watermark, seed, target_dir(out_dir), wait, MODE)
+
+
+@mcp.tool()
+def animate_portrait(image: str, audio: str, resolution: str = "480P", wait: int = 0,
+                     out_dir: str | None = None) -> dict:
+    """wan2.2-s2v数字人对口型：图片+人声驱动人物口型、表情、动作。输入本地文件或公开URL。
+    图片jpg/png/webp等，音频wav/mp3，音频须小于15MB且小于20秒；resolution=480P/720P。
+    本地素材上传百炼临时存储。按输出秒数计费；wait=0默认只提交，最多90秒，用query_video或recover_job接续。
+    返回task_id/job_id。北京地域能力，尚未测试。
+    """
+    return products.animate_portrait(image, audio, resolution, target_dir(out_dir), wait, MODE)
+
+
+@mcp.tool()
+def embed(model: str = "text-embedding-v4", texts: list[str] | None = None, contents: list[dict] | None = None,
+          dimensions: int | None = None, parameters: dict | None = None) -> dict:
+    """百炼文本/多模态向量化。texts为文本列表；contents用[{"text":"猫"},{"image":"/absolute/cat.png"}]等官方结构。
+    必须且只能选一项。多模态请显式指定model=qwen3-vl-embedding等；图片支持本地路径，视频需公开URL。
+    dimensions设置维度；parameters透传模型支持的参数，如enable_fusion。返回向量、usage和完整response。
+    按输入计费，不自动建索引或知识库。尚未测试。
+    """
+    return products.embed(model, texts, contents, dimensions, parameters)
+
+
+@mcp.tool()
+def rerank(query: str, documents: list[str], model: str = "qwen3.7-text-rerank",
+           top_n: int | None = None, return_documents: bool = False) -> dict:
+    """对候选文档按与query的相关性排序，返回原索引和relevance_score；top_n控制数量，return_documents返回原文。
+    qwen3.7-text-rerank走原生接口，qwen3-rerank走compatible-api/v1/reranks，两者请求体不同。
+    分数用于本次请求内比较。按输入计费，模型及地域权限以服务端为准；尚未测试。
+    """
+    return products.rerank(query, documents, model, top_n, return_documents)
+
+
+@mcp.tool()
+def list_jobs(limit: int = 20, kind: str | None = None) -> dict:
+    """列出最近本地任务，不联网。工具超时未拿到job_id时可按时间/model/summary找回记录；limit=1–100，kind可筛选image/video/tts等。"""
+    return products.STORE.list(limit, kind)
+
+
+@mcp.tool()
+def get_job(job_id: str) -> dict:
+    """读取本地生成/试听任务记录，不联网。ok代表读取成功，job_state表示交付状态。"""
+    return products.STORE.get(job_id)
+
+
+@mcp.tool()
+def recover_job(job_id: str, wait: int = 0) -> dict:
+    """恢复本地留档：视频查原task_id；图片/试听只补下载；TTS跳过已合成分段并继续尚未提交的分段（这些分段仍会计费）。
+    状态未知的同步请求不自动重试。校验完整文件后跳过；wait=0视频查一次，最多90秒。临时结果过期可能无法恢复。
+    """
+    if not 0 <= wait <= 90:
+        return {"ok": False, "error": "wait范围0–90秒"}
+    return products.recover(job_id, wait)
+
+
+@mcp.tool()
+def list_capabilities() -> dict:
+    """列出百炼MCP工具和官方来源，不联网，不代表账号权限；新增能力未测试。"""
+    return {"ok": True, "account_verified": False, "validation": "not_tested",
+            "tools": {"image": ["generate_image"], "language": ["chat", "list_models"],
+                      "speech": ["text_to_speech", "speech_to_text"],
+                      "voice": ["clone_voice", "design_voice", "list_voices", "get_voice"],
+                      "video": ["generate_video", "query_video", "edit_video", "animate_portrait"],
+                      "retrieval": ["embed", "rerank"], "jobs": ["list_jobs", "get_job", "recover_job"]},
+            "docs": products.DOCS,
+            "limits": ["自定义音色创建和合成必须使用相同target_model", "Qwen音色详情从列表查找",
+                       "TTS仅支持非实时Qwen3系列，实时模型尚未接入", "恢复锁使用POSIX flock，面向macOS/Linux",
+                       "地域、服务开通及实际输出规格尚需后续测试"]}
 
 
 def main():

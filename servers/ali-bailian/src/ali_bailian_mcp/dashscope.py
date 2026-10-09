@@ -53,11 +53,17 @@ def request(path, body=None, timeout=300, headers=None):
     )
     try:
         with urllib.request.urlopen(req, timeout=timeout) as r:
-            return json.loads(r.read()), None
+            data = json.loads(r.read())
+            if not isinstance(data, dict):
+                return None, "响应状态未知：服务端返回非对象JSON"
+            data.setdefault("request_id", r.headers.get("X-Request-Id"))
+            return data, None
     except urllib.error.HTTPError as e:
         return None, http_error(e)
     except (urllib.error.URLError, TimeoutError) as e:
         return None, f"请求失败：{e}"
+    except (OSError, ValueError) as e:
+        return None, f"响应状态未知：{e}"
 
 
 def http_error(e):
@@ -138,14 +144,25 @@ def generate_image(o, out_dir, mode="local", timeout=300):
         result["error"] = err
         return result
 
+    from .products import STORE
+    job = STORE.create("image", model, out_dir, mode,
+                       summary={"size": o["size"], "n": o["n"], "group": o["group"]})
     resp, err = request("/api/v1/services/aigc/multimodal-generation/generation", body, timeout)
     if err:
-        result["error"] = err
-        return result
+        job.update(error=err, state="failed" if err.startswith(("HTTP 4", "未设置")) else "unknown")
+        STORE.save(job)
+        return STORE.result(job)
     if resp.get("code"):
-        result["error"] = f"{resp['code']}: {resp.get('message')}"
-        return result
+        job.update(state="failed", error=f"{resp['code']}: {resp.get('message')}")
+        STORE.save(job)
+        return STORE.result(job)
 
+    STORE.record_response(job, resp)
+    return deliver_image(resp, job)
+
+
+def deliver_image(resp, job):
+    from .products import STORE
     urls, texts = [], []
     for c in (resp.get("output") or {}).get("choices") or []:
         for part in (c.get("message") or {}).get("content") or []:
@@ -153,24 +170,18 @@ def generate_image(o, out_dir, mode="local", timeout=300):
                 urls.append(part["image"])
             elif part.get("text"):
                 texts.append(part["text"])
-    result.update(usage=resp.get("usage"), text="\n".join(texts) or None)
-    if mode == "url":
-        result["files"] = urls
-    elif urls:
-        out_dir.mkdir(parents=True, exist_ok=True)
-        for i, u in enumerate(urls):
-            ext = Path(u.split("?")[0]).suffix or ".png"
-            path = out_dir / f"image-{i + 1:02d}{ext}"
-            try:
-                urllib.request.urlretrieve(u, path)
-                result["files"].append(str(path))
-            except (urllib.error.URLError, TimeoutError) as e:
-                result["error"] = f"下载第 {i + 1} 张失败：{e}"
-        result["out_dir"] = str(out_dir)
-    result["ok"] = bool(result["files"])
+    job.update(usage=resp.get("usage"), request_id=resp.get("request_id"), state="generated",
+               result={"text": "\n".join(texts) or None})
+    STORE.save(job)
+    for i, url in enumerate(urls):
+        ext = Path(url.split("?")[0]).suffix.lower()
+        ext = ext if ext in (".png", ".jpg", ".jpeg", ".webp") else ".png"
+        STORE.add(job, f"image-{i + 1:02d}{ext}", url=url)
     if not urls:
-        result["error"] = "没有生成任何图片"
-    return result
+        job.update(state="failed", error="没有生成任何图片")
+        STORE.save(job)
+        return STORE.result(job)
+    return STORE.deliver(job)
 
 
 # ---------- 对话 ----------
