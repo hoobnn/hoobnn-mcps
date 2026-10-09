@@ -4,6 +4,7 @@ import asyncio
 import copy
 import gzip
 import json
+import math
 import os
 import struct
 import uuid
@@ -126,9 +127,11 @@ async def streaming_recognize(audio, request=None, mode="realtime", resource_id=
             raise speech.InputError("mode 只能为 realtime 或 sentence")
         if not isinstance(chunk_ms, int) or not 100 <= chunk_ms <= 200:
             raise speech.InputError("chunk_ms 必须为 100 到 200 毫秒")
-        if not isinstance(timeout, (int, float)) or timeout <= 0:
+        if isinstance(timeout, bool) or not isinstance(timeout, (int, float)) or not math.isfinite(timeout) or timeout <= 0:
             raise speech.InputError("timeout 必须为正数秒")
-        body, data, alignment = prepare_audio(audio, request if request is not None else {})
+        deadline = asyncio.get_running_loop().time() + timeout
+        body, data, alignment = await asyncio.wait_for(
+            asyncio.to_thread(prepare_audio, audio, request if request is not None else {}), timeout)
         key = os.environ.get("VOLC_SPEECH_API_KEY")
         if not key:
             raise speech.InputError("未设置环境变量 VOLC_SPEECH_API_KEY")
@@ -153,7 +156,7 @@ async def streaming_recognize(audio, request=None, mode="realtime", resource_id=
                 sender = asyncio.create_task(send_audio())
                 async def receive():
                     while True:
-                        message = decode_frame(await ws.recv())
+                        message = await asyncio.to_thread(decode_frame, await ws.recv())
                         result["messages"].append(message)
                         payload = message["payload_msg"]
                         if message["message_type"] == 15:
@@ -179,7 +182,7 @@ async def streaming_recognize(audio, request=None, mode="realtime", resource_id=
                         if not task.done():
                             task.cancel()
                     await asyncio.gather(sender, receiver, return_exceptions=True)
-        await asyncio.wait_for(session(), timeout=timeout)
+        await asyncio.wait_for(session(), timeout=max(0, deadline - asyncio.get_running_loop().time()))
         result["ok"] = True
     except TimeoutError:
         result["error"] = "流式识别超时，未收到最终结果"

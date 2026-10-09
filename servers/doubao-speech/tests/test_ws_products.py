@@ -5,6 +5,8 @@ import gzip
 import json
 import struct
 import tempfile
+import time
+import threading
 import unittest
 from pathlib import Path
 from types import SimpleNamespace
@@ -227,11 +229,46 @@ class SessionTests(unittest.IsolatedAsyncioTestCase):
     async def test_podcast_save_failure_is_structured_error(self):
         fake = FakeWebSocket("podcast")
         with patch.object(ws.websockets, "connect", return_value=fake), \
-                patch.object(Path, "write_bytes", side_effect=OSError("disk full")):
+                patch.object(ws.speech, "_atomic_bytes", side_effect=OSError("disk full")):
             result = await ws.podcast({"input_text": "科技"}, self.output)
         self.assertFalse(result["ok"])
         self.assertIn("disk full", result["error"])
         self.assertEqual(result["files"], [])
+
+    async def test_large_audio_delivery_does_not_block_cancellation(self):
+        def slow_write(*args):
+            time.sleep(.12)
+        fake = FakeWebSocket()
+        started = time.monotonic()
+        with patch.object(ws.websockets, "connect", return_value=fake), patch.object(ws.speech, "_atomic_bytes", side_effect=slow_write):
+            with self.assertRaises(asyncio.TimeoutError):
+                await asyncio.wait_for(ws.synthesize(self.tts_body, self.output), .02)
+        self.assertLess(time.monotonic() - started, .10)
+        self.assertTrue(fake.closed)
+
+    async def test_atomic_audio_writer_runs_in_worker_and_no_partial_file_leaks(self):
+        loop_thread = threading.get_ident()
+        writer = ws.speech._atomic_bytes
+        def worker(*args):
+            self.assertNotEqual(threading.get_ident(), loop_thread)
+            return writer(*args)
+        for product in ("tts", "podcast"):
+            fake = FakeWebSocket(product)
+            with patch.object(ws.websockets, "connect", return_value=fake), patch.object(ws.speech, "_atomic_bytes", side_effect=worker):
+                if product == "tts":
+                    result = await ws.synthesize(self.tts_body, self.output)
+                else:
+                    result = await ws.podcast({"input_text": "hi"}, self.output)
+            self.assertTrue(result["ok"], result)
+        self.assertEqual(list(self.output.glob("*.tmp")), [])
+
+    async def test_atomic_publish_failure_leaves_no_tts_or_temporary_file(self):
+        fake = FakeWebSocket()
+        with patch.object(ws.websockets, "connect", return_value=fake), patch.object(ws.speech.os, "replace", side_effect=OSError("disk full")):
+            result = await ws.synthesize(self.tts_body, self.output)
+        self.assertFalse(result["ok"])
+        self.assertEqual(result["files"], [])
+        self.assertEqual(list(self.output.iterdir()), [])
 
     async def test_invalid_requests_fail_before_connect(self):
         with patch.object(ws.websockets, "connect") as connect:

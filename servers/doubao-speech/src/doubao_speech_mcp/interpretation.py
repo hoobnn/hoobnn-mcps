@@ -130,15 +130,21 @@ def _save_audio(data, target, out_dir, session_id):
         raise speech.InputError("服务端返回的 PCM 音频采样不完整")
     if fmt == "pcm" and rate == 16000:
         path = directory / f"interpretation_{session_id}.wav"
-        with wave.open(str(path), "wb") as dest:
-            dest.setnchannels(1)
-            dest.setsampwidth(2)
-            dest.setframerate(rate)
-            dest.writeframes(data)
+        def write(handle):
+            with wave.open(handle, "wb") as dest:
+                dest.setnchannels(1)
+                dest.setsampwidth(2)
+                dest.setframerate(rate)
+                dest.writeframes(data)
+        speech._atomic_write(path, write)
     else:
         path = directory / f"interpretation_{session_id}.{'ogg' if fmt == 'ogg_opus' else 'pcm'}"
-        path.write_bytes(data)
+        speech._atomic_bytes(path, data)
     return str(path)
+
+
+async def _receive_response(connection):
+    return await asyncio.to_thread(decode_response, await connection.recv())
 
 
 async def interpret_audio(audio, source_language, target_language, mode="s2t",
@@ -156,9 +162,9 @@ async def interpret_audio(audio, source_language, target_language, mode="s2t",
     try:
         if not isinstance(timeout, (int, float)) or not 0 < timeout <= 600:
             raise speech.InputError("timeout 必须在 0–600 秒之间")
-        pcm = read_pcm(audio)
+        pcm = await asyncio.wait_for(asyncio.to_thread(read_pcm, audio), timeout)
         start = _start_request(request, result["session_id"], source_language, target_language, mode)
-        start_bytes = encode_request(start)  # Validate before connecting or billing.
+        start_bytes = await asyncio.to_thread(encode_request, start)  # Validate before connecting or billing.
         key = os.environ.get("VOLC_SPEECH_API_KEY")
         if not key:
             raise speech.InputError("未设置 VOLC_SPEECH_API_KEY")
@@ -171,7 +177,8 @@ async def interpret_audio(audio, source_language, target_language, mode="s2t",
             if response is not None:
                 result["logid"] = response.headers.get("X-Tt-Logid")
             await connection.send(start_bytes)
-            started = decode_response(await asyncio.wait_for(connection.recv(), timeout))
+            started = await asyncio.wait_for(
+                _receive_response(connection), timeout)
             if started["event"] != Type.SessionStarted:
                 raise speech.InputError(f"同传启动失败：{started['event_name']} "
                                         f"{started.get('response_meta', {}).get('Message', '')}")
@@ -199,7 +206,9 @@ async def interpret_audio(audio, source_language, target_language, mode="s2t",
                     result[kind + "_segments"].append({"text": text,
                         "start_ms": event["start_time"] or segment_meta[kind].get("start_ms", 0),
                         "end_ms": event["end_time"],
-                        "speaker_changed": segment_meta[kind].get("speaker_changed", event["spk_chg"])})
+                        "speaker_changed": segment_meta[kind].get("speaker_changed", event["spk_chg"]),
+                        **{key: event[key] for key in ("detected_language", "language_confidence", "speaker_id")
+                           if key in event}})
                 active[kind] = ""
                 segment_meta[kind] = {}
 
@@ -225,7 +234,7 @@ async def interpret_audio(audio, source_language, target_language, mode="s2t",
                         if not recv_task.done():
                             recv_task.cancel()
                             await asyncio.gather(recv_task, return_exceptions=True)
-                    event = decode_response(raw)
+                    event = await asyncio.to_thread(decode_response, raw)
                     ev = event["event"]
                     if ev in {Type.SessionFailed, Type.SessionCanceled, Type.ConnectionFailed}:
                         meta = event.get("response_meta", {})
@@ -264,7 +273,8 @@ async def interpret_audio(audio, source_language, target_language, mode="s2t",
                 await asyncio.gather(sender, return_exceptions=True)
             if received_audio:
                 target = start.get("target_audio", {"format": "pcm", "rate": 16000, "bits": 16, "channel": 1})
-                result["files"].append(_save_audio(bytes(received_audio), target, out_dir, result["session_id"]))
+                result["files"].append(await asyncio.to_thread(
+                    _save_audio, received_audio, target, out_dir, result["session_id"]))
                 result["audio_params"] = target
             elif mode == "s2s":
                 raise speech.InputError("同传 SessionFinished 但未返回目标音频")

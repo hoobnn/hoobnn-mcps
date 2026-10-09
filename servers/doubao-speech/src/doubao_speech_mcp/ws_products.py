@@ -101,7 +101,9 @@ def parse_frame(packet):
 
 
 async def receive(ws, timeout=60):
-    return parse_frame(await asyncio.wait_for(ws.recv(), timeout))
+    async def decode():
+        return await asyncio.to_thread(parse_frame, await ws.recv())
+    return await asyncio.wait_for(decode(), timeout)
 
 
 async def expect(ws, event):
@@ -201,9 +203,8 @@ async def synthesize(request, out_dir, mode="bidirectional", text_chunks=None, r
             if not audio:
                 raise speech.InputError("合成完成但没有返回音频")
             out_dir = Path(out_dir)
-            out_dir.mkdir(parents=True, exist_ok=True)
-            path = out_dir / f"speech-{uuid.uuid4().hex[:8]}.{fmt}"
-            path.write_bytes(audio)
+            path = out_dir / f"speech-{uuid.uuid4().hex}.{fmt}"
+            await asyncio.to_thread(speech._atomic_bytes, path, audio)
             result.update(ok=True, files=[str(path)], audio_config=config)
     except (OSError, ValueError, KeyError, TypeError, asyncio.TimeoutError, websockets.exceptions.WebSocketException) as exc:
         result["error"] = str(exc) or "WebSocket 超时"
@@ -294,9 +295,8 @@ async def podcast(request, out_dir):
     if audio:
         try:
             out_dir = Path(out_dir)
-            out_dir.mkdir(parents=True, exist_ok=True)
             path = out_dir / f"podcast-{result['task_id']}.{'partial.' if not result['ok'] else ''}{fmt}"
-            path.write_bytes(audio)
+            await asyncio.to_thread(speech._atomic_bytes, path, audio)
             result["files"] = [str(path)]
             result["audio_config"] = config
         except (OSError, TypeError) as exc:

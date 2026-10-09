@@ -166,7 +166,14 @@ def tts_query(task_id, resource_id="seed-tts-2.0", request=None):
         _required(body, "task_id")
         if resource_id not in {"seed-tts-2.0", "seed-icl-2.0"}:
             raise speech.InputError("长文本 resource_id 只能是 seed-tts-2.0 或 seed-icl-2.0")
-        return _call("/api/v3/tts/query", body, resource_id)
+        result = _call("/api/v3/tts/query", body, resource_id)
+        payload = (result.get("data") or {}).get("data") or {}
+        if isinstance(payload, dict):
+            task_status = payload.get("task_status")
+            result["status"] = {1: "running", 2: "succeeded", 3: "failed"}.get(task_status, "unknown")
+            if task_status == 3:
+                result.update(ok=False, error=payload.get("message") or "长文本语音合成任务失败")
+        return result
     except speech.InputError as exc:
         return _error(exc)
 

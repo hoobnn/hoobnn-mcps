@@ -41,6 +41,16 @@ class ProductContracts(unittest.TestCase):
         self.assertEqual(self.post.call_args.args[:3], (
             "/api/v3/tts/query", {"extra": True, "task_id": "id"}, "seed-icl-2.0"))
 
+    def test_official_long_text_task_status_distinguishes_failed_job(self):
+        for code, status in ((1, "running"), (2, "succeeded"), (3, "failed")):
+            self.post.return_value = ({}, json.dumps({"code": 20000000, "data": {
+                "task_status": code, "message": "failure detail" if code == 3 else "OK"}}), None)
+            result = products.tts_query("task")
+            self.assertEqual(result["status"], status)
+            self.assertEqual(result["ok"], code != 3)
+            if code == 3:
+                self.assertEqual(result["error"], "failure detail")
+
     def test_voice_clone_local_sample_does_not_mutate(self):
         with tempfile.TemporaryDirectory() as tmp:
             audio = Path(tmp) / "sample.wav"

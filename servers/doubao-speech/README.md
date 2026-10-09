@@ -161,3 +161,7 @@ Speech SDK的离线模型、端侧VAD / 音频处理和Android / iOS接入需原
 离线测试覆盖HTTP合同、任务状态、签名、Protobuf、二进制帧、模拟WebSocket收发、音频文件、超时 / 取消清理，以及实际stdio MCP初始化、工具发现与调用。未调用付费云接口，因此不能证明账号开通、配额可用或实际生成质量。
 
 参数说明见工具描述（`src/doubao_speech_mcp/server.py`）。接口细节以官方文档为准：[单向流式语音合成](https://docs.volcengine.com/docs/DoubaoVoice/unidirectional-streaming-text-to-speech-http)、[录音文件识别极速版](https://docs.volcengine.com/docs/DoubaoVoice/recording-file-recognition-lite-http)、[音频生成](https://docs.volcengine.com/docs/DoubaoVoice/audio-generation-http)、[音色列表](https://docs.volcengine.com/docs/6561/1257544)。
+
+## 运行时与稳定性
+
+共享连接池、总超时、工具分组、错误语义和迁移说明见 [MCP 构建与稳定性](../../docs/mcp-reliability.md)。完整工具说明可调用 `get_tool_help(tool="工具名")`。

@@ -10,6 +10,8 @@ import urllib.error
 import urllib.parse
 import urllib.request
 
+from . import transport
+
 from . import speech
 
 DOC_ROOT = "https://docs.volcengine.com/docs/DoubaoVoice/"
@@ -108,7 +110,7 @@ def legacy_call(operation, request=None, parameters=None):
     http_request = urllib.request.Request(url, data=payload, method=method,
         headers={"Authorization": "Bearer; " + token, "Content-Type": "application/json"})
     try:
-        with urllib.request.urlopen(http_request, timeout=60) as response:
+        with transport.urlopen(http_request, timeout=60) as response:
             data = json.loads(response.read().decode())
             result["logid"] = response.headers.get("X-Tt-Logid")
         if not isinstance(data, dict):

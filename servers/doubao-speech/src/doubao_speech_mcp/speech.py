@@ -1,11 +1,15 @@
-"""豆包语音 V3 接口：单向流式语音合成（HTTP）、录音文件识别极速版、音频生成。只依赖标准库。"""
+"""豆包语音 V3 接口：单向流式语音合成（HTTP）、录音文件识别极速版、音频生成。通过共享 HTTP 连接池请求。"""
 
 import base64
 import json
+import math
+import tempfile
 import os
 import re
 import urllib.error
 import urllib.request
+
+from . import transport
 import uuid
 import wave
 from pathlib import Path
@@ -49,11 +53,13 @@ def post(path, body, resource=None, headers=None, timeout=300):
         h["X-Api-Resource-Id"] = resource
     req = urllib.request.Request(HOST + path, data=json.dumps(body, ensure_ascii=False).encode(), headers=h)
     try:
-        with urllib.request.urlopen(req, timeout=timeout) as r:
+        with transport.urlopen(req, timeout=timeout) as r:
             return r.headers, r.read().decode(), None
     except urllib.error.HTTPError as e:
         return None, None, http_error(e)
-    except (urllib.error.URLError, TimeoutError) as e:
+    except transport.PartialReadError as e:
+        return e.headers, e.partial.decode(errors="replace"), f"响应中途断开：{e}"
+    except (urllib.error.URLError, TimeoutError, OSError, UnicodeError, ValueError) as e:
         return None, None, f"请求失败：{e}"
 
 
@@ -63,9 +69,13 @@ def http_error(e):
     code, msg = e.headers.get("X-Api-Status-Code"), e.headers.get("X-Api-Message")
     try:
         d = json.loads(raw)
+        if not isinstance(d, dict):
+            raise ValueError("error response 必须是对象")
         d = d.get("header") or d  # 合成接口的错误包在 header 里
+        if not isinstance(d, dict):
+            raise ValueError("error header 必须是对象")
         code, msg = d.get("code", code), d.get("message", msg)
-    except json.JSONDecodeError:
+    except (ValueError, TypeError):
         msg = msg or raw[:500]
     return f"HTTP {e.code} {code or ''}: {msg}（logid {logid}）"
 
@@ -79,6 +89,8 @@ def json_stream(raw):
         if i >= n:
             break
         obj, i = dec.raw_decode(raw, i)
+        if not isinstance(obj, dict):
+            raise InputError("服务返回的 JSON 必须是对象")
         yield obj
 
 
@@ -142,22 +154,45 @@ def synth_chunk(text, o, resource, fmt):
     """返回 (音频字节, 句子列表, 计费字数)。"""
     headers = {"X-Control-Require-Usage-Tokens-Return": "*"}
     _, raw, err = post("/api/v3/tts/unidirectional", build_tts_body(text, o, fmt), resource, headers, 300)
-    if err:
+    if err and not raw:
         raise InputError(err)
     audio, sentences, words = bytearray(), [], 0
-    for d in json_stream(raw):
-        code = d.get("code", 0)
-        if code not in OK_CODES:
-            raise InputError(f"{code}: {d.get('message')}")
-        if d.get("data"):
-            audio += base64.b64decode(d["data"])
-        s = d.get("sentence") or {}
-        if s.get("words"):
-            sentences.append({"text": s.get("text") or "".join(w["word"] for w in s["words"]),
-                              "start": s["words"][0]["startTime"], "end": s["words"][-1]["endTime"]})
-        words += (d.get("usage") or {}).get("text_words", 0)
-    if not audio:
-        raise InputError("没有返回音频")
+    try:
+        completed = False
+        for d in json_stream(raw):
+            completed = completed or d.get("code") == 20000000
+            code = d.get("code", 0)
+            if code not in OK_CODES:
+                raise InputError(f"{code}: {d.get('message')}")
+            if d.get("data"):
+                audio += base64.b64decode(d["data"], validate=True)
+            s = d.get("sentence") or {}
+            if not isinstance(s, dict):
+                raise InputError("sentence 必须是对象")
+            if s.get("words"):
+                sentences.append({"text": s.get("text") or "".join(w["word"] for w in s["words"]),
+                                  "start": s["words"][0]["startTime"], "end": s["words"][-1]["endTime"]})
+            usage = d.get("usage") or {}
+            if not isinstance(usage, dict):
+                raise InputError("usage 必须是对象")
+            billed = usage.get("text_words", 0)
+            if isinstance(billed, bool) or not isinstance(billed, (int, float)) or not math.isfinite(billed) or billed < 0:
+                raise InputError("usage.text_words 必须为非负有限数")
+            words += billed
+        if not audio:
+            raise InputError("没有返回音频")
+        if err:
+            raise InputError(err)
+        if not completed:
+            raise InputError("TTS 响应缺少结束标记，可能已中断")
+    except Exception as exc:
+        if audio:
+            partial = InputError(str(exc) or type(exc).__name__)
+            partial.audio = bytes(audio)
+            partial.sentences = sentences
+            partial.usage = words
+            raise partial from exc
+        raise
     return bytes(audio), sentences, words
 
 
@@ -166,57 +201,193 @@ def srt_time(t):
     return f"{ms // 3600000:02d}:{ms // 60000 % 60:02d}:{ms // 1000 % 60:02d},{ms % 1000:03d}"
 
 
+def _atomic_write(path, writer):
+    """Publish only complete files; clean up temporary files on any failure."""
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = None
+    try:
+        with tempfile.NamedTemporaryFile(mode="wb", prefix=f".{path.name}.", suffix=".tmp",
+                                         dir=path.parent, delete=False) as handle:
+            temporary = Path(handle.name)
+            writer(handle)
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(temporary, path)
+        directory_fd = os.open(path.parent, os.O_RDONLY)
+        try:
+            os.fsync(directory_fd)
+        finally:
+            os.close(directory_fd)
+    finally:
+        if temporary is not None:
+            temporary.unlink(missing_ok=True)
+
+
+def _atomic_bytes(path, data):
+    _atomic_write(path, lambda handle: handle.write(data))
+
+
+def _atomic_json(path, value):
+    _atomic_bytes(path, json.dumps(value, ensure_ascii=False, indent=2).encode("utf-8"))
+
+
+def _write_audio(path, data, fmt, sample_rate):
+    if fmt != "wav":
+        _atomic_bytes(path, data)
+        return
+    if len(data) % 2:
+        raise InputError("服务返回的 PCM 字节数不是 16bit 采样的整数倍")
+    def write(handle):
+        with wave.open(handle, "wb") as output:
+            output.setnchannels(1)
+            output.setsampwidth(2)
+            output.setframerate(sample_rate)
+            output.writeframes(data)
+    _atomic_write(path, write)
+
+
+def _merge_audio(paths, destination, fmt, sample_rate):
+    def write(handle):
+        if fmt == "wav":
+            with wave.open(handle, "wb") as output:
+                output.setnchannels(1)
+                output.setsampwidth(2)
+                output.setframerate(sample_rate)
+                for path in paths:
+                    with wave.open(str(path), "rb") as source:
+                        output.writeframes(source.readframes(source.getnframes()))
+        else:
+            for path in paths:
+                with path.open("rb") as source:
+                    while block := source.read(1024 * 1024):
+                        handle.write(block)
+    _atomic_write(destination, write)
+
+
+def _validate_audio_options(o, optional_rate=False):
+    if not isinstance(o.get("subtitles"), bool):
+        raise InputError("subtitles 必须为 boolean")
+    rate = o.get("sample_rate")
+    if optional_rate and rate is None:
+        return
+    if isinstance(rate, bool) or not isinstance(rate, int) or not 8000 <= rate <= 192000:
+        raise InputError("sample_rate 必须为 8000..192000 的整数")
+    if optional_rate:
+        supported = {"wav": {8000, 16000, 24000, 32000, 40000, 44100, 48000},
+                     "pcm": {8000, 16000, 24000, 32000, 40000, 44100, 48000},
+                     "mp3": {8000, 16000, 24000, 32000, 44100, 48000},
+                     "ogg_opus": {48000}}
+        if rate not in supported.get(o.get("format"), set()):
+            raise InputError("音频生成 sample_rate 不符合该 format 的官方支持范围")
+    if not optional_rate and rate not in {8000, 16000, 22050, 24000, 32000, 44100, 48000}:
+        raise InputError("不支持该 TTS sample_rate")
+
+
 def write_srt(sentences, path):
-    path.write_text("".join(f"{i}\n{srt_time(s['start'])} --> {srt_time(s['end'])}\n{s['text'].strip()}\n\n"
-                            for i, s in enumerate(sentences, 1)), encoding="utf-8")
+    text = "".join(f"{i}\n{srt_time(s['start'])} --> {srt_time(s['end'])}\n{s['text'].strip()}\n\n"
+                   for i, s in enumerate(sentences, 1))
+    _atomic_bytes(path, text.encode("utf-8"))
 
 
 def text_to_speech(o, out_dir):
-    resource = o["resource_id"] or tts_resource(o["voice"])
-    result = {"ok": False, "resource_id": resource, "files": [], "chunks": 0, "usage": None,
-              "subtitles": None, "error": None}
-    text = (o["text"] or "").strip()
-    fmt = o["format"]
-    if not text:
-        result["error"] = "缺少 text"
-        return result
-    if fmt not in ("mp3", "wav"):
-        result["error"] = "format 只能是 mp3 或 wav"
-        return result
-    chunks = split_text(text)
-    if o["subtitles"] and fmt == "mp3" and len(chunks) > 1:
-        result["error"] = f"文本需要分 {len(chunks)} 段合成，分段拼接时只有 wav 能算准字幕时间，请设 format=\"wav\""
-        return result
-
-    audio, sentences, words, offset = bytearray(), [], 0, 0.0
-    for i, c in enumerate(chunks):
-        try:
-            data, sents, n = synth_chunk(c, o, resource, "pcm" if fmt == "wav" else "mp3")
-        except InputError as e:
-            result["error"] = str(e) if len(chunks) == 1 else f"第 {i + 1}/{len(chunks)} 段合成失败：{e}"
-            return result
-        audio += data
-        sentences += [{**s, "start": s["start"] + offset, "end": s["end"] + offset} for s in sents]
-        words += n
-        if fmt == "wav":
-            offset += len(data) / (2 * o["sample_rate"])  # 16bit 单声道
-
-    out_dir.mkdir(parents=True, exist_ok=True)
-    path = out_dir / f"speech.{fmt}"
-    if fmt == "wav":
-        with wave.open(str(path), "wb") as w:
-            w.setnchannels(1)
-            w.setsampwidth(2)
-            w.setframerate(o["sample_rate"])
-            w.writeframes(bytes(audio))
-    else:
-        path.write_bytes(bytes(audio))
-    result["files"].append(str(path))
-    if o["subtitles"]:
-        write_srt(sentences, out_dir / "speech.srt")
-        result["files"].append(str(out_dir / "speech.srt"))
-        result["subtitles"] = sentences
-    result.update(ok=True, chunks=len(chunks), usage={"text_words": words})
+    result = {"ok": False, "resource_id": None, "files": [], "chunk_files": [], "chunks": 0,
+              "usage": None, "subtitles": None, "error": None, "partial": False, "manifest": None}
+    manifest = None
+    manifest_path = None
+    try:
+        _validate_audio_options(o)
+        resource = o["resource_id"] or tts_resource(o["voice"])
+        result["resource_id"] = resource
+        text = (o["text"] or "").strip()
+        fmt = o["format"]
+        if not text:
+            raise InputError("缺少 text")
+        if fmt not in ("mp3", "wav"):
+            raise InputError("format 只能是 mp3 或 wav")
+        chunks = split_text(text)
+        if not chunks:
+            raise InputError("text 没有可合成内容")
+        if o["subtitles"] and fmt == "mp3" and len(chunks) > 1:
+            raise InputError(f"文本需要分 {len(chunks)} 段合成，分段拼接时只有 wav 能算准字幕时间，请设 format=\"wav\"")
+        out_dir = Path(out_dir)
+        prefix = f"speech-{uuid.uuid4().hex}"
+        manifest_path = out_dir / f"{prefix}.json"
+        manifest = {"status": "running", "request_options": {key: value for key, value in o.items() if key != "text"},
+                    "resource_id": resource, "format": fmt,
+                    "sample_rate": o["sample_rate"], "completed_chunks": [], "remaining_input": chunks,
+                    "usage": {"text_words": 0}, "error": None}
+        _atomic_json(manifest_path, manifest)  # Verify delivery storage before a paid call.
+        result["manifest"] = str(manifest_path)
+        sentences, offset = [], 0.0
+        paths = []
+        current = None
+        for index, chunk in enumerate(chunks):
+            current = {"index": index + 1, "text": chunk, "status": "submitted_outcome_unknown"}
+            manifest["incomplete_chunk"] = {**current, "automatic_retry_safe": False}
+            _atomic_json(manifest_path, manifest)  # Persist ambiguity BEFORE submitting this paid chunk.
+            data, sents, billed = synth_chunk(chunk, o, resource, "pcm" if fmt == "wav" else "mp3")
+            current.update(status="synthesized_not_saved", usage={"text_words": billed})
+            manifest["usage"]["text_words"] += billed
+            result["usage"] = dict(manifest["usage"])
+            result["partial"] = True
+            path = out_dir / f"{prefix}-chunk-{index + 1:04d}.{fmt}"
+            _write_audio(path, data, fmt, o["sample_rate"])
+            paths.append(path)
+            result["chunk_files"].append(str(path))
+            result["files"].append(str(path))
+            result["chunks"] += 1
+            shifted = [{**s, "start": s["start"] + offset, "end": s["end"] + offset} for s in sents]
+            sentences.extend(shifted)
+            if fmt == "wav":
+                offset += len(data) / (2 * o["sample_rate"])
+            manifest["completed_chunks"].append({"index": index + 1, "text": chunk, "file": str(path),
+                                                  "audio_bytes": len(data), "usage": {"text_words": billed},
+                                                  "subtitles": shifted})
+            manifest["remaining_input"] = chunks[index + 1:]
+            manifest.pop("incomplete_chunk", None)
+            _atomic_json(manifest_path, manifest)
+            current = None
+        if len(paths) == 1:
+            final_path = paths[0]
+        else:
+            final_path = out_dir / f"{prefix}.{fmt}"
+            _merge_audio(paths, final_path, fmt, o["sample_rate"])
+        final_files = [str(final_path)]
+        result["files"] = list(final_files)
+        if o["subtitles"]:
+            subtitle_path = out_dir / f"{prefix}.srt"
+            write_srt(sentences, subtitle_path)
+            final_files.append(str(subtitle_path))
+            result["files"] = list(final_files)
+            result["subtitles"] = sentences
+        manifest.update(status="complete", files=final_files)
+        _atomic_json(manifest_path, manifest)
+        result.update(ok=True, partial=False, files=final_files)
+    except Exception as exc:
+        result["error"] = str(exc) or type(exc).__name__
+        if manifest is not None and result["manifest"]:
+            if current is not None:
+                manifest["incomplete_chunk"] = current
+                manifest["incomplete_chunk"]["automatic_retry_safe"] = False
+            if getattr(exc, "audio", None):
+                result["partial"] = True
+                manifest["usage"]["text_words"] += exc.usage
+                result["usage"] = dict(manifest["usage"])
+                incomplete_path = out_dir / f"{prefix}-incomplete-{current['index']:04d}.{fmt}"
+                try:
+                    _write_audio(incomplete_path, exc.audio, fmt, o["sample_rate"])
+                    result["files"].append(str(incomplete_path))
+                    manifest["incomplete_chunk"].update(status="partial_audio", file=str(incomplete_path),
+                                                         audio_bytes=len(exc.audio), usage={"text_words": exc.usage},
+                                                         subtitles=exc.sentences)
+                except Exception as storage_error:
+                    result["artifact_error"] = str(storage_error)
+            manifest.update(status="partial" if result["partial"] else "failed", error=result["error"])
+            try:
+                _atomic_json(manifest_path, manifest)
+            except Exception as storage_error:
+                result["manifest_error"] = str(storage_error)
     return result
 
 
@@ -266,7 +437,15 @@ def speech_to_text(o):
         result["error"] = err
         return result
     status = headers.get("X-Api-Status-Code", "20000000")
-    body = json.loads(raw) if raw.strip() else {}
+    try:
+        body = json.loads(raw)
+        if not isinstance(body, dict):
+            raise InputError("服务返回的 JSON 必须是对象")
+        if not isinstance(body.get("audio_info") or {}, dict) or not isinstance(body.get("result") or {}, dict):
+            raise InputError("audio_info / result 必须是对象")
+    except (ValueError, TypeError) as exc:
+        result["error"] = f"无效识别响应：{exc}"
+        return result
     result["duration_ms"] = (body.get("audio_info") or {}).get("duration")
     if status == "20000003":  # 静音音频
         result["ok"] = True
@@ -275,11 +454,16 @@ def speech_to_text(o):
         result["error"] = f"{status}: {headers.get('X-Api-Message')}（logid {headers.get('X-Tt-Logid', '')}）"
         return result
     r = body.get("result") or {}
-    result.update(ok=True, text=r.get("text") or "")
-    if o["utterances"]:
-        result["utterances"] = [{"start_ms": u.get("start_time"), "end_ms": u.get("end_time"), "text": u.get("text"),
-                                 "speaker": (u.get("additions") or {}).get("speaker")}
-                                for u in r.get("utterances") or []]
+    try:
+        if not isinstance(r.get("text", ""), str):
+            raise InputError("result.text 必须为字符串")
+        if o["utterances"]:
+            result["utterances"] = [{"start_ms": u.get("start_time"), "end_ms": u.get("end_time"), "text": u.get("text"),
+                                     "speaker": (u.get("additions") or {}).get("speaker")}
+                                    for u in r.get("utterances") or []]
+        result.update(ok=True, text=r.get("text") or "")
+    except (ValueError, TypeError, AttributeError) as exc:
+        result["error"] = f"无效识别响应：{exc}"
     return result
 
 
@@ -306,6 +490,11 @@ def build_audio_refs(o):
 def generate_audio(o, out_dir):
     result = {"ok": False, "model": o["model"], "files": [], "url": None, "duration": None, "subtitle": None,
               "error": None}
+    try:
+        _validate_audio_options(o, optional_rate=True)
+    except InputError as exc:
+        result["error"] = str(exc)
+        return result
     prompt = (o["prompt"] or "").strip()
     fmt = o["format"]
     err = None
@@ -317,8 +506,8 @@ def generate_audio(o, out_dir):
         err = "最多 3 段参考音频"
     elif o["reference_image"] and (o["reference_audios"] or o["speaker"]):
         err = "参考图片不能和参考音频或 speaker 同时使用"
-    elif fmt not in ("mp3", "wav", "ogg_opus"):
-        err = "format 只能是 mp3、wav 或 ogg_opus"
+    elif fmt not in ("mp3", "wav", "pcm", "ogg_opus"):
+        err = "format 只能是 mp3、wav、pcm 或 ogg_opus"
     if err:
         result["error"] = err
         return result
@@ -340,16 +529,21 @@ def generate_audio(o, out_dir):
     if err:
         result["error"] = err
         return result
-    d = json.loads(raw)
-    if d.get("code", 0) not in OK_CODES:
-        result["error"] = f"{d['code']}: {d.get('message')}"
-        return result
-    if not d.get("audio"):
-        result["error"] = "没有返回音频"
-        return result
-    out_dir.mkdir(parents=True, exist_ok=True)
-    path = out_dir / f"audio.{'ogg' if fmt == 'ogg_opus' else fmt}"
-    path.write_bytes(base64.b64decode(d["audio"]))
-    result.update(ok=True, files=[str(path)], url=d.get("url"), subtitle=d.get("subtitle"),
-                  duration=d.get("original_duration", d.get("duration")))
+    try:
+        d = json.loads(raw)
+        if not isinstance(d, dict):
+            raise InputError("服务返回的 JSON 必须是对象")
+        if d.get("code", 0) not in OK_CODES:
+            raise InputError(f"{d['code']}: {d.get('message')}")
+        if not d.get("audio"):
+            raise InputError("没有返回音频")
+        data = base64.b64decode(d["audio"], validate=True)
+        if not data:
+            raise InputError("返回音频为空")
+        path = Path(out_dir) / f"audio-{uuid.uuid4().hex}.{'ogg' if fmt == 'ogg_opus' else fmt}"
+        _atomic_bytes(path, data)
+        result.update(ok=True, files=[str(path)], url=d.get("url"), subtitle=d.get("subtitle"),
+                      duration=d.get("original_duration", d.get("duration")))
+    except Exception as exc:
+        result["error"] = str(exc) or type(exc).__name__
     return result

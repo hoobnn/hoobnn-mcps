@@ -1,0 +1,697 @@
+[
+  {
+    "id": "doubao-apikeyusage",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/APIKeyUsage?lang=zh",
+    "tools": [
+      "list_speech_capabilities"
+    ],
+    "kind": "guide",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=APIKeyUsage"
+  },
+  {
+    "id": "doubao-apiinterfacedocumentation",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/APIinterfacedocumentation?lang=zh",
+    "tools": [
+      "legacy_speech_request"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=APIinterfacedocumentation"
+  },
+  {
+    "id": "doubao-activateservice-activateservice",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/ActivateService-ActivateService?lang=zh",
+    "tools": [
+      "speech_console"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=ActivateService-ActivateService"
+  },
+  {
+    "id": "doubao-aliasresourcepack-updatesoundresourcealiases",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/AliasResourcePack-Updatesoundresourcealiases?lang=zh",
+    "tools": [
+      "speech_console"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=AliasResourcePack-Updatesoundresourcealiases"
+  },
+  {
+    "id": "doubao-audiofilerecognitionstandardedition",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/AudioFileRecognitionStandardEdition?lang=zh",
+    "tools": [
+      "legacy_speech_request"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=AudioFileRecognitionStandardEdition"
+  },
+  {
+    "id": "doubao-audiovideosubtitlegeneration",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/Audiovideosubtitlegeneration?lang=zh",
+    "tools": [
+      "legacy_speech_request"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=Audiovideosubtitlegeneration"
+  },
+  {
+    "id": "doubao-automaticsubtitletyping",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/Automaticsubtitletyping?lang=zh",
+    "tools": [
+      "legacy_speech_request"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=Automaticsubtitletyping"
+  },
+  {
+    "id": "doubao-batchlistmegattstrainstatus-pagequeryspeakeridstatus",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/BatchListMegaTTSTrainStatus-PageQuerySpeakerIDStatus?lang=zh",
+    "tools": [
+      "speech_console"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=BatchListMegaTTSTrainStatus-PageQuerySpeakerIDStatus"
+  },
+  {
+    "id": "doubao-callvolumequeryinterfacedescription",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/Callvolumequeryinterfacedescription?lang=zh",
+    "tools": [
+      "speech_console"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=Callvolumequeryinterfacedescription"
+  },
+  {
+    "id": "doubao-createapikey-createapikey",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/CreateAPIKey-CreateAPIKey?lang=zh",
+    "tools": [
+      "speech_console"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=CreateAPIKey-CreateAPIKey"
+  },
+  {
+    "id": "doubao-deleteapikey-deleteapikey",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/DeleteAPIKey-DeleteAPIKey?lang=zh",
+    "tools": [
+      "speech_console"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=DeleteAPIKey-DeleteAPIKey"
+  },
+  {
+    "id": "doubao-doubaovoiceminutes-apiaccessdocumentation",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/DoubaoVoiceMinutes-APIAccessDocumentation?lang=zh",
+    "tools": [
+      "submit_minutes",
+      "query_minutes"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=DoubaoVoiceMinutes-APIAccessDocumentation"
+  },
+  {
+    "id": "doubao-formalizeresourcepacks-conversioneffectpackage",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/FormalizeResourcePacks-Conversioneffectpackage?lang=zh",
+    "tools": [
+      "speech_console"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=FormalizeResourcePacks-Conversioneffectpackage"
+  },
+  {
+    "id": "doubao-httpchunkedsseunidirectionalstreaming-v3",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/HTTPChunkedSSEUnidirectionalStreaming-V3?lang=zh",
+    "tools": [
+      "text_to_speech",
+      "speech_http_request"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=HTTPChunkedSSEUnidirectionalStreaming-V3"
+  },
+  {
+    "id": "doubao-httpinterfaceone-timecomposition-non-streaming",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/HTTPinterfaceone-timecomposition-non-streaming?lang=zh",
+    "tools": [
+      "legacy_speech_request"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=HTTPinterfaceone-timecomposition-non-streaming"
+  },
+  {
+    "id": "doubao-httpone-timecompositenon-streaminginterface-v1notrecommended",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/HTTPone-timecompositenon-streaminginterface-V1notrecommended?lang=zh",
+    "tools": [
+      "legacy_speech_request"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=HTTPone-timecompositenon-streaminginterface-V1notrecommended"
+  },
+  {
+    "id": "doubao-hotwordmanagementapiv10",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/HotWordManagementAPIv10?lang=zh",
+    "tools": [
+      "manage_word_table",
+      "speech_console"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=HotWordManagementAPIv10"
+  },
+  {
+    "id": "doubao-largemodelrecordingfileliterecognitionapi",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/LargemodelrecordingfileLiterecognitionAPI?lang=zh",
+    "tools": [
+      "speech_to_text",
+      "speech_http_request"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=LargemodelrecordingfileLiterecognitionAPI"
+  },
+  {
+    "id": "doubao-largemodelrecordingfilerecognitionidleversion",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/Largemodelrecordingfilerecognitionidleversion?lang=zh",
+    "tools": [
+      "submit_transcription",
+      "query_transcription"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=Largemodelrecordingfilerecognitionidleversion"
+  },
+  {
+    "id": "doubao-largemodelrecordingfilerecognitionstandardversionapi",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/LargemodelrecordingfilerecognitionstandardversionAPI?lang=zh",
+    "tools": [
+      "submit_transcription",
+      "query_transcription"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=LargemodelrecordingfilerecognitionstandardversionAPI"
+  },
+  {
+    "id": "doubao-largemodelstreamingautomaticspeechrecognitionapi",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/LargemodelstreamingautomaticspeechrecognitionAPI?lang=zh",
+    "tools": [
+      "streaming_speech_to_text"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=LargemodelstreamingautomaticspeechrecognitionAPI"
+  },
+  {
+    "id": "doubao-listapikeys-pullapikeylist",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/ListAPIKeys-PullAPIKeyList?lang=zh",
+    "tools": [
+      "speech_console"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=ListAPIKeys-PullAPIKeyList"
+  },
+  {
+    "id": "doubao-listbigmodelttstimbres-largemodelsoundlist",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/ListBigModelTTSTimbres-LargeModelSoundList?lang=zh",
+    "tools": [
+      "speech_console"
+    ],
+    "kind": "models",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=ListBigModelTTSTimbres-LargeModelSoundList"
+  },
+  {
+    "id": "doubao-listmegattsbyorderid-querypurchasedsoundsbyorderid",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/ListMegaTTSByOrderID-QuerypurchasedsoundsbyorderID?lang=zh",
+    "tools": [
+      "speech_console"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=ListMegaTTSByOrderID-QuerypurchasedsoundsbyorderID"
+  },
+  {
+    "id": "doubao-listmegattstrainstatus-queryspeakeridstatusinformation",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/ListMegaTTSTrainStatus-QuerySpeakerIDstatusinformation?lang=zh",
+    "tools": [
+      "speech_console"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=ListMegaTTSTrainStatus-QuerySpeakerIDstatusinformation"
+  },
+  {
+    "id": "doubao-listspeakers-largemodelsoundlistnewinterface",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/ListSpeakers-LargeModelSoundListNewInterface?lang=zh",
+    "tools": [
+      "speech_console"
+    ],
+    "kind": "models",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=ListSpeakers-LargeModelSoundListNewInterface"
+  },
+  {
+    "id": "doubao-listtagsforresources-queryalllabelsattachedtoaresource",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/ListTagsForResources-Queryalllabelsattachedtoaresource?lang=zh",
+    "tools": [
+      "speech_console"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=ListTagsForResources-Queryalllabelsattachedtoaresource"
+  },
+  {
+    "id": "doubao-machinetranslationlargemodel-apiaccessdocumentation",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/MachineTranslationLargeModel-APIAccessDocumentation?lang=zh",
+    "tools": [
+      "translate_text"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=MachineTranslationLargeModel-APIAccessDocumentation"
+  },
+  {
+    "id": "doubao-orderaccessresourcepacks-soundorder",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/OrderAccessResourcePacks-SoundOrder?lang=zh",
+    "tools": [
+      "speech_console"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=OrderAccessResourcePacks-SoundOrder"
+  },
+  {
+    "id": "doubao-orderresourcepacks-buyeffectspackage",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/OrderResourcePacks-Buyeffectspackage?lang=zh",
+    "tools": [
+      "speech_console"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=OrderResourcePacks-Buyeffectspackage"
+  },
+  {
+    "id": "doubao-pauseservice-suspendservice",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/PauseService-SuspendService?lang=zh",
+    "tools": [
+      "speech_console"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=PauseService-SuspendService"
+  },
+  {
+    "id": "doubao-podcastapi-websocket-v3protocol",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/PodcastAPI-websocket-v3protocol?lang=zh",
+    "tools": [
+      "generate_podcast"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=PodcastAPI-websocket-v3protocol"
+  },
+  {
+    "id": "doubao-qpsconcurrentqueryinterfacedescription",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/QPSConcurrentQueryInterfaceDescription?lang=zh",
+    "tools": [
+      "speech_console"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=QPSConcurrentQueryInterfaceDescription"
+  },
+  {
+    "id": "doubao-quickstartnewconsole",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/QuickStartNewConsole?lang=zh",
+    "tools": [
+      "list_speech_capabilities"
+    ],
+    "kind": "guide",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=QuickStartNewConsole"
+  },
+  {
+    "id": "doubao-quotamonitoring-quotaqueryinterface",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/QuotaMonitoring-Quotaqueryinterface?lang=zh",
+    "tools": [
+      "speech_console"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=QuotaMonitoring-Quotaqueryinterface"
+  },
+  {
+    "id": "doubao-renewaccessresourcepacks-tonerenewal",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/RenewAccessResourcePacks-ToneRenewal?lang=zh",
+    "tools": [
+      "speech_console"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=RenewAccessResourcePacks-ToneRenewal"
+  },
+  {
+    "id": "doubao-replacementwordapiv11",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/ReplacementWordAPIv11?lang=zh",
+    "tools": [
+      "manage_word_table",
+      "speech_console"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=ReplacementWordAPIv11"
+  },
+  {
+    "id": "doubao-resourcepacksstatus-effectpackagestatusinformation",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/ResourcePacksStatus-effectpackagestatusinformation?lang=zh",
+    "tools": [
+      "speech_console"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=ResourcePacksStatus-effectpackagestatusinformation"
+  },
+  {
+    "id": "doubao-resultquery",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/Resultquery?lang=zh",
+    "tools": [
+      "query_long_text_speech"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=Resultquery"
+  },
+  {
+    "id": "doubao-resumeservice-re-enabletheservice",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/ResumeService-Re-enabletheservice?lang=zh",
+    "tools": [
+      "speech_console"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=ResumeService-Re-enabletheservice"
+  },
+  {
+    "id": "doubao-servicestatus-servicestatus",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/ServiceStatus-ServiceStatus?lang=zh",
+    "tools": [
+      "speech_console"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=ServiceStatus-ServiceStatus"
+  },
+  {
+    "id": "doubao-simultaneousinterpretation20apiaccessdocumentation",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/SimultaneousInterpretation20APIAccessDocumentation?lang=zh",
+    "tools": [
+      "interpret_audio"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=SimultaneousInterpretation20APIAccessDocumentation"
+  },
+  {
+    "id": "doubao-sounddesignapi",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/SoundDesignAPI?lang=zh",
+    "tools": [
+      "design_voice"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=SoundDesignAPI"
+  },
+  {
+    "id": "doubao-soundreplicationorderingandusageguide",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/Soundreplicationorderingandusageguide?lang=zh",
+    "tools": [
+      "clone_voice",
+      "query_voice",
+      "upgrade_voice",
+      "design_voice"
+    ],
+    "kind": "guide",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=Soundreplicationorderingandusageguide"
+  },
+  {
+    "id": "doubao-tagresources-attachtagstoresources",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/TagResources-Attachtagstoresources?lang=zh",
+    "tools": [
+      "speech_console"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=TagResources-Attachtagstoresources"
+  },
+  {
+    "id": "doubao-tasksubmission",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/Tasksubmission?lang=zh",
+    "tools": [
+      "submit_long_text_speech"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=Tasksubmission"
+  },
+  {
+    "id": "doubao-terminateservice-deactivateservice",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/TerminateService-DeactivateService?lang=zh",
+    "tools": [
+      "speech_console"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=TerminateService-DeactivateService"
+  },
+  {
+    "id": "doubao-termwords",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/Termwords?lang=zh",
+    "tools": [
+      "translate_text",
+      "interpret_audio"
+    ],
+    "kind": "guide",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=Termwords"
+  },
+  {
+    "id": "doubao-tonelist-1",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/Tonelist-1?lang=zh",
+    "tools": [
+      "text_to_speech",
+      "websocket_text_to_speech",
+      "open_realtime_session"
+    ],
+    "kind": "models",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=Tonelist-1"
+  },
+  {
+    "id": "doubao-untagresources-removetagsfromresources",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/UntagResources-Removetagsfromresources?lang=zh",
+    "tools": [
+      "speech_console"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=UntagResources-Removetagsfromresources"
+  },
+  {
+    "id": "doubao-updateapikey-updateapikey",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/UpdateAPIKey-UpdateAPIKey?lang=zh",
+    "tools": [
+      "speech_console"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=UpdateAPIKey-UpdateAPIKey"
+  },
+  {
+    "id": "doubao-usagemonitoring-callqueryinterface",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/UsageMonitoring-CallQueryInterface?lang=zh",
+    "tools": [
+      "speech_console"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=UsageMonitoring-CallQueryInterface"
+  },
+  {
+    "id": "doubao-websocketbidirectionalstreaming-v3",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/WebSocketBidirectionalStreaming-V3?lang=zh",
+    "tools": [
+      "websocket_text_to_speech"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=WebSocketBidirectionalStreaming-V3"
+  },
+  {
+    "id": "doubao-websocketunidirectionalstreaming-v3",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/WebSocketUnidirectionalStreaming-V3?lang=zh",
+    "tools": [
+      "websocket_text_to_speech"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=WebSocketUnidirectionalStreaming-V3"
+  },
+  {
+    "id": "doubao-access-mustread",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/access-mustread?lang=zh",
+    "tools": [
+      "open_realtime_session",
+      "send_realtime_event",
+      "receive_realtime_events",
+      "close_realtime_session"
+    ],
+    "kind": "guide",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=access-mustread"
+  },
+  {
+    "id": "doubao-audio-generation-http",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/audio-generation-http?lang=zh",
+    "tools": [
+      "generate_audio",
+      "speech_http_request"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=audio-generation-http"
+  },
+  {
+    "id": "doubao-audio1-5marketingplan",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/audio1-5marketingplan?lang=zh",
+    "tools": [
+      "generate_audio"
+    ],
+    "kind": "guide",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=audio1-5marketingplan"
+  },
+  {
+    "id": "doubao-bidirectional-streaming-automatic-speech-recognition-websocket",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/bidirectional-streaming-automatic-speech-recognition-websocket?lang=zh",
+    "tools": [
+      "streaming_speech_to_text"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=bidirectional-streaming-automatic-speech-recognition-websocket"
+  },
+  {
+    "id": "doubao-bidirectional-streaming-text-to-speech-websocket",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/bidirectional-streaming-text-to-speech-websocket?lang=zh",
+    "tools": [
+      "websocket_text_to_speech"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=bidirectional-streaming-text-to-speech-websocket"
+  },
+  {
+    "id": "doubao-endtoend-realtime-voice-full-duplex-version",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/endtoend-realtime-voice-full-duplex-version?lang=zh",
+    "tools": [
+      "open_realtime_session",
+      "send_realtime_event",
+      "receive_realtime_events",
+      "close_realtime_session"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=endtoend-realtime-voice-full-duplex-version"
+  },
+  {
+    "id": "doubao-model-list",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/model-list?lang=zh",
+    "tools": [
+      "text_to_speech",
+      "generate_audio",
+      "streaming_speech_to_text",
+      "submit_transcription",
+      "open_realtime_session",
+      "list_speech_capabilities"
+    ],
+    "kind": "models",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=model-list"
+  },
+  {
+    "id": "doubao-old-version-console-authentication-reference-example",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/old-version-console-authentication-reference-example?lang=zh",
+    "tools": [
+      "list_speech_capabilities"
+    ],
+    "kind": "guide",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=old-version-console-authentication-reference-example"
+  },
+  {
+    "id": "doubao-recording-file-recognition-lite-http",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/recording-file-recognition-lite-http?lang=zh",
+    "tools": [
+      "speech_to_text",
+      "speech_http_request"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=recording-file-recognition-lite-http"
+  },
+  {
+    "id": "doubao-result-query-http-1",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/result-query-http-1?lang=zh",
+    "tools": [
+      "query_transcription"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=result-query-http-1"
+  },
+  {
+    "id": "doubao-result-query-http",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/result-query-http?lang=zh",
+    "tools": [
+      "query_transcription"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=result-query-http"
+  },
+  {
+    "id": "doubao-task-submission-http-1",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/task-submission-http-1?lang=zh",
+    "tools": [
+      "submit_transcription"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=task-submission-http-1"
+  },
+  {
+    "id": "doubao-task-submission-http",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/task-submission-http?lang=zh",
+    "tools": [
+      "submit_transcription"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=task-submission-http"
+  },
+  {
+    "id": "doubao-tone-query-http",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/tone-query-http?lang=zh",
+    "tools": [
+      "query_voice"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=tone-query-http"
+  },
+  {
+    "id": "doubao-tone-training-http",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/tone-training-http?lang=zh",
+    "tools": [
+      "clone_voice"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=tone-training-http"
+  },
+  {
+    "id": "doubao-tone-upgrade-http",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/tone-upgrade-http?lang=zh",
+    "tools": [
+      "upgrade_voice"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=tone-upgrade-http"
+  },
+  {
+    "id": "doubao-unidirectional-streaming-automatic-speech-recognition-websocket",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/unidirectional-streaming-automatic-speech-recognition-websocket?lang=zh",
+    "tools": [
+      "streaming_speech_to_text"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=unidirectional-streaming-automatic-speech-recognition-websocket"
+  },
+  {
+    "id": "doubao-unidirectional-streaming-text-to-speech-http",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/unidirectional-streaming-text-to-speech-http?lang=zh",
+    "tools": [
+      "text_to_speech",
+      "speech_http_request"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=unidirectional-streaming-text-to-speech-http"
+  },
+  {
+    "id": "doubao-unidirectional-streaming-text-to-speech-websocket",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/unidirectional-streaming-text-to-speech-websocket?lang=zh",
+    "tools": [
+      "websocket_text_to_speech"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=unidirectional-streaming-text-to-speech-websocket"
+  },
+  {
+    "id": "doubao-voice-document-index",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice",
+    "tools": [
+      "list_speech_capabilities",
+      "get_speech_usage_examples"
+    ],
+    "kind": "guide",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocList?LibraryCode=DoubaoVoice",
+    "fetch_kind": "volcengine_index"
+  }
+]

@@ -5,6 +5,7 @@ import json
 import os
 import struct
 import tempfile
+import time
 import unittest
 import wave
 from pathlib import Path
@@ -169,6 +170,30 @@ class StreamingTests(unittest.IsolatedAsyncioTestCase):
         self.assertFalse(result["ok"])
         self.assertIn("45000001", result["error"])
         self.assertEqual(result["messages"][0]["payload_msg"], {"message": "quota"})
+
+    async def test_slow_prepare_obeys_entire_deadline_without_connecting(self):
+        def slow_prepare(*args):
+            time.sleep(0.12)
+            return {}, b"\0\0", 2
+        started = time.monotonic()
+        with patch.object(asr, "prepare_audio", side_effect=slow_prepare), patch.object(asr, "websocket_connect") as connect:
+            result = await asr.streaming_recognize(str(self.path), timeout=0.02)
+        elapsed = time.monotonic() - started
+        self.assertFalse(result["ok"])
+        self.assertLess(elapsed, 0.10, f"slow preparation blocked cancellation for {elapsed:.3f}s")
+        connect.assert_not_called()
+
+    async def test_slow_decode_obeys_deadline_and_closes_connection(self):
+        def slow_decode(frame):
+            time.sleep(0.12)
+            return {"message_type": 9, "payload_msg": {}, "is_last_package": True}
+        socket = FakeSocket([response({})])
+        started = time.monotonic()
+        with patch.object(asr, "decode_frame", side_effect=slow_decode), patch.object(asr, "websocket_connect", return_value=socket):
+            result = await asr.streaming_recognize(str(self.path), timeout=0.02)
+        self.assertLess(time.monotonic() - started, 0.10)
+        self.assertFalse(result["ok"])
+        self.assertTrue(socket.closed)
 
     async def test_invalid_mode_and_pcm_no_network(self):
         with patch.object(asr, "websocket_connect") as connect:

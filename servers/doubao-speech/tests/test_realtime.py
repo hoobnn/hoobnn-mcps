@@ -59,6 +59,119 @@ class RealtimeTests(unittest.IsolatedAsyncioTestCase):
         self.assertTrue(result["ok"], result)
         return result["session_id"]
 
+    async def test_official_speech_opus_and_legacy_alias_normalized(self):
+        for encoding in ("speech_opus", "opus"):
+            request = {"audio": {"input": {"format": {"type": encoding, "rate": 16000}},
+                                 "output": {"voice": "v"}}}
+            created = realtime.create_event(request)
+            self.assertEqual(created["session"]["audio"]["input"]["format"]["type"], "speech_opus")
+            self.assertEqual(request["audio"]["input"]["format"]["type"], encoding)
+
+    async def test_invalid_close_timeout_keeps_session(self):
+        handle = await self.open()
+        for timeout in (0, -1, float("nan"), float("inf"), True, "10"):
+            result = await self.manager.close(handle, timeout=timeout)
+            self.assertFalse(result["ok"])
+            self.assertIn(handle, self.manager.sessions)
+            self.assertFalse(self.ws.closed)
+
+    async def test_idle_reaping_retains_error_then_expires(self):
+        handle = await self.open()
+        state = self.manager.sessions[handle]
+        state.last_used -= 301
+        await self.manager.reap()
+        self.assertTrue(self.ws.closed)
+        self.assertTrue(state.reader.done())
+        result = await self.manager.receive(handle)
+        self.assertFalse(result["ok"])
+        self.assertEqual(result["events"][0]["error"]["code"], "idle_timeout")
+        state.closed_at -= 61
+        await self.manager.reap()
+        self.assertNotIn(handle, self.manager.sessions)
+
+    async def test_cleanup_lifecycle_and_config_validation(self):
+        for value in (0, -1, float("nan"), True):
+            with self.assertRaises(ValueError):
+                realtime.RealtimeSessions(idle_ttl=value)
+        await self.manager.start()
+        task = self.manager.cleanup_task
+        await self.manager.start()
+        self.assertIs(self.manager.cleanup_task, task)
+        await self.manager.close_all()
+        self.assertTrue(task.done())
+        self.assertIsNone(self.manager.cleanup_task)
+
+    async def test_closed_sessions_do_not_exhaust_slots(self):
+        handle = await self.open()
+        self.ws.incoming.put_nowait(json.dumps({"type": "error", "error": {"message": "closed"}}))
+        await self.manager.receive(handle)
+        state = self.manager.sessions[handle]
+        for number in range(realtime.MAX_SESSIONS):
+            self.manager.sessions[f"closed-{number}"] = state
+        self.connect.return_value = FakeSocket()
+        self.assertTrue((await self.manager.open({"audio": {"output": {"voice": "v"}}}, self.directory.name))["ok"])
+
+    async def test_full_queue_keeps_terminal_control_and_reports_loss(self):
+        handle = await self.open()
+        state = self.manager.sessions[handle]
+        state.queue = asyncio.Queue(maxsize=2)
+        self.manager._enqueue(state, {"type": "response.done", "usage": {"tokens": 1}})
+        self.manager._enqueue(state, {"type": "response.output_text.delta", "delta": "old"})
+        self.ws.incoming.put_nowait(json.dumps({"type": "error", "error": {"message": "terminal"}}))
+        await asyncio.wait_for(state.closed.wait(), 0.2)
+        result = await self.manager.receive(handle)
+        self.assertEqual([event["type"] for event in result["events"]], ["response.done", "error"])
+        self.assertEqual(result["dropped_events"], 1)
+        self.assertTrue(self.ws.closed)
+
+    async def test_full_control_queue_drops_incoming_delta(self):
+        handle = await self.open()
+        state = self.manager.sessions[handle]
+        state.queue = asyncio.Queue(maxsize=2)
+        self.manager._enqueue(state, {"type": "response.done"})
+        self.manager._enqueue(state, {"type": "response.function_call_arguments.done"})
+        self.manager._enqueue(state, {"type": "response.output_text.delta", "delta": "discard"})
+        result = await self.manager.receive(handle)
+        self.assertEqual([event["type"] for event in result["events"]], ["response.done", "response.function_call_arguments.done"])
+        self.assertEqual(result["dropped_events"], 1)
+
+    async def test_audio_handle_reused_and_closed_on_disconnect(self):
+        handle = await self.open()
+        state = self.manager.sessions[handle]
+        chunk = {"type": "response.output_audio.delta", "delta": base64.b64encode(b"ab").decode()}
+        self.ws.incoming.put_nowait(json.dumps(chunk))
+        await asyncio.sleep(0)
+        writer = state.audio_handle
+        self.assertIsNotNone(writer)
+        self.ws.incoming.put_nowait(json.dumps(chunk))
+        await asyncio.sleep(0)
+        self.assertIs(state.audio_handle, writer)
+        self.assertEqual(Path(state.audio_path).read_bytes(), b"abab")
+        self.ws.incoming.put_nowait("malformed")
+        await asyncio.wait_for(state.closed.wait(), 0.2)
+        self.assertTrue(writer.closed)
+        self.assertIsNone(state.audio_handle)
+
+    async def test_pcm_send_total_deadline_includes_pacing(self):
+        handle = await self.open()
+        path = Path(self.directory.name) / "long.pcm"
+        path.write_bytes(b"\x00" * 64000)
+        result = await asyncio.wait_for(self.manager.send(handle, {"type": "input_audio_buffer.append"}, str(path), timeout=0.03), 0.2)
+        self.assertFalse(result["ok"])
+        self.assertLess(len(self.ws.sent), 10)
+        self.assertFalse(self.manager.sessions[handle].closed.is_set())
+
+    async def test_open_total_deadline_covers_connect_and_ack(self):
+        async def slow_connect(*args, **kwargs):
+            await asyncio.sleep(0.02)
+            return self.ws
+        self.connect.side_effect = slow_connect
+        self.ws.incoming.get_nowait()
+        result = await asyncio.wait_for(self.manager.open({"audio": {"output": {"voice": "v"}}}, self.directory.name, timeout=0.03), 0.2)
+        self.assertFalse(result["ok"])
+        self.assertEqual(self.manager.sessions, {})
+        self.assertTrue(self.ws.closed)
+
     async def test_defaults_extension_and_auth(self):
         session = {"audio": {"output": {"voice": "v"}}, "tools": [{"type": "function", "name": "f"}]}
         original = copy.deepcopy(session)

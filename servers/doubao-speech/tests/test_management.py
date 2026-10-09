@@ -85,7 +85,7 @@ class ManagementTests(unittest.TestCase):
         self.assertTrue(payload.endswith(f"--{boundary}--\r\n".encode()))
 
     def test_console_has_no_api_key_fallback(self):
-        with patch.dict(m.os.environ, {}, clear=True), patch.object(m.urllib.request, "urlopen") as network:
+        with patch.dict(m.os.environ, {}, clear=True), patch.object(m.transport, "urlopen") as network:
             result = m.console_action("ListAPIKeys", {"ProjectName": "default"})
         self.assertFalse(result["ok"])
         network.assert_not_called()
@@ -97,7 +97,7 @@ class ManagementTests(unittest.TestCase):
         response.read.return_value = b'{"status":"success","data":{"quota_monitoring":null}}'
         connection = MagicMock()
         connection.__enter__.return_value = response
-        with patch.dict(m.os.environ, {"VOLC_ACCESS_KEY_ID": "AK", "VOLC_SECRET_ACCESS_KEY": "SK"}), patch.object(m.urllib.request, "urlopen", return_value=connection) as network:
+        with patch.dict(m.os.environ, {"VOLC_ACCESS_KEY_ID": "AK", "VOLC_SECRET_ACCESS_KEY": "SK"}), patch.object(m.transport, "urlopen", return_value=connection) as network:
             result = m.console_action("QuotaMonitoring", {"AppID": "123", "ResourceID": "volc.service_type.10029", "Start": "2026-10-01", "End": "2026-10-01", "Mode": "5 minutely"}, "2021-08-30")
         request = network.call_args.args[0]
         self.assertEqual(request.get_method(), "GET")

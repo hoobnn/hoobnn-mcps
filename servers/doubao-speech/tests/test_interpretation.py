@@ -2,6 +2,9 @@
 
 import asyncio
 import tempfile
+import struct
+import time
+import threading
 import unittest
 import wave
 from pathlib import Path
@@ -75,6 +78,18 @@ class EncodingTests(unittest.TestCase):
         self.assertEqual(message.source_audio.binary_data, b"pcm")
         self.assertEqual(message.request_meta.SessionID, "my-session")
         self.assertEqual(payload["source_audio"]["binary_data"], b"pcm")
+
+    def test_current_official_proto_language_fields_from_independent_wire(self):
+        # Official ast_service.proto: event=2, speaker_id=9, detected_language=10,
+        # language_confidence=11. The fixture is hand-encoded, not produced by our bindings.
+        raw = b"\x10\x8c\x05\x4a\x01s\x52\x02zh\x59" + struct.pack("<d", .95)
+        decoded = ast.decode_response(raw)
+        self.assertEqual(decoded["event"], Type.SourceSubtitleEnd)
+        self.assertEqual(decoded["speaker_id"], "s")
+        self.assertEqual(decoded["detected_language"], "zh")
+        self.assertAlmostEqual(decoded["language_confidence"], .95)
+        encoded = ast.encode_request({"request": {"extra": "x", "enable_source_language_detect": True}})
+        self.assertIn(b"\x82\x05\x01x", encoded)  # ReqParams.extra field number 80.
 
     def test_unknown_protobuf_field_rejected(self):
         with self.assertRaises(ast.speech.InputError):
@@ -172,6 +187,59 @@ class SessionTests(unittest.IsolatedAsyncioTestCase):
         self.assertFalse(result["ok"])
         self.assertEqual([x.event for x in connection.sent], [100])
         self.assertTrue(connection.closed)
+
+    async def test_detected_language_is_preserved_in_source_segments(self):
+        original = response
+        def tagged_response(event, text="", data=b""):
+            raw = original(event, text, data)
+            if event != Type.SourceSubtitleEnd:
+                return raw
+            message = TranslateResponse.FromString(raw)
+            message.detected_language = "zh"
+            message.language_confidence = .95
+            message.speaker_id = "speaker"
+            return message.SerializeToString()
+        connection = FakeConnection()
+        with patch.object(ast.websockets, "connect", return_value=connection), patch(__name__ + ".response", side_effect=tagged_response):
+            result = await ast.interpret_audio(str(self.path), "zh", "en",
+                request={"request": {"enable_source_language_detect": True}})
+        self.assertTrue(result["ok"], result)
+        self.assertEqual(result["source_segments"][0]["detected_language"], "zh")
+        self.assertAlmostEqual(result["source_segments"][0]["language_confidence"], .95)
+        self.assertEqual(result["source_segments"][0]["speaker_id"], "speaker")
+
+    async def test_slow_pcm_read_can_be_cancelled_by_outer_deadline(self):
+        def slow_read(*args):
+            time.sleep(.12)
+            return b"\0\0"
+        started = time.monotonic()
+        with patch.object(ast, "read_pcm", side_effect=slow_read), patch.object(ast.websockets, "connect") as connect:
+            with self.assertRaises(asyncio.TimeoutError):
+                await asyncio.wait_for(ast.interpret_audio(str(self.path), "zh", "en"), .02)
+        self.assertLess(time.monotonic() - started, .10)
+        connect.assert_not_called()
+
+    async def test_audio_delivery_runs_in_worker_and_is_atomic(self):
+        loop_thread = threading.get_ident()
+        save = ast._save_audio
+        def worker(*args):
+            self.assertNotEqual(threading.get_ident(), loop_thread)
+            return save(*args)
+        connection = FakeConnection(with_audio=True)
+        with patch.object(ast.websockets, "connect", return_value=connection), patch.object(ast, "_save_audio", side_effect=worker):
+            result = await ast.interpret_audio(str(self.path), "zh", "en", "s2s", out_dir=Path(self.tmp.name))
+        self.assertTrue(result["ok"], result)
+        self.assertEqual(list(Path(self.tmp.name).glob("*.tmp")), [])
+
+    async def test_atomic_audio_publish_failure_does_not_report_success(self):
+        connection = FakeConnection(with_audio=True)
+        with patch.object(ast.websockets, "connect", return_value=connection), patch.object(
+                ast.speech.os, "replace", side_effect=OSError("disk full")):
+            result = await ast.interpret_audio(str(self.path), "zh", "en", "s2s", out_dir=Path(self.tmp.name))
+        self.assertFalse(result["ok"])
+        self.assertEqual(result["files"], [])
+        self.assertEqual(list(Path(self.tmp.name).glob("interpretation*")), [])
+        self.assertEqual(list(Path(self.tmp.name).glob("*.tmp")), [])
 
     async def test_invalid_input_never_connects(self):
         with patch.object(ast.websockets, "connect") as connect:

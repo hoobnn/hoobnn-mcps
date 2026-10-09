@@ -5,6 +5,7 @@ import atexit
 import base64
 import copy
 import json
+import math
 import os
 import time
 import uuid
@@ -36,8 +37,10 @@ def create_event(session, extension=None):
         raise InputError("缺少 session.audio.output.voice")
     if audio["input"]["format"].get("rate") != 16000:
         raise InputError("输入音频仅支持 16000 Hz")
-    if audio["input"]["format"].get("type") not in ("pcm", "opus"):
-        raise InputError("输入音频仅支持 pcm / opus")
+    if audio["input"]["format"].get("type") == "opus":
+        audio["input"]["format"]["type"] = "speech_opus"  # Preserve the older convenience alias.
+    if audio["input"]["format"].get("type") not in ("pcm", "speech_opus"):
+        raise InputError("输入音频仅支持 pcm / speech_opus")
     if output["format"].get("type") not in ("pcm", "pcm_s16le", "ogg_opus") or output["format"].get("rate") != 24000:
         raise InputError("输出音频须为 pcm / pcm_s16le / ogg_opus，24000 Hz")
     event = {"type": "session.create", "session": config, "event_id": str(uuid.uuid4())}
@@ -62,8 +65,12 @@ class _Session:
     last_used: float = field(default_factory=time.monotonic)
     audio_path: object = None
     audio_bytes: int = 0
+    audio_handle: object = None
+    closed_at: float | None = None
+    dropped_events: int = 0
     error: str = ""
     close_ack: bool = False
+    socket_closed: bool = False
     remote_id: str = ""
     sequence: int = 0
 
@@ -71,10 +78,89 @@ class _Session:
 class RealtimeSessions:
     """One background reader per socket; handles never expose credentials or server IDs."""
 
-    def __init__(self):
+    def __init__(self, idle_ttl=300, retention_ttl=60, cleanup_interval=15):
+        for value in (idle_ttl, retention_ttl, cleanup_interval):
+            if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value) or value <= 0:
+                raise ValueError("会话 TTL 和清理间隔必须为有限正数")
+        self.idle_ttl = idle_ttl
+        self.retention_ttl = retention_ttl
+        self.cleanup_interval = cleanup_interval
+        self.cleanup_task = None
         self.sessions = {}
         self.lock = asyncio.Lock()
         atexit.register(self.abort_at_exit)
+
+    async def start(self):
+        """Start the idle-session reaper from the server lifespan."""
+        if self.cleanup_task is None or self.cleanup_task.done():
+            self.cleanup_task = asyncio.create_task(self._cleanup_loop())
+
+    async def _cleanup_loop(self):
+        while True:
+            await asyncio.sleep(self.cleanup_interval)
+            await self.reap()
+
+    async def reap(self):
+        now = time.monotonic()
+        for handle, state in list(self.sessions.items()):
+            if state is None:
+                continue
+            if state.closed.is_set():
+                if state.closed_at is not None and now - state.closed_at >= self.retention_ttl:
+                    self.sessions.pop(handle, None)
+            elif now - state.last_used >= self.idle_ttl and not state.send_lock.locked() and not state.receive_lock.locked():
+                state.error = "会话因空闲超时关闭"
+                self._enqueue(state, {"type": "error", "error": {"code": "idle_timeout", "message": state.error}})
+                await self._dispose(state)
+
+    @staticmethod
+    def _validate_timeout(timeout, maximum):
+        if isinstance(timeout, bool) or not isinstance(timeout, (int, float)) or not math.isfinite(timeout) or not 0 < timeout <= maximum:
+            raise InputError(f"timeout 须在 0 到 {maximum} 秒之间")
+
+    @staticmethod
+    def _close_audio(state):
+        if state.audio_handle is not None:
+            state.audio_handle.close()
+            state.audio_handle = None
+
+    @staticmethod
+    def _enqueue(state, event):
+        # Keep the socket reader moving. Drop audio/text deltas before control events.
+        if state.queue.full():
+            pending = []
+            while not state.queue.empty():
+                pending.append(state.queue.get_nowait())
+            index = next((i for i, item in enumerate(pending) if item.get("type", "").endswith(".delta")), None)
+            state.dropped_events += 1
+            if index is None and event.get("type", "").endswith(".delta"):
+                for item in pending:
+                    state.queue.put_nowait(item)
+                return
+            if index is None:
+                index = next((i for i, item in enumerate(pending) if item.get("type") not in ("error", "session.closed")), 0)
+            pending.pop(index)
+            for item in pending:
+                state.queue.put_nowait(item)
+        state.queue.put_nowait(event)
+
+    async def _dispose(self, state):
+        state.closed.set()
+        if state.closed_at is None:
+            state.closed_at = time.monotonic()
+        if state.reader and state.reader is not asyncio.current_task():
+            state.reader.cancel()
+            await asyncio.gather(state.reader, return_exceptions=True)
+        self._close_audio(state)
+        if state.socket_closed:
+            return
+        try:
+            await asyncio.wait_for(state.websocket.close(), 5)
+        except Exception:
+            transport = getattr(state.websocket, "transport", None)
+            if transport is not None:
+                transport.abort()
+        state.socket_closed = True
 
     def abort_at_exit(self):
         # Async close_all is the normal lifespan shutdown. Abort is a final fallback.
@@ -94,6 +180,7 @@ class RealtimeSessions:
                 if event["type"] == "session.created":
                     state.remote_id = (event.get("session") or {}).get("id", "")
                 if event["type"] in ("response.output_audio.started", "response.canceled"):
+                    self._close_audio(state)
                     state.audio_path = None
                     state.audio_bytes = 0
                 if event["type"] == "error":
@@ -105,8 +192,10 @@ class RealtimeSessions:
                         extension = "ogg" if state.audio_format == "ogg_opus" else "pcm"
                         state.audio_path = state.directory / f"response-{state.sequence:04d}.{extension}"
                         state.audio_bytes = 0
-                    with state.audio_path.open("ab") as handle:
-                        handle.write(data)
+                    if state.audio_handle is None:
+                        state.audio_handle = state.audio_path.open("ab")
+                    state.audio_handle.write(data)
+                    state.audio_handle.flush()
                     state.audio_bytes += len(data)
                     event.pop("delta", None)
                     event.update(audio_file=str(state.audio_path), chunk_bytes=len(data), audio_bytes=state.audio_bytes,
@@ -115,11 +204,12 @@ class RealtimeSessions:
                     if state.audio_path:
                         event.update(audio_file=str(state.audio_path), audio_bytes=state.audio_bytes,
                                      audio_format=state.audio_format, sample_rate=24000)
+                    self._close_audio(state)
                     state.audio_path = None
                 if event["type"] == "session.closed":
                     state.close_ack = True
                     state.closed.set()
-                await state.queue.put(event)
+                self._enqueue(state, event)
                 if event["type"] in ("session.closed", "error"):
                     break
         except asyncio.CancelledError:
@@ -127,10 +217,16 @@ class RealtimeSessions:
         except Exception as exc:
             state.error = f"实时连接结束：{type(exc).__name__}: {exc}"
         finally:
-            state.closed.set()
-            await state.websocket.close()
+            await self._dispose(state)
 
     async def open(self, session, out_dir, extension=None, timeout=30):
+        try:
+            self._validate_timeout(timeout, 120)
+            return await asyncio.wait_for(self._open(session, out_dir, extension, timeout), timeout)
+        except Exception as exc:
+            return {"ok": False, "error": str(exc) or type(exc).__name__}
+
+    async def _open(self, session, out_dir, extension=None, timeout=30):
         websocket = None
         reserved = False
         session_id = str(uuid.uuid4())
@@ -144,7 +240,7 @@ class RealtimeSessions:
             directory = Path(out_dir).expanduser().resolve() / session_id
             directory.mkdir(parents=True, exist_ok=True)
             async with self.lock:
-                if len(self.sessions) >= MAX_SESSIONS:
+                if sum(state is None or not state.closed.is_set() for state in self.sessions.values()) >= MAX_SESSIONS:
                     raise InputError(f"最多同时保持 {MAX_SESSIONS} 个实时会话，请先关闭旧会话")
                 self.sessions[session_id] = None  # reserve a slot before awaiting connect
                 reserved = True
@@ -165,7 +261,12 @@ class RealtimeSessions:
             if reserved:
                 self.sessions.pop(session_id, None)
             if websocket is not None:
-                await websocket.close()
+                try:
+                    await asyncio.wait_for(websocket.close(), 5)
+                except Exception:
+                    transport = getattr(websocket, "transport", None)
+                    if transport is not None:
+                        transport.abort()
             if isinstance(exc, asyncio.CancelledError):
                 raise
             return {"ok": False, "error": str(exc) or type(exc).__name__}
@@ -178,6 +279,13 @@ class RealtimeSessions:
         return state
 
     async def send(self, session_id, event, audio_file="", timeout=30):
+        try:
+            self._validate_timeout(timeout, 120)
+            return await asyncio.wait_for(self._send_event(session_id, event, audio_file, timeout), timeout)
+        except Exception as exc:
+            return {"ok": False, "error": str(exc) or type(exc).__name__}
+
+    async def _send_event(self, session_id, event, audio_file="", timeout=30):
         """Send arbitrary documented upstream event; audio_file streams PCM at 20 ms pace."""
         try:
             state = self._get(session_id)
@@ -212,6 +320,7 @@ class RealtimeSessions:
                         await self._send(state, packet, timeout)
                         chunks += 1
                         await asyncio.sleep(len(data) / 32000)
+                        state.last_used = time.monotonic()
             else:
                 await self._send(state, payload, timeout)
             return {"ok": True, "session_id": session_id, "event_id": payload["event_id"], "chunks": chunks}
@@ -228,10 +337,25 @@ class RealtimeSessions:
         await asyncio.wait_for(locked_send(), timeout)
 
     async def receive(self, session_id, max_events=100, timeout=10):
+        try:
+            self._validate_timeout(timeout, 60)
+            return await asyncio.wait_for(self._receive(session_id, max_events, timeout), timeout)
+        except asyncio.TimeoutError:
+            try:
+                state = self._get(session_id)
+                return {"ok": not bool(state.error), "session_id": session_id, "events": [],
+                        "closed": state.closed.is_set(), "error": state.error or None,
+                        "dropped_events": state.dropped_events}
+            except InputError as exc:
+                return {"ok": False, "error": str(exc)}
+        except Exception as exc:
+            return {"ok": False, "error": str(exc) or type(exc).__name__}
+
+    async def _receive(self, session_id, max_events=100, timeout=10):
         """Return text, usage, tools and context verbatim; audio deltas become local paths."""
         try:
             state = self._get(session_id)
-            if not 1 <= max_events <= 500 or not 0 < timeout <= 60:
+            if isinstance(max_events, bool) or not isinstance(max_events, int) or not 1 <= max_events <= 500 or not 0 < timeout <= 60:
                 raise InputError("max_events 须为 1..500；timeout 须为 0..60 秒")
             events = []
             async with state.receive_lock:
@@ -250,11 +374,17 @@ class RealtimeSessions:
                 while len(events) < max_events and not state.queue.empty():
                     events.append(state.queue.get_nowait())
             return {"ok": not bool(state.error), "session_id": session_id, "events": events,
-                    "closed": state.closed.is_set(), "error": state.error or None}
+                    "closed": state.closed.is_set(), "error": state.error or None,
+                    "dropped_events": state.dropped_events}
         except Exception as exc:
             return {"ok": False, "error": str(exc) or type(exc).__name__}
 
     async def close(self, session_id, timeout=10):
+        try:
+            self._validate_timeout(timeout, 60)
+        except InputError as exc:
+            return {"ok": False, "error": str(exc)}
+        deadline = time.monotonic() + timeout
         state = self.sessions.pop(session_id, None)
         if state is None:
             return {"ok": False, "error": "未知或已关闭的 session_id"}
@@ -264,23 +394,25 @@ class RealtimeSessions:
                 raise InputError("timeout 须为 0..60 秒")
             if not state.closed.is_set():
                 await self._send(state, {"type": "session.close", "event_id": str(uuid.uuid4())}, timeout)
-                await asyncio.wait_for(state.closed.wait(), timeout)
+                await asyncio.wait_for(state.closed.wait(), max(0, deadline - time.monotonic()))
             # A transport disconnect sets closed too; retain actual ack distinction.
             events = []
             while not state.queue.empty():
                 events.append(state.queue.get_nowait())
             graceful = state.close_ack
             return {"ok": graceful and not bool(state.error), "session_id": session_id,
-                    "graceful": graceful, "events": events, "error": state.error or (None if graceful else "未收到 session.closed")}
+                    "graceful": graceful, "events": events, "dropped_events": state.dropped_events,
+                    "error": state.error or (None if graceful else "未收到 session.closed")}
         except Exception as exc:
             return {"ok": False, "session_id": session_id, "graceful": graceful, "error": str(exc) or type(exc).__name__}
         finally:
-            if state.reader:
-                state.reader.cancel()
-                await asyncio.gather(state.reader, return_exceptions=True)
-            await state.websocket.close()
+            await self._dispose(state)
 
     async def close_all(self):
+        if self.cleanup_task is not None:
+            self.cleanup_task.cancel()
+            await asyncio.gather(self.cleanup_task, return_exceptions=True)
+            self.cleanup_task = None
         await asyncio.gather(*(self.close(handle) for handle, state in list(self.sessions.items()) if state), return_exceptions=True)
 
 

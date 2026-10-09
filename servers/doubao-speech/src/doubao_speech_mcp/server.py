@@ -6,10 +6,11 @@ VOLC_SPEECH_BASE_URL（可选）。
 
 import os
 import time
+import uuid
 from contextlib import asynccontextmanager
 from pathlib import Path
 
-from mcp.server.mcpserver import MCPServer
+from .mcp_runtime import ReliableMCPServer
 
 from . import speech
 from . import usage
@@ -20,16 +21,24 @@ OUT_ROOT = Path(os.environ.get("DOUBAO_SPEECH_OUT_DIR", "~/Downloads/doubao-spee
 @asynccontextmanager
 async def lifespan(server):
     try:
+        await realtime.sessions.start()
         yield {}
     finally:
         await realtime.sessions.close_all()
 
 
-mcp = MCPServer("doubao-speech", lifespan=lifespan)
+mcp = ReliableMCPServer("doubao-speech", lifespan=lifespan, groups={
+    "speech": {"text_to_speech", "speech_to_text", "generate_audio", "submit_long_text_speech",
+               "query_long_text_speech", "clone_voice", "query_voice", "upgrade_voice", "design_voice",
+               "submit_transcription", "query_transcription", "websocket_text_to_speech",
+               "generate_podcast", "streaming_speech_to_text", "interpret_audio", "speech_http_request"},
+    "realtime": {"open_realtime_session", "send_realtime_event", "receive_realtime_events", "close_realtime_session"},
+    "management": {"translate_text", "submit_minutes", "query_minutes", "manage_word_table", "speech_console", "legacy_speech_request"},
+    "help": {"list_speech_capabilities", "get_speech_usage_examples", "get_tool_help"}})
 
 
 def target_dir(out_dir):
-    return Path(out_dir).expanduser() if out_dir else OUT_ROOT / time.strftime("%Y%m%d-%H%M%S")
+    return Path(out_dir).expanduser() if out_dir else OUT_ROOT / (time.strftime("%Y%m%d-%H%M%S") + "-" + uuid.uuid4().hex[:8])
 
 
 @mcp.tool()
@@ -71,7 +80,7 @@ def text_to_speech(
     - language：指定语种 zh-cn（中英混读）、en、ja、ko、es-mx、fr、de、ru 等，不传按中英处理。
     - speech_rate / loudness_rate：-50～100，-50 是 0.5 倍，100 是 2 倍，默认 0。pitch：音调 -12～12，默认 0。
     - format：mp3（默认）或 wav。sample_rate：8000、16000、22050、24000（默认）、32000、44100、48000。
-    - subtitles：同时生成 speech.srt 字幕（句级时间戳，只支持中英文），返回值 subtitles 里也有。长文本分段时要用 wav。
+    - subtitles：同时生成独立命名的 .srt 字幕（句级时间戳，只支持中英文），返回值 subtitles 里也有。长文本分段时要用 wav。
     - pronunciations：修正读音或替换文本，每条「原词/(拼音)」或「原词/替换文本」，如 ["重庆/(chong2)(qing4)",
       "omg/oh my god"]，原词不超过 9 个字符。
     - model：只对复刻音色有效，seed-tts-2.0-standard（默认）或 seed-tts-2.0-expressive，指定后不能用 instructions。
@@ -158,7 +167,7 @@ def generate_audio(
       URL；prompt 里按顺序用 @音频1、@音频2 引用，如「用 @音频1 的声音说……」。
     - reference_image：参考图片（jpeg / png / webp，10MB 内），按画面生成配音或音效，此时 prompt 可以只写要说的
       台词。不能和 speaker、reference_audios 同时用。
-    - format：mp3（默认）、wav、ogg_opus。sample_rate：不传用默认值（mp3 44100，wav 40000）。
+    - format：mp3（默认）、wav、pcm、ogg_opus。sample_rate：不传用默认值（mp3 44100，wav/pcm 40000，ogg_opus 48000）。
     - speech_rate / loudness_rate：-50～100，默认 0。pitch_rate：-12～12，默认 0。
     - subtitles：返回句级和词级字幕时间戳；subtitle 中 start_time/end_time 为距音频开始的毫秒偏移。
     - out_dir：输出目录，默认 DOUBAO_SPEECH_OUT_DIR 下按时间戳新建。
@@ -312,7 +321,7 @@ async def interpret_audio(audio: str, source_language: str, target_language: str
 @mcp.tool()
 async def open_realtime_session(session: dict, extension: dict | None = None, out_dir: str | None = None, timeout: float = 30) -> dict:
     """打开豆包实时语音3.0持久会话。最简session={audio:{output:{voice:'zh_female_vv_jupiter_bigtts'}}}，默认model=1.2.6.1、输入pcm16k/输出pcm_s16le24k。
-    可传instructions、tools（function定义）、audio配置；extension顶层支持asr/tts/dialog、热词、联网搜索、唱歌等。
+    可传instructions、tools（function定义）、audio配置；输入格式支持pcm/speech_opus（opus别名自动规范化），extension顶层支持asr/tts/dialog、热词、联网搜索、唱歌等。
     返回客户端session_id，后续send/receive/close；会话只在本MCP进程内有效。创建后持续收包，生成音频写本地文件。按实时服务计费。
     """
     return await realtime.sessions.open(session, target_dir(out_dir), extension, timeout)
@@ -379,7 +388,7 @@ def list_speech_capabilities() -> dict:
                  "interpretation": "https://docs.volcengine.com/docs/DoubaoVoice/SimultaneousInterpretation20APIAccessDocumentation?lang=zh"},
         "limits": ["Speech SDK端侧离线能力需原生应用集成；MCP提供云API。",
                    "术语词表CRUD官方仅提供控制台；使用支持corpus.glossary_list/table_id/table_name。",
-                   "同传官方示例protobuf尚未声明detected_language，不能显式返回该字段。",
+                   "同传可返回官方protobuf中的detected_language/language_confidence；需开启enable_source_language_detect且服务实际返回。",
                    "历史版本API未等同于当前产品全部通过线上验证；实际服务开通和权限以账号为准。"],
     }
 

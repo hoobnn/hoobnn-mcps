@@ -1,0 +1,517 @@
+{
+  "checked_at": "2026-10-10",
+  "source_count": 73,
+  "documents": [
+    {
+      "document_code": "APIKeyUsage",
+      "document_id": 1816214,
+      "updated_at": "2025-09-02T11:34:20Z",
+      "mdcontent_chars": 914,
+      "mdcontent_sha256": "0469797459dfd48ba272267de56b440eebd34e1082e8f8540d0e706b32ed3293"
+    },
+    {
+      "document_code": "APIinterfacedocumentation",
+      "document_id": 1096680,
+      "updated_at": "2026-05-19T03:38:39Z",
+      "mdcontent_chars": 7594,
+      "mdcontent_sha256": "8cbf738556efad41b99a07ce46aedf4ed210aaf291bb41f34f6d506cfb71b34d"
+    },
+    {
+      "document_code": "ActivateService-ActivateService",
+      "document_id": 1801944,
+      "updated_at": "2026-09-28T13:19:58Z",
+      "mdcontent_chars": 3237,
+      "mdcontent_sha256": "a0bdf3637ee0832e2156274c848f5ea5820ce13e2a4527c9c6576f89cb8e0e5b"
+    },
+    {
+      "document_code": "AliasResourcePack-Updatesoundresourcealiases",
+      "document_id": 1801939,
+      "updated_at": "2026-09-28T13:20:31Z",
+      "mdcontent_chars": 6904,
+      "mdcontent_sha256": "bb2253adebb27e6253eb9b9ce41bf71be9e377d149e8986a4edc50f9d0c879cc"
+    },
+    {
+      "document_code": "AudioFileRecognitionStandardEdition",
+      "document_id": 80820,
+      "updated_at": "2025-07-03T05:18:28Z",
+      "mdcontent_chars": 11089,
+      "mdcontent_sha256": "2e07339548457a00bad2278dfdd33659da946fa64a51d23854a0b00240e590e1"
+    },
+    {
+      "document_code": "Audiovideosubtitlegeneration",
+      "document_id": 80909,
+      "updated_at": "2025-07-03T05:28:17Z",
+      "mdcontent_chars": 18070,
+      "mdcontent_sha256": "639a286ec4c0f6e0530ae02a7feb9a0b211adb46b2cc6de43ce6097f268055b6"
+    },
+    {
+      "document_code": "Automaticsubtitletyping",
+      "document_id": 149749,
+      "updated_at": "2025-07-28T09:45:48Z",
+      "mdcontent_chars": 10270,
+      "mdcontent_sha256": "b19d3af49fc04fc8cbd2cd6ebca048ed45facfe7a6e196975b45873a37afc9ce"
+    },
+    {
+      "document_code": "BatchListMegaTTSTrainStatus-PageQuerySpeakerIDStatus",
+      "document_id": 1801953,
+      "updated_at": "2026-09-28T13:21:22Z",
+      "mdcontent_chars": 6276,
+      "mdcontent_sha256": "5c01a18fe7d9c781cac2fe82c404f952625a5b6f73cf1858d8e12c606ec74c25"
+    },
+    {
+      "document_code": "Callvolumequeryinterfacedescription",
+      "document_id": 1476625,
+      "updated_at": "2025-03-07T06:32:05Z",
+      "mdcontent_chars": 24872,
+      "mdcontent_sha256": "c0ca3a913870d96ea6e085c74459ebab28b544545445f5c9f995f5ebaa2804a9"
+    },
+    {
+      "document_code": "CreateAPIKey-CreateAPIKey",
+      "document_id": 1801958,
+      "updated_at": "2026-09-28T13:18:27Z",
+      "mdcontent_chars": 2726,
+      "mdcontent_sha256": "b927ab62aae0813b58ea9fc2638e4e69086f4d7619e04edd2d901eb4af4a618c"
+    },
+    {
+      "document_code": "DeleteAPIKey-DeleteAPIKey",
+      "document_id": 1801959,
+      "updated_at": "2026-09-28T13:18:38Z",
+      "mdcontent_chars": 2703,
+      "mdcontent_sha256": "651a7fe93ef14127b42b99deacb437d65a45c3cec469945357dd93889a57d686"
+    },
+    {
+      "document_code": "DoubaoVoiceMinutes-APIAccessDocumentation",
+      "document_id": 1798094,
+      "updated_at": "2026-09-28T11:15:50Z",
+      "mdcontent_chars": 55053,
+      "mdcontent_sha256": "3592e89fda853d090deec6b5785a6890fd7f36b4e7c0a34d830f57ec914ffb78"
+    },
+    {
+      "document_code": "FormalizeResourcePacks-Conversioneffectpackage",
+      "document_id": 1801937,
+      "updated_at": "2026-09-28T13:20:15Z",
+      "mdcontent_chars": 3744,
+      "mdcontent_sha256": "2d55a239622a8f21bba95c07942f859678e0eb08acc8c5505ae804a30e3fdc36"
+    },
+    {
+      "document_code": "HTTPChunkedSSEUnidirectionalStreaming-V3",
+      "document_id": 1598757,
+      "updated_at": "2026-05-25T09:03:36Z",
+      "mdcontent_chars": 29008,
+      "mdcontent_sha256": "7fbaa98e4039881ae0a2462c4c508ca0045fb4c8f00cd7a0a468b02712cf6192"
+    },
+    {
+      "document_code": "HTTPinterfaceone-timecomposition-non-streaming",
+      "document_id": 79820,
+      "updated_at": "2026-05-19T03:38:22Z",
+      "mdcontent_chars": 1822,
+      "mdcontent_sha256": "bb577ca7c3fb7974ccd94c7b0da8b61dca92f30d1fc8f08c26374bda8d2c5d3c"
+    },
+    {
+      "document_code": "HTTPone-timecompositenon-streaminginterface-V1notrecommended",
+      "document_id": 1257584,
+      "updated_at": "2026-05-19T03:38:14Z",
+      "mdcontent_chars": 10780,
+      "mdcontent_sha256": "b6aa308f4c7e5bdeb7fd56548bef69fae798f3f661ed8db320fd55d15594b304"
+    },
+    {
+      "document_code": "HotWordManagementAPIv10",
+      "document_id": 1742791,
+      "updated_at": "2026-09-28T11:35:29Z",
+      "mdcontent_chars": 23172,
+      "mdcontent_sha256": "1a4940b3405a78aa7b977d3b296878880178b18fff69899ee0a9d07b5f41d7d2"
+    },
+    {
+      "document_code": "LargemodelrecordingfileLiterecognitionAPI",
+      "document_id": 1631584,
+      "updated_at": "2026-06-26T08:13:27Z",
+      "mdcontent_chars": 8051,
+      "mdcontent_sha256": "f555bb28ccf61e1a4398e8b0ad20249da2d3dbeae9151300a696aa7d15715945"
+    },
+    {
+      "document_code": "Largemodelrecordingfilerecognitionidleversion",
+      "document_id": 1840838,
+      "updated_at": "2026-06-26T08:12:42Z",
+      "mdcontent_chars": 6702,
+      "mdcontent_sha256": "07b37627d68c1298fc3bd541192b774368e69f37384c0b9844e7150856a6b121"
+    },
+    {
+      "document_code": "LargemodelrecordingfilerecognitionstandardversionAPI",
+      "document_id": 1354868,
+      "updated_at": "2026-06-26T08:23:54Z",
+      "mdcontent_chars": 16694,
+      "mdcontent_sha256": "317d7e7543884707f735b1964d09dd8d8872e12dd0c9b195924edbde15dd2363"
+    },
+    {
+      "document_code": "LargemodelstreamingautomaticspeechrecognitionAPI",
+      "document_id": 1354869,
+      "updated_at": "2026-08-06T09:40:25Z",
+      "mdcontent_chars": 24280,
+      "mdcontent_sha256": "7cbecaa603ecc9ecc197e8a068a5ebe3da6cd5fc63e2d17ec140bb292cbb42ae"
+    },
+    {
+      "document_code": "ListAPIKeys-PullAPIKeyList",
+      "document_id": 1801323,
+      "updated_at": "2026-09-28T13:18:21Z",
+      "mdcontent_chars": 3185,
+      "mdcontent_sha256": "c66cf9214af9737f0880c90b7e50deb96b7a8bf7f9dc50f9493a199c7a98bfbd"
+    },
+    {
+      "document_code": "ListBigModelTTSTimbres-LargeModelSoundList",
+      "document_id": 1770994,
+      "updated_at": "2026-09-28T13:10:03Z",
+      "mdcontent_chars": 6002,
+      "mdcontent_sha256": "80b1503123afb1209d50a291045cf1c67341105587cbc6e2f5aa633de3fe103a"
+    },
+    {
+      "document_code": "ListMegaTTSByOrderID-QuerypurchasedsoundsbyorderID",
+      "document_id": 1835745,
+      "updated_at": "2026-09-28T13:24:20Z",
+      "mdcontent_chars": 5870,
+      "mdcontent_sha256": "1eb09041e6ae4f45637f42bc232e5175656a2be6fe268a67e1b5b1e080d06fbd"
+    },
+    {
+      "document_code": "ListMegaTTSTrainStatus-QuerySpeakerIDstatusinformation",
+      "document_id": 1801952,
+      "updated_at": "2026-09-28T13:21:15Z",
+      "mdcontent_chars": 5354,
+      "mdcontent_sha256": "cc40a0a03112babf33f154981d4bc48761efb93ff9088d50ff4dd14b897b6ab0"
+    },
+    {
+      "document_code": "ListSpeakers-LargeModelSoundListNewInterface",
+      "document_id": 2160690,
+      "updated_at": "2026-09-28T13:18:11Z",
+      "mdcontent_chars": 5189,
+      "mdcontent_sha256": "98a6497aeb596c6fe3a4ec45d51840a75a057004caf94b4b373be969d5367aa0"
+    },
+    {
+      "document_code": "ListTagsForResources-Queryalllabelsattachedtoaresource",
+      "document_id": 1801949,
+      "updated_at": "2026-09-28T13:20:55Z",
+      "mdcontent_chars": 4361,
+      "mdcontent_sha256": "489ead5275ff18d9ef5a3efdedbeb409cec815594b1848d6d7e204655fe700ed"
+    },
+    {
+      "document_code": "MachineTranslationLargeModel-APIAccessDocumentation",
+      "document_id": 2306735,
+      "updated_at": "2026-09-28T11:15:20Z",
+      "mdcontent_chars": 7837,
+      "mdcontent_sha256": "ed57c46f20bdfa3d53e7e6ac31ca3d49f47919d4733317d5f387058f7b602309"
+    },
+    {
+      "document_code": "OrderAccessResourcePacks-SoundOrder",
+      "document_id": 1801954,
+      "updated_at": "2026-09-28T13:21:33Z",
+      "mdcontent_chars": 4262,
+      "mdcontent_sha256": "682c54a43ef87650026ac2e9e5c5b2c81fe9878c19d90090423ef6534d8a7a39"
+    },
+    {
+      "document_code": "OrderResourcePacks-Buyeffectspackage",
+      "document_id": 1801940,
+      "updated_at": "2026-09-28T13:20:45Z",
+      "mdcontent_chars": 4496,
+      "mdcontent_sha256": "eb1b89aca545080a55471b14e9bf6266a17ee959807d4abf1ec5771ec0fbd81a"
+    },
+    {
+      "document_code": "PauseService-SuspendService",
+      "document_id": 1801942,
+      "updated_at": "2026-09-28T13:19:44Z",
+      "mdcontent_chars": 2778,
+      "mdcontent_sha256": "e586624c9f5c016cee7dfe0311b19306ea2984a4291ee06a6015bcbedd252448"
+    },
+    {
+      "document_code": "PodcastAPI-websocket-v3protocol",
+      "document_id": 1668014,
+      "updated_at": "2026-09-29T08:52:01Z",
+      "mdcontent_chars": 27062,
+      "mdcontent_sha256": "4fcbc42e590bf700449fcfd2cc6894d01b47583dfdaa357e33c53f57daa8d555"
+    },
+    {
+      "document_code": "QPSConcurrentQueryInterfaceDescription",
+      "document_id": 1476626,
+      "updated_at": "2025-10-10T12:40:52Z",
+      "mdcontent_chars": 28395,
+      "mdcontent_sha256": "1df58a574e58bc990b10491bd65569e8de0c819501eb29296ff8b29603fe7534"
+    },
+    {
+      "document_code": "QuickStartNewConsole",
+      "document_id": 2119699,
+      "updated_at": "2025-12-09T07:46:44Z",
+      "mdcontent_chars": 27336,
+      "mdcontent_sha256": "fb78fb7583cc0dd31c3aa01ca0fe7251cfd05d573c202d412c7fa7b575ca733c"
+    },
+    {
+      "document_code": "QuotaMonitoring-Quotaqueryinterface",
+      "document_id": 1801956,
+      "updated_at": "2026-09-28T13:24:29Z",
+      "mdcontent_chars": 3932,
+      "mdcontent_sha256": "1077aa38a0c365804effc21bc57cc508afa1643be22fd3617cbf2fad8bfff1dc"
+    },
+    {
+      "document_code": "RenewAccessResourcePacks-ToneRenewal",
+      "document_id": 1801955,
+      "updated_at": "2026-09-28T13:24:10Z",
+      "mdcontent_chars": 3502,
+      "mdcontent_sha256": "5e80e69c67c981af8a6da5ee364ca1cfca0241169a8bbf7f624b4984e8df9d86"
+    },
+    {
+      "document_code": "ReplacementWordAPIv11",
+      "document_id": 1742792,
+      "updated_at": "2026-09-28T11:35:35Z",
+      "mdcontent_chars": 20429,
+      "mdcontent_sha256": "7e53d9ee94452c7dd4047668dea6336787d0f7714edf60b4091695d6e5db1080"
+    },
+    {
+      "document_code": "ResourcePacksStatus-effectpackagestatusinformation",
+      "document_id": 1801938,
+      "updated_at": "2026-09-28T13:20:23Z",
+      "mdcontent_chars": 9409,
+      "mdcontent_sha256": "062f6d01e5c1f0bfe938fcbfd3c1d5027e8b8713d8008da421303620089ddfb9"
+    },
+    {
+      "document_code": "Resultquery",
+      "document_id": 2670604,
+      "updated_at": "2026-09-28T11:13:42Z",
+      "mdcontent_chars": 2264,
+      "mdcontent_sha256": "5414f36bc544978d994f89c467423b37414d2f5c0d24d4ce1d15a7230c94d600"
+    },
+    {
+      "document_code": "ResumeService-Re-enabletheservice",
+      "document_id": 1801943,
+      "updated_at": "2026-09-28T13:19:53Z",
+      "mdcontent_chars": 2785,
+      "mdcontent_sha256": "676b45a5b8fe23b5044eb2661a07a6d1af119a16b9d098900d43a1183b1a2ed5"
+    },
+    {
+      "document_code": "ServiceStatus-ServiceStatus",
+      "document_id": 1801941,
+      "updated_at": "2026-09-28T13:19:36Z",
+      "mdcontent_chars": 5963,
+      "mdcontent_sha256": "7a01cba0e42739b7157fedd14275acb12345af2d7b73bb3e7e9b0c8245ea4c62"
+    },
+    {
+      "document_code": "SimultaneousInterpretation20APIAccessDocumentation",
+      "document_id": 1756902,
+      "updated_at": "2026-09-28T11:15:12Z",
+      "mdcontent_chars": 17224,
+      "mdcontent_sha256": "591b160ecd6ea0adfeb348351b43fd8276d0391800378b08702864e4888a68b4"
+    },
+    {
+      "document_code": "SoundDesignAPI",
+      "document_id": 2277844,
+      "updated_at": "2026-09-29T10:58:24Z",
+      "mdcontent_chars": 72508,
+      "mdcontent_sha256": "150604e1a7c1f7424100f18a7a203015ed8dd53a0badad81470aecbf7e63d12c"
+    },
+    {
+      "document_code": "Soundreplicationorderingandusageguide",
+      "document_id": 1167802,
+      "updated_at": "2026-08-20T13:37:50Z",
+      "mdcontent_chars": 4166,
+      "mdcontent_sha256": "a8c6abc1cb3854152d8b918efbf262c382f36988c7569ec267d9442ef6d37fcb"
+    },
+    {
+      "document_code": "TagResources-Attachtagstoresources",
+      "document_id": 1801951,
+      "updated_at": "2026-09-28T13:21:08Z",
+      "mdcontent_chars": 3357,
+      "mdcontent_sha256": "1db042fd9dff18bd30d995fba28211d3b34a0efc80fd6d078b24c9ad4d24fb49"
+    },
+    {
+      "document_code": "Tasksubmission",
+      "document_id": 2670603,
+      "updated_at": "2026-09-28T11:13:27Z",
+      "mdcontent_chars": 7503,
+      "mdcontent_sha256": "7146bfb235d4fa1a7df58c22323cf95d2277c5f62a62a5403dc52ac3584d82ad"
+    },
+    {
+      "document_code": "TerminateService-DeactivateService",
+      "document_id": 1801945,
+      "updated_at": "2026-09-28T13:20:06Z",
+      "mdcontent_chars": 2720,
+      "mdcontent_sha256": "8fa816cb3f7c181adecdcb39d3d5203598692617051e825a501476177d5781e4"
+    },
+    {
+      "document_code": "Termwords",
+      "document_id": 2306745,
+      "updated_at": "2026-04-07T06:29:07Z",
+      "mdcontent_chars": 1789,
+      "mdcontent_sha256": "9d0bdbda43b7d37bac6710d114d7ab4ab8d470e5f64180513c30c0abd1caaa3d"
+    },
+    {
+      "document_code": "Tonelist-1",
+      "document_id": 1257544,
+      "updated_at": "2026-09-22T03:11:20Z",
+      "mdcontent_chars": 50768,
+      "mdcontent_sha256": "29ec62f96e482db659b1dc583dfb90701efd6e2f394e9a3379d5a704eea2d3b9"
+    },
+    {
+      "document_code": "UntagResources-Removetagsfromresources",
+      "document_id": 1801950,
+      "updated_at": "2026-09-28T13:21:03Z",
+      "mdcontent_chars": 2902,
+      "mdcontent_sha256": "291181e0caa8e48a06c7aaaf84dacd79adc06df5a2876bec428917860581c4e0"
+    },
+    {
+      "document_code": "UpdateAPIKey-UpdateAPIKey",
+      "document_id": 1801960,
+      "updated_at": "2026-09-28T13:18:56Z",
+      "mdcontent_chars": 2930,
+      "mdcontent_sha256": "9b4072257a7f2079584550f9f00fda2938200779f2dc2b5b624814dd814be7b5"
+    },
+    {
+      "document_code": "UsageMonitoring-CallQueryInterface",
+      "document_id": 1801957,
+      "updated_at": "2026-09-28T13:24:37Z",
+      "mdcontent_chars": 3207,
+      "mdcontent_sha256": "8e9d72c9d2fd3c138ca12cdec67d6d1051c17e1d6f731632a2b2891b4d8f1d7a"
+    },
+    {
+      "document_code": "WebSocketBidirectionalStreaming-V3",
+      "document_id": 1329505,
+      "updated_at": "2026-05-25T08:51:30Z",
+      "mdcontent_chars": 46644,
+      "mdcontent_sha256": "cddd54b9f7997d315e4c7be8bdb3236393340c93651b41d2954f2f6dd79c5836"
+    },
+    {
+      "document_code": "WebSocketUnidirectionalStreaming-V3",
+      "document_id": 1719100,
+      "updated_at": "2026-05-25T08:49:18Z",
+      "mdcontent_chars": 41931,
+      "mdcontent_sha256": "243ce9935c012a56aa9671cd509ebef5e0a3d23e00f077877121aedea74a8be7"
+    },
+    {
+      "document_code": "access-mustread",
+      "document_id": 2549732,
+      "updated_at": "2026-09-28T13:16:45Z",
+      "mdcontent_chars": 7468,
+      "mdcontent_sha256": "45dabb7be922e6e8bc3c793216215676c8020c632b715b6c9da78e9e771a2b0d"
+    },
+    {
+      "document_code": "audio-generation-http",
+      "document_id": 2550782,
+      "updated_at": "2026-09-28T11:12:54Z",
+      "mdcontent_chars": 6466,
+      "mdcontent_sha256": "3767e2086c64501c0815035a290e1ac7af33af5a0bf00874f020bddb537bb0cb"
+    },
+    {
+      "document_code": "audio1-5marketingplan",
+      "document_id": 2697433,
+      "updated_at": "2026-09-30T07:21:21Z",
+      "mdcontent_chars": 5870,
+      "mdcontent_sha256": "7bc8024dcb80ab0e2e9f2a68eaa1e7d7d19f7206380696a3d646cdcd7ecfe82f"
+    },
+    {
+      "document_code": "bidirectional-streaming-automatic-speech-recognition-websocket",
+      "document_id": 2630027,
+      "updated_at": "2026-09-28T10:10:07Z",
+      "mdcontent_chars": 15605,
+      "mdcontent_sha256": "83591ee987f16b0621f43e7de8a4eed10f878624b523eb6a9f7e1c9c979e0c40"
+    },
+    {
+      "document_code": "bidirectional-streaming-text-to-speech-websocket",
+      "document_id": 2532486,
+      "updated_at": "2026-09-28T11:13:15Z",
+      "mdcontent_chars": 11579,
+      "mdcontent_sha256": "03dd22a5d665ba02d642cdc3c24e890914400efa72378af2e79e36263b9a2e97"
+    },
+    {
+      "document_code": "endtoend-realtime-voice-full-duplex-version",
+      "document_id": 2549778,
+      "updated_at": "2026-09-28T12:41:12Z",
+      "mdcontent_chars": 14875,
+      "mdcontent_sha256": "b1f41c57e12f0172165c40c2d0e2a79b10b506d4125d9d69dd808ffd2fa249a3"
+    },
+    {
+      "document_code": "model-list",
+      "document_id": 2499930,
+      "updated_at": "2026-09-29T10:55:50Z",
+      "mdcontent_chars": 18202,
+      "mdcontent_sha256": "b7f06043267b72ac0094b1133b8e1915d47f61f3dee14fbdc3f9a404b686ca7d"
+    },
+    {
+      "document_code": "old-version-console-authentication-reference-example",
+      "document_id": 2534847,
+      "updated_at": "2026-06-12T08:58:43Z",
+      "mdcontent_chars": 4364,
+      "mdcontent_sha256": "57022bff941bc4b13b2e629e233e40ae889729ccbb8cc1a785bfe200c0f0d59c"
+    },
+    {
+      "document_code": "recording-file-recognition-lite-http",
+      "document_id": 2608628,
+      "updated_at": "2026-09-28T11:34:08Z",
+      "mdcontent_chars": 9915,
+      "mdcontent_sha256": "73a5831193f8774de55208554daef83054848de9a9ca8d67855727f477e51efe"
+    },
+    {
+      "document_code": "result-query-http-1",
+      "document_id": 2606792,
+      "updated_at": "2026-09-28T11:33:59Z",
+      "mdcontent_chars": 1656,
+      "mdcontent_sha256": "84f01d1272893926afcb629784e8254b69b9af1974e2ccb7d86d7c595c607f2f"
+    },
+    {
+      "document_code": "result-query-http",
+      "document_id": 2608619,
+      "updated_at": "2026-09-28T11:41:19Z",
+      "mdcontent_chars": 1722,
+      "mdcontent_sha256": "04c46206041b4963592cbbc37c8d93ce796e1bd07c42e75a058823fefcc9216e"
+    },
+    {
+      "document_code": "task-submission-http-1",
+      "document_id": 2606791,
+      "updated_at": "2026-09-28T11:33:53Z",
+      "mdcontent_chars": 12206,
+      "mdcontent_sha256": "8ae78da070c51de8a09115ed7b6b473c31e0ec186075d5eff5b6c3da9d2d2b58"
+    },
+    {
+      "document_code": "task-submission-http",
+      "document_id": 2608618,
+      "updated_at": "2026-09-28T11:41:14Z",
+      "mdcontent_chars": 10689,
+      "mdcontent_sha256": "9112204610fd6fe250af41bc1fe454e1fdc63e477bd476938939a93ae25f10df"
+    },
+    {
+      "document_code": "tone-query-http",
+      "document_id": 2535742,
+      "updated_at": "2026-09-29T11:02:49Z",
+      "mdcontent_chars": 2766,
+      "mdcontent_sha256": "63c76a69ea524af41b6986cc940ab89b49facaa858be40e4948b0703af9312a1"
+    },
+    {
+      "document_code": "tone-training-http",
+      "document_id": 2534906,
+      "updated_at": "2026-09-29T11:02:44Z",
+      "mdcontent_chars": 5044,
+      "mdcontent_sha256": "065544a74a33d03983b414b3e04037789e2fc56b23d2e794d1eec3f6ee8e6be8"
+    },
+    {
+      "document_code": "tone-upgrade-http",
+      "document_id": 2535751,
+      "updated_at": "2026-09-29T11:02:57Z",
+      "mdcontent_chars": 2891,
+      "mdcontent_sha256": "20acfeb6c6e3919041ac5ff35b82b9c48cca2d406cd2960d0d6f2f50bb9700bb"
+    },
+    {
+      "document_code": "unidirectional-streaming-automatic-speech-recognition-websocket",
+      "document_id": 2628951,
+      "updated_at": "2026-09-28T11:14:29Z",
+      "mdcontent_chars": 14541,
+      "mdcontent_sha256": "94b8f5eb2e9f131c8f215ecbd67f00d0d2fff6b98af7c0b87e222be37519c883"
+    },
+    {
+      "document_code": "unidirectional-streaming-text-to-speech-http",
+      "document_id": 2528925,
+      "updated_at": "2026-09-29T10:58:31Z",
+      "mdcontent_chars": 10861,
+      "mdcontent_sha256": "b980f515957a88ff2a169315277618036c9eb113792812ed2564cb27c440dc3d"
+    },
+    {
+      "document_code": "unidirectional-streaming-text-to-speech-websocket",
+      "document_id": 2534913,
+      "updated_at": "2026-09-29T10:58:39Z",
+      "mdcontent_chars": 12157,
+      "mdcontent_sha256": "869beec4ce4d20852350bc3150848597583f80828c72e37f920ae3df12b3fa97"
+    }
+  ]
+}

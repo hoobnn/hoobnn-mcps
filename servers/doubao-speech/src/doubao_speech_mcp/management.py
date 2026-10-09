@@ -14,6 +14,8 @@ import os
 import urllib.error
 import urllib.parse
 import urllib.request
+
+from . import transport
 import uuid
 
 from . import speech
@@ -150,7 +152,7 @@ def _signed_post(action, version, parameters, payload=None, content_type="applic
     req = urllib.request.Request("https://open.volcengineapi.com/?" + query, data=payload if method != "GET" else None, method=method,
                                  headers=signed_headers(payload, query, ak, sk, region, content_type=content_type, method=method))
     try:
-        with urllib.request.urlopen(req, timeout=30) as response:
+        with transport.urlopen(req, timeout=30) as response:
             return _response(response.headers, response.read().decode(), None)
     except urllib.error.HTTPError as error:
         return _failure(speech.http_error(error))
@@ -204,7 +206,7 @@ def word_table(action, parameters, content=None, auth="api_key"):
         req = urllib.request.Request(speech.HOST + path, data=payload,
                                      headers={"X-Api-Key": key, "Content-Type": content_type})
         try:
-            with urllib.request.urlopen(req, timeout=30) as response:
+            with transport.urlopen(req, timeout=30) as response:
                 return _response(response.headers, response.read().decode(), None)
         except urllib.error.HTTPError as error:
             return _failure(speech.http_error(error))
