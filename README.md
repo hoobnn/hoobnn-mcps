@@ -4,9 +4,9 @@ hoobnn 的个人 MCP server 集合。每个 server 是 `servers/<name>/` 下的�
 
 | Server | 作用 |
 |---|---|
-| [`volcengine-ark`](servers/volcengine-ark) | 火山方舟：Seedream图像、Seedance视频、语言与多模态理解、联网搜索、向量化和任务恢复（新增接入未测试） |
+| [`volcengine-ark`](servers/volcengine-ark) | 火山方舟：Seedream图像、Seedance视频、语言与多模态理解、联网搜索、向量化和任务恢复（新增产品待云端验证） |
 | [`doubao-speech`](servers/doubao-speech) | 豆包语音：合成、复刻、音色设计、识别、音频生成、播客、实时对话3.0、同传、翻译、妙记、词表及控制台管理 |
-| [`ali-bailian`](servers/ali-bailian) | 阿里云百炼：图像、语言、TTS/ASR、音色复刻与设计、视频生成/编辑/数字人、向量与重排序、任务恢复（新增接入未测试） |
+| [`ali-bailian`](servers/ali-bailian) | 阿里云百炼：图像、语言、TTS/ASR、音色复刻与设计、视频生成/编辑/数字人、向量与重排序、任务恢复（新增产品待云端验证） |
 
 ## 安装
 
@@ -21,7 +21,7 @@ uv tool upgrade volcengine-ark-mcp ali-bailian-mcp doubao-speech-mcp     # 推�
 
 从 `seedream-mcp` 迁移：`uv tool uninstall seedream-mcp` 后安装 `volcengine-ark`，客户端里的 MCP 名和命令一并替换，`SEEDREAM_*` 环境变量改为 `ARK_OUT_DIR` / `ARK_RESOURCE_MODE` / `ARK_JOB_DIR`。
 
-不用 `uvx --from git+...` 直接运行：它每次启动都要联网确认最新提交，要 2–4 秒，`codex exec`、`opencode run` 这类无头调用会在 server 起来前就开始回答，拿不到工具。装好后启动约 0.3 秒。
+推荐先安装，再通过本地入口运行，避免启动时额外解析 Git 依赖和访问网络。实际启动时间受机器、依赖缓存和客户端握手影响；仓库测试验证三个入口都能完成 stdio 初始化、工具发现、调用及退出。
 
 各客户端的 MCP 配置里写绝对路径，避免 GUI 客户端找不到 `PATH`：
 
@@ -42,5 +42,32 @@ key 等环境变量不写进配置，由客户端从 shell 环境继承。Codex 
 ## 新增一个 server
 
 1. 在 `servers/<name>/` 下建 `pyproject.toml`（`[project.scripts]` 声明 `<name>-mcp` 入口）、`src/<name>_mcp/` 和 `README.md`。
-2. 工具描述要自带用法：调用方只能看到工具描述，看不到 README。
+2. 工具描述保留选择条件、关键限制、计费与恢复语义；长示例通过 `get_tool_help` 按需读取，不能只让调用方去看 README。
 3. 在上面的表格里登记。
+
+## 稳定性与调用效率
+
+三个独立包共用经过同步校验的 HTTP/MCP 运行时：连接池、总超时、取消、有限并发、明确错误与结构化结果。构建规范、同类实现对照、兼容性变化和验证边界见 [MCP 构建与稳定性](docs/mcp-reliability.md)。
+
+默认保留全部工具；在 MCP 进程环境中设置 `MCP_TOOL_GROUPS` 可按用途减少工具发现和模型上下文成本。例如方舟 `image,jobs,help`、百炼 `language,help`、豆包语音 `realtime,help`。分组在启动时固定，更改后需重启。
+
+开发检查：
+
+```bash
+python3 scripts/sync_shared.py --check
+uv sync --locked --project servers/volcengine-ark
+uv sync --locked --project servers/ali-bailian
+uv sync --locked --project servers/doubao-speech
+servers/volcengine-ark/.venv/bin/python -m unittest discover -s servers/volcengine-ark/tests
+servers/ali-bailian/.venv/bin/python -m unittest discover -s servers/ali-bailian/tests
+servers/doubao-speech/.venv/bin/python -m unittest discover -s servers/doubao-speech/tests
+servers/doubao-speech/.venv/bin/python -m unittest discover -s tests
+```
+
+共享源码修改后执行 `python3 scripts/sync_shared.py`。CI 检查独立包、同步漂移、故障契约与真实 stdio，不需要云服务密钥。
+
+## 官方契约与文档更新
+
+三个 MCP 的逐项接口/模型核实、差异修正及文档抓取方式见 [官方契约审计](docs/official-contracts.md)。
+
+`python3 scripts/upstream_docs.py --check-coverage` 检查远程工具的官方来源映射；`python3 scripts/upstream_docs.py` 拉取正文并生成模型/接口候选变化及完整 diff。已准备手动触发的 GitHub Actions 工作流，尚未启用定时运行或自动修改实现。

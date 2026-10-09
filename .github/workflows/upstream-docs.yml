@@ -1,0 +1,37 @@
+name: Official MCP contract documents
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: upstream-docs-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  documents:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Fetch official bodies and compare reviewed baseline
+        run: python scripts/upstream_docs.py --output .upstream-docs
+      - name: Attach audit summary
+        if: always()
+        run: |
+          if test -f .upstream-docs/report.md; then
+            cat .upstream-docs/report.md >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - name: Save bodies, fingerprints and impacted tools
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: official-document-audit-${{ github.run_id }}
+          path: .upstream-docs/
+          retention-days: 14
+          if-no-files-found: error

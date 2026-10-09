@@ -1,0 +1,35 @@
+name: MCP offline contracts
+
+on: [push, pull_request]
+
+jobs:
+  offline:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.10", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Check shared runtime drift
+        run: |
+          uv run --no-project python scripts/sync_shared.py --check
+          uv run --no-project python scripts/upstream_docs.py --check-coverage
+      - name: Install locked standalone packages
+        run: |
+          uv sync --locked --project servers/volcengine-ark
+          uv sync --locked --project servers/ali-bailian
+          uv sync --locked --project servers/doubao-speech
+      - name: Provider contracts and real stdio
+        run: |
+          servers/volcengine-ark/.venv/bin/python -m unittest discover -s servers/volcengine-ark/tests
+          servers/ali-bailian/.venv/bin/python -m unittest discover -s servers/ali-bailian/tests
+          servers/doubao-speech/.venv/bin/python -m unittest discover -s servers/doubao-speech/tests
+          servers/doubao-speech/.venv/bin/python -m unittest discover -s tests
+      - name: Build standalone distributions
+        run: |
+          uv build --project servers/volcengine-ark
+          uv build --project servers/ali-bailian
+          uv build --project servers/doubao-speech
