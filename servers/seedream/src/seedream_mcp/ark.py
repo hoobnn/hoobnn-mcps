@@ -106,7 +106,11 @@ def post(body, timeout):
     )
     try:
         with urllib.request.urlopen(req, timeout=timeout) as r:
-            return json.loads(r.read()), None
+            data = json.loads(r.read())
+            if not isinstance(data, dict):
+                return None, "响应状态未知：服务端返回非对象JSON"
+            data.setdefault("request_id", r.headers.get("X-Request-Id"))
+            return data, None
     except urllib.error.HTTPError as e:
         raw = e.read().decode(errors="replace")
         try:
@@ -116,40 +120,8 @@ def post(body, timeout):
             return None, f"HTTP {e.code}: {raw[:500]}"
     except (urllib.error.URLError, TimeoutError) as e:
         return None, f"请求失败：{e}"
-
-
-def save(resp, out_dir):
-    """out_dir 为 None 时不落盘，只收集图片 URL。"""
-    if out_dir:
-        out_dir.mkdir(parents=True, exist_ok=True)
-    files, layers, errors = [], [], []
-    for i, d in enumerate(resp.get("data") or []):
-        if d.get("error"):
-            errors.append({"index": i, **d["error"]})
-            continue
-        ext = "jpg" if d.get("output_format") == "jpeg" else d.get("output_format") or "png"
-        z = d.get("z_index")
-        if not out_dir:
-            if d.get("url"):
-                files.append(d["url"])
-                if z is not None:
-                    layers.append({k: d.get(k) for k in ("z_index", "name", "description", "size", "bounding_box")}
-                                  | {"url": d["url"]})
-            continue
-        path = out_dir / (f"layer-{z:02d}.{ext}" if z is not None else f"image-{i + 1:02d}.{ext}")
-        if d.get("b64_json"):
-            path.write_bytes(base64.b64decode(d["b64_json"]))
-        elif d.get("url"):
-            urllib.request.urlretrieve(d["url"], path)
-        else:
-            continue
-        files.append(str(path))
-        if z is not None:
-            layers.append({k: d.get(k) for k in ("z_index", "name", "description", "size", "bounding_box")}
-                          | {"file": str(path)})
-    if layers and out_dir:
-        (out_dir / "layers.json").write_text(json.dumps(layers, ensure_ascii=False, indent=2))
-    return files, layers, errors
+    except (OSError, ValueError) as e:
+        return None, f"响应状态未知：{e}"
 
 
 def generate(o, out_dir, timeout=300, mode="local"):
@@ -166,18 +138,57 @@ def generate(o, out_dir, timeout=300, mode="local"):
         result["error"] = err
         return result
 
+    from .products import STORE
+    job = STORE.create("image", model, out_dir, mode,
+                       summary={"size": o["size"], "group": o["group"], "layers": o["layers"]})
     resp, err = post(body, timeout)
     if err:
-        result["error"] = err
-        return result
+        job.update(error=err, state="failed" if err.startswith(("HTTP 4", "未设置")) else "unknown")
+        STORE.save(job)
+        return STORE.result(job)
     if resp.get("error"):
-        result["error"] = f"{resp['error'].get('code')}: {resp['error'].get('message')}"
-        return result
-    if mode == "url":
-        out_dir = None
-    files, layers, errors = save(resp, out_dir)
-    result.update(ok=bool(files), files=files, layers=layers, errors=errors,
-                  usage=resp.get("usage"), out_dir=str(out_dir) if out_dir else None)
-    if not files:
-        result["error"] = "没有生成任何图片"
-    return result
+        job.update(state="failed", error=str(resp["error"]))
+        STORE.save(job)
+        return STORE.result(job)
+    STORE.record_response(job, resp)
+    return deliver_image(resp, job)
+
+
+def deliver_image(resp, job):
+    from .products import STORE
+    from .jobs import atomic_bytes
+    errors = []
+    job.update(usage=resp.get("usage"), request_id=resp.get("request_id"), state="generated")
+    STORE.save(job)
+    for i, item in enumerate(resp.get("data") or []):
+        if item.get("error"):
+            errors.append({"index": i, "error": item["error"]})
+            continue
+        ext = "jpg" if item.get("output_format") == "jpeg" else "png"
+        z = item.get("z_index")
+        name = f"layer-{z:02d}.{ext}" if isinstance(z, int) else f"image-{i + 1:02d}.{ext}"
+        metadata = {k: item.get(k) for k in ("z_index", "name", "description", "size", "bounding_box")}
+        try:
+            STORE.add(job, name, url=item.get("url"),
+                      data=base64.b64decode(item["b64_json"], validate=True) if item.get("b64_json") else None,
+                      metadata=metadata)
+        except (OSError, ValueError) as exc:
+            errors.append({"index": i, "error": str(exc)})
+    job["result"]["errors"] = errors
+    if not job["artifacts"]:
+        job.update(state="failed", error="没有可交付的图片")
+        STORE.save(job)
+        return STORE.result(job)
+    STORE.deliver(job)
+    layers = [{**a["metadata"], **({"file": a["file"]} if a.get("file") else {"url": a.get("url")})}
+              for a in job["artifacts"] if a.get("metadata", {}).get("z_index") is not None]
+    job["result"]["layers"] = layers
+    if layers and job["mode"] == "local":
+        try:
+            atomic_bytes(Path(job["out_dir"]) / "layers.json", json.dumps(layers, ensure_ascii=False, indent=2).encode())
+        except OSError as exc:
+            job.update(state="download_failed", error=f"图层索引保存失败：{exc}")
+    if errors and job["state"] == "delivered":
+        job.update(state="partial", error="部分图片生成失败；恢复不会重新生成失败项")
+    STORE.save(job)
+    return STORE.result(job)

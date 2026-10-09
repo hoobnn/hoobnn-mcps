@@ -1,7 +1,7 @@
 [project]
 name = "seedream-mcp"
-version = "0.2.0"
-description = "火山方舟 Seedream 5.0（pro / lite）图片生成 MCP server"
+version = "0.3.0"
+description = "火山方舟图片、Seedance视频、语言模型、搜索、向量与任务恢复 MCP server"
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.10"
