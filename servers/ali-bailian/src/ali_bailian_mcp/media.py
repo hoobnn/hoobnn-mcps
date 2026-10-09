@@ -1,10 +1,12 @@
-"""百炼语音合成、语音识别、视频生成，以及本地文件上传到百炼临时存储。只依赖标准库。"""
+"""百炼语音合成、语音识别、视频生成，以及本地文件上传到百炼临时存储。通过共享 HTTP 连接池请求。"""
 
 import base64
 import re
 import time
 import urllib.error
 import urllib.request
+
+from . import transport
 import uuid
 import wave
 from pathlib import Path
@@ -48,14 +50,12 @@ def upload(src, model):
               "x-oss-object-acl": d["x_oss_object_acl"], "x-oss-forbid-overwrite": d["x_oss_forbid_overwrite"],
               "key": key, "success_action_status": "200"}
     boundary = uuid.uuid4().hex
-    body = b"".join(f'--{boundary}\r\nContent-Disposition: form-data; name="{k}"\r\n\r\n{v}\r\n'.encode()
-                    for k, v in fields.items())
-    body += (f'--{boundary}\r\nContent-Disposition: form-data; name="file"; filename="{p.name}"\r\n'
-             f"Content-Type: application/octet-stream\r\n\r\n").encode() + p.read_bytes() + f"\r\n--{boundary}--\r\n".encode()
+    body = transport.multipart(fields, p, boundary)
     req = urllib.request.Request(d["upload_host"], data=body,
-                                 headers={"Content-Type": f"multipart/form-data; boundary={boundary}"})
+                                 headers={"Content-Type": f"multipart/form-data; boundary={boundary}",
+                                          "Content-Length": str(transport.multipart_length(fields, p, boundary))})
     try:
-        urllib.request.urlopen(req, timeout=600).close()
+        transport.urlopen(req, timeout=600).close()
     except urllib.error.HTTPError as e:
         raise InputError(f"上传 {p.name} 失败：HTTP {e.code} {e.read()[:300]!r}")
     except (urllib.error.URLError, TimeoutError) as e:
@@ -117,9 +117,10 @@ def text_to_speech(o, out_dir, mode="local"):
               "chunks": [{"text": text, "state": "unsubmitted", "usage": 0} for text in chunks]}
     job = STORE.create("tts", model, out_dir, mode, resume=resume,
                        summary={"voice": o["voice"], "chunks": len(chunks)})
-    job["state"] = "partial"
-    STORE.save(job)
-    return resume_tts(job)
+    with STORE.processing(job):
+        job["state"] = "partial"
+        STORE.save(job)
+        return resume_tts(job)
 
 
 def resume_tts(job):
@@ -214,6 +215,9 @@ def resume_tts(job):
 def speech_to_text(o):
     model = o["model"]
     result = {"ok": False, "model": model, "text": "", "language": None, "emotion": None, "usage": None, "error": None}
+    if not model.startswith("qwen3-asr-flash") or "realtime" in model or "filetrans" in model:
+        result["error"] = "此工具仅支持qwen3-asr-flash及非实时快照；其他ASR模型采用不同协议"
+        return result
     src = o["audio"]
     try:
         if is_remote(src):
@@ -253,7 +257,8 @@ def build_video_body(o, model):
     groups = [("first_frame", [o["first_frame"]] if o["first_frame"] else []),
               ("last_frame", [o["last_frame"]] if o["last_frame"] else []),
               ("reference_image", o["reference_images"]), ("reference_video", o["reference_videos"]),
-              ("reference_audio", o["reference_audios"]), ("file", [o["file"]] if o["file"] else [])]
+              ("reference_audio", o["reference_audios"]), ("file", [o["file"]] if o["file"] else []),
+              ("link", [o.get("link")] if o.get("link") else [])]
     for kind, srcs in groups:
         for s in srcs:
             if not is_remote(s):
@@ -276,15 +281,32 @@ def build_video_body(o, model):
 def generate_video(o, out_dir, wait, mode="local"):
     model = VIDEO_MODELS.get(o["model"], o["model"])
     result = {"ok": False, "model": model, "task_id": None, "status": None, "files": [], "usage": None, "error": None}
-    if not model.startswith("wan3"):
+    if model not in VIDEO_MODELS.values():
         result["error"] = "目前只支持万相 3.0：model=\"wan\"（wan3.0-video）或 \"wan-fast\"（wan3.0-video-prime）"
         return result
-    if not o["prompt"] and not any(o[k] for k in ("first_frame", "reference_images", "reference_videos")):
+    if not o["prompt"] and not any(o.get(k) for k in ("first_frame", "reference_images", "reference_videos", "reference_audios", "file", "link")):
         result["error"] = "prompt 和参考素材至少要给一个"
         return result
     if o["last_frame"] and not o["first_frame"]:
         result["error"] = "last_frame 要和 first_frame 一起传"
         return result
+    references = any(o.get(k) for k in ("reference_images", "reference_videos", "reference_audios", "file", "link"))
+    if (o["first_frame"] or o["last_frame"]) and references:
+        return {**result, "error": "首尾帧不能与参考素材、file或link混用"}
+    if o["file"] and o.get("link"):
+        return {**result, "error": "file与link不能同时输入"}
+    if o.get("link") and not o["link"].startswith(("http://", "https://")):
+        return {**result, "error": "link必须为公开HTTP/HTTPS网页"}
+    if (o["file"] or o.get("link")) and o["prompt_extend"] is False:
+        return {**result, "error": "file/link参考要求prompt_extend=true"}
+    if o["resolution"] not in ("480P", "720P", "1080P") or o["ratio"] not in ("adaptive", "21:9", "16:9", "4:3", "1:1", "3:4", "9:16"):
+        return {**result, "error": "无效视频resolution或ratio"}
+    if o["duration"] is not None and o["duration"] != -1 and not 2 <= o["duration"] <= 30:
+        return {**result, "error": "duration必须为-1或2–30秒"}
+    if o["seed"] is not None and o["seed"] != -1 and not 0 <= o["seed"] <= 2147483647:
+        return {**result, "error": "seed必须为-1或0–2147483647"}
+    if len(o["reference_images"]) > 10 or len(o["reference_videos"]) > 5 or len(o["reference_audios"]) > 5:
+        return {**result, "error": "参考图片最多10张，视频/音频分别最多5段"}
     try:
         body, oss = build_video_body(o, model)
     except InputError as e:
@@ -305,9 +327,10 @@ def query_video(task_id, out_dir, wait, mode="local", job_id=None):
             return poll_job(job, wait)
         return STORE.recover(job_id, handle)
     job = STORE.create("video", None, out_dir, mode)
-    job.update(task_id=task_id, state="running")
-    STORE.save(job)
-    return poll_job(job, wait)
+    with STORE.processing(job):
+        job.update(task_id=task_id, state="running")
+        STORE.save(job)
+        return poll_job(job, wait)
 
 
 def poll_job(job, wait=0):
@@ -320,7 +343,7 @@ def poll_job(job, wait=0):
         if error:
             job["error"] = error
             STORE.save(job)
-            return STORE.result(job)
+            return {**STORE.result(job), "ok": False, "query_failed": True}
         out = response.get("output") or {}
         status = out.get("task_status")
         job.update(usage=response.get("usage"), request_id=response.get("request_id"), error=None)
@@ -342,4 +365,4 @@ def poll_job(job, wait=0):
         STORE.save(job)
         if time.monotonic() >= deadline:
             return STORE.result(job)
-        time.sleep(min(5, max(0, deadline - time.monotonic())))
+        transport.sleep(min(5, max(0, deadline - time.monotonic())))

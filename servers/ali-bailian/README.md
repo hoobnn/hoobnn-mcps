@@ -23,7 +23,7 @@
 
 语言模型别名：`max` → `qwen3.8-max`（默认，能看图）、`plus` → `qwen3.7-plus`、`flash` → `qwen3.8-flash`；其他模型直接写 ID，如 `deepseek-v4-pro`、`kimi-k3`、`glm-5.3`。`chat` 统一走流式接口，支持多轮历史、看图、深度思考开关、JSON 输出和联网搜索。
 
-视频是异步任务：`generate_video` 默认最多等 90 秒，没完成就返回 `task_id`，再用 `query_video` 继续等，避免撞上客户端的工具调用超时。视频的参考素材和本地文件会自动上传到百炼临时存储（48 小时有效）。
+视频是异步任务：`generate_video` 默认 `wait=0`，提交后返回 `task_id`；`query_video` 也默认单次查询。需要短轮询可显式指定 `wait`，最多 90 秒。视频的参考素材和本地文件会自动上传到百炼临时存储（48 小时有效）。
 
 模型不支持的明显参数组合在本地直接报错，其余交给服务端校验。
 
@@ -38,7 +38,7 @@
 
 参数说明见工具描述（`src/ali_bailian_mcp/server.py`），接口细节以百炼的[文生图](https://help.aliyun.com/zh/model-studio/text-to-image)、[OpenAI 兼容接口](https://help.aliyun.com/zh/model-studio/compatibility-of-openai-with-dashscope)、[千问 TTS](https://help.aliyun.com/zh/model-studio/qwen-tts-api)、[千问 ASR](https://help.aliyun.com/zh/model-studio/qwen-asr-api-reference) 和[万相 3.0 视频](https://help.aliyun.com/zh/model-studio/wan3-video-generation-api-reference)文档为准。
 
-## 0.3 新增接入（未测试）
+## 0.3 新增接入（待云端验证）
 
 | 工具 | 能力 | 官方契约 |
 |---|---|---|
@@ -79,14 +79,14 @@ HappyHorse编辑输入视频3–60秒，输出最多15秒。数字人音频须�
 
 `BAILIAN_JOB_DIR` 默认 `~/.local/share/ali-bailian-mcp/jobs`。任务记录使用独立UUID，生成请求前写入；默认产物目录也增加随机后缀，避免同秒调用碰撞。
 
-- 图片：保存完整响应和逐项URL，再逐张交付；恢复只补下载。
+- 图片：保存完整响应和逐项URL，再有限并发交付；恢复只补下载。
 - 视频：保存云端 `task_id`，重启后查询原任务，刷新结果URL；不重新提交生成。
 - TTS：逐段保存文本、生成URL和文件；恢复跳过已合成段，只继续尚未提交的段，再拼接WAV。状态未知的段禁止自动重复合成。明确被拒绝的段可由显式恢复调用再次提交。
 - 音色设计：先留档音色ID再交付试听；恢复只补试听交付，不再次创建音色。
 - 工具调用超时且没有拿到ID，可通过 `list_jobs` 按时间、模型和摘要查找记录。
 
 新增返回 `job_id`、`job_state`、`artifacts`、`request_id`。`job_state` 区分 `unknown` / `running` / `generated` / `partial` / `download_failed` / `failed` / `delivered`。
-生成工具的 `ok=true` 表示全部交付；组图部分成功不再只因有一张图就返回成功。`get_job.ok` 仅表示记录读取成功。
+`ok` 表示本次调用成功；已提交或运行中返回 `ok=true, completed=false`，全部交付返回 `completed=true`。组图部分失败使用 MCP `isError=true`，并保留成功产物。`get_job.ok` 仅表示记录读取成功。
 `artifacts` 含文件、来源URL、逐项错误、字节数与SHA-256；合成WAV另含实际时长和采样率。
 
 下载先写临时文件，检查非空和HTTP长度后原子替换；恢复用SHA-256跳过完整文件。校验下载完整性不等于检查视觉/听觉质量。
@@ -94,6 +94,14 @@ HappyHorse编辑输入视频3–60秒，输出最多15秒。数字人音频须�
 任务记录保留签名URL、生成响应及TTS文本；不保存API Key。`url`模式也写任务记录，音色试听若只有内联数据会保存本地文件。
 分段文件和响应缓存是恢复所需资产，不自动清理。恢复锁使用POSIX `flock`，面向macOS/Linux。
 
-本轮遵照用户要求未运行测试、未发起真实API请求、未更新本机已安装MCP；开发状态见 [接入记录](../../docs/mcp-expansion.md)。
+已通过离线故障测试与真实 stdio 检查；未发起云端付费生成，新增产品仍待云端验证。历史接入范围见 [接入记录](../../docs/mcp-expansion.md)，本轮验证见 [稳定性记录](../../docs/mcp-reliability.md)。
 
 产物的 `media_info` 读取PNG头中的实际宽高；若系统已有 `ffprobe`，可读取其他媒体的实际尺寸、时长和音轨信息。不可读取时显式返回 `available=false`，不把请求参数当作实际输出规格。无需新增Python依赖。
+
+## 运行时与稳定性
+
+共享连接池、总超时、工具分组、错误语义和迁移说明见 [MCP 构建与稳定性](../../docs/mcp-reliability.md)。完整工具说明可调用 `get_tool_help(tool="工具名")`。
+
+## 官方契约与最新文档
+
+2026-10-10 完成全部工具和默认模型的官方对照；详见 [百炼审计](../../docs/audits/ali-bailian.md)。`list_models` 现在查询原生 `/api/v1/models` 全模态分页目录，返回 `complete` 与官方元数据；目录存在不等于账号授权。北京建议将 `DASHSCOPE_BASE_URL` 设置为真实 workspace 根域名。Wan3 支持 `link` 网页参考，不能与 `file` 同用，也不能与首尾帧混用。ASR 工具仅接入 Qwen3-ASR-Flash HTTP 系列，Fun-ASR、filetrans 和 realtime 需要独立协议。

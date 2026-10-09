@@ -11,6 +11,14 @@ from .jobs import Store
 STORE = Store("BAILIAN_JOB_DIR", "~/.local/share/ali-bailian-mcp/jobs")
 CUSTOMIZATION = "/api/v1/services/audio/tts/customization"
 DOCS = {
+    "image": "https://help.aliyun.com/zh/model-studio/qwen-image-generation-and-editing-api-reference",
+    "wan_image": "https://help.aliyun.com/zh/model-studio/wan-image-generation-and-editing-api-reference",
+    "chat": "https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions",
+    "tts": "https://help.aliyun.com/zh/model-studio/qwen-tts-api",
+    "asr": "https://help.aliyun.com/zh/model-studio/qwen-asr-api-reference",
+    "video": "https://help.aliyun.com/zh/model-studio/wan3-video-generation-api-reference",
+    "models": "https://help.aliyun.com/zh/model-studio/list-models",
+    "upload": "https://help.aliyun.com/zh/model-studio/get-temporary-file-url",
     "voice_clone": "https://help.aliyun.com/en/model-studio/voice-clone-design-http-api",
     "voice_design": "https://help.aliyun.com/zh/model-studio/voice-design-api-references",
     "video_edit": "https://help.aliyun.com/en/model-studio/happyhorse-video-edit-api-reference",
@@ -68,8 +76,8 @@ def clone_voice(audio, target_model, preferred_name, text=None, language=None):
 
 
 def design_voice(voice_prompt, preview_text, target_model, preferred_name, out_dir, mode):
-    if not voice_prompt.strip() or len(voice_prompt) > 2048 or not preview_text.strip():
-        return {"ok": False, "error": "声音描述须为1–2048字符，preview_text不能为空"}
+    if not voice_prompt.strip() or len(voice_prompt) > 2048 or not preview_text.strip() or len(preview_text) > 1024:
+        return {"ok": False, "error": "声音描述须为1–2048字符，preview_text须为1–1024字符"}
     if not target_model.startswith("qwen3-tts-vd-") or "realtime" in target_model:
         return {"ok": False, "error": "请选择非实时qwen3-tts-vd模型"}
     if not re.fullmatch(r"[A-Za-z0-9_]{1,16}", preferred_name):
@@ -79,18 +87,19 @@ def design_voice(voice_prompt, preview_text, target_model, preferred_name, out_d
             "parameters": {"sample_rate": 24000, "response_format": "wav"}}
     job = STORE.create("voice_preview", target_model, out_dir, mode,
                        summary={"preferred_name": preferred_name})
-    response, error = api(CUSTOMIZATION, body)
-    result = voice_result(response, error)
-    result["target_model"] = result.get("target_model") or target_model
-    # Store the voice ID before delivering preview audio; download errors must not create another voice.
-    job.update(request_id=result["request_id"], usage=result["usage"], result={k: v for k, v in result.items() if k != "output"})
-    STORE.save(job)
-    if error or not result["voice"]:
-        job.update(error=error or "响应缺少音色ID，不自动重新创建", state="unknown")
+    with STORE.processing(job):
+        response, error = api(CUSTOMIZATION, body)
+        result = voice_result(response, error)
+        result["target_model"] = result.get("target_model") or target_model
+        # Store the voice ID before delivering preview audio; download errors must not create another voice.
+        job.update(request_id=result["request_id"], usage=result["usage"], result={k: v for k, v in result.items() if k != "output"})
         STORE.save(job)
-        return STORE.result(job)
-    STORE.record_response(job, response)
-    return deliver_preview(job, response)
+        if error or not result["voice"]:
+            job.update(error=error or "响应缺少音色ID，不自动重新创建", state="unknown")
+            STORE.save(job)
+            return STORE.result(job)
+        STORE.record_response(job, response)
+        return deliver_preview(job, response)
 
 
 def deliver_preview(job, response):
@@ -151,23 +160,24 @@ def submit_video(body, out_dir, wait, mode, path="/api/v1/services/aigc/video-ge
     if not 0 <= wait <= 90:
         return {"ok": False, "error": "wait范围为0–90秒"}
     job = STORE.create("video", body["model"], out_dir, mode, summary=body.get("parameters"))
-    headers = {"X-DashScope-Async": "enable"}
-    if oss:
-        headers["X-DashScope-OssResourceResolve"] = "enable"
-    response, error = api_with_headers(path, body, headers)
-    if error:
-        job.update(error=error, state="failed" if error.startswith(("HTTP 4", "未设置")) else "unknown")
+    with STORE.processing(job):
+        headers = {"X-DashScope-Async": "enable"}
+        if oss:
+            headers["X-DashScope-OssResourceResolve"] = "enable"
+        response, error = api_with_headers(path, body, headers)
+        if error:
+            job.update(error=error, state="failed" if error.startswith(("HTTP 4", "未设置")) else "unknown")
+            STORE.save(job)
+            return STORE.result(job)
+        output = response.get("output") or {}
+        job.update(task_id=output.get("task_id"), request_id=response.get("request_id"))
+        if not job["task_id"]:
+            job["error"] = "响应缺少task_id，禁止自动重新提交"
+            STORE.save(job)
+            return STORE.result(job)
+        job.update(state="running", result={"status": output.get("task_status") or "PENDING"})
         STORE.save(job)
-        return STORE.result(job)
-    output = response.get("output") or {}
-    job.update(task_id=output.get("task_id"), request_id=response.get("request_id"))
-    if not job["task_id"]:
-        job["error"] = "响应缺少task_id，禁止自动重新提交"
-        STORE.save(job)
-        return STORE.result(job)
-    job.update(state="running", result={"status": output.get("task_status") or "PENDING"})
-    STORE.save(job)
-    return STORE.result(job) if wait == 0 else media.poll_job(job, wait)
+        return STORE.result(job) if wait == 0 else media.poll_job(job, wait)
 
 
 def api_with_headers(path, body, headers):

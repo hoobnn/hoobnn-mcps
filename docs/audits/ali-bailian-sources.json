@@ -1,0 +1,251 @@
+[
+  {
+    "id": "bailian-qwen-image",
+    "url": "https://help.aliyun.com/zh/model-studio/qwen-image-generation-and-editing-api-reference",
+    "tools": [
+      "generate_image"
+    ],
+    "kind": "api",
+    "fetch_url": "https://help.aliyun.com/zh/model-studio/qwen-image-generation-and-editing-api-reference.md"
+  },
+  {
+    "id": "bailian-qwen-image-legacy",
+    "url": "https://help.aliyun.com/zh/model-studio/qwen-image-api",
+    "tools": [
+      "generate_image"
+    ],
+    "kind": "api",
+    "fetch_url": "https://help.aliyun.com/zh/model-studio/qwen-image-api.md"
+  },
+  {
+    "id": "bailian-wan-image",
+    "url": "https://help.aliyun.com/zh/model-studio/wan-image-generation-and-editing-api-reference",
+    "tools": [
+      "generate_image"
+    ],
+    "kind": "api",
+    "fetch_url": "https://help.aliyun.com/zh/model-studio/wan-image-generation-and-editing-api-reference.md"
+  },
+  {
+    "id": "bailian-z-image",
+    "url": "https://help.aliyun.com/zh/model-studio/z-image-api-reference",
+    "tools": [
+      "generate_image"
+    ],
+    "kind": "api",
+    "fetch_url": "https://help.aliyun.com/zh/model-studio/z-image-api-reference.md"
+  },
+  {
+    "id": "bailian-chat",
+    "url": "https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions",
+    "tools": [
+      "chat"
+    ],
+    "kind": "api",
+    "fetch_url": "https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions.md"
+  },
+  {
+    "id": "bailian-chat-models",
+    "url": "https://help.aliyun.com/zh/model-studio/text-generation-model",
+    "tools": [
+      "chat"
+    ],
+    "kind": "models",
+    "fetch_url": "https://help.aliyun.com/zh/model-studio/text-generation-model.md"
+  },
+  {
+    "id": "bailian-vision-models",
+    "url": "https://help.aliyun.com/zh/model-studio/vision-model",
+    "tools": [
+      "chat"
+    ],
+    "kind": "models",
+    "fetch_url": "https://help.aliyun.com/zh/model-studio/vision-model.md"
+  },
+  {
+    "id": "bailian-tts",
+    "url": "https://help.aliyun.com/zh/model-studio/qwen-tts-api",
+    "tools": [
+      "text_to_speech"
+    ],
+    "kind": "api",
+    "fetch_url": "https://help.aliyun.com/zh/model-studio/qwen-tts-api.md"
+  },
+  {
+    "id": "bailian-tts-models",
+    "url": "https://help.aliyun.com/zh/model-studio/tts-model",
+    "tools": [
+      "text_to_speech",
+      "clone_voice",
+      "design_voice"
+    ],
+    "kind": "models",
+    "fetch_url": "https://help.aliyun.com/zh/model-studio/tts-model.md"
+  },
+  {
+    "id": "bailian-asr",
+    "url": "https://help.aliyun.com/zh/model-studio/qwen-asr-api-reference",
+    "tools": [
+      "speech_to_text"
+    ],
+    "kind": "api",
+    "fetch_url": "https://help.aliyun.com/zh/model-studio/qwen-asr-api-reference.md"
+  },
+  {
+    "id": "bailian-asr-models",
+    "url": "https://help.aliyun.com/zh/model-studio/asr-model",
+    "tools": [
+      "speech_to_text"
+    ],
+    "kind": "models",
+    "fetch_url": "https://help.aliyun.com/zh/model-studio/asr-model.md"
+  },
+  {
+    "id": "bailian-voice-clone",
+    "url": "https://help.aliyun.com/zh/model-studio/voice-clone-design-http-api",
+    "tools": [
+      "clone_voice",
+      "list_voices",
+      "get_voice"
+    ],
+    "kind": "api",
+    "fetch_url": "https://help.aliyun.com/zh/model-studio/voice-clone-design-http-api.md"
+  },
+  {
+    "id": "bailian-voice-design",
+    "url": "https://help.aliyun.com/zh/model-studio/voice-design-api-references",
+    "tools": [
+      "design_voice",
+      "list_voices",
+      "get_voice"
+    ],
+    "kind": "api",
+    "fetch_url": "https://help.aliyun.com/zh/model-studio/voice-design-api-references.md"
+  },
+  {
+    "id": "bailian-wan-video",
+    "url": "https://help.aliyun.com/zh/model-studio/wan3-video-generation-api-reference",
+    "tools": [
+      "generate_video",
+      "query_video",
+      "recover_job"
+    ],
+    "kind": "api",
+    "fetch_url": "https://help.aliyun.com/zh/model-studio/wan3-video-generation-api-reference.md"
+  },
+  {
+    "id": "bailian-happyhorse-edit",
+    "url": "https://help.aliyun.com/zh/model-studio/happyhorse-video-edit-api-reference",
+    "tools": [
+      "edit_video",
+      "query_video"
+    ],
+    "kind": "api",
+    "fetch_url": "https://help.aliyun.com/zh/model-studio/happyhorse-video-edit-api-reference.md"
+  },
+  {
+    "id": "bailian-wan-s2v",
+    "url": "https://help.aliyun.com/zh/model-studio/wan-s2v-api",
+    "tools": [
+      "animate_portrait",
+      "query_video"
+    ],
+    "kind": "api",
+    "fetch_url": "https://help.aliyun.com/zh/model-studio/wan-s2v-api.md"
+  },
+  {
+    "id": "bailian-embedding",
+    "url": "https://help.aliyun.com/zh/model-studio/embedding",
+    "tools": [
+      "embed"
+    ],
+    "kind": "api",
+    "fetch_url": "https://help.aliyun.com/zh/model-studio/embedding.md"
+  },
+  {
+    "id": "bailian-multimodal-embedding",
+    "url": "https://help.aliyun.com/zh/model-studio/multimodal-embedding-api-reference",
+    "tools": [
+      "embed"
+    ],
+    "kind": "api",
+    "fetch_url": "https://help.aliyun.com/zh/model-studio/multimodal-embedding-api-reference.md"
+  },
+  {
+    "id": "bailian-rerank",
+    "url": "https://help.aliyun.com/zh/model-studio/text-rerank-api",
+    "tools": [
+      "rerank"
+    ],
+    "kind": "api",
+    "fetch_url": "https://help.aliyun.com/zh/model-studio/text-rerank-api.md"
+  },
+  {
+    "id": "bailian-catalog",
+    "url": "https://help.aliyun.com/zh/model-studio/list-models",
+    "tools": [
+      "list_models"
+    ],
+    "kind": "api",
+    "fetch_url": "https://help.aliyun.com/zh/model-studio/list-models.md"
+  },
+  {
+    "id": "bailian-permissions",
+    "url": "https://help.aliyun.com/zh/model-studio/list-model-permissions",
+    "tools": [
+      "list_models"
+    ],
+    "kind": "api",
+    "fetch_url": "https://help.aliyun.com/zh/model-studio/list-model-permissions.md"
+  },
+  {
+    "id": "bailian-upload",
+    "url": "https://help.aliyun.com/zh/model-studio/get-temporary-file-url",
+    "tools": [
+      "generate_video",
+      "edit_video",
+      "animate_portrait"
+    ],
+    "kind": "guide",
+    "fetch_url": "https://help.aliyun.com/zh/model-studio/get-temporary-file-url.md"
+  },
+  {
+    "id": "bailian-video-models",
+    "url": "https://help.aliyun.com/zh/model-studio/video-generate-edit-model",
+    "tools": [
+      "generate_video",
+      "edit_video",
+      "animate_portrait"
+    ],
+    "kind": "models",
+    "fetch_url": "https://help.aliyun.com/zh/model-studio/video-generate-edit-model.md"
+  },
+  {
+    "id": "bailian-model-lifecycle",
+    "url": "https://help.aliyun.com/zh/model-studio/newly-released-models",
+    "tools": [],
+    "kind": "models",
+    "fetch_url": "https://help.aliyun.com/zh/model-studio/newly-released-models.md"
+  },
+  {
+    "id": "bailian-model-directory",
+    "url": "https://help.aliyun.com/zh/model-studio/models",
+    "tools": [],
+    "kind": "models",
+    "fetch_url": "https://help.aliyun.com/zh/model-studio/models.md"
+  },
+  {
+    "id": "bailian-model-pricing",
+    "url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+    "tools": [],
+    "kind": "models",
+    "fetch_url": "https://help.aliyun.com/zh/model-studio/model-pricing.md"
+  },
+  {
+    "id": "bailian-rate-limit",
+    "url": "https://help.aliyun.com/zh/model-studio/rate-limit",
+    "tools": [],
+    "kind": "guide",
+    "fetch_url": "https://help.aliyun.com/zh/model-studio/rate-limit.md"
+  }
+]

@@ -9,7 +9,7 @@ import time
 import uuid
 from pathlib import Path
 
-from mcp.server.mcpserver import MCPServer
+from .mcp_runtime import ReliableMCPServer
 
 from . import dashscope, media, products
 
@@ -18,11 +18,17 @@ MODE = os.environ.get("BAILIAN_RESOURCE_MODE", "local").strip().lower()
 if MODE not in ("local", "url"):
     raise SystemExit(f"BAILIAN_RESOURCE_MODE 只能是 local 或 url，当前是 {MODE!r}")
 
-mcp = MCPServer("ali-bailian")
+mcp = ReliableMCPServer("ali-bailian", groups={
+    "image": {"generate_image"}, "language": {"chat"},
+    "speech": {"text_to_speech", "speech_to_text", "clone_voice", "design_voice", "list_voices", "get_voice"},
+    "video": {"generate_video", "query_video", "edit_video", "animate_portrait"},
+    "embedding": {"embed", "rerank"}, "jobs": {"list_jobs", "get_job", "recover_job"},
+    "help": {"list_models", "list_capabilities", "get_tool_help"}})
 
 
 def target_dir(out_dir):
-    return Path(out_dir).expanduser() if out_dir else OUT_ROOT / (time.strftime("%Y%m%d-%H%M%S") + "-" + uuid.uuid4().hex[:8])
+    root = Path(out_dir).expanduser() if out_dir else OUT_ROOT
+    return root / (time.strftime("%Y%m%d-%H%M%S") + "-" + uuid.uuid4().hex[:8])
 
 
 @mcp.tool()
@@ -164,7 +170,7 @@ def speech_to_text(
     - context：背景文字，提高专有名词、人名、术语的识别准确率，如「这是一段关于 Kubernetes 和 Istio 的技术分享」。
     - language：已知语种时指定（zh、en、ja、ko、yue 等），能提高准确率；不传自动识别。
     - itn：是否把口语数字转成阿拉伯数字（如「二零二六年」→「2026年」），默认不转。
-    - model：默认 qwen3-asr-flash，也可写 fun-asr-flash-2026-06-15 等其他 ASR 模型 ID。
+    - model：默认 qwen3-asr-flash，也可写其非实时快照 ID；filetrans/realtime及Fun-ASR使用不同协议。
 
     按音频时长计费。返回 ok、model、text、language、emotion、usage、error。
     """
@@ -181,6 +187,7 @@ def generate_video(
     reference_videos: list[str] | None = None,
     reference_audios: list[str] | None = None,
     file: str | None = None,
+    link: str | None = None,
     resolution: str = "1080P",
     ratio: str = "adaptive",
     duration: int | None = None,
@@ -188,7 +195,7 @@ def generate_video(
     prompt_extend: bool | None = None,
     seed: int | None = None,
     watermark: bool = False,
-    wait: int = 90,
+    wait: int = 0,
     out_dir: str | None = None,
 ) -> dict:
     """用万相 3.0 生成视频（mp4，30fps，默认带同步音频）。异步任务：提交后最多等 wait 秒，没完成就返回 task_id，
@@ -202,7 +209,7 @@ def generate_video(
     - 多主体参考：reference_images（最多 10 张）、reference_videos（最多 5 段）、reference_audios（最多 5 段，
       如指定配音或音乐），prompt 里用「图1」「视频1」「音频1」按各自顺序指代。
     - 视频续写：只传 1 段 reference_videos，prompt 写「将视频1向后延长……」，输入加输出总长不超过 30 秒。
-    - file：参考文档（如产品资料 pptx / pdf），让模型据此做宣传视频。
+    - file/link：参考文档或公开网页，二选一，要求prompt_extend=true；不能与首尾帧混用。
     prompt 最多 2 万字，可以写分镜、镜头运动、台词和音效。
 
     参数：
@@ -211,7 +218,7 @@ def generate_video(
     - duration：2–30 秒，-1 让模型自己决定；不传用模型默认值。
     - audio：是否生成音轨（人声、音效、配乐），默认生成。
     - prompt_extend：是否让模型改写扩充提示词，默认开。seed：随机种子。watermark：是否加水印，默认不加。
-    - wait：本次调用最多等多少秒，默认 90；设 0 只提交不等。部分客户端的工具调用超时在 2 分钟左右，不要设太大。
+    - wait：默认 0，只提交不等；1–90 秒可轮询。生成与交付还受 MCP_TOOL_TIMEOUT_SEC 总预算限制。
     - out_dir：输出目录，默认 BAILIAN_OUT_DIR 下按时间戳新建。
 
     按输出视频的秒数计费，分辨率越高越贵，生成前先和用户确认时长和分辨率。
@@ -219,14 +226,14 @@ def generate_video(
     """
     opts = dict(prompt=prompt, model=model, first_frame=first_frame, last_frame=last_frame,
                 reference_images=reference_images or [], reference_videos=reference_videos or [],
-                reference_audios=reference_audios or [], file=file, resolution=resolution, ratio=ratio,
+                reference_audios=reference_audios or [], file=file, link=link, resolution=resolution, ratio=ratio,
                 duration=duration, audio=audio, prompt_extend=prompt_extend, seed=seed, watermark=watermark)
     return media.generate_video(opts, target_dir(out_dir), wait, mode=MODE)
 
 
 @mcp.tool()
-def query_video(task_id: str, wait: int = 90, out_dir: str | None = None, job_id: str | None = None) -> dict:
-    """查询 generate_video 的任务，最多等 wait 秒（默认 90，设 0 只查一次）。完成后下载视频，返回文件路径。
+def query_video(task_id: str, wait: int = 0, out_dir: str | None = None, job_id: str | None = None) -> dict:
+    """查询 generate_video 的任务，默认 wait=0 只查一次，1–90秒可轮询。完成后下载视频，返回文件路径。
 
     任务结果保留时间以服务端为准。job_id可复用原输出目录并跳过完整文件；返回字段同generate_video。
     """
@@ -234,12 +241,12 @@ def query_video(task_id: str, wait: int = 90, out_dir: str | None = None, job_id
 
 
 @mcp.tool()
-def list_models(keyword: str | None = None) -> dict:
-    """列出当前 API Key 能调用的百炼模型 ID，可按关键字过滤（不区分大小写），如 "image"、"qwen3.8"、"deepseek"。
-
-    列表包含语言、生图、语音、向量等走 OpenAI 兼容接口的模型；视频模型（万相 3.0）不在其中。返回 ok、models、error。
+def list_models(keyword: str | None = None, max_pages: int = 20) -> dict:
+    """查询百炼官方模型目录（包括视频等全模态），按名称过滤，最多max_pages页。
+    返回模型ID及能力、快照、上下文、价格等官方字段；complete标记是否取完分页。
+    目录存在不等于当前API Key拥有调用权限，account_verified固定false；权限需单独核实。
     """
-    return dashscope.list_models(keyword)
+    return dashscope.list_models(keyword, max_pages)
 
 
 @mcp.tool()
@@ -248,7 +255,7 @@ def clone_voice(audio: str, target_model: str = "qwen3-tts-vc-2026-01-22", prefe
     """用Qwen声音复刻创建固定音色。audio为本地wav/mp3/m4a（10MB以内）、公开URL或data URL，建议清晰单人录音。
     target_model默认非实时VC模型；preferred_name为1–16位字母/数字/下划线；text可提供准确录音文本。
     返回voice和target_model，合成时必须把两者传给text_to_speech，不能沿用默认flash模型。
-    会产生音色创建费用，不自动重试创建；模型支持与录音时长由服务端校验。新增功能尚未测试。
+    会产生音色创建费用，不自动重试创建；模型支持与录音时长由服务端校验。新增功能尚未完成云端验证。
     """
     return products.clone_voice(audio, target_model, preferred_name, text, language)
 
@@ -256,9 +263,9 @@ def clone_voice(audio: str, target_model: str = "qwen3-tts-vc-2026-01-22", prefe
 @mcp.tool()
 def design_voice(voice_prompt: str, preview_text: str, target_model: str = "qwen3-tts-vd-2026-01-26",
                  preferred_name: str = "custom_voice", out_dir: str | None = None) -> dict:
-    """通过中文/英文描述创建Qwen音色并保存试听wav。voice_prompt最多2048字符，preview_text为试听台词。
+    """通过中文/英文描述创建Qwen音色并保存试听wav。voice_prompt最多2048字符，preview_text为试听台词，最多1024字符。
     返回voice、target_model和试听files/job_id；后续text_to_speech必须指定这两个字段。
-    会产生音色创建费用；试听保存失败用recover_job补交付，不能再次调用design_voice代替恢复。尚未测试。
+    会产生音色创建费用；试听保存失败用recover_job补交付，不能再次调用design_voice代替恢复。尚未完成云端验证。
     """
     return products.design_voice(voice_prompt, preview_text, target_model, preferred_name, target_dir(out_dir), MODE)
 
@@ -286,7 +293,7 @@ def edit_video(video: str, prompt: str, reference_images: list[str] | None = Non
     """HappyHorse视频指令编辑：修改风格/元素，video为本地文件或公开URL，reference_images最多5张本地图片/URL。
     输入视频3–60秒，输出最多15秒，超15秒只取前15秒；详细文件限制见官方接口。
     resolution=720P/1080P；audio_setting=origin保留原音轨、auto由模型决定。
-    异步计费任务，wait=0默认只提交，最多90秒；query_video或recover_job接续，返回task_id/job_id。尚未测试。
+    异步计费任务，wait=0默认只提交，最多90秒；query_video或recover_job接续，返回task_id/job_id。尚未完成云端验证。
     """
     return products.edit_video(video, prompt, reference_images or [], resolution, audio_setting,
                                watermark, seed, target_dir(out_dir), wait, MODE)
@@ -298,7 +305,7 @@ def animate_portrait(image: str, audio: str, resolution: str = "480P", wait: int
     """wan2.2-s2v数字人对口型：图片+人声驱动人物口型、表情、动作。输入本地文件或公开URL。
     图片jpg/png/webp等，音频wav/mp3，音频须小于15MB且小于20秒；resolution=480P/720P。
     本地素材上传百炼临时存储。按输出秒数计费；wait=0默认只提交，最多90秒，用query_video或recover_job接续。
-    返回task_id/job_id。北京地域能力，尚未测试。
+    返回task_id/job_id。北京地域能力，尚未完成云端验证。
     """
     return products.animate_portrait(image, audio, resolution, target_dir(out_dir), wait, MODE)
 
@@ -308,8 +315,8 @@ def embed(model: str = "text-embedding-v4", texts: list[str] | None = None, cont
           dimensions: int | None = None, parameters: dict | None = None) -> dict:
     """百炼文本/多模态向量化。texts为文本列表；contents用[{"text":"猫"},{"image":"/absolute/cat.png"}]等官方结构。
     必须且只能选一项。多模态请显式指定model=qwen3-vl-embedding等；图片支持本地路径，视频需公开URL。
-    dimensions设置维度；parameters透传模型支持的参数，如enable_fusion。返回向量、usage和完整response。
-    按输入计费，不自动建索引或知识库。尚未测试。
+    dimensions设置维度；parameters透传模型支持的参数，如enable_fusion。返回向量、usage；include_response=true可取完整response。
+    按输入计费，不自动建索引或知识库。尚未完成云端验证。
     """
     return products.embed(model, texts, contents, dimensions, parameters)
 
@@ -319,7 +326,7 @@ def rerank(query: str, documents: list[str], model: str = "qwen3.7-text-rerank",
            top_n: int | None = None, return_documents: bool = False) -> dict:
     """对候选文档按与query的相关性排序，返回原索引和relevance_score；top_n控制数量，return_documents返回原文。
     qwen3.7-text-rerank走原生接口，qwen3-rerank走compatible-api/v1/reranks，两者请求体不同。
-    分数用于本次请求内比较。按输入计费，模型及地域权限以服务端为准；尚未测试。
+    分数用于本次请求内比较。按输入计费，模型及地域权限以服务端为准；尚未完成云端验证。
     """
     return products.rerank(query, documents, model, top_n, return_documents)
 
@@ -348,8 +355,8 @@ def recover_job(job_id: str, wait: int = 0) -> dict:
 
 @mcp.tool()
 def list_capabilities() -> dict:
-    """列出百炼MCP工具和官方来源，不联网，不代表账号权限；新增能力未测试。"""
-    return {"ok": True, "account_verified": False, "validation": "not_tested",
+    """列出百炼MCP工具和官方来源，不联网，不代表账号权限；新增能力未完成云端验证。"""
+    return {"ok": True, "account_verified": False, "validation": "offline_only",
             "tools": {"image": ["generate_image"], "language": ["chat", "list_models"],
                       "speech": ["text_to_speech", "speech_to_text"],
                       "voice": ["clone_voice", "design_voice", "list_voices", "get_voice"],
