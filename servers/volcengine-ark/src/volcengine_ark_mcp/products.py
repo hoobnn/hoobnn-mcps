@@ -6,6 +6,8 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
+
+from . import transport
 from pathlib import Path
 
 from . import ark
@@ -34,7 +36,7 @@ def request(path, body=None, timeout=60):
                                  data=json.dumps(body).encode() if body is not None else None,
                                  headers={"Content-Type": "application/json", "Authorization": f"Bearer {key}"})
     try:
-        with urllib.request.urlopen(req, timeout=timeout) as response:
+        with transport.urlopen(req, timeout=timeout) as response:
             data = json.loads(response.read())
             if not isinstance(data, dict):
                 return None, "服务端返回非对象 JSON"
@@ -57,6 +59,63 @@ def local_media(src, kind):
     raise ValueError("视频/音频参考请传公网 URL 或 asset://素材ID；不自动上传本地视频/音频")
 
 
+def validate_video(body):
+    """Known model constraints from the official creation API, before billing.
+
+    Validate the final body, including parameters overrides. Unknown Endpoint IDs
+    remain provider-validated rather than assuming a model family.
+    """
+    model = body["model"]
+    series = "2.5" if "doubao-seedance-2-5-" in model else "2.0" if "doubao-seedance-2-0-" in model else None
+    content = body["content"]
+    roles = [item.get("role") for item in content]
+    first = "first_frame" in roles
+    references = any(role in ("reference_image", "reference_video", "reference_audio") for role in roles)
+    if first and references:
+        raise ValueError("首帧/首尾帧和全模态参考为互斥场景，不可混用")
+    if series is None:
+        return
+    if "seed" in body or "frames" in body:
+        raise ValueError("seed/frames 仅支持 Seedance 1.0 系列，当前 2.0/2.5 不支持")
+    duration = body.get("duration")
+    maximum = 30 if series == "2.5" else 15
+    if duration is not None and (isinstance(duration, bool) or not isinstance(duration, int)
+                                or duration != -1 and not 4 <= duration <= maximum):
+        raise ValueError(f"Seedance {series} duration 设 -1 或 4–{maximum} 秒")
+    resolution = body["resolution"]
+    supported = {"480p", "720p", "1080p"} if series == "2.5" else {"480p", "720p", "1080p", "4k"}
+    if "-fast-" in model or "-mini-" in model:
+        supported = {"480p", "720p"}
+    if resolution not in supported:
+        raise ValueError("所选 Seedance 模型不支持该 resolution")
+    if body["ratio"] not in {"16:9", "4:3", "1:1", "3:4", "9:16", "21:9", "adaptive"}:
+        raise ValueError("ratio 不在官方支持的宽高比枚举内")
+    if series == "2.5" and first and body["ratio"] != "adaptive":
+        raise ValueError("Seedance 2.5 首帧/首尾帧任务 ratio 必须为 adaptive")
+    limits = (30, 10, 10) if series == "2.5" else (9, 3, 3)
+    for role, limit in zip(("reference_image", "reference_video", "reference_audio"), limits):
+        if roles.count(role) > limit:
+            raise ValueError(f"Seedance {series} {role} 最多 {limit} 项")
+    if series == "2.0" and "reference_audio" in roles and not any(role in ("reference_image", "reference_video") for role in roles):
+        raise ValueError("Seedance 2.0 系列不可仅输入音频参考，须搭配参考图片或视频")
+    if body.get("draft") and (series != "2.5" or resolution != "480p"):
+        raise ValueError("draft 仅支持 Seedance 2.5 的 480p 输出")
+    task_type = body.get("omni_reference_task_type", "auto")
+    if task_type not in {"auto", "reference", "edit", "extend"}:
+        raise ValueError("omni_reference_task_type 必须为 auto/reference/edit/extend")
+    if task_type != "auto" and series != "2.5":
+        raise ValueError("omni_reference_task_type 仅支持 Seedance 2.5")
+    if task_type in ("edit", "extend"):
+        if "reference_video" not in roles or body["ratio"] != "adaptive":
+            raise ValueError("视频编辑/延长需 reference_video 和 ratio=adaptive")
+        if task_type == "edit" and duration not in (None, -1):
+            raise ValueError("Seedance 2.5 视频编辑 duration 必须为 -1 或省略")
+    if body.get("output_format", "mp4") not in {"mp4", "mov"}:
+        raise ValueError("output_format 必须为 mp4 或 mov")
+    if body.get("output_format") == "mov" and series != "2.5":
+        raise ValueError("mov 输出仅支持 Seedance 2.5")
+
+
 def submit_video(opts, out_dir, wait, mode):
     model = VIDEO_MODELS.get(opts["model"], opts["model"])
     content = []
@@ -72,10 +131,6 @@ def submit_video(opts, out_dir, wait, mode):
             raise ValueError("wait 范围为 0–90 秒")
         if opts["last_frame"] and not opts["first_frame"]:
             raise ValueError("last_frame 必须配合 first_frame")
-        if opts["duration"] is not None and opts["duration"] != -1 and not 2 <= opts["duration"] <= 30:
-            raise ValueError("duration 设 -1 或 2–30 秒；实际范围由所选模型校验")
-        if "seedance-2-5" in model and (opts["first_frame"] or opts["last_frame"]) and opts["ratio"] != "adaptive":
-            raise ValueError("Seedance 2.5 首帧/首尾帧任务 ratio 必须为 adaptive")
         for kind, role, sources in groups:
             for src in sources:
                 content.append({"type": kind + "_url", kind + "_url": {"url": local_media(src, kind)}, "role": role})
@@ -92,24 +147,29 @@ def submit_video(opts, out_dir, wait, mode):
         if set(opts["parameters"]) & {"model", "content", "stream"}:
             return {"ok": False, "error": "parameters 不能覆盖 model/content/stream"}
         body.update(opts["parameters"])
+    try:
+        validate_video(body)
+    except ValueError as exc:
+        return {"ok": False, "error": str(exc)}
     job = STORE.create("video", model, out_dir, mode, summary={"resolution": body["resolution"], "duration": body.get("duration")})
-    response, error = request("/contents/generations/tasks", body)
-    if error:
-        job.update(error=error, state="failed" if error.startswith(("HTTP 4", "未设置")) else "unknown")
+    with STORE.processing(job):
+        response, error = request("/contents/generations/tasks", body)
+        if error:
+            job.update(error=error, state="failed" if error.startswith(("HTTP 4", "未设置")) else "unknown")
+            STORE.save(job)
+            return STORE.result(job)
+        job.update(task_id=response.get("id"), request_id=response.get("request_id"))
+        if not job["task_id"]:
+            job["error"] = "响应缺少任务 ID；不会自动重新提交"
+            STORE.save(job)
+            return STORE.result(job)
+        job["state"] = "running"
         STORE.save(job)
-        return STORE.result(job)
-    job.update(task_id=response.get("id"), request_id=response.get("request_id"))
-    if not job["task_id"]:
-        job["error"] = "响应缺少任务 ID；不会自动重新提交"
-        STORE.save(job)
-        return STORE.result(job)
-    job["state"] = "running"
-    STORE.save(job)
-    if wait == 0:
-        job["result"]["status"] = "submitted"
-        STORE.save(job)
-        return STORE.result(job)
-    return poll_video(job, wait)
+        if wait == 0:
+            job["result"]["status"] = "submitted"
+            STORE.save(job)
+            return STORE.result(job)
+        return poll_video(job, wait)
 
 
 def poll_video(job, wait=0):
@@ -120,7 +180,7 @@ def poll_video(job, wait=0):
         if error:
             job["error"] = error
             STORE.save(job)
-            return STORE.result(job)
+            return {**STORE.result(job), "ok": False, "query_failed": True}
         status = response.get("status")
         job.update(usage=response.get("usage"), request_id=response.get("request_id"), error=None)
         job["result"] = {"status": status, "duration": response.get("duration"), "resolution": response.get("resolution"),
@@ -134,7 +194,7 @@ def poll_video(job, wait=0):
                 return STORE.result(job)
             STORE.add(job, "video.mov" if response.get("output_format") == "mov" else "video.mp4", url=url)
             if content.get("last_frame_url"):
-                STORE.add(job, "last-frame.png", url=content["last_frame_url"])
+                STORE.add(job, "last-frame.jpg", url=content["last_frame_url"])
             return STORE.deliver(job)
         if status in ("failed", "cancelled", "expired"):
             job.update(state="failed", error=str(response.get("error") or status))
@@ -144,7 +204,7 @@ def poll_video(job, wait=0):
         STORE.save(job)
         if time.monotonic() >= deadline:
             return STORE.result(job)
-        time.sleep(min(5, max(0, deadline - time.monotonic())))
+        transport.sleep(min(5, max(0, deadline - time.monotonic())))
 
 
 def query_video(task_id, out_dir, wait=0, mode="local", job_id=None):
@@ -159,9 +219,10 @@ def query_video(task_id, out_dir, wait=0, mode="local", job_id=None):
     if not task_id:
         return {"ok": False, "error": "缺少 task_id"}
     job = STORE.create("video", None, out_dir, mode)
-    job.update(task_id=task_id, state="running")
-    STORE.save(job)
-    return poll_video(job, wait)
+    with STORE.processing(job):
+        job.update(task_id=task_id, state="running")
+        STORE.save(job)
+        return poll_video(job, wait)
 
 
 def recover(job_id, wait=0):

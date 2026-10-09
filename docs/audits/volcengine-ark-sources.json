@@ -1,0 +1,169 @@
+[
+  {
+    "id": "ark-image-generation-api",
+    "url": "https://docs.volcengine.com/docs/ark/image-generation-api?lang=zh",
+    "fetch_url": "https://www.volcengine.com/api/doc/getDocDetail?LibraryCode=ark&DocumentCode=image-generation-api",
+    "tools": [
+      "generate_image",
+      "recover_job"
+    ],
+    "kind": "api"
+  },
+  {
+    "id": "ark-seedream-5-0-pro",
+    "url": "https://docs.volcengine.com/docs/ark/seedream-5-0-pro?lang=zh",
+    "fetch_url": "https://www.volcengine.com/api/doc/getDocDetail?LibraryCode=ark&DocumentCode=seedream-5-0-pro",
+    "tools": [
+      "generate_image"
+    ],
+    "kind": "guide"
+  },
+  {
+    "id": "ark-seedream-4-0-5-0",
+    "url": "https://docs.volcengine.com/docs/ark/seedream-4-0-5-0?lang=zh",
+    "fetch_url": "https://www.volcengine.com/api/doc/getDocDetail?LibraryCode=ark&DocumentCode=seedream-4-0-5-0",
+    "tools": [
+      "generate_image"
+    ],
+    "kind": "guide"
+  },
+  {
+    "id": "ark-create-video-generation-task-api",
+    "url": "https://docs.volcengine.com/docs/ark/create-video-generation-task-api?lang=zh",
+    "fetch_url": "https://www.volcengine.com/api/doc/getDocDetail?LibraryCode=ark&DocumentCode=create-video-generation-task-api",
+    "tools": [
+      "generate_video"
+    ],
+    "kind": "api"
+  },
+  {
+    "id": "ark-get-video-generation-task-api",
+    "url": "https://docs.volcengine.com/docs/ark/get-video-generation-task-api?lang=zh",
+    "fetch_url": "https://www.volcengine.com/api/doc/getDocDetail?LibraryCode=ark&DocumentCode=get-video-generation-task-api",
+    "tools": [
+      "query_video",
+      "recover_job"
+    ],
+    "kind": "api"
+  },
+  {
+    "id": "ark-seedance-2-5",
+    "url": "https://docs.volcengine.com/docs/ark/seedance-2-5?lang=zh",
+    "fetch_url": "https://www.volcengine.com/api/doc/getDocDetail?LibraryCode=ark&DocumentCode=seedance-2-5",
+    "tools": [
+      "generate_video",
+      "query_video",
+      "recover_job"
+    ],
+    "kind": "guide"
+  },
+  {
+    "id": "ark-seedance-2-0",
+    "url": "https://docs.volcengine.com/docs/ark/seedance-2-0?lang=zh",
+    "fetch_url": "https://www.volcengine.com/api/doc/getDocDetail?LibraryCode=ark&DocumentCode=seedance-2-0",
+    "tools": [
+      "generate_video"
+    ],
+    "kind": "guide"
+  },
+  {
+    "id": "ark-chat-api",
+    "url": "https://docs.volcengine.com/docs/ark/chat-api?lang=zh",
+    "fetch_url": "https://www.volcengine.com/api/doc/getDocDetail?LibraryCode=ark&DocumentCode=chat-api",
+    "tools": [
+      "chat"
+    ],
+    "kind": "api"
+  },
+  {
+    "id": "ark-create-model-responses-api",
+    "url": "https://docs.volcengine.com/docs/ark/create-model-responses-api?lang=zh",
+    "fetch_url": "https://www.volcengine.com/api/doc/getDocDetail?LibraryCode=ark&DocumentCode=create-model-responses-api",
+    "tools": [
+      "chat"
+    ],
+    "kind": "api"
+  },
+  {
+    "id": "ark-web-search",
+    "url": "https://docs.volcengine.com/docs/ark/web-search?lang=zh",
+    "fetch_url": "https://www.volcengine.com/api/doc/getDocDetail?LibraryCode=ark&DocumentCode=web-search",
+    "tools": [
+      "chat"
+    ],
+    "kind": "guide"
+  },
+  {
+    "id": "ark-textvectorizationapi",
+    "url": "https://docs.volcengine.com/docs/ark/TextVectorizationAPI?lang=zh",
+    "fetch_url": "https://www.volcengine.com/api/doc/getDocDetail?LibraryCode=ark&DocumentCode=TextVectorizationAPI",
+    "tools": [
+      "embed"
+    ],
+    "kind": "api"
+  },
+  {
+    "id": "ark-multimodal-vectorization-api",
+    "url": "https://docs.volcengine.com/docs/ark/multimodal-vectorization-api?lang=zh",
+    "fetch_url": "https://www.volcengine.com/api/doc/getDocDetail?LibraryCode=ark&DocumentCode=multimodal-vectorization-api",
+    "tools": [
+      "embed"
+    ],
+    "kind": "api"
+  },
+  {
+    "id": "ark-vectorization",
+    "url": "https://docs.volcengine.com/docs/ark/vectorization?lang=zh",
+    "fetch_url": "https://www.volcengine.com/api/doc/getDocDetail?LibraryCode=ark&DocumentCode=vectorization",
+    "tools": [
+      "embed"
+    ],
+    "kind": "guide"
+  },
+  {
+    "id": "ark-base-url-and-authentication",
+    "url": "https://docs.volcengine.com/docs/ark/base-url-and-authentication?lang=zh",
+    "fetch_url": "https://www.volcengine.com/api/doc/getDocDetail?LibraryCode=ark&DocumentCode=base-url-and-authentication",
+    "tools": [
+      "generate_image",
+      "generate_video",
+      "query_video",
+      "chat",
+      "embed",
+      "recover_job"
+    ],
+    "kind": "guide"
+  },
+  {
+    "id": "ark-model-list",
+    "url": "https://docs.volcengine.com/docs/ark/model-list?lang=zh",
+    "fetch_url": "https://www.volcengine.com/api/doc/getDocDetail?LibraryCode=ark&DocumentCode=model-list",
+    "tools": [
+      "generate_image",
+      "generate_video",
+      "chat",
+      "embed",
+      "list_capabilities"
+    ],
+    "kind": "models"
+  },
+  {
+    "id": "ark-model-deprecation-notice",
+    "url": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+    "fetch_url": "https://www.volcengine.com/api/doc/getDocDetail?LibraryCode=ark&DocumentCode=model-deprecation-notice",
+    "tools": [
+      "generate_image",
+      "generate_video",
+      "chat",
+      "embed"
+    ],
+    "kind": "models"
+  },
+  {
+    "id": "ark-document-index",
+    "url": "https://docs.volcengine.com/docs/ark/model-list?lang=zh",
+    "fetch_url": "https://www.volcengine.com/api/doc/getDocList?LibraryCode=ark",
+    "tools": [],
+    "kind": "guide"
+  }
+]

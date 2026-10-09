@@ -1,18 +1,22 @@
-"""火山方舟图片生成 API 的校验、请求与落盘。只依赖标准库。"""
+"""火山方舟图片生成 API 的校验、请求与落盘。通过共享 HTTP 连接池请求。"""
 
 import base64
 import json
 import os
+import re
 import urllib.error
 import urllib.request
+
+from . import transport
 from pathlib import Path
 
 BASE_URL = os.environ.get("ARK_BASE_URL", "https://ark.cn-beijing.volces.com/api/v3")
 MODELS = {
     "pro": "doubao-seedream-5-0-pro-260628",
     "lite": "doubao-seedream-5-0-260128",
+    "flash": "doubao-seedream-5-0-flash-260915",
 }
-MAX_REF = {"pro": 10, "lite": 14}
+MAX_REF = {"pro": 10, "flash": 10, "lite": 14}
 IMAGE_EXT = {"png", "jpeg", "jpg", "webp", "bmp", "tiff", "tif", "gif", "heic", "heif"}
 
 
@@ -21,6 +25,8 @@ class InputError(ValueError):
 
 
 def family(model):
+    if "seedream-5-0-flash" in model:
+        return "flash"
     if "seedream-5-0-pro" in model:
         return "pro"
     if "seedream-5-0-26" in model:
@@ -46,11 +52,13 @@ def encode_image(src):
 def check(o, fam):
     """服务端也会拒，但本地先挡掉，省一次请求和一段等待。"""
     n = len(o["images"])
-    if fam == "pro" and (o["group"] or o["web_search"]):
-        return "Seedream 5.0 pro 不支持组图（group）和联网搜索（web_search），改用 model=lite"
+    if fam in ("pro", "flash") and (o["group"] is not None or o["web_search"]):
+        return f"Seedream 5.0 {fam} 不支持组图（group）和联网搜索（web_search），改用 model=lite"
+    if fam == "flash" and o["fast"]:
+        return "Seedream 5.0 flash 不支持 fast 提示词优化模式"
     if fam == "lite":
         if o["layers"] or o["transparent"]:
-            return "图层拆分（layers）和透明背景（transparent）只有 Seedream 5.0 pro 支持"
+            return "图层拆分（layers）和透明背景（transparent）仅 Seedream 5.0 pro/flash 支持"
         if o["fast"]:
             return "fast 只有 Seedream 5.0 pro 支持"
     if fam and n > MAX_REF[fam]:
@@ -62,8 +70,23 @@ def check(o, fam):
             return "透明背景只支持图生图，且只能传 1 张带透明通道的图"
         if o["output_format"] == "jpeg":
             return "透明背景输出是 png，不能同时指定 output_format=jpeg"
-    if o["group"] and (o["group"] < 1 or n + o["group"] > 15):
+    if o["group"] is not None and (isinstance(o["group"], bool) or not isinstance(o["group"], int) or o["group"] < 1 or n + o["group"] > 15):
         return f"组图要求 参考图数 + 生成数 ≤ 15（当前 {n} + {o['group']}）"
+    if o["output_format"] is not None and o["output_format"] not in ("png", "jpeg"):
+        return "output_format 必须为 png 或 jpeg"
+    if fam and o["size"] is not None:
+        allowed = {"2K", "3K", "4K"} if fam == "lite" else {"1K", "1.5K", "2K"}
+        if o["layers"]:
+            allowed.add("auto")
+        size = o["size"]
+        if size not in allowed:
+            dimensions = re.fullmatch(r"([1-9][0-9]*)x([1-9][0-9]*)", size)
+            if not dimensions or o["layers"]:
+                return "所选模型/场景不支持该 size；图层拆分仅支持分辨率档位"
+            width, height = map(int, dimensions.groups())
+            minimum, maximum = (3686400, 16777216) if fam == "lite" else (921600, 4624220)
+            if not minimum <= width * height <= maximum or not 1 / 16 <= width / height <= 16:
+                return "size 超出所选模型的像素总量或宽高比范围"
     if not o["prompt"] and not o["layers"]:
         return "缺少提示词（只有图层拆分可以不写）"
     return None
@@ -105,7 +128,7 @@ def post(body, timeout):
         headers={"Content-Type": "application/json", "Authorization": f"Bearer {key}"},
     )
     try:
-        with urllib.request.urlopen(req, timeout=timeout) as r:
+        with transport.urlopen(req, timeout=timeout) as r:
             data = json.loads(r.read())
             if not isinstance(data, dict):
                 return None, "响应状态未知：服务端返回非对象JSON"
@@ -140,18 +163,20 @@ def generate(o, out_dir, timeout=300, mode="local"):
 
     from .products import STORE
     job = STORE.create("image", model, out_dir, mode,
-                       summary={"size": o["size"], "group": o["group"], "layers": o["layers"]})
-    resp, err = post(body, timeout)
-    if err:
-        job.update(error=err, state="failed" if err.startswith(("HTTP 4", "未设置")) else "unknown")
-        STORE.save(job)
-        return STORE.result(job)
-    if resp.get("error"):
-        job.update(state="failed", error=str(resp["error"]))
-        STORE.save(job)
-        return STORE.result(job)
-    STORE.record_response(job, resp)
-    return deliver_image(resp, job)
+                       summary={"size": o["size"], "group": o["group"], "layers": o["layers"],
+                                "output_format": o["output_format"] or ("png" if o["transparent"] else "jpeg")})
+    with STORE.processing(job):
+        resp, err = post(body, timeout)
+        if err:
+            job.update(error=err, state="failed" if err.startswith(("HTTP 4", "未设置")) else "unknown")
+            STORE.save(job)
+            return STORE.result(job)
+        if resp.get("error"):
+            job.update(state="failed", error=str(resp["error"]))
+            STORE.save(job)
+            return STORE.result(job)
+        STORE.record_response(job, resp)
+        return deliver_image(resp, job)
 
 
 def deliver_image(resp, job):
@@ -164,8 +189,21 @@ def deliver_image(resp, job):
         if item.get("error"):
             errors.append({"index": i, "error": item["error"]})
             continue
-        ext = "jpg" if item.get("output_format") == "jpeg" else "png"
         z = item.get("z_index")
+        output_format = item.get("output_format")
+        if not output_format:
+            output_format = "png" if isinstance(z, int) and z > 0 else job.get("summary", {}).get("output_format", "jpeg")
+            # Legacy records do not persist output_format; trust actual inline bytes.
+            if item.get("b64_json"):
+                try:
+                    signature = base64.b64decode(item["b64_json"][:16])
+                    if signature.startswith(b"\x89PNG\r\n\x1a\n"):
+                        output_format = "png"
+                    elif signature.startswith(b"\xff\xd8\xff"):
+                        output_format = "jpeg"
+                except ValueError:
+                    pass  # Full base64 validation below records the artifact failure.
+        ext = "jpg" if output_format == "jpeg" else "png"
         name = f"layer-{z:02d}.{ext}" if isinstance(z, int) else f"image-{i + 1:02d}.{ext}"
         metadata = {k: item.get(k) for k in ("z_index", "name", "description", "size", "bounding_box")}
         try:

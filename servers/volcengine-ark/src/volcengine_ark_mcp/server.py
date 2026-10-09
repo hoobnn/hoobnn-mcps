@@ -9,7 +9,7 @@ import time
 import uuid
 from pathlib import Path
 
-from mcp.server.mcpserver import MCPServer
+from .mcp_runtime import ReliableMCPServer
 
 from . import ark, products
 
@@ -18,7 +18,15 @@ MODE = os.environ.get("ARK_RESOURCE_MODE", "local").strip().lower()
 if MODE not in ("local", "url"):
     raise SystemExit(f"ARK_RESOURCE_MODE 只能是 local 或 url，当前是 {MODE!r}")
 
-mcp = MCPServer("volcengine-ark")
+mcp = ReliableMCPServer("volcengine-ark", groups={
+    "image": {"generate_image"}, "video": {"generate_video", "query_video"},
+    "language": {"chat"}, "embedding": {"embed"},
+    "jobs": {"list_jobs", "get_job", "recover_job"}, "help": {"list_capabilities", "get_tool_help"}})
+
+
+def target_dir(out_dir):
+    root = Path(out_dir).expanduser() if out_dir else OUT_ROOT
+    return root / (time.strftime("%Y%m%d-%H%M%S") + "-" + uuid.uuid4().hex[:8])
 
 
 @mcp.tool()
@@ -39,11 +47,12 @@ def generate_image(
     """用火山方舟 Seedream 5.0 生成或编辑图片，结果保存到本地，返回文件路径。
 
     选模型：
-    - model="pro"（默认）：单张高质量图，支持多语言提示词；只有 pro 支持 layers（图层拆分）、
+    - model="pro"（默认）：单张高质量图，支持多语言提示词；pro 支持 layers（图层拆分）、
       transparent（透明背景）、fast（低时延）和交互编辑。最多 10 张参考图。
+    - model="flash"：Seedream 5.0 flash，支持 pro 的拆层/透明/编辑能力，但不支持 fast 提示词优化。
     - model="lite"：只有 lite 支持 group（组图，生成 N 张相互关联的图）、web_search（联网搜索）、3K / 4K。
       最多 14 张参考图，参考图数加 group 不超过 15。
-    也可以直接传完整的模型 ID 或 Endpoint ID，此时跳过本地的能力校验。
+    也可以直接传完整的模型 ID 或 Endpoint ID；已识别模型仍检查能力，无法识别的 Endpoint 由服务端校验。
 
     参数：
     - prompt：中文不超过 300 字、英文不超过 600 词，太长会丢细节。多图参考时用「图1」「图2」指明各取什么。
@@ -71,7 +80,7 @@ def generate_image(
     opts = dict(prompt=prompt or None, model=model, images=images or [], size=size,
                 output_format=output_format, transparent=transparent, layers=layers, group=group,
                 web_search=web_search, fast=fast, watermark=watermark)
-    target = Path(out_dir).expanduser() if out_dir else OUT_ROOT / (time.strftime("%Y%m%d-%H%M%S") + "-" + uuid.uuid4().hex[:8])
+    target = target_dir(out_dir)
     return ark.generate(opts, target, mode=MODE)
 
 
@@ -87,15 +96,17 @@ def generate_video(
     """调用火山方舟 Seedance 生成视频。seedance=2.5，seedance-2/seedance-fast/seedance-mini=2.0 系列，也可传完整模型或 Endpoint ID。
     支持文生、首帧、首尾帧、多模态参考；2.5 可在 prompt 明确写视频编辑或延长意图，编辑须 duration=-1、ratio=adaptive。
     图片支持本地路径/URL，参考视频和音频须公网 URL 或 asset://ID；本工具不上传本地视频/音频。
-    具体素材数量、时长、分辨率由模型校验。parameters 透传官方顶层选项，如 draft、return_last_frame、output_format。
+    具体素材数量、时长、分辨率由模型校验。parameters 透传官方顶层选项，如 draft、return_last_frame、output_format、omni_reference_task_type。
+    2.5时长4–30秒，2.0系列4–15秒（均支持-1）；首尾帧与参考素材互斥。mini/fast最高720p，2.0支持4k。
+    seed/frames仅支持1.0系列；2.5 edit任务可显式传omni_reference_task_type=edit以提前校验。
     wait=0 默认只提交，1–90 秒可轮询，返回 task_id/job_id；query_video 查询，recover_job 可跨重启恢复。
-    按生成视频计费；账户需开通模型。所有新增能力尚未测试，返回文件仅表示下载完成。
+    按生成视频计费；账户需开通模型。所有新增能力尚未完成云端验证，返回文件仅表示下载完成。
     """
     opts = dict(prompt=prompt, model=model, first_frame=first_frame, last_frame=last_frame,
                 reference_images=reference_images or [], reference_videos=reference_videos or [],
                 reference_audios=reference_audios or [], resolution=resolution, ratio=ratio,
                 duration=duration, audio=audio, watermark=watermark, seed=seed, parameters=parameters)
-    target = Path(out_dir).expanduser() if out_dir else OUT_ROOT / (time.strftime("%Y%m%d-%H%M%S") + "-" + uuid.uuid4().hex[:8])
+    target = target_dir(out_dir)
     return products.submit_video(opts, target, wait, MODE)
 
 
@@ -104,7 +115,7 @@ def query_video(task_id: str, wait: int = 0, job_id: str | None = None, out_dir:
     """查询 Seedance 任务并交付视频。wait=0 查一次，最多90秒；传原 job_id 复用原输出目录并跳过已完整保存的产物。
     未传job_id会创建新的本地记录；不会重新提交生成。返回status、job_state、files、usage、原始response。
     """
-    target = Path(out_dir).expanduser() if out_dir else OUT_ROOT / (time.strftime("%Y%m%d-%H%M%S") + "-" + uuid.uuid4().hex[:8])
+    target = target_dir(out_dir)
     return products.query_video(task_id, target, wait, MODE, job_id)
 
 
@@ -117,7 +128,7 @@ def chat(prompt: str, model: str = "pro", system: str | None = None, history: li
     images支持本地图片或URL，videos为公网URL。history用Chat消息格式，工具不保存对话。
     web_search=true或传previous_response_id时使用Responses API，保留sources和response_id；否则走Chat API。
     thinking控制深度思考；json_mode要求提示词明确JSON结构；parameters透传模型支持的高级字段。
-    返回content、reasoning、usage和完整response。按token与搜索调用计费，模型和搜索服务须已开通；尚未测试。
+    返回content、reasoning、usage；include_response=true可取完整response。按token与搜索调用计费，模型和搜索服务须已开通；尚未完成云端验证。
     """
     return products.chat(prompt, model, system, history, images, videos, thinking, max_tokens,
                          temperature, json_mode, web_search, previous_response_id, parameters)
@@ -129,7 +140,7 @@ def embed(model: str, texts: list[str] | None = None, contents: list[dict] | Non
     """方舟文本/多模态向量化，model必须显式指定。texts为文本列表；contents用官方格式，如
     [{"type":"text","text":"猫"},{"type":"image_url","image_url":{"url":"/absolute/cat.png"}}]。
     两项只能选一项；图片支持本地路径，视频须URL。parameters支持instructions、multi_embedding等模型选项。
-    保留data和usage，不自动建索引或知识库；按输入计费。尚未测试。
+    保留data和usage，不自动建索引或知识库；按输入计费。尚未完成云端验证。
     """
     return products.embed(model, texts, contents, dimensions, parameters)
 
@@ -158,14 +169,14 @@ def recover_job(job_id: str, wait: int = 0) -> dict:
 
 @mcp.tool()
 def list_capabilities() -> dict:
-    """列出本MCP的方舟能力和官方来源，不联网，不代表当前账号权限；新增功能尚未测试。"""
-    return {"ok": True, "account_verified": False, "validation": "not_tested",
+    """列出本MCP的方舟能力和官方来源，不联网，不代表当前账号权限；新增功能尚未完成云端验证。"""
+    return {"ok": True, "account_verified": False, "validation": "offline_only",
             "tools": {"image": ["generate_image"], "video": ["generate_video", "query_video"],
                       "language": ["chat"], "embedding": ["embed"], "jobs": ["list_jobs", "get_job", "recover_job"]},
             "video_models": products.VIDEO_MODELS, "chat_models": products.CHAT_MODELS,
             "image_models": ark.MODELS, "docs": products.DOCS,
             "limits": ["模型权限及参数限制以账号与官方接口为准", "本地视频/音频不会自动上传",
-                       "Seedance 2.5首帧/首尾帧ratio仅adaptive；视频编辑duration仅-1",
+                       "Seedance 2.5首帧/首尾帧ratio仅adaptive；显式edit任务duration省略或-1",
                        "恢复锁使用POSIX flock，面向macOS/Linux"]}
 
 
