@@ -5,6 +5,7 @@ hoobnn 的个人 MCP server 集合。每个 server 是 `servers/<name>/` 下的�
 | Server | 作用 |
 |---|---|
 | [`seedream`](servers/seedream) | 火山方舟 Seedream 5.0（pro / lite）生图：文生图、多图参考、组图、联网搜索、图层拆分、交互编辑、透明背景 |
+| [`doubao-speech`](servers/doubao-speech) | 火山引擎豆包语音：语音合成 2.0（语音指令、方言、字幕）、录音文件识别极速版、seed-audio 音频生成（音效、配乐、多角色对白） |
 | [`ali-bailian`](servers/ali-bailian) | 阿里云百炼：千问 / 万相 / Z-Image 生图与编辑，千问 TTS 与 ASR，万相 3.0 视频生成，调用千问及百炼托管的 DeepSeek、Kimi、GLM 等语言模型 |
 
 ## 安装
@@ -14,7 +15,8 @@ hoobnn 的个人 MCP server 集合。每个 server 是 `servers/<name>/` 下的�
 ```bash
 uv tool install "git+https://github.com/hoobnn/hoobnn-mcps#subdirectory=servers/seedream"
 uv tool install "git+https://github.com/hoobnn/hoobnn-mcps#subdirectory=servers/ali-bailian"
-uv tool upgrade seedream-mcp ali-bailian-mcp     # 推送新代码后更新
+uv tool install "git+https://github.com/hoobnn/hoobnn-mcps#subdirectory=servers/doubao-speech"
+uv tool upgrade seedream-mcp ali-bailian-mcp doubao-speech-mcp     # 推送新代码后更新
 ```
 
 不用 `uvx --from git+...` 直接运行：它每次启动都要联网确认最新提交，要 2–4 秒，`codex exec`、`opencode run` 这类无头调用会在 server 起来前就开始回答，拿不到工具。装好后启动约 0.3 秒。

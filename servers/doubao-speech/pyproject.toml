@@ -1,0 +1,15 @@
+[project]
+name = "doubao-speech-mcp"
+version = "0.1.0"
+description = "火山引擎豆包语音：语音合成、语音识别、音频生成 MCP server"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.10"
+dependencies = ["mcp>=2.3,<3"]
+
+[project.scripts]
+doubao-speech-mcp = "doubao_speech_mcp.server:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
