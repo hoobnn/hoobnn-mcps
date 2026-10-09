@@ -2,7 +2,7 @@
 
 调用火山方舟（Volcengine Ark）的 MCP server：Seedream 5.0 生成和编辑图片、Seedance 视频、对话与多模态理解、联网搜索和向量化，产物直接存到本地。
 
-原名 `seedream-mcp`（PyPI 上该名已被他人占用），0.4 起改名；`seedream-mcp` 命令作为别名保留，旧客户端配置可继续使用。
+原名 `seedream-mcp`（PyPI 上该名已被他人占用），0.4 起改名，不保留旧命令和 `SEEDREAM_*` 环境变量。
 
 ## Seedream 图片生成
 
@@ -21,8 +21,6 @@
 | `ARK_OUT_DIR` | 输出目录，默认 `~/Downloads/volcengine-ark` |
 | `ARK_RESOURCE_MODE` | 交付方式：`local`（默认）下载到本地，`url` 只返回 24 小时内有效的链接 |
 | `ARK_BASE_URL` | 默认 `https://ark.cn-beijing.volces.com/api/v3` |
-
-旧变量名 `SEEDREAM_OUT_DIR`、`SEEDREAM_RESOURCE_MODE`、`SEEDREAM_JOB_DIR` 在对应 `ARK_*` 未设置时仍生效。
 
 参数说明见工具描述（`src/volcengine_ark_mcp/server.py`），接口细节以[图片生成 API 文档](https://ark.volcengine.com/region:cn-beijing/docs/ark/image-generation-api)为准。
 

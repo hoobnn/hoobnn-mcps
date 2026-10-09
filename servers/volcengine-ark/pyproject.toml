@@ -9,7 +9,6 @@ dependencies = ["mcp>=2.3,<3"]
 
 [project.scripts]
 volcengine-ark-mcp = "volcengine_ark_mcp.server:main"
-seedream-mcp = "volcengine_ark_mcp.server:main"
 
 [build-system]
 requires = ["hatchling"]

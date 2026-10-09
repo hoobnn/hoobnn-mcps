@@ -11,8 +11,7 @@ from pathlib import Path
 from . import ark
 from .jobs import Store
 
-STORE = Store("SEEDREAM_JOB_DIR" if "ARK_JOB_DIR" not in os.environ and "SEEDREAM_JOB_DIR" in os.environ else "ARK_JOB_DIR",
-              "~/.local/share/volcengine-ark-mcp/jobs")
+STORE = Store("ARK_JOB_DIR", "~/.local/share/volcengine-ark-mcp/jobs")
 VIDEO_MODELS = {"seedance": "doubao-seedance-2-5-260628", "seedance-2": "doubao-seedance-2-0-260128",
                 "seedance-fast": "doubao-seedance-2-0-fast-260128", "seedance-mini": "doubao-seedance-2-0-mini-260615"}
 CHAT_MODELS = {"pro": "doubao-seed-2-1-pro-260628"}

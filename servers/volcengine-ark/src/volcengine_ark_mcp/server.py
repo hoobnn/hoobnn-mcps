@@ -2,7 +2,6 @@
 
 环境变量：ARK_API_KEY（必需）、ARK_OUT_DIR（默认 ~/Downloads/volcengine-ark）、
 ARK_RESOURCE_MODE（local 下载到本地，url 只返回链接；默认 local）、ARK_BASE_URL（可选）。
-旧名 SEEDREAM_OUT_DIR / SEEDREAM_RESOURCE_MODE / SEEDREAM_JOB_DIR 在新名未设置时仍然生效。
 """
 
 import os
@@ -14,12 +13,8 @@ from mcp.server.mcpserver import MCPServer
 
 from . import ark, products
 
-def env(name, default):
-    return os.environ.get(f"ARK_{name}") or os.environ.get(f"SEEDREAM_{name}") or default
-
-
-OUT_ROOT = Path(env("OUT_DIR", "~/Downloads/volcengine-ark")).expanduser()
-MODE = env("RESOURCE_MODE", "local").strip().lower()
+OUT_ROOT = Path(os.environ.get("ARK_OUT_DIR", "~/Downloads/volcengine-ark")).expanduser()
+MODE = os.environ.get("ARK_RESOURCE_MODE", "local").strip().lower()
 if MODE not in ("local", "url"):
     raise SystemExit(f"ARK_RESOURCE_MODE 只能是 local 或 url，当前是 {MODE!r}")
 

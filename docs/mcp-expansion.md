@@ -20,7 +20,7 @@
 
 ## 关键设计决策
 
-- 保留原MCP入口、配置和工具名；seedream包扩展为方舟入口（0.4起改名volcengine-ark，保留seedream-mcp命令别名），不新增重复账号配置。
+- 保留原MCP入口、配置和工具名；seedream包扩展为方舟入口（0.4起改名volcengine-ark，不保留旧命令），不新增重复账号配置。
 - 每个包独立安装，标准库任务模块分别内置在两个包内，无需GitHub外的共享包。两个 `jobs.py` 维护同一实现。
 - 恢复目录默认位于 `~/.local/share/<server>-mcp/jobs`，可通过 `BAILIAN_JOB_DIR` / `ARK_JOB_DIR` 设置。
 - 生成请求前留档为unknown；同步超时未收到完整结果，不自动重试。异步任务拿到task_id后持久化，再查询交付。

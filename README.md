@@ -19,7 +19,7 @@ uv tool install "git+https://github.com/hoobnn/hoobnn-mcps#subdirectory=servers/
 uv tool upgrade volcengine-ark-mcp ali-bailian-mcp doubao-speech-mcp     # 推送新代码后更新
 ```
 
-从 `seedream-mcp` 迁移：`uv tool uninstall seedream-mcp` 后安装 `volcengine-ark`，客户端里的 MCP 名和命令一并替换。
+从 `seedream-mcp` 迁移：`uv tool uninstall seedream-mcp` 后安装 `volcengine-ark`，客户端里的 MCP 名和命令一并替换，`SEEDREAM_*` 环境变量改为 `ARK_OUT_DIR` / `ARK_RESOURCE_MODE` / `ARK_JOB_DIR`。
 
 不用 `uvx --from git+...` 直接运行：它每次启动都要联网确认最新提交，要 2–4 秒，`codex exec`、`opencode run` 这类无头调用会在 server 起来前就开始回答，拿不到工具。装好后启动约 0.3 秒。
 
