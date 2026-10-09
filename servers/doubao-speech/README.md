@@ -2,6 +2,8 @@
 
 豆包语音云 API 的 stdio MCP server。接口依据[官方目录](https://docs.volcengine.com/docs/DoubaoVoice/list?lang=zh)于 **2026-10-09** 核对。原有工具保持兼容，新增 HTTP 异步任务、WebSocket 流式接口、实时持久会话与管理 API。
 
+`0.3.1` 修复 Python 3.10 下流式识别和同传的异步超时处理；本地 Python 3.10 与当前环境的 125 项语音测试均通过。
+
 | 工具 | 作用 | 接口 / 模型 |
 |---|---|---|
 | `text_to_speech` | 语音合成：2.0 音色、自然语言语音指令、8 种方言、30+ 语种、读音修正、SRT 字幕，长文本自动分段拼接 | 单向流式 HTTP，`seed-tts-2.0`（复刻音色自动用 `seed-icl-2.0`） |

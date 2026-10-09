@@ -1,6 +1,6 @@
 # MCP 构建与稳定性调整
 
-检查日期：2026-10-10。版本：`volcengine-ark-mcp 0.5.0`、`ali-bailian-mcp 0.4.0`、`doubao-speech-mcp 0.3.0`。
+检查日期：2026-10-10。版本：`volcengine-ark-mcp 0.5.0`、`ali-bailian-mcp 0.4.0`、`doubao-speech-mcp 0.3.1`。
 
 ## 结论
 
@@ -93,4 +93,4 @@ servers/doubao-speech/.venv/bin/python scripts/measure_tools.py doubao-speech --
 
 覆盖 TCP 连接复用、GET 重试与 POST 不重放、慢流总超时、在途取消、gzip/重定向、multipart、真实 worker 上限、错误/schema/progress、任务并发恢复/损坏/SHA、SSE 断流、已付费音频保留和实时会话资源回收。三个实际安装入口完成初始化、发现、调用和正常退出。
 
-这些证据确认本地契约和故障处理，不证明新增云产品已经可用。尚未验证真实账户权限、提供商限流/计费、长任务端到端恢复和云端 p50/p95 延迟。CI 配置已加入，但远端 CI 结果需推送后确认。下一轮云端验证应按产品选小样本，记录提交/查询/下载耗时与 task_id，在断网和进程重启后检查恢复，并以实际账单确认没有重复生成。
+这些证据确认本地契约和故障处理，不证明新增云产品已经可用。尚未验证真实账户权限、提供商限流/计费、长任务端到端恢复和云端 p50/p95 延迟。远端检查状态见 [MCP offline contracts](https://github.com/hoobnn/hoobnn-mcps/actions/workflows/test.yml)。下一轮云端验证应按产品选小样本，记录提交/查询/下载耗时与 task_id，在断网和进程重启后检查恢复，并以实际账单确认没有重复生成。

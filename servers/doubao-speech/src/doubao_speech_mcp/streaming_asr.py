@@ -184,7 +184,7 @@ async def streaming_recognize(audio, request=None, mode="realtime", resource_id=
                     await asyncio.gather(sender, receiver, return_exceptions=True)
         await asyncio.wait_for(session(), timeout=max(0, deadline - asyncio.get_running_loop().time()))
         result["ok"] = True
-    except TimeoutError:
+    except (TimeoutError, asyncio.TimeoutError):
         result["error"] = "流式识别超时，未收到最终结果"
     except Exception as exc:
         result["error"] = str(exc)

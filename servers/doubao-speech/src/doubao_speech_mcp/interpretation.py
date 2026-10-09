@@ -279,7 +279,7 @@ async def interpret_audio(audio, source_language, target_language, mode="s2t",
             elif mode == "s2s":
                 raise speech.InputError("同传 SessionFinished 但未返回目标音频")
             result["ok"] = True
-    except (speech.InputError, OSError, TimeoutError, websockets.exceptions.WebSocketException) as exc:
+    except (speech.InputError, OSError, TimeoutError, asyncio.TimeoutError, websockets.exceptions.WebSocketException) as exc:
         result["error"] = str(exc) or "同传响应超时"
     finally:
         result["source_text"] = "".join(item["text"] for item in result["source_segments"])

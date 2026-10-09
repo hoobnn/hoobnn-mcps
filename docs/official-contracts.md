@@ -72,7 +72,7 @@ python3 scripts/upstream_docs.py --accept-baseline
 
 [upstream-docs.yml](../.github/workflows/upstream-docs.yml) 提供 `workflow_dispatch` 手动触发，权限 `contents: read`。输出 Job Summary 和保留 14 天的 artifact，失败也尽量留报告；不自动接受基线、改默认模型、提交、发 Issue/PR 或部署。
 
-推送到默认分支后才可在 GitHub 使用，当前尚未推送/运行远端工作流。后续确定频率时可添加每天一次、避开整点的 schedule。GitHub 定时任务在默认分支运行，繁忙时可能延迟，不能保证实时提醒。[GitHub 触发规则](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule)
+工作流已推送到默认分支，可在 GitHub 手动触发文档检查，目前没有启用 schedule。后续确定频率时可添加每天一次、避开整点的 schedule。GitHub 定时任务在默认分支运行，繁忙时可能延迟，不能保证实时提醒。[GitHub 触发规则](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule)
 
 处理顺序：正文/目录 diff → 判断新增、兼容变化、下线或文案调整 → 定位工具/模型 → 更新契约和必要实现 → 合同回归 → 确有需要的云端小样本 → 审查基线与发布。自动抓取和差异定位可运行，自动修改/提交/合并未启用。
 
@@ -82,4 +82,4 @@ python3 scripts/upstream_docs.py --accept-baseline
 
 **220 项测试通过**：Ark 29、Bailian 32、Speech 125、跨包及文档链路 34。包括三个实际 stdio 入口、官方契约回归、HTML 壳/合法表格、文档身份、目录顺序、参数正文 diff、缺失/截断快照及抓取失败不误判删除。共享源码同步与 diff 检查通过。
 
-没有执行真实云端生成、识别、训练或管理操作；模型权限、旧文本向量型号、文本向量 dimensions 等未确认项保留在逐项报告中。远端 Actions 尚无运行结果。
+没有执行真实云端生成、识别、训练或管理操作；模型权限、旧文本向量型号、文本向量 dimensions 等未确认项保留在逐项报告中。远端 CI 状态见 [Actions](https://github.com/hoobnn/hoobnn-mcps/actions/workflows/test.yml)。
