@@ -63,6 +63,7 @@ def http_error(e):
     code, msg = e.headers.get("X-Api-Status-Code"), e.headers.get("X-Api-Message")
     try:
         d = json.loads(raw)
+        d = d.get("header") or d  # 合成接口的错误包在 header 里
         code, msg = d.get("code", code), d.get("message", msg)
     except json.JSONDecodeError:
         msg = msg or raw[:500]
