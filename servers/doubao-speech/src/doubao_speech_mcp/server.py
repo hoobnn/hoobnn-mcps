@@ -12,6 +12,7 @@ from pathlib import Path
 from mcp.server.mcpserver import MCPServer
 
 from . import speech
+from . import usage
 from . import products, management, ws_products, streaming_asr, interpretation, realtime, legacy
 
 OUT_ROOT = Path(os.environ.get("DOUBAO_SPEECH_OUT_DIR", "~/Downloads/doubao-speech")).expanduser()
@@ -77,6 +78,7 @@ def text_to_speech(
     - resource_id：一般不用传，按音色自动选择。
     - out_dir：输出目录，默认 DOUBAO_SPEECH_OUT_DIR 下按时间戳新建。
 
+    使用示例与引用上文技巧：get_speech_usage_examples(product='tts')。
     按字数计费。返回 ok、resource_id、files、chunks（分了几段）、usage（text_words 计费字数）、subtitles、error。
     """
     opts = dict(text=text, voice=voice, instructions=instructions, dialect=dialect, language=language,
@@ -136,10 +138,21 @@ def generate_audio(
     """用豆包音频生成模型 seed-audio-1.0 按描述生成一段完整音频：音效、环境声、配乐、多角色对白可以混在一起，
     单次最长 120 秒。适合有声书片段、广播剧、影视和游戏配音、音效。只要朗读一段文字时用 text_to_speech，更便宜。
 
-    - prompt：最多 3000 字。按时间顺序写清楚声音和台词，角色写明性别、年龄、口音、嗓音和语气，台词用引号，如
-      「先是一声手机震动，环境里有持续的鸟鸣。男子1（中年男性，嗓音低沉）严肃地说：“你什么时候被收买的？”然后是
-      两声高跟鞋的脚步声。」也可以写总时长和某句话出现的时间点。支持中、英、日、韩、西、德、法、葡、泰、越、意、
-      俄等语种。
+    官方体验中心的四大类用法（以下为改写示例，可组合使用）：
+    1. 文本生成：按顺序描述角色的性别、年龄、口音、嗓音、情绪，以及台词、环境声、音效、配乐与转场。
+       示例参数：{"prompt":"雨声持续。青年女子嗓音清亮，紧张地说：‘有人来了。’随后响起三声敲门声，低音弦乐渐强。"}。
+    2. 参考生成：用 reference_audios 提供样音，在 prompt 用 @音频1、@音频2 按列表顺序绑定角色，
+       描述希望参考的音色、情感、风格或节奏；可用于多人对白、声音克隆与风格迁移。
+       示例参数：{"prompt":"主持人甲参考@音频1的音色，热情地说：‘欢迎。’主持人乙参考@音频2的音色，轻笑着说：‘你好。’",
+       "reference_audios":["/absolute/path/host_a.wav","/absolute/path/host_b.wav"]}。路径须换成真实文件。
+    3. 时间控制：在 prompt 写总时长，并在台词或声音事件前写 [开始秒s:结束秒s]，支持小数秒。
+       示例参数：{"prompt":"总长10秒，雨声持续。女子轻声说道：[2.7s:5.7s]‘你终于回来了。’[6s:7s]响起敲门声，最后雨声渐弱。",
+       "subtitles":true}。控制音效卡点、情绪递进、叙事转场与旁白推进。标记是提示词文本，原样传给官方 text_prompt，
+       无独立 timeline 参数，也不由 MCP 后期裁切。实际落点需检查生成音频；subtitles 仅返回人声字幕，不标注全部音效。
+    4. 多语种：直接写目标语言台词，并说明角色、语言/口音、情绪与节奏；如标准美式英语、英音或印度英语。
+       示例参数：{"prompt":"A young woman speaks warm, clear American English: ‘Welcome home.’ Soft piano continues underneath."}。
+       支持中、英、日、韩、西、德、法、葡、泰、越、意、俄等语种，具体清单以官方 API 文档为准。
+    - prompt：最多 3000 字，映射为官方 text_prompt。时间区间单位为秒，例如 [2s:5s]、[2.7s:5.7s]。
     - speaker：指定人声音色，可用豆包语音合成 2.0 音色或声音复刻音色（ID 见 text_to_speech 的说明）。
     - reference_audios：参考音频（最多 3 段，每段不超过 30 秒、10MB，wav / mp3 / pcm / ogg_opus），本地绝对路径或
       URL；prompt 里按顺序用 @音频1、@音频2 引用，如「用 @音频1 的声音说……」。
@@ -147,11 +160,13 @@ def generate_audio(
       台词。不能和 speaker、reference_audios 同时用。
     - format：mp3（默认）、wav、ogg_opus。sample_rate：不传用默认值（mp3 44100，wav 40000）。
     - speech_rate / loudness_rate：-50～100，默认 0。pitch_rate：-12～12，默认 0。
-    - subtitles：返回句级和词级字幕时间戳。
+    - subtitles：返回句级和词级字幕时间戳；subtitle 中 start_time/end_time 为距音频开始的毫秒偏移。
     - out_dir：输出目录，默认 DOUBAO_SPEECH_OUT_DIR 下按时间戳新建。
 
     同步调用，通常要几十秒到两分钟，客户端的工具调用超时要设到 300 秒左右。按生成音频的秒数计费，长音频先和用户
     确认。返回 ok、model、files、url（2 小时内有效）、duration（计费秒数）、subtitle、error。
+    官方分类与时间区间写法来源：https://console.volcengine.com/speech/new/experience/audio?projectName=default
+    API参数来源：https://docs.volcengine.com/docs/DoubaoVoice/audio-generation-http?lang=zh
     """
     opts = dict(prompt=prompt, speaker=speaker, reference_audios=reference_audios or [],
                 reference_image=reference_image, format=format.lower(), sample_rate=sample_rate,
@@ -196,8 +211,9 @@ def upgrade_voice(request: dict) -> dict:
 
 @mcp.tool()
 def design_voice(request: dict, image_file: str | None = None) -> dict:
-    """文本/图片设计音色。request={speaker_id:'已分配音色ID',text:'4–300字试听文本',prompt:{text_prompt:'最多200字符声音描述'}}。
+    """文本/图片设计音色。request={speaker_id:'已分配音色ID',text:'最多300字试听文本',prompt:{text_prompt:'最多200字符声音描述'}}。
     图片改用prompt.image_prompt:{image_url:'URL'}或image_bytes:'base64'，image_file可自动填本地图（10MB）。完整官方参数透传，返回音色和试听信息。
+    图文同时提供时图片优先；会消耗训练次数。声线描述和录音准备技巧见get_speech_usage_examples(product='voice')。
     """
     return products.voice_design(request, image_file)
 
@@ -228,7 +244,7 @@ def translate_text(text_list: list[str], target_language: str, source_language: 
 
 @mcp.tool()
 def submit_minutes(request: dict, request_id: str | None = None) -> dict:
-    """语音妙记：转写、翻译、总结、章节、信息提取。request={Input:{Offline:{FileURL:'URL',FileType:'audio'}},Params:{AllActivate:false,SourceLang:'zh_cn',AudioTranscriptionEnable:true,AudioTranscriptionParams:{SpeakerIdentification:true},SummarizationEnabled:true}}。
+    """语音妙记：转写、翻译、总结、章节、信息提取。request={Input:{Offline:{FileURL:'URL',FileType:'audio'}},Params:{AllActivate:false,SourceLang:'zh_cn',AudioTranscriptionEnable:true,AudioTranscriptionParams:{SpeakerIdentification:true,NumberOfSpeaker:0,NeedWordTimeSeries:false},SummarizationEnabled:true,SummarizationParams:{Types:['summary']}}}。
     Params.AllActivate须显式传bool（计费选择，不自动启用功能），至少开TranslationEnable/InformationExtractionEnabled/SummarizationEnabled/ChapterEnabled之一。返回task_id/request_id供query_minutes。
     """
     return management.minutes_submit(request, request_id)
@@ -270,6 +286,7 @@ async def generate_podcast(request: dict, out_dir: str | None = None) -> dict:
     """双人播客。request={action:0,input_text:'文章',audio_config:{format:'mp3'}}；也可input_info.input_url传网页/PDF/doc/txt链接。
     action=3传nlp_texts:[{speaker:'音色ID',text:'每轮<=300字'}]直接演绎；action=4传prompt_text联网总结。
     speaker_info.speakers指定两个音色；input_info.only_nlp_text仅生成脚本。高级选项完整透传。
+    prompt_text是话题，不具备格式指令能力；四类输入及断点技巧见get_speech_usage_examples(product='podcast')。
     返回音频路径、轮次时间、usage、task_id、last_finished_round_id；断线音频标partial，显式retry_info可续传。按官方播客计费，可能超过300秒。
     """
     return await ws_products.podcast(request, target_dir(out_dir))
@@ -325,6 +342,17 @@ async def close_realtime_session(session_id: str, timeout: float = 10) -> dict:
 
 
 @mcp.tool()
+def get_speech_usage_examples(product: str = "audio", category: str | None = None) -> dict:
+    """查询官方示例的归纳、改写的MCP调用参数、使用技巧和来源；纯本地，无鉴权，不调用云服务。
+    product=audio/tts/voice/podcast/asr/translation/minutes/realtime。
+    audio支持category=text/reference/timing/multilingual；不传category返回该产品全部示例。
+    示例包括参考绑定、时间戳卡点、多语种、引用上文、音色设计/复刻、播客四种输入、热词/上下文/说话人分离等。
+    路径、URL、音色ID和会话ID占位符需替换；示例未经真实云端生成验证。
+    """
+    return usage.get_examples(product, category)
+
+
+@mcp.tool()
 def list_speech_capabilities() -> dict:
     """列出豆包语音产品、工具、管理Action、官方链接和接入边界；不联网、不计费。"""
     return {
@@ -339,6 +367,8 @@ def list_speech_capabilities() -> dict:
             "management": ["manage_word_table", "speech_console"],
             "legacy": ["legacy_speech_request"],
         },
+        "usage_examples": {"tool": "get_speech_usage_examples", "products": list(usage.GUIDES),
+                           "audio_categories": list(usage.GUIDES["audio"]["categories"])},
         "word_table_actions": sorted(management.HOTWORD_ACTIONS | management.CORRECT_ACTIONS),
         "console_action_versions": management.CONSOLE_VERSIONS,
         "legacy_operations": sorted(legacy.OPERATIONS),

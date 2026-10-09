@@ -24,6 +24,23 @@ class StdioSmoke(unittest.IsolatedAsyncioTestCase):
                 catalog = json.loads(result.content[0].text)
                 for names in catalog["products"].values():
                     self.assertTrue(set(names) <= tools.keys())
+                self.assertIn(catalog["usage_examples"]["tool"], tools)
+                # Validate actual client-facing examples against discovered schemas.
+                # This catches renamed fields and missing required parameters.
+                import jsonschema
+                for product in catalog["usage_examples"]["products"]:
+                    result = await client.call_tool("get_speech_usage_examples", {"product": product})
+                    guide = json.loads(result.content[0].text)
+                    self.assertTrue(guide["ok"])
+                    for example in guide["examples"]:
+                        with self.subTest(product=product, example=example["name"]):
+                            jsonschema.validate(example["arguments"], tools[example["tool"]].input_schema)
+                filtered = await client.call_tool("get_speech_usage_examples", {"category": "timing"})
+                guide = json.loads(filtered.content[0].text)
+                self.assertEqual(set(guide["categories"]), {"timing"})
+                self.assertTrue(all(e["category"] == "timing" for e in guide["examples"]))
+                unknown = await client.call_tool("get_speech_usage_examples", {"product": "missing"})
+                self.assertFalse(json.loads(unknown.content[0].text)["ok"])
                 invalid = await client.call_tool("submit_long_text_speech", {"request": {}})
                 self.assertFalse(json.loads(invalid.content[0].text)["ok"])
 
