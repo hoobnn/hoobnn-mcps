@@ -3,6 +3,8 @@
 No automatic generation retries. URLs and resumable TTS inputs stay on disk.
 """
 import contextlib
+import contextvars
+import concurrent.futures
 import hashlib
 import json
 import os
@@ -12,8 +14,42 @@ import struct
 import subprocess
 import tempfile
 import time
+import threading
 import urllib.request
+
+from . import transport
 from pathlib import Path
+
+
+_leases = threading.local()
+
+
+def _sync_directory(path):
+    """Persist renamed directory entries as well as the file contents."""
+    fd = os.open(path, os.O_RDONLY)
+    try:
+        os.fsync(fd)
+    finally:
+        os.close(fd)
+
+
+def atomic_copy(path, source):
+    """Copy spooled media without loading the entire artifact into memory."""
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fd, tmp = tempfile.mkstemp(prefix=".mcp-copy-", dir=path.parent)
+    try:
+        with os.fdopen(fd, "wb") as target, Path(source).open("rb") as stream:
+            shutil.copyfileobj(stream, target, length=1024 * 1024)
+            if not target.tell():
+                raise ValueError("产物数据为空")
+            target.flush()
+            os.fsync(target.fileno())
+        os.replace(tmp, path)
+        _sync_directory(path.parent)
+    finally:
+        Path(tmp).unlink(missing_ok=True)
+    return str(path)
 
 
 def atomic_bytes(path, data):
@@ -26,6 +62,7 @@ def atomic_bytes(path, data):
             stream.flush()
             os.fsync(stream.fileno())
         os.replace(tmp, path)
+        _sync_directory(path.parent)
     finally:
         Path(tmp).unlink(missing_ok=True)
     return str(path)
@@ -39,7 +76,7 @@ def download(url, path):
     path.parent.mkdir(parents=True, exist_ok=True)
     fd, tmp = tempfile.mkstemp(prefix=".mcp-download-", dir=path.parent)
     try:
-        with os.fdopen(fd, "wb") as target, urllib.request.urlopen(url, timeout=60) as source:
+        with os.fdopen(fd, "wb") as target, transport.urlopen(url, timeout=60) as source:
             shutil.copyfileobj(source, target)
             size = target.tell()
             length = source.headers.get("Content-Length")
@@ -48,6 +85,7 @@ def download(url, path):
             target.flush()
             os.fsync(target.fileno())
         os.replace(tmp, path)
+        _sync_directory(path.parent)
     finally:
         Path(tmp).unlink(missing_ok=True)
     return str(path)
@@ -88,13 +126,57 @@ class Store:
         self.root = Path(os.environ.get(env, default)).expanduser().resolve()
 
     def path(self, job_id):
-        if not re.fullmatch(r"[a-f0-9]{32}", job_id):
+        if not isinstance(job_id, str) or not re.fullmatch(r"[a-f0-9]{32}", job_id):
             raise ValueError("job_id 必须是工具返回的 32 位 ID")
         return self.root / job_id / "job.json"
 
+    @contextlib.contextmanager
+    def _lease(self, job_id):
+        """Cross-process exclusion, reentrant only in the owning thread."""
+        import fcntl
+        path = self.path(job_id)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        key = str(path)
+        held = getattr(_leases, "held", None)
+        if held is None:
+            held = _leases.held = set()
+        if key in held:
+            yield
+            return
+        with (path.parent / "job.lock").open("a+b") as lock:
+            try:
+                fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            except BlockingIOError:
+                raise ValueError("任务正在由另一个调用处理，请稍后查询") from None
+            held.add(key)
+            try:
+                yield
+            finally:
+                held.remove(key)
+                fcntl.flock(lock, fcntl.LOCK_UN)
+
+    def _check_revision(self, job):
+        path = self.path(job["job_id"])
+        if path.is_file() and self.load(job["job_id"]).get("revision", 0) != job.get("revision", 0):
+            raise ValueError("任务记录已由另一个调用更新，请重新查询后恢复")
+
+    @contextlib.contextmanager
+    def processing(self, job):
+        """Hold from before a paid request through response persistence/delivery.
+
+        Callers should wrap the initial generation in this context after create().
+        Every mutation also checks revision, so stale callers cannot overwrite
+        recovery even when the caller does not hold the full operation lease.
+        """
+        with self._lease(job["job_id"]):
+            self._check_revision(job)
+            yield job
+
     def save(self, job):
-        job["updated_at"] = time.time()
-        atomic_bytes(self.path(job["job_id"]), json.dumps(job, ensure_ascii=False, indent=2).encode())
+        with self.processing(job):
+            snapshot = {**job, "updated_at": time.time(), "revision": job.get("revision", 0) + 1}
+            atomic_bytes(self.path(job["job_id"]), json.dumps(snapshot, ensure_ascii=False, indent=2).encode())
+            job.update(updated_at=snapshot["updated_at"], revision=snapshot["revision"])
         return job
 
     def create(self, kind, model, out_dir, mode="local", resume=None, summary=None):
@@ -108,33 +190,52 @@ class Store:
         return job
 
     def load(self, job_id):
-        return json.loads(self.path(job_id).read_text())
+        job = json.loads(self.path(job_id).read_text())
+        required = ("job_id", "kind", "model", "state", "task_id", "out_dir", "mode",
+                    "artifacts", "usage", "request_id", "error", "created_at", "updated_at", "summary", "result")
+        if not isinstance(job, dict) or any(key not in job for key in required):
+            raise ValueError("任务记录损坏：缺少必要字段")
+        if job["job_id"] != job_id or not isinstance(job["artifacts"], list):
+            raise ValueError("任务记录损坏：ID 或产物列表无效")
+        if (not isinstance(job["out_dir"], str) or not isinstance(job["state"], str)
+                or not isinstance(job.get("result", {}), dict)
+                or not isinstance(job.get("summary", {}), dict)
+                or not isinstance(job.get("revision", 0), int)):
+            raise ValueError("任务记录损坏：字段类型无效")
+        names = set()
+        for item in job["artifacts"]:
+            if (not isinstance(item, dict) or not isinstance(item.get("name"), str)
+                    or Path(item["name"]).name != item["name"] or item["name"] in ("", ".", "..")
+                    or "state" not in item or "file" not in item or item["name"] in names
+                    or item["state"] not in ("pending", "saved", "linked", "download_failed")
+                    or (item["state"] == "saved" and not isinstance(item["file"], str))):
+                raise ValueError("任务记录损坏：产物字段无效或名称重复")
+            names.add(item["name"])
+        if not isinstance(job["created_at"], (int, float)):
+            raise ValueError("任务记录损坏：创建时间无效")
+        return job
 
     def record_response(self, job, response):
-        path = self.path(job["job_id"]).parent / "response.json"
-        atomic_bytes(path, json.dumps(response, ensure_ascii=False).encode())
-        job["response_file"] = str(path)
-        self.save(job)
+        with self.processing(job):
+            path = self.path(job["job_id"]).parent / "response.json"
+            atomic_bytes(path, json.dumps(response, ensure_ascii=False).encode())
+            job["response_file"] = str(path)
+            self.save(job)
 
     @contextlib.contextmanager
     def locked(self, job_id):
-        """Fail quickly on concurrent recovery. Kernel releases the lock on crash."""
-        import fcntl
-        path = self.path(job_id)
-        if not path.is_file():
+        """Fail quickly on concurrent work. Kernel releases the lock on crash."""
+        if not self.path(job_id).is_file():
             raise ValueError("找不到任务记录")
-        with (path.parent / "job.lock").open("a+b") as lock:
-            try:
-                fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
-            except BlockingIOError:
-                raise ValueError("任务正在由另一个调用处理，请稍后查询") from None
-            try:
-                yield self.load(job_id)
-            finally:
-                fcntl.flock(lock, fcntl.LOCK_UN)
+        with self._lease(job_id):
+            yield self.load(job_id)
 
     def add(self, job, name, url=None, data=None, metadata=None):
-        if Path(name).name != name:
+        with self.processing(job):
+            return self._add(job, name, url=url, data=data, metadata=metadata)
+
+    def _add(self, job, name, url=None, data=None, metadata=None):
+        if not isinstance(name, str) or name in ("", ".", "..") or Path(name).name != name:
             raise ValueError("产物名称必须是不含目录的文件名")
         item = next((a for a in job["artifacts"] if a["name"] == name), None)
         if item is None:
@@ -153,31 +254,45 @@ class Store:
         self.save(job)  # Persist sources before attempting final delivery.
         return item
 
-    def deliver(self, job):
-        for item in job["artifacts"]:
-            item.update(state="pending", file=None, error=None)
-            path = Path(job["out_dir"]) / item["name"]
-            if path.is_file() and item.get("integrity"):
-                try:
-                    if fingerprint(path) == item["integrity"]:
-                        item.update(state="saved", file=str(path))
-                        continue
-                except OSError:
-                    pass
-            if job["mode"] == "url" and item.get("url"):
+    @staticmethod
+    def _deliver_item(item, out_dir, mode):
+        # Workers never mutate shared job state or write job.json.
+        item = dict(item)
+        path = Path(out_dir) / item["name"]
+        item.update(state="pending", file=None, error=None)
+        try:
+            if path.is_file() and item.get("integrity") and fingerprint(path) == item["integrity"]:
+                item.update(state="saved", file=str(path))
+                return item
+            if mode == "url" and item.get("url"):
                 item["state"] = "linked"
-                continue
-            try:
-                if item.get("source"):
-                    atomic_bytes(path, Path(item["source"]).read_bytes())
-                else:
-                    download(item.get("url"), path)
-                item.update(file=str(path), state="saved", integrity=fingerprint(path))
-                item["media_info"] = media_info(path)
-            except (OSError, ValueError) as exc:
-                item.update(state="download_failed", error=str(exc))
-            self.save(job)
-        if job["artifacts"]:
+                return item
+            if item.get("source"):
+                atomic_copy(path, item["source"])
+            else:
+                download(item.get("url"), path)
+            item.update(file=str(path), state="saved", integrity=fingerprint(path))
+            item["media_info"] = media_info(path)
+        except Exception as exc:
+            # Isolate delivery failures, including transport-specific exceptions.
+            item.update(state="download_failed", error=str(exc))
+        return item
+
+    def deliver(self, job):
+        with self.processing(job):
+            if not job["artifacts"]:
+                if job["state"] != "partial":
+                    job["state"] = "failed"
+                job["error"] = job.get("error") or "生成结果没有可交付产物；恢复不会重新生成"
+                self.save(job)
+                return self.result(job)
+            # A small per-job bound avoids overwhelming providers and disks.
+            with concurrent.futures.ThreadPoolExecutor(max_workers=min(4, len(job["artifacts"]))) as pool:
+                futures = {pool.submit(contextvars.copy_context().run, self._deliver_item, item, job["out_dir"], job["mode"]): index
+                           for index, item in enumerate(job["artifacts"])}
+                for future in concurrent.futures.as_completed(futures):
+                    job["artifacts"][futures[future]] = future.result()
+                    self.save(job)  # Only the coordinating thread persists state.
             complete = all(a["state"] in ("saved", "linked") for a in job["artifacts"])
             job["state"] = "delivered" if complete else "download_failed"
             job["error"] = None if complete else "部分产物交付失败；recover_job 可补下载，不重新生成"
@@ -185,8 +300,8 @@ class Store:
                 job.update(state="partial", error="部分产物生成失败；恢复不会重新生成失败项")
             if complete and job["kind"] == "tts":
                 job["state"] = "partial"  # Merge and remaining chunks are handled by resume_tts.
-        self.save(job)
-        return self.result(job)
+            self.save(job)
+            return self.result(job)
 
     def result(self, job):
         files = [a["file"] if a["state"] == "saved" else a.get("url")
@@ -212,7 +327,7 @@ class Store:
         records, errors = [], []
         for path in self.root.glob("*/job.json"):
             try:
-                job = json.loads(path.read_text())
+                job = self.load(path.parent.name)
                 if kind and job["kind"] != kind:
                     continue
                 records.append({key: job.get(key) for key in
