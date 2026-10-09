@@ -23,6 +23,7 @@
 | `speech_console` | 音色、API Key、服务、资源包、复刻订单、用量、配额及标签 | 官方 AK/SK OpenAPI |
 | `legacy_speech_request` | 历史字幕生成 / 字幕打轴、传统 TTS / ASR、普通 / 情感长文本 | 11 个旧版 HTTP 操作，AppID / Access Token |
 | `list_speech_capabilities` | 产品工具、管理 Action、官方链接、接入边界 | 本地查询，不计费 |
+| `get_speech_usage_examples` | 官方模板归纳、可改写调用示例和技巧，覆盖8类产品；音频生成可按4类筛选 | 本地查询，不计费 |
 
 常用参数有简洁工具，高级参数通过 `request` / `event` / `parameters` 完整透传，不丢弃官方可选字段。查询工具每次查询一次，不自动重投或购买资源。`speech_console` 会执行指定 Action，包括创建、删除、停用和下单，调用者需明确选择。
 
@@ -49,6 +50,73 @@ servers/doubao-speech/.venv/bin/python -m unittest discover -s servers/doubao-sp
 MCP 客户端本地启动命令可指定本项目 `.venv/bin/doubao-speech-mcp` 的绝对路径。已安装的 GitHub 版本需在发布后升级并重启客户端，本次源码修改不会自动替换已经运行的 server。
 
 ## 调用示例
+
+完整示例与技巧见 [使用指南](docs/usage-examples.md)。MCP 内可直接调用 `get_speech_usage_examples`，返回官方模板分析、工具参数、技巧和来源链接：
+
+```json
+{"product": "audio", "category": "timing"}
+```
+
+`product` 支持 `audio`、`tts`、`voice`、`podcast`、`asr`、`translation`、`minutes`、`realtime`；仅 `audio` 支持 `category=text/reference/timing/multilingual`。省略分类返回该产品全部示例。示例为根据官方用法改写，文件路径、URL、分配音色 ID、会话 ID 需替换；查询示例不会上传或生成音频。
+
+### 音频生成 1.0：官方四类用法
+
+2026-10-09 核对[官方体验中心的模板分类](https://console.volcengine.com/speech/new/experience/audio?projectName=default)：**文本生成、参考生成、时间控制、多语种**。四类均使用 `generate_audio`，可以组合使用；以下 JSON 是 MCP 工具参数，示例提示词为根据官方用法改写，未做真实云端生成验证。
+
+| 官方分类 | 写法与 MCP 参数 | 官方模板举例 |
+|---|---|---|
+| 文本生成 | `prompt` 按顺序描述角色、台词、环境声、配乐与音效 | 悬疑刑侦片、宫廷试药、双人播客对谈 |
+| 参考生成 | `reference_audios` 提供样音，`prompt` 用 `@音频1`、`@音频2` 引用；说明参考音色、情感、风格、节奏 | 带货双人、警局对峙、多角演绎 |
+| 时间控制 | `prompt` 写总时长及 `[开始秒s:结束秒s]`，支持小数秒 | 控制音效卡点、控制情绪递进、控制叙事转场、控制旁白推进 |
+| 多语种 | `prompt` 直接使用目标语言台词，说明语言、口音、角色与表演方式 | 英语、日语、韩语、法语等模板 |
+
+**文本生成**：先定义角色和场景，再按发生顺序编排声音；台词用引号，区分台词与表演指令。
+
+```json
+{
+  "prompt": "雨声持续。青年女子嗓音清亮，紧张地说：‘有人来了。’随后响起三声敲门声，低音弦乐渐强。",
+  "model": "seed-audio-1.0",
+  "format": "mp3"
+}
+```
+
+**参考生成**：样音列表的第一条对应 `@音频1`，第二条对应 `@音频2`。多人对白要明确每个角色的引用关系；下列绝对路径需替换为真实文件，也可以传可访问的音频 URL。最多3段，每段不超过30秒、10MB。
+
+```json
+{
+  "prompt": "主持人甲参考@音频1的音色，热情地说：‘欢迎。’主持人乙参考@音频2的音色，轻笑着说：‘你好。’随后两人自然地笑起来。",
+  "reference_audios": ["/absolute/path/host_a.wav", "/absolute/path/host_b.wav"],
+  "format": "mp3"
+}
+```
+
+需要指定现有音色时可用 `speaker`；图片参考用 `reference_image`（本地绝对路径或URL），不能与 `speaker` 或 `reference_audios` 混用。图片参考是 API 支持的另一种输入方式，不是体验中心第五个模板分类。
+
+**时间控制**：官方输入提示使用 `[2s:5s]`，音效卡点模板使用 `[2.7s:5.7s]` 等小数秒区间。将标记写在对应台词或声音事件前，同时描述停顿、情绪递进、转场和声音强弱。
+
+```json
+{
+  "prompt": "总长10秒，雨声持续。女子轻声说道：[2.7s:5.7s]‘你终于回来了。’[6s:7s]响起敲门声，最后雨声渐弱。",
+  "subtitles": true,
+  "format": "mp3"
+}
+```
+
+区间标记随 `prompt` 原样传给官方 `text_prompt`；没有独立的 `timeline` 参数，也不在 MCP 内做音频裁切或强制对齐。`subtitles=true` 返回的是生成后的人声字幕，`subtitle.sentences` 及其 `words` 的 `start_time` / `end_time` 单位为**毫秒**，不标注所有音效。实际时间落点需核对音频与字幕；不要把提示词控制理解为每次严格命中指定时间。单次最长120秒，台词过长或区间过短可能影响节奏。
+
+**多语种**：目标语言台词配合角色、口音和表演说明；不需要额外的 `language` 参数。官方英语模板用英文描述人物声线、标准美式英语、情绪、环境音和配乐。
+
+```json
+{
+  "prompt": "A young woman speaks warm, clear American English: ‘Welcome home.’ Soft piano continues underneath. A young man replies quietly: ‘It is good to be back.’",
+  "format": "mp3",
+  "subtitles": true
+}
+```
+
+语言支持清单以[官方音频生成 API](https://docs.volcengine.com/docs/DoubaoVoice/audio-generation-http?lang=zh)为准，控制台模板展示与 API 列举可能不同。四类用法及参数示例也已写入 `generate_audio` 的工具描述，客户端发现工具时即可读取。
+
+### 长文本与实时会话
 
 长文本 `submit_long_text_speech`：
 
