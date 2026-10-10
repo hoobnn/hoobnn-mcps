@@ -3,7 +3,7 @@ import argparse
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-MODULES = ("transport.py", "mcp_runtime.py")
+MODULES = ("transport.py", "mcp_runtime.py", "jobs.py")
 
 
 def main():
@@ -20,10 +20,6 @@ def main():
                 stale.append(str(target.relative_to(ROOT)))
                 if not args.check:
                     target.write_bytes(source)
-    jobs = [ROOT / "servers" / name / "src" / (name.replace("-", "_") + "_mcp") / "jobs.py"
-            for name in ("ali-bailian", "volcengine-ark")]
-    if jobs[0].read_bytes() != jobs[1].read_bytes():
-        stale.append("jobs.py implementations differ")
     if args.check and stale:
         parser.exit(1, "Shared sources out of sync: " + ", ".join(stale) + "\n")
 

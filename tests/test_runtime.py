@@ -268,12 +268,12 @@ class MCPBoundary(unittest.IsolatedAsyncioTestCase):
             release.wait(1)
             return {"ok": True}
         @server.tool()
-        def get_job() -> dict:
+        def list_jobs() -> dict:
             return {"ok": True}
         task = asyncio.create_task(server.call_tool("blocked", {}))
         try:
             await asyncio.sleep(0.02)
-            result = await asyncio.wait_for(server.call_tool("get_job", {}), 0.1)
+            result = await asyncio.wait_for(server.call_tool("list_jobs", {}), 0.1)
             self.assertFalse(result.is_error)
         finally:
             release.set()

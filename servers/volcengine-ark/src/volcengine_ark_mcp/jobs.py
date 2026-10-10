@@ -1,4 +1,4 @@
-"""Durable local jobs. Vendored in each independently installed server package.
+"""Durable local jobs. Source of truth: shared/jobs.py, copied by scripts/sync_shared.py.
 
 No automatic generation retries. URLs and resumable TTS inputs stay on disk.
 """
@@ -336,6 +336,46 @@ class Store:
                 errors.append({"record": path.parent.name, "error": str(exc)})
         records.sort(key=lambda item: item["created_at"], reverse=True)
         return {"ok": True, "jobs": records[:limit], "errors": errors}
+
+    def find_task(self, task_id, kinds=None):
+        """Newest local record for a provider task ID, so lookups reuse its out_dir."""
+        newest = None
+        for path in self.root.glob("*/job.json"):
+            try:
+                job = self.load(path.parent.name)
+            except (OSError, ValueError, KeyError):
+                continue
+            if job["task_id"] == task_id and (not kinds or job["kind"] in kinds):
+                if newest is None or job["created_at"] > newest["created_at"]:
+                    newest = job
+        return newest["job_id"] if newest else None
+
+    def lookup(self, job_id=None, task_id=None, wait=0, pollers=None, adopt=None):
+        """Read a job; while the provider task is pending, poll it once (or up to wait seconds).
+
+        pollers maps job kind to poll(job, wait). adopt(task_id, wait) creates a record for a
+        provider task submitted elsewhere. Polling never submits or regenerates work.
+        """
+        pollers = pollers or {}
+        if not isinstance(wait, int) or not 0 <= wait <= 90:
+            return {"ok": False, "error": "wait 范围为 0–90 秒"}
+        if not job_id and not task_id:
+            return {"ok": False, "error": "需要 job_id 或 task_id"}
+        if not job_id:
+            job_id = self.find_task(task_id, set(pollers) or None)
+            if job_id is None:
+                if adopt is None:
+                    return {"ok": False, "error": "本地没有这个 task_id 的任务记录"}
+                return adopt(task_id, wait)
+        record = self.get(job_id)
+        if not record["ok"]:
+            return record
+        if task_id and record["task_id"] != task_id:
+            return {"ok": False, "error": "job_id 与 task_id 不属于同一个任务", "job_id": job_id}
+        poll = pollers.get(record["kind"])
+        if poll and record["task_id"] and record["job_state"] in ("running", "queued", "unknown"):
+            return self.recover(job_id, lambda job: poll(job, wait))
+        return record
 
     def recover(self, job_id, handler=None):
         try:
