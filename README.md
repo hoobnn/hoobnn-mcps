@@ -5,8 +5,21 @@ hoobnn 的个人 MCP server 集合。每个 server 是 `servers/<name>/` 下的�
 | Server | 作用 |
 |---|---|
 | [`volcengine-ark`](servers/volcengine-ark) | 火山方舟：Seedream图像、Seedance视频、语言与多模态理解、联网搜索、向量化和任务恢复（新增产品待云端验证） |
-| [`doubao-speech`](servers/doubao-speech) | 豆包语音：合成、复刻、音色设计、识别、音频生成、播客、实时对话3.0、同传、翻译、妙记、词表及控制台管理 |
+| [`doubao-speech`](servers/doubao-speech) | 豆包语音：合成（含异步长文本）、识别、音频生成、播客、同传、翻译、妙记、复刻与音色设计；实时对话3.0、词表及控制台管理按需启用 |
 | [`ali-bailian`](servers/ali-bailian) | 阿里云百炼：图像、语言、TTS/ASR、音色复刻与设计、视频生成/编辑/数字人、向量与重排序、任务恢复（新增产品待云端验证） |
+
+三个 server 有重叠的能力，工具描述里写明了各自适合的场景，大致分工：
+
+| 需求 | 优先用 | 另一选择 |
+|---|---|---|
+| 图片：图层拆分、透明背景、组图 | `volcengine-ark` Seedream | — |
+| 图片：海报中英文字、多图融合 | `ali-bailian` qwen / wan | — |
+| 视频：本地参考视频 / 音频、文档或网页参考 | `ali-bailian` 万相（自动上传） | `volcengine-ark` Seedance（参考素材需公网 URL） |
+| 对话：豆包 Seed | `volcengine-ark` `chat` | — |
+| 对话：千问、DeepSeek、Kimi、GLM 等 | `ali-bailian` `chat` | — |
+| 语音合成、识别、复刻 | `doubao-speech`（中文音色、方言、字幕、长文本、说话人分离） | `ali-bailian`（千问音色；ASR 返回情绪和语种） |
+
+各家复刻 / 设计的音色只能在同一家的合成工具里使用。异步任务在三个 server 里都用 `get_job` 查进度，完成后自动下载结果；`recover_job` 只用来修复交付。
 
 ## 安装
 
@@ -49,7 +62,7 @@ key 等环境变量不写进配置，由客户端从 shell 环境继承。Codex 
 
 三个独立包共用经过同步校验的 HTTP/MCP 运行时：连接池、总超时、取消、有限并发、明确错误与结构化结果。构建规范、同类实现对照、兼容性变化和验证边界见 [MCP 构建与稳定性](docs/mcp-reliability.md)。
 
-默认保留全部工具；在 MCP 进程环境中设置 `MCP_TOOL_GROUPS` 可按用途减少工具发现和模型上下文成本。例如方舟 `image,jobs,help`、百炼 `language,help`、豆包语音 `realtime,help`。分组在启动时固定，更改后需重启。
+默认暴露常用工具组；豆包语音的 `realtime`（持久实时会话）和 `admin`（词表与控制台管理）默认不启用，`list_speech_capabilities` 会列出未启用的组和启用方法。在 MCP 进程环境中设置 `MCP_TOOL_GROUPS` 可按用途增减，例如方舟 `image,jobs,help`、百炼 `language,help`、豆包语音 `speech,jobs,help,realtime`。被关掉的工具对模型完全不可见，分组在启动时固定，更改后需重启。
 
 开发检查：
 

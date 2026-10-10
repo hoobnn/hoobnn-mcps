@@ -428,7 +428,7 @@
       "kind": "api",
       "tools": [
         "edit_video",
-        "query_video"
+        "get_job"
       ],
       "sha256": "b2663e36235018fea369313afcc10e120a69be23cc33c4b3d84e8d98fc03a49c",
       "bytes": 22296,
@@ -2294,7 +2294,7 @@
       "kind": "api",
       "tools": [
         "animate_portrait",
-        "query_video"
+        "get_job"
       ],
       "sha256": "dc30f5c8899e3e9f464ea2e8d27ea3a9b005216e55801063d19ffb8ce338f13b",
       "bytes": 18859,
@@ -2325,7 +2325,7 @@
       "kind": "api",
       "tools": [
         "generate_video",
-        "query_video",
+        "get_job",
         "recover_job"
       ],
       "sha256": "b0d2fe8fe43514b520068a5bf63669577e3e98185877c54b1e6ffffa4e8fb44f",
@@ -2480,7 +2480,7 @@
       "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=APIinterfacedocumentation",
       "kind": "api",
       "tools": [
-        "legacy_speech_request"
+        "speech_raw_request"
       ],
       "sha256": "8d68ced31c7ac11db48fd468eca568590c302116f872aff6304fa2b1305e315d",
       "bytes": 11039,
@@ -2544,7 +2544,7 @@
       "kind": "api",
       "tools": [
         "generate_audio",
-        "speech_http_request"
+        "speech_raw_request"
       ],
       "sha256": "6d3d7b27a30dfc04f8d07d03da45216e9d3489dd36b21b5d1e9f9fb6a2ea9cb0",
       "bytes": 9618,
@@ -2598,7 +2598,7 @@
       "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=AudioFileRecognitionStandardEdition",
       "kind": "api",
       "tools": [
-        "legacy_speech_request"
+        "speech_raw_request"
       ],
       "sha256": "18a5a9b36e086524ef2cf42d78db86b240f485a781e1bc3563ceccb9e0be790e",
       "bytes": 14483,
@@ -2632,7 +2632,7 @@
       "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=Audiovideosubtitlegeneration",
       "kind": "api",
       "tools": [
-        "legacy_speech_request"
+        "speech_raw_request"
       ],
       "sha256": "2b57d70711b574d7b64e8c6567c8816793981eeb0467bd1bbdb3ca81871ba788",
       "bytes": 20818,
@@ -2668,7 +2668,7 @@
       "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=Automaticsubtitletyping",
       "kind": "api",
       "tools": [
-        "legacy_speech_request"
+        "speech_raw_request"
       ],
       "sha256": "56b2c916f4ac774c76b01da1d865cc6a47848c0c2c1d73f41a276f387f015680",
       "bytes": 12413,
@@ -2730,7 +2730,7 @@
       "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=bidirectional-streaming-automatic-speech-recognition-websocket",
       "kind": "api",
       "tools": [
-        "streaming_speech_to_text"
+        "speech_raw_request"
       ],
       "sha256": "b7ffc89cf64d91b9f657d6d3fea0f4f90a11e52d8c67c63c6f75a77cc984d961",
       "bytes": 23383,
@@ -2762,7 +2762,7 @@
       "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=bidirectional-streaming-text-to-speech-websocket",
       "kind": "api",
       "tools": [
-        "websocket_text_to_speech"
+        "speech_raw_request"
       ],
       "sha256": "4ce3a4fbde08ccb76614349c3af8e77ece5cc346f68f35f0f893c49e09aebe1a",
       "bytes": 16485,
@@ -2883,8 +2883,9 @@
       "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=DoubaoVoiceMinutes-APIAccessDocumentation",
       "kind": "api",
       "tools": [
-        "query_minutes",
-        "submit_minutes"
+        "get_job",
+        "recover_job",
+        "summarize_meeting"
       ],
       "sha256": "00f013dd5910b248166a8b810db7cef36a5378991a35d057de35316ec1e79614",
       "bytes": 77607,
@@ -3013,7 +3014,7 @@
       "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=HTTPChunkedSSEUnidirectionalStreaming-V3",
       "kind": "api",
       "tools": [
-        "speech_http_request",
+        "speech_raw_request",
         "text_to_speech"
       ],
       "sha256": "6ed29dda98c017da0e7281bdbcb1643c77504561c6fc4babc27b508268f883cf",
@@ -3064,7 +3065,7 @@
       "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=HTTPinterfaceone-timecomposition-non-streaming",
       "kind": "api",
       "tools": [
-        "legacy_speech_request"
+        "speech_raw_request"
       ],
       "sha256": "ef71ab7d12a723741984873498983598eb19f8f5ba6dcf2d6e7a342051a0749d",
       "bytes": 2264,
@@ -3093,7 +3094,7 @@
       "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=HTTPone-timecompositenon-streaminginterface-V1notrecommended",
       "kind": "api",
       "tools": [
-        "legacy_speech_request"
+        "speech_raw_request"
       ],
       "sha256": "a4d7b2c501b9303783f15a84bb5492796b28b21d12390a50c9375c3205926c4f",
       "bytes": 17254,
@@ -3136,7 +3137,7 @@
       "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=LargemodelrecordingfileLiterecognitionAPI",
       "kind": "api",
       "tools": [
-        "speech_http_request",
+        "speech_raw_request",
         "speech_to_text"
       ],
       "sha256": "ef9dae4d17e1db6487ecb91c5d86dade4499aa40f72084c4cc28944677691bfb",
@@ -3167,8 +3168,9 @@
       "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=Largemodelrecordingfilerecognitionidleversion",
       "kind": "api",
       "tools": [
-        "query_transcription",
-        "submit_transcription"
+        "get_job",
+        "recover_job",
+        "speech_to_text"
       ],
       "sha256": "d5c746c407aa6161b8abc1369365c323979b876ff6dad7e86f7deee1ad39a5b9",
       "bytes": 7630,
@@ -3200,8 +3202,9 @@
       "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=LargemodelrecordingfilerecognitionstandardversionAPI",
       "kind": "api",
       "tools": [
-        "query_transcription",
-        "submit_transcription"
+        "get_job",
+        "recover_job",
+        "speech_to_text"
       ],
       "sha256": "a29c026ae801abf446873331f649bdfcd66f276bf7b3b511c5b6fd4941b07fce",
       "bytes": 23274,
@@ -3235,7 +3238,7 @@
       "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=LargemodelstreamingautomaticspeechrecognitionAPI",
       "kind": "api",
       "tools": [
-        "streaming_speech_to_text"
+        "speech_raw_request"
       ],
       "sha256": "281e32a82932aa1854ac7b3829e6934e112f59f8491e54c3047e919629a29bc4",
       "bytes": 34780,
@@ -3480,8 +3483,8 @@
         "generate_audio",
         "list_speech_capabilities",
         "open_realtime_session",
-        "streaming_speech_to_text",
-        "submit_transcription",
+        "speech_raw_request",
+        "speech_to_text",
         "text_to_speech"
       ],
       "sha256": "aa335488e1b7e7d1bd434549a9ba9194287ac4b785e9ea94cd6a85f040c677e0",
@@ -3747,7 +3750,7 @@
       "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=recording-file-recognition-lite-http",
       "kind": "api",
       "tools": [
-        "speech_http_request",
+        "speech_raw_request",
         "speech_to_text"
       ],
       "sha256": "189bb81f964dcdd4f784e24ba6cc2e6f2c18481eeebfded92d10e7a4e1c664d8",
@@ -3868,7 +3871,8 @@
       "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=result-query-http",
       "kind": "api",
       "tools": [
-        "query_transcription"
+        "get_job",
+        "recover_job"
       ],
       "sha256": "ae26c200fb7759ffbd03ec9affb23dd1dab532d42548ecbcd35709c442a2f05c",
       "bytes": 2369,
@@ -3896,7 +3900,8 @@
       "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=result-query-http-1",
       "kind": "api",
       "tools": [
-        "query_transcription"
+        "get_job",
+        "recover_job"
       ],
       "sha256": "e1671c0f93ea63ed5e426b252e51590c8e01f01d0268981456bd0a2fbad4efec",
       "bytes": 2251,
@@ -3924,7 +3929,8 @@
       "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=Resultquery",
       "kind": "api",
       "tools": [
-        "query_long_text_speech"
+        "get_job",
+        "recover_job"
       ],
       "sha256": "9c435bf21e4ca5308138a63db50269e72ee208d63c33911c4a9ccb389ba6ec95",
       "bytes": 3172,
@@ -4097,7 +4103,7 @@
       "tools": [
         "clone_voice",
         "design_voice",
-        "query_voice",
+        "get_voice",
         "upgrade_voice"
       ],
       "sha256": "90ecd9509d2118f8d78bdded26ce2cbfc7af0364c497b5132af049a4197588bc",
@@ -4159,7 +4165,7 @@
       "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=task-submission-http",
       "kind": "api",
       "tools": [
-        "submit_transcription"
+        "speech_to_text"
       ],
       "sha256": "e96a8aa32380d9ad7d51e8f15796b255d6a485db83fb7626dcb02ff081fcf717",
       "bytes": 16213,
@@ -4191,7 +4197,7 @@
       "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=task-submission-http-1",
       "kind": "api",
       "tools": [
-        "submit_transcription"
+        "speech_to_text"
       ],
       "sha256": "fba35af4ced5f1f4ffa29cfbf89946e41927a78873bd8b50886e4d71ac266d00",
       "bytes": 18474,
@@ -4224,7 +4230,7 @@
       "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=Tasksubmission",
       "kind": "api",
       "tools": [
-        "submit_long_text_speech"
+        "text_to_speech"
       ],
       "sha256": "bc17c77c4092513bff264c4985be01d890d74498d6584d76cc777593084c0db1",
       "bytes": 11080,
@@ -4317,7 +4323,7 @@
       "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=tone-query-http",
       "kind": "api",
       "tools": [
-        "query_voice"
+        "get_voice"
       ],
       "sha256": "425ff807f846a137fadf6ab0c1a7426a087f3dd1cdebbd4f114e7da924c790f5",
       "bytes": 3703,
@@ -4409,8 +4415,8 @@
       "kind": "models",
       "tools": [
         "open_realtime_session",
-        "text_to_speech",
-        "websocket_text_to_speech"
+        "speech_raw_request",
+        "text_to_speech"
       ],
       "sha256": "bf66ada092cedaabdee04ebadcd310cece125a735ed080e2976db9afcd5c69e2",
       "bytes": 74965,
@@ -4436,7 +4442,7 @@
       "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=unidirectional-streaming-automatic-speech-recognition-websocket",
       "kind": "api",
       "tools": [
-        "streaming_speech_to_text"
+        "speech_raw_request"
       ],
       "sha256": "55a7c2904fc5ed07eccf0baa09edf3af2470301a16e02c75fbcba43bb8826320",
       "bytes": 22078,
@@ -4466,7 +4472,7 @@
       "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=unidirectional-streaming-text-to-speech-http",
       "kind": "api",
       "tools": [
-        "speech_http_request",
+        "speech_raw_request",
         "text_to_speech"
       ],
       "sha256": "5c3da4d270150a06a428c7af5b0752c5e13b7dfb0571848bb0ce6af4c32f252f",
@@ -4503,7 +4509,7 @@
       "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=unidirectional-streaming-text-to-speech-websocket",
       "kind": "api",
       "tools": [
-        "websocket_text_to_speech"
+        "speech_raw_request"
       ],
       "sha256": "5f6d84b3c73a314c14e29ba2249715220217422dbab0f38dd83558af27209696",
       "bytes": 16872,
@@ -4909,7 +4915,7 @@
       "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=WebSocketBidirectionalStreaming-V3",
       "kind": "api",
       "tools": [
-        "websocket_text_to_speech"
+        "speech_raw_request"
       ],
       "sha256": "4124bff73584e35e1d5696694dd85791f536cf85de11992a328b2ebba742e27f",
       "bytes": 61697,
@@ -4961,7 +4967,7 @@
       "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=WebSocketUnidirectionalStreaming-V3",
       "kind": "api",
       "tools": [
-        "websocket_text_to_speech"
+        "speech_raw_request"
       ],
       "sha256": "dedcada02fad1824e3df9bd27f1f66314012123427b6836f46a3856be27835d2",
       "bytes": 55155,
@@ -5017,7 +5023,7 @@
         "embed",
         "generate_image",
         "generate_video",
-        "query_video",
+        "get_job",
         "recover_job"
       ],
       "sha256": "bc84dcc077aac0ce97d0ed55a4355687b35dbbeb2f76424472724497ca7dc2fc",
@@ -6015,7 +6021,7 @@
       "fetch_url": "https://www.volcengine.com/api/doc/getDocDetail?LibraryCode=ark&DocumentCode=get-video-generation-task-api",
       "kind": "api",
       "tools": [
-        "query_video",
+        "get_job",
         "recover_job"
       ],
       "sha256": "bb8f03d20e3a52cdb89298e1edf978ee7866a3b0412527ab8d3cd974beeb8494",
@@ -6232,7 +6238,7 @@
       "kind": "guide",
       "tools": [
         "generate_video",
-        "query_video",
+        "get_job",
         "recover_job"
       ],
       "sha256": "c7eb5169f2d86dd1611d6a364d302cddabc8e79ca67f831acb812208b28bd58b",

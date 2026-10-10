@@ -1,6 +1,6 @@
 # MCP 构建与稳定性调整
 
-检查日期：2026-10-10。版本：`volcengine-ark-mcp 0.5.1`、`ali-bailian-mcp 0.4.1`、`doubao-speech-mcp 0.3.2`。
+检查日期：2026-10-10。版本：`volcengine-ark-mcp 0.6.0`、`ali-bailian-mcp 0.5.0`、`doubao-speech-mcp 0.4.0`。工具面调整见[按用途重组工具](#按用途重组工具)。
 
 ## 结论
 
@@ -73,19 +73,39 @@ servers/doubao-speech/.venv/bin/python scripts/measure_tools.py doubao-speech --
 | `MCP_WORKERS` | 8 | 同步业务 worker / async 调用上限；本地说明与状态另有 2 个 worker |
 | `MCP_HTTP_CONNECTIONS` | 16 | HTTP 连接上限；keepalive 最大 8 |
 | `MCP_MAX_RESPONSE_MB` | 512 | 完整响应读取和单个流式行的上限；流式文件下载不整体缓冲 |
-| `MCP_TOOL_GROUPS` | 全部 | 逗号分隔分组；未知分组启动时报错；修改后重启 |
+| `MCP_TOOL_GROUPS` | 全部常用组 | 逗号分隔分组；未知分组启动时报错；修改后重启。豆包语音的 `realtime`、`admin` 只有显式列出才启用 |
 
-可选分组：Ark `image,video,language,embedding,jobs,help`；Bailian `image,language,speech,video,embedding,jobs,help`；Speech `speech,realtime,management,help`。`get_tool_help` 始终可用；能力工具返回 `enabled_tools/selected_groups`，区分产品总目录与当前暴露工具。
+可选分组：Ark `image,video,language,embedding,jobs,help`；Bailian `image,language,speech,video,embedding,jobs,help`；Speech `speech,voice,jobs,help`，以及默认关闭的 `realtime,admin`。`get_tool_help` 始终可用；能力工具返回 `enabled_tools/selected_groups/tool_groups/disabled_groups`，有未启用组时附 `enable_hint`，让模型能告诉用户怎样打开。
 
 兼容性变化：
 
 1. `ok` 表示本次调用成功；任务仍运行时为 `ok=true, completed=false`。全部交付 `completed=true`；失败/部分失败设置 MCP `isError=true`，保留成功产物。`get_job.ok` 是记录读取结果，不能据此认定任务已完成。
-2. `chat/query_video/embed/rerank/get_job/recover_job` 默认移除重复的 `response`；需要原始响应时传 `include_response=true`。原始语音透传与管理接口保留它们的主要响应。
-3. 百炼 `generate_video/query_video` 默认 `wait=0`，需要等待时显式传入，最大 90 秒。
+2. `chat/embed/rerank/get_job/recover_job` 默认移除重复的 `response`；需要原始响应时传 `include_response=true`。原始语音透传与管理接口保留它们的主要响应。
+3. 百炼 `generate_video` 与三个 server 的 `get_job` 默认 `wait=0`，需要等待时显式传入，最大 90 秒。
 4. Ark/Bailian 的显式 `out_dir` 作为父目录，每次调用创建带随机后缀的子目录；Speech 保持显式目录，但音频/字幕文件名唯一。依赖固定文件名的脚本应改用返回的 `files`。
 5. 任务恢复锁使用 POSIX `flock`，当前支持范围为 macOS/Linux。旧无 revision 的任务记录仍可读取；状态未知的付费请求不自动再次生成。
 
 线程中的文件 I/O 无法被 Python 强制终止。超时后真实 worker 名额不会提前释放；正在进行的原子落盘可能继续完成。取消不是撤销云端任务或退款。已有任务通过本地记录及提供商 task_id 查找，不能把未知提交结果当作未付费。
+
+## 按用途重组工具
+
+`volcengine-ark 0.6.0`、`ali-bailian 0.5.0`、`doubao-speech 0.4.0` 统一了工具面，均为不兼容变更，不保留旧名：
+
+- **一件事一个入口**：豆包语音把同一能力的多种接口合并，由服务端按输入选择（长文本自动走异步、说话人分离自动走标准版识别），流式合成、流式识别和历史接口收进唯一的兜底工具 `speech_raw_request`。
+- **具名参数加 `parameters`**：所有具名参数工具都接受 `parameters`，深度合并未单独列出的官方字段。豆包语音默认工具里只有 `speech_raw_request` 需要手写官方请求体；此前有 16 个工具以 `request: dict` 为主参数。
+- **异步任务统一 `get_job`**：三个 server 删除各自的 `query_*` 工具。`get_job(job_id | task_id, wait)` 在任务未结束时查询提供商一次（或在 wait 内轮询），完成即交付；只给 task_id 且本地无记录时新建记录。已结束的任务只读本地，不重复请求。`recover_job` 只修复交付。豆包语音的长文本合成、标准/闲时识别和妙记接入共享任务存储，提交前落盘；只有传输层失败才记为结果未知，且永不自动重提。
+- **默认关闭的组**：豆包语音 `realtime`、`admin` 需显式启用；关闭的工具对模型不可见，因此能力目录会写明如何打开。
+- **跨 server 分工**：重叠工具（图像、视频、对话、向量、TTS、ASR、复刻）的描述写明何时改用另一个 server。
+
+`tools/list` 测量（口径同上节）：
+
+| Server | 调整前工具/字节 | 调整后默认工具/字节 | 变化 |
+|---|---:|---:|---:|
+| Ark | 10 / 13,513 | 9 / 13,617 | +0.8% |
+| Bailian | 20 / 26,704 | 19 / 28,253 | +5.8% |
+| Speech | 29 / 33,448 | 18 / 28,698 | −14.2% |
+
+豆包语音启用全部组时为 24 个工具、35,405 字节。Ark 与百炼体积略增，来自新增的 `parameters` 和分工说明；这轮的目标是减少选错工具和手写官方 JSON，而不是压缩 schema。
 
 ## 验证与剩余工作
 
