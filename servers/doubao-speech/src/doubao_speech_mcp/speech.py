@@ -10,6 +10,7 @@ import urllib.error
 import urllib.request
 
 from . import transport
+from .mcp_runtime import merge_parameters
 import uuid
 import wave
 from pathlib import Path
@@ -147,7 +148,46 @@ def build_tts_body(text, o, fmt):
               "additions": json.dumps(additions, ensure_ascii=False)}
     if o["model"]:
         params["model"] = o["model"]
-    return {"req_params": params}
+    body = {"req_params": params}
+    apply_parameters(body, o.get("parameters"))
+    return body
+
+
+LONG_TTS_RESOURCES = {"seed-tts-2.0", "seed-icl-2.0"}
+
+
+def build_long_tts_body(o):
+    """Asynchronous long-text request: up to 100000 characters, no wav, timestamps instead of SRT."""
+    _validate_audio_options(o)
+    fmt, rate = o["format"], o["sample_rate"]
+    text = (o["text"] or "").strip()
+    if not text or len(text) > 100000:
+        raise InputError("长文本合成 text 需 1–100000 字符")
+    if fmt not in ("mp3", "pcm", "ogg_opus"):
+        raise InputError("长文本合成 format 只能是 mp3、pcm 或 ogg_opus（不支持 wav）")
+    if fmt == "ogg_opus" and rate != 48000:
+        raise InputError("ogg_opus 只支持 48000Hz")
+    body = build_tts_body(text, {**o, "subtitles": False, "parameters": None}, fmt)
+    if o["subtitles"]:
+        body["req_params"]["audio_params"]["enable_timestamp"] = True
+    return apply_parameters(body, o.get("parameters"))
+
+
+def apply_parameters(body, parameters):
+    """Merge extra official fields; req_params.additions may be given as an object."""
+    if not parameters:
+        return body
+    params = body.get("req_params")
+    additions = params.get("additions") if isinstance(params, dict) else None
+    if isinstance(additions, str):
+        params["additions"] = json.loads(additions)
+    try:
+        merge_parameters(body, parameters)
+    except ValueError as exc:
+        raise InputError(str(exc)) from exc
+    if isinstance(params, dict) and isinstance(params.get("additions"), dict):
+        params["additions"] = json.dumps(params["additions"], ensure_ascii=False)
+    return body
 
 
 def synth_chunk(text, o, resource, fmt):
@@ -412,6 +452,20 @@ def asr_audio(src, fmt, language):
     return audio
 
 
+def asr_request(o):
+    """Shared recognition options for the flash and standard/idle file APIs."""
+    req = {"model_name": "bigmodel", "enable_itn": o["itn"], "enable_punc": o["punc"], "enable_ddc": o["ddc"],
+           "show_utterances": o["utterances"]}
+    if o["hotwords"] or o["context"]:
+        ctx = {}
+        if o["hotwords"]:
+            ctx["hotwords"] = [{"word": w} for w in o["hotwords"]]
+        if o["context"]:
+            ctx.update(context_type="dialog_ctx", context_data=[{"text": o["context"]}])
+        req["corpus"] = {"context": json.dumps(ctx, ensure_ascii=False)}
+    return req
+
+
 def speech_to_text(o):
     result = {"ok": False, "text": "", "duration_ms": None, "utterances": None, "error": None}
     try:
@@ -419,19 +473,14 @@ def speech_to_text(o):
     except InputError as e:
         result["error"] = str(e)
         return result
-    req = {"model_name": "bigmodel", "enable_itn": o["itn"], "enable_punc": o["punc"], "enable_ddc": o["ddc"],
-           "show_utterances": o["utterances"]}
-    corpus = {}
-    if o["hotwords"] or o["context"]:
-        ctx = {}
-        if o["hotwords"]:
-            ctx["hotwords"] = [{"word": w} for w in o["hotwords"]]
-        if o["context"]:
-            ctx.update(context_type="dialog_ctx", context_data=[{"text": o["context"]}])
-        corpus["context"] = json.dumps(ctx, ensure_ascii=False)
-    if corpus:
-        req["corpus"] = corpus
-    headers, raw, err = post("/api/v3/auc/bigmodel/recognize/flash", {"audio": audio, "request": req},
+    req = asr_request(o)
+    body = {"audio": audio, "request": req}
+    try:
+        merge_parameters(body, o.get("parameters"))
+    except ValueError as exc:
+        result["error"] = str(exc)
+        return result
+    headers, raw, err = post("/api/v3/auc/bigmodel/recognize/flash", body,
                              "volc.bigasr.auc_turbo", {"X-Api-Sequence": "-1"}, 600)
     if err:
         result["error"] = err
@@ -525,6 +574,11 @@ def generate_audio(o, out_dir):
     body = {"model": o["model"], "text_prompt": prompt, "audio_config": config}
     if refs:
         body["references"] = refs
+    try:
+        apply_parameters(body, o.get("parameters"))
+    except InputError as exc:
+        result["error"] = str(exc)
+        return result
     _, raw, err = post("/api/v3/tts/create", body, timeout=300)
     if err:
         result["error"] = err

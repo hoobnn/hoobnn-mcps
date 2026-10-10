@@ -1,6 +1,6 @@
 [project]
 name = "doubao-speech-mcp"
-version = "0.3.2"
+version = "0.4.0"
 description = "火山引擎豆包语音全产品 HTTP / WebSocket MCP server"
 readme = "README.md"
 license = "MIT"

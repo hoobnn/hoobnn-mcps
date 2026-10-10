@@ -1,17 +1,18 @@
 # Doubao Speech 官方接口与模型核实
 
-核实日期：2026-10-10。范围：`servers/doubao-speech` 28 个显式 MCP 工具 + 共享 `get_tool_help`，总计 29 个；26 个涉及远程调用，另外 3 个只读本地目录、示例和工具说明。逐路核实 `speech_http_request` 的 3 个 product、`legacy_speech_request` 的 11 个 operation、ASR 2 个 mode、WS TTS 2 个 mode、词表 13 个 Action，以及控制面 25 个默认 Action/Version。没有调用付费生成、识别、训练、下单或管理接口。
+核实日期：2026-10-10。范围：`servers/doubao-speech` 的官方接口契约。0.4.0 把 29 个工具重组为默认 18 个加按需启用的 6 个，底层请求体与本表逐路核实的端点不变；下表首列已改为新的调用入口。逐路核实兜底入口 `speech_raw_request` 的 3 个 HTTP product、历史接口的 11 个 operation、ASR 2 个 mode、WS TTS 2 个 mode、词表 13 个 Action，以及控制面 25 个默认 Action/Version。没有调用付费生成、识别、训练、下单或管理接口。
 
 ## 结论与修正
 
-固定 endpoint、三类鉴权、默认资源 ID 和控制面 25 个默认版本，均有本轮实时读取的火山官方正文支持。发现并修正四处具体问题：
+固定 endpoint、三类鉴权、默认资源 ID 和控制面 25 个默认版本，均有本轮实时读取的火山官方正文支持。发现并修正五处具体问题：
 
 1. **实时 3.0 输入编码**：官方枚举为 `pcm` / `speech_opus`，原实现接受并透传 `opus`。现在接受 `speech_opus`，旧 `opus` 参数规范化为官方值，保留调用兼容。
 2. **音频生成**：官方支持 `pcm`，便捷工具遗漏该格式；采样率必须按格式选择，原验证只有宽泛数值范围。现在补充 PCM，`wav/pcm` 支持 8000、16000、24000、32000、40000、44100、48000；`mp3` 不支持 40000；`ogg_opus` 仅 48000。工具默认 `mp3` 是本地产品选择，官方默认 `wav`，不等于请求错误。
 3. **同传 protobuf 版本漂移**：当前官方 `protos.tar.gz` 的 `ReqParams` 有 `extra=80`；`TranslateResponse` 有 `speaker_id=9`、`detected_language=10`、`language_confidence=11`，本地旧 Python demo bindings 缺这些字段。使用官方 proto 和 protoc 6.31.0 重新生成 AST binding；另外三份依赖 descriptor 与当前 bundle 一致。source_segments 保留服务实际返回的语种、置信度与 speaker_id；同步删除能力目录中“官方 protobuf 尚未声明”的过时说明。
 4. **异步长文本查询**：官方 `data.task_status` 为 1=running、2=success、3=failure。原实现只看顶层请求成功码，可能将查询到的失败任务报为成功。现在提供明确 status，任务失败返回 `ok=false`，不重新提交。
+5. **声音复刻语种**（0.4.0 重组时发现）：官方 `language` 是整数枚举（cn=0、en=1、ja=2…），旧工具说明和示例写成 `'zh'` 字符串。`clone_voice` 现在接受语种代码并转换为官方整数，未知代码在本地拒绝。
 
-新增回归测试覆盖上述官方契约，含独立手工编码 protobuf wire fixture。豆包语音全部 **125 项离线测试通过**。这证明本地实现与已取得文档/协议样本相符，不证明账号开通、生产可用、实际模型效果或每个音色授权。
+新增回归测试覆盖上述官方契约，含独立手工编码 protobuf wire fixture。0.4.0 后豆包语音共 **132 项离线测试通过**。这证明本地实现与已取得文档/协议样本相符，不证明账号开通、生产可用、实际模型效果或每个音色授权。
 
 ## 本轮实际获取方式
 
@@ -35,29 +36,29 @@
 | `text_to_speech` | `/api/v3/tts/unidirectional` | API Key；`seed-tts-2.0` / `seed-icl-2.0`；1.0 兼容资源见历史协议 | [HTTP](https://docs.volcengine.com/docs/DoubaoVoice/unidirectional-streaming-text-to-speech-http?lang=zh)、[二进制/Chunked细节](https://docs.volcengine.com/docs/DoubaoVoice/HTTPChunkedSSEUnidirectionalStreaming-V3?lang=zh)。已确认；本地按字符分段是交付策略，非官方硬限制 |
 | `speech_to_text` | `/api/v3/auc/bigmodel/recognize/flash` | API Key；`volc.bigasr.auc_turbo`；`request.model_name=bigmodel` | [极速版](https://docs.volcengine.com/docs/DoubaoVoice/recording-file-recognition-lite-http?lang=zh)。已确认；wav/mp3/ogg/spx/amr/aac/m4a 明确列出 |
 | `generate_audio` | `/api/v3/tts/create` | API Key；body.model=`seed-audio-1.0` | [音频生成](https://docs.volcengine.com/docs/DoubaoVoice/audio-generation-http?lang=zh)。已确认；3000字符、最多3条音频参考、1张图片、最长120秒、PCM与各格式采样率已核实 |
-| `submit_long_text_speech` | `/api/v3/tts/submit` | API Key；`seed-tts-2.0` / `seed-icl-2.0` | [提交](https://docs.volcengine.com/docs/DoubaoVoice/Tasksubmission?lang=zh)。已确认；100000字符、unique_id 20–64字符 |
-| `query_long_text_speech` | `/api/v3/tts/query` | API Key；提交时资源、task_id | [查询](https://docs.volcengine.com/docs/DoubaoVoice/Resultquery?lang=zh)。已确认；task_status失败语义已修正 |
+| `text_to_speech`（异步长文本提交） | `/api/v3/tts/submit` | API Key；`seed-tts-2.0` / `seed-icl-2.0` | [提交](https://docs.volcengine.com/docs/DoubaoVoice/Tasksubmission?lang=zh)。已确认；100000字符、unique_id 20–64字符 |
+| `get_job`（长文本查询） | `/api/v3/tts/query` | API Key；提交时资源、task_id | [查询](https://docs.volcengine.com/docs/DoubaoVoice/Resultquery?lang=zh)。已确认；task_status失败语义已修正 |
 | `clone_voice` | `/api/v3/tts/voice_clone` | API Key；speaker_id；自定义槽使用 `custom_speaker_id` | [注册](https://docs.volcengine.com/docs/DoubaoVoice/tone-training-http?lang=zh)。已确认；10MB、PCM仅24k单声道；注册是付费训练，本轮未调用 |
-| `query_voice` | `/api/v3/tts/get_voice` | API Key；speaker_id/custom_speaker_id | [查询](https://docs.volcengine.com/docs/DoubaoVoice/tone-query-http?lang=zh)。已确认；status=0/1/2/3/4 是音色状态，HTTP查询成功不等于训练成功 |
+| `get_voice` | `/api/v3/tts/get_voice` | API Key；speaker_id/custom_speaker_id | [查询](https://docs.volcengine.com/docs/DoubaoVoice/tone-query-http?lang=zh)。已确认；status=0/1/2/3/4 是音色状态，HTTP查询成功不等于训练成功 |
 | `upgrade_voice` | `/api/v3/tts/upgrade_voice` | API Key；speaker_id/custom_speaker_id | [升级](https://docs.volcengine.com/docs/DoubaoVoice/tone-upgrade-http?lang=zh)。已确认；不假定已有音色权限 |
 | `design_voice` | `/api/v3/tts/voice_design` | API Key；speaker_id；prompt | [设计](https://docs.volcengine.com/docs/DoubaoVoice/SoundDesignAPI?lang=zh)。已确认；试听text≤300、text_prompt≤200、图片≤10MB |
-| `submit_transcription` | standard `/api/v3/auc/bigmodel/submit`；idle `/api/v3/auc/bigmodel/idle/submit` | API Key；standard=`volc.seedasr.auc`，兼容1.0=`volc.bigasr.auc`；idle=`volc.bigasr.auc_idle` | [标准提交](https://docs.volcengine.com/docs/DoubaoVoice/task-submission-http-1?lang=zh)、[闲时提交](https://docs.volcengine.com/docs/DoubaoVoice/task-submission-http?lang=zh)。两路均已确认；URL输入、bigmodel、同一任务UUID |
-| `query_transcription` | standard `/api/v3/auc/bigmodel/query`；idle `/api/v3/auc/bigmodel/idle/query` | API Key；原任务UUID和原资源 | [标准查询](https://docs.volcengine.com/docs/DoubaoVoice/result-query-http-1?lang=zh)、[闲时查询](https://docs.volcengine.com/docs/DoubaoVoice/result-query-http?lang=zh)。两路均已确认；待处理/排队状态保留 |
+| `speech_to_text`（mode=standard/idle 提交） | standard `/api/v3/auc/bigmodel/submit`；idle `/api/v3/auc/bigmodel/idle/submit` | API Key；standard=`volc.seedasr.auc`，兼容1.0=`volc.bigasr.auc`；idle=`volc.bigasr.auc_idle` | [标准提交](https://docs.volcengine.com/docs/DoubaoVoice/task-submission-http-1?lang=zh)、[闲时提交](https://docs.volcengine.com/docs/DoubaoVoice/task-submission-http?lang=zh)。两路均已确认；URL输入、bigmodel、同一任务UUID |
+| `get_job`（标准/闲时识别查询） | standard `/api/v3/auc/bigmodel/query`；idle `/api/v3/auc/bigmodel/idle/query` | API Key；原任务UUID和原资源 | [标准查询](https://docs.volcengine.com/docs/DoubaoVoice/result-query-http-1?lang=zh)、[闲时查询](https://docs.volcengine.com/docs/DoubaoVoice/result-query-http?lang=zh)。两路均已确认；待处理/排队状态保留 |
 | `translate_text` | `/api/v3/machine_translation/matx_translate` | API Key；`volc.speech.mt`；Seed-X产品线 | [机器翻译](https://docs.volcengine.com/docs/DoubaoVoice/MachineTranslationLargeModel-APIAccessDocumentation?lang=zh)。已确认；text_list≤16，单条≤1024 Tokens，corpus术语透传；本地不猜token精确计数 |
-| `submit_minutes` | `/api/v3/auc/lark/submit` | API Key；`volc.lark.minutes` | [妙记](https://docs.volcengine.com/docs/DoubaoVoice/DoubaoVoiceMinutes-APIAccessDocumentation?lang=zh)。已确认；Input.Offline/Params、AllActivate计费选择 |
-| `query_minutes` | `/api/v3/auc/lark/query` | API Key；`volc.lark.minutes`，TaskID | [妙记](https://docs.volcengine.com/docs/DoubaoVoice/DoubaoVoiceMinutes-APIAccessDocumentation?lang=zh)。已确认；任务状态独立于请求成功 |
+| `summarize_meeting`（提交） | `/api/v3/auc/lark/submit` | API Key；`volc.lark.minutes` | [妙记](https://docs.volcengine.com/docs/DoubaoVoice/DoubaoVoiceMinutes-APIAccessDocumentation?lang=zh)。已确认；Input.Offline/Params、AllActivate计费选择 |
+| `get_job`（妙记查询） | `/api/v3/auc/lark/query` | API Key；`volc.lark.minutes`，TaskID | [妙记](https://docs.volcengine.com/docs/DoubaoVoice/DoubaoVoiceMinutes-APIAccessDocumentation?lang=zh)。已确认；任务状态独立于请求成功 |
 | `manage_word_table` | 热词API Key proxy `/api/proxy/invoke?Action=...`；或OpenAPI AK/SK | 热词version=2022-08-30；替换词version=2023-10-30；region=cn-north-1 | [热词](https://docs.volcengine.com/docs/DoubaoVoice/HotWordManagementAPIv10?lang=zh)、[替换词](https://docs.volcengine.com/docs/DoubaoVoice/ReplacementWordAPIv11?lang=zh)。13个Action逐项在正文确认；替换词未假定支持API Key proxy |
 | `speech_console` | `https://open.volcengineapi.com/?Action=...&Version=...` | IAM AK/SK、HMAC-SHA256、service=`speech_saas_prod`；默认region=cn-beijing | 默认25个Action逐文档确认，见后表；旧监控版本及ListApplications用cn-north-1/GET |
-| `websocket_text_to_speech` | WSS `/api/v3/tts/bidirection` 或 `/api/v3/tts/unidirectional/stream` | API Key + TTS/ICL resource | [双向](https://docs.volcengine.com/docs/DoubaoVoice/bidirectional-streaming-text-to-speech-websocket?lang=zh)、[单向](https://docs.volcengine.com/docs/DoubaoVoice/unidirectional-streaming-text-to-speech-websocket?lang=zh)。两路已确认；具体二进制框架依据同endpoint的历史V3协议 |
+| `speech_raw_request`（product=tts_websocket） | WSS `/api/v3/tts/bidirection` 或 `/api/v3/tts/unidirectional/stream` | API Key + TTS/ICL resource | [双向](https://docs.volcengine.com/docs/DoubaoVoice/bidirectional-streaming-text-to-speech-websocket?lang=zh)、[单向](https://docs.volcengine.com/docs/DoubaoVoice/unidirectional-streaming-text-to-speech-websocket?lang=zh)。两路已确认；具体二进制框架依据同endpoint的历史V3协议 |
 | `generate_podcast` | WSS `/api/v3/sami/podcasttts` | API Key；`volc.service_type.10050` | [播客](https://docs.volcengine.com/docs/DoubaoVoice/PodcastAPI-websocket-v3protocol?lang=zh)。已确认；action=0/3/4，轮次和失败信息保留 |
-| `streaming_speech_to_text` | realtime WSS `/api/v3/sauc/bigmodel_async`；sentence `/api/v3/sauc/bigmodel_nostream` | API Key；2.0小时版=`volc.seedasr.sauc.duration`；可显式选择concurrent或1.0资源 | [实时识别](https://docs.volcengine.com/docs/DoubaoVoice/bidirectional-streaming-automatic-speech-recognition-websocket?lang=zh)、[一句话](https://docs.volcengine.com/docs/DoubaoVoice/unidirectional-streaming-automatic-speech-recognition-websocket?lang=zh)。两路已确认；本地只封装PCM/WAV，官方还支持更多格式 |
+| `speech_raw_request`（product=asr_stream） | realtime WSS `/api/v3/sauc/bigmodel_async`；sentence `/api/v3/sauc/bigmodel_nostream` | API Key；2.0小时版=`volc.seedasr.sauc.duration`；可显式选择concurrent或1.0资源 | [实时识别](https://docs.volcengine.com/docs/DoubaoVoice/bidirectional-streaming-automatic-speech-recognition-websocket?lang=zh)、[一句话](https://docs.volcengine.com/docs/DoubaoVoice/unidirectional-streaming-automatic-speech-recognition-websocket?lang=zh)。两路已确认；本地只封装PCM/WAV，官方还支持更多格式 |
 | `interpret_audio` | WSS `/api/v4/ast/v2/translate` | API Key；`volc.service_type.10053`；官方protobuf | [同传](https://docs.volcengine.com/docs/DoubaoVoice/SimultaneousInterpretation20APIAccessDocumentation?lang=zh)。已确认；源16k/16bit/mono；目标pcm16k/pcm24k float32/ogg_opus48k；proto漂移已修复 |
 | `open_realtime_session` | WSS `/api/v3/duplex/realtime/dialogue`，`session.create` | API Key；session.model=`1.2.6.1`，Seeduplex 3.0 | [实时3.0](https://docs.volcengine.com/docs/DoubaoVoice/endtoend-realtime-voice-full-duplex-version?lang=zh)。已确认；JSON协议，与旧二进制实时语音不同 |
 | `send_realtime_event` | 同一持久socket；append/commit/cancel/update/context/tool事件 | 本地session_id映射原socket | [实时3.0](https://docs.volcengine.com/docs/DoubaoVoice/endtoend-realtime-voice-full-duplex-version?lang=zh)。已确认；麦克风静音须mute/unmute，不能仅停止送包 |
 | `receive_realtime_events` | 同一socket；JSON事件/音频delta/response.done | 同一会话 | [实时3.0](https://docs.volcengine.com/docs/DoubaoVoice/endtoend-realtime-voice-full-duplex-version?lang=zh)。已确认；音频输出pcm=float32或pcm_s16le=int16，均24k；Function Calling按call_id回传 |
 | `close_realtime_session` | `session.close` → `session.closed` | 同一会话 | [实时3.0](https://docs.volcengine.com/docs/DoubaoVoice/endtoend-realtime-voice-full-duplex-version?lang=zh)。已确认；传输断开不当成官方ack |
-| `speech_http_request` | product=tts/asr_flash/audio，分别对应上表3个HTTP路径 | 与对应产品一致 | **三个枚举分支都已核实**；完整请求透传不等于自动支持未知endpoint或每个账号/模型 |
-| `legacy_speech_request` | operation白名单11条，见后表 | 旧AppID/Access Token，Bearer分号语法 | **11个operation都已核实**；不是V3 API Key鉴权 |
+| `speech_raw_request`（product=tts/asr_flash/audio） | product=tts/asr_flash/audio，分别对应上表3个HTTP路径 | 与对应产品一致 | **三个枚举分支都已核实**；完整请求透传不等于自动支持未知endpoint或每个账号/模型 |
+| `speech_raw_request`（product=legacy） | operation白名单11条，见后表 | 旧AppID/Access Token，Bearer分号语法 | **11个operation都已核实**；不是V3 API Key鉴权 |
 | `get_speech_usage_examples` | 本地usage.GUIDES | 无鉴权/无网络 | 示例是官方材料的本地归纳与改写，不是已经产生的云端作品 |
 | `list_speech_capabilities` | 本地能力目录 | 无鉴权/无网络 | 静态目录不是账号权限发现；模型/音色实际来源见后节 |
 

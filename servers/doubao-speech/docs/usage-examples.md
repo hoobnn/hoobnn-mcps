@@ -1,6 +1,6 @@
 # 豆包语音：官方示例与使用技巧
 
-核对日期：2026-10-09。官方体验中心模板与 API 请求示例用于归纳用法；下列提示词和正文为改写，并非官方原文。参数经过 MCP schema 检查，未进行真实云端生成。所有文件、URL、分配音色 ID、任务和会话 ID 占位符需替换。
+核对日期：2026-10-10。官方体验中心模板与 API 请求示例用于归纳用法；下列提示词和正文为改写，并非官方原文。参数经过 MCP schema 检查，未进行真实云端生成。所有文件、URL、分配音色 ID、任务和会话 ID 占位符需替换。
 
 通过 `get_speech_usage_examples(product="audio", category="timing")` 查询单类；省略 `category` 返回该产品所有示例。其他 `product`：`tts`、`voice`、`podcast`、`asr`、`translation`、`minutes`、`realtime`。查询仅返回本地资料，不触发生成、训练、上传或计费。
 
@@ -9,7 +9,7 @@
 | 产品 | 官方示例形态 | 本次补充 |
 |---|---|---|
 | 音频生成1.0 | 四类可载入的提示词模板 | 角色、音效、配乐、参考绑定、时间编排、多语种 |
-| 合成2.0 | 指令/方言/引用上文对比示例 | 指令与正文分离、读音修正、上下文、流式与长文本 |
+| 合成2.0 | 指令/方言/引用上文对比示例 | 指令与正文分离、读音修正、上下文、流式与异步长文本 |
 | 音色设计 | 说唱者、老人、文人、促销员模板 | 声线描述、代表性试听文本、图文优先级 |
 | 声音复刻 | 官方录音及合成最佳实践 | 录音质量、双语覆盖、查询后复用 |
 | 播客 | 体验题材及四种API输入示例 | 文章、URL、逐轮脚本、联网话题与续传 |
@@ -170,9 +170,9 @@ MCP 查询：`{"product": "tts"}`。
 
 - text只放需要朗读的正文；instructions放情绪、语气和速度，先明确主情绪，再补局部变化。
 - 支持能力取决于音色；方言用dialect，读音纠正用pronunciations。
-- 引用上文让模型理解上一轮问答但不朗读；高级入口用req_params.additions中的context_texts，additions需JSON字符串。
-- 当前便捷instructions也映射context_texts；多个上下文、SSML或高级选项用speech_http_request。
-- 长文本便捷接口按句切段；需整段异步任务用submit_long_text_speech，查询沿用提交resource_id。
+- 引用上文让模型理解上一轮问答但不朗读：parameters.req_params.additions.context_texts，additions可直接写对象。
+- instructions也映射context_texts；多个上下文、SSML或其他高级选项都放parameters。
+- 超过5000字自动走异步长文本（long_text可强制），返回job_id后用get_job查询并下载。
 
 ### 安静近耳表演
 
@@ -201,19 +201,18 @@ MCP 查询：`{"product": "tts"}`。
 
 ### 引用上一轮提问
 
-工具：`speech_http_request`。以下是工具参数：
+工具：`text_to_speech`。以下是工具参数：
 
 ```json
 {
-  "product": "tts",
-  "request": {
+  "text": "别急，我们一起看看哪里出了问题。",
+  "parameters": {
     "req_params": {
-      "speaker": "zh_female_vv_uranus_bigtts",
-      "text": "别急，我们一起看看哪里出了问题。",
-      "audio_params": {
-        "format": "mp3"
-      },
-      "additions": "{\"context_texts\":[\"用户刚才着急地问：我怎么总是做不好？\"]}"
+      "additions": {
+        "context_texts": [
+          "用户刚才着急地问：我怎么总是做不好？"
+        ]
+      }
     }
   }
 }
@@ -221,10 +220,11 @@ MCP 查询：`{"product": "tts"}`。
 
 ### 双向流式输入文本
 
-工具：`websocket_text_to_speech`。以下是工具参数：
+工具：`speech_raw_request`。以下是工具参数：
 
 ```json
 {
+  "product": "tts_websocket",
   "mode": "bidirectional",
   "request": {
     "req_params": {
@@ -242,33 +242,25 @@ MCP 查询：`{"product": "tts"}`。
 }
 ```
 
-### 提交长文本合成
+### 整本长文本异步合成
 
-工具：`submit_long_text_speech`。以下是工具参数：
+工具：`text_to_speech`。以下是工具参数：
 
 ```json
 {
-  "request": {
-    "req_params": {
-      "speaker": "zh_female_vv_uranus_bigtts",
-      "text": "这里替换为需要合成的长文本。",
-      "audio_params": {
-        "format": "mp3"
-      }
-    }
-  },
-  "resource_id": "seed-tts-2.0"
+  "text": "这里替换为需要合成的长文本。",
+  "long_text": true
 }
 ```
 
 ### 查询长文本结果
 
-工具：`query_long_text_speech`。以下是工具参数：
+工具：`get_job`。以下是工具参数：
 
 ```json
 {
-  "task_id": "REPLACE_WITH_SUBMIT_RESULT",
-  "resource_id": "seed-tts-2.0"
+  "job_id": "REPLACE_WITH_TEXT_TO_SPEECH_JOB_ID",
+  "wait": 30
 }
 ```
 
@@ -281,8 +273,8 @@ MCP 查询：`{"product": "voice"}`。
 官方展示用法：街头说唱者、儒雅老人、古代文人、超市促销员。
 
 - 设计描述按性别/年龄感、音色质感、语言、角色、语速/语调/情绪展开；优先写最重要的辨识特征。
-- text是试听正文，prompt.text_prompt是声音描述；用与最终场景一致的文本试听，促销场景可包含价格数字。
-- 设计描述<=200字符，试听<=300字符；图片<=10MB。图文同时提交时image_prompt优先，image_bytes优于image_url。
+- preview_text是试听正文，description是声音描述；用与最终场景一致的文本试听，促销场景可包含价格数字。
+- 设计描述<=200字符，试听<=300字符；图片<=10MB。图文同时提交时图片优先。
 - 设计和复刻需已分配的speaker_id，消耗训练次数；查询状态成功/激活后再用该音色合成，试听URL只有1小时。
 - 复刻最佳实践推荐14–30秒WAV、单声道、单人、低噪声和一致的表演；避免重叠人声、混响，过度降噪可能损失相似度。
 - 中英混读目标应在样音覆盖中英；稳定助理选平稳样音，表达型复刻还需结合正文语义与语音指令试听。
@@ -293,13 +285,9 @@ MCP 查询：`{"product": "voice"}`。
 
 ```json
 {
-  "request": {
-    "speaker_id": "S_REPLACE_WITH_ALLOCATED_ID",
-    "text": "早上给花浇一点水，慢慢来，它会长得很好。",
-    "prompt": {
-      "text_prompt": "六十岁左右的男性，温暖略沙哑，普通话清晰，语速适中，语调平稳，像耐心讲故事的长者。"
-    }
-  }
+  "speaker_id": "S_REPLACE_WITH_ALLOCATED_ID",
+  "preview_text": "早上给花浇一点水，慢慢来，它会长得很好。",
+  "description": "六十岁左右的男性，温暖略沙哑，普通话清晰，语速适中，语调平稳，像耐心讲故事的长者。"
 }
 ```
 
@@ -309,11 +297,9 @@ MCP 查询：`{"product": "voice"}`。
 
 ```json
 {
-  "request": {
-    "speaker_id": "S_REPLACE_WITH_ALLOCATED_ID",
-    "text": "你好，很高兴认识你。"
-  },
-  "image_file": "/absolute/path/character.png"
+  "speaker_id": "S_REPLACE_WITH_ALLOCATED_ID",
+  "preview_text": "你好，很高兴认识你。",
+  "image": "/absolute/path/character.png"
 }
 ```
 
@@ -323,24 +309,20 @@ MCP 查询：`{"product": "voice"}`。
 
 ```json
 {
-  "request": {
-    "speaker_id": "S_REPLACE_WITH_ALLOCATED_ID",
-    "language": "zh",
-    "text": "这里替换为训练录音对应的实际文字。"
-  },
-  "audio_file": "/absolute/path/clean_mono.wav"
+  "speaker_id": "S_REPLACE_WITH_ALLOCATED_ID",
+  "audio_file": "/absolute/path/clean_mono.wav",
+  "language": "zh",
+  "text": "这里替换为训练录音对应的实际文字。"
 }
 ```
 
 ### 查询训练状态
 
-工具：`query_voice`。以下是工具参数：
+工具：`get_voice`。以下是工具参数：
 
 ```json
 {
-  "request": {
-    "speaker_id": "S_REPLACE_WITH_ALLOCATED_ID"
-  }
+  "speaker_id": "S_REPLACE_WITH_ALLOCATED_ID"
 }
 ```
 
@@ -350,11 +332,11 @@ MCP 查询：`{"product": "podcast"}`。
 
 来源：[官方来源1](https://docs.volcengine.com/docs/DoubaoVoice/PodcastAPI-websocket-v3protocol?lang=zh)、[官方来源2](https://console.volcengine.com/speech/new/experience/podcast?projectName=default)。
 
-- action=0文章/链接；action=3直接演绎逐轮脚本；action=4根据话题联网生成。prompt_text是话题，不具备格式指令能力。
-- 文章与URL同时传时input_text优先；API的文件URL支持PDF/doc/txt，不把控制台上传格式直接视为API格式。
-- input_info.only_nlp_text=true先生成脚本；逐轮脚本每轮<=300字、总量<=10000字。
-- speaker_info.speakers必须是两个音色，建议同系列配对；random_order=false固定提供的顺序。
-- 文章input_text_max_length推荐<=12000，超过设置会截断；音频URL有效1小时。
+- text/url改写文章或链接；dialogue直接演绎逐轮脚本；topic根据话题联网生成。topic只是话题，不具备格式指令能力。
+- url支持网页及PDF/doc/txt链接，不把控制台上传格式直接视为API格式。
+- script_only=true先生成脚本；dialogue每轮<=300字、总量<=10000字。
+- speakers必须是两个音色，建议同系列配对，按给出的顺序发言。
+- 文章推荐<=12000字（parameters.input_text_max_length可调），超过会截断；音频URL有效1小时。
 - 收到partial后保留task_id和last_finished_round_id，通过retry_info显式续传，不能把局部音频当完整成品。
 
 ### 文章先生成脚本
@@ -363,13 +345,8 @@ MCP 查询：`{"product": "podcast"}`。
 
 ```json
 {
-  "request": {
-    "action": 0,
-    "input_text": "这里替换为完整文章。",
-    "input_info": {
-      "only_nlp_text": true
-    }
-  }
+  "text": "这里替换为完整文章。",
+  "script_only": true
 }
 ```
 
@@ -379,15 +356,7 @@ MCP 查询：`{"product": "podcast"}`。
 
 ```json
 {
-  "request": {
-    "action": 0,
-    "input_info": {
-      "input_url": "https://example.com/article"
-    },
-    "audio_config": {
-      "format": "mp3"
-    }
-  }
+  "url": "https://example.com/article"
 }
 ```
 
@@ -397,29 +366,20 @@ MCP 查询：`{"product": "podcast"}`。
 
 ```json
 {
-  "request": {
-    "action": 3,
-    "speaker_info": {
-      "speakers": [
-        "zh_male_dayixiansheng_v2_saturn_bigtts",
-        "zh_female_mizaitongxue_v2_saturn_bigtts"
-      ],
-      "random_order": false
+  "speakers": [
+    "zh_male_dayixiansheng_v2_saturn_bigtts",
+    "zh_female_mizaitongxue_v2_saturn_bigtts"
+  ],
+  "dialogue": [
+    {
+      "speaker": "zh_male_dayixiansheng_v2_saturn_bigtts",
+      "text": "今天我们聊聊怎样开始记录生活。"
     },
-    "nlp_texts": [
-      {
-        "speaker": "zh_male_dayixiansheng_v2_saturn_bigtts",
-        "text": "今天我们聊聊怎样开始记录生活。"
-      },
-      {
-        "speaker": "zh_female_mizaitongxue_v2_saturn_bigtts",
-        "text": "先从每天一个小片段开始吧。"
-      }
-    ],
-    "audio_config": {
-      "format": "mp3"
+    {
+      "speaker": "zh_female_mizaitongxue_v2_saturn_bigtts",
+      "text": "先从每天一个小片段开始吧。"
     }
-  }
+  ]
 }
 ```
 
@@ -429,13 +389,7 @@ MCP 查询：`{"product": "podcast"}`。
 
 ```json
 {
-  "request": {
-    "action": 4,
-    "prompt_text": "城市步行与日常健康",
-    "audio_config": {
-      "format": "mp3"
-    }
-  }
+  "topic": "城市步行与日常健康"
 }
 ```
 
@@ -449,7 +403,7 @@ MCP 查询：`{"product": "asr"}`。
 - 热词效果差时补生僻字解释或领域背景；上下文优先最近几轮，按新到旧排列。
 - 流式高级corpus.context必须序列化为JSON字符串，可同时含hotwords、context_type=dialog_ctx、context_data；不要传裸对象。
 - 容量因链路而异：双向流式热词100 tokens，非流式/二遍5000词；非流式/二遍上下文800 tokens/20轮，不能套用便捷极速版参数限制。
-- 分离说话人同时开enable_speaker_info与show_utterances。标准AUC短音频用ssd_version=200，长会议用300，长非会议用200加ssd_mode=1。
+- speakers=true自动用标准版并开启说话人分离（ssd_version=200）；长会议用parameters.request.ssd_version=300，长非会议用200加ssd_mode=1。
 - 这些SSD选项用于对应标准/流式链路，不把便捷极速版utterances开关当成会议模型选择。说话人编号不等于已知身份；声纹匹配需先注册声纹。
 - 重叠人声、相近音色和不足1秒的短插话会影响分离；流式定稿优先采用最终/二遍结果。
 
@@ -469,24 +423,16 @@ MCP 查询：`{"product": "asr"}`。
 }
 ```
 
-### 长会议标准识别
+### 长会议说话人分离
 
-工具：`submit_transcription`。以下是工具参数：
+工具：`speech_to_text`。以下是工具参数：
 
 ```json
 {
-  "mode": "standard",
-  "request": {
-    "user": {
-      "uid": "mcp"
-    },
-    "audio": {
-      "url": "https://example.com/meeting.wav"
-    },
+  "audio": "https://example.com/meeting.wav",
+  "speakers": true,
+  "parameters": {
     "request": {
-      "model_name": "bigmodel",
-      "enable_speaker_info": true,
-      "show_utterances": true,
       "ssd_version": "300"
     }
   }
@@ -495,10 +441,11 @@ MCP 查询：`{"product": "asr"}`。
 
 ### 流式热词加最近上下文
 
-工具：`streaming_speech_to_text`。以下是工具参数：
+工具：`speech_raw_request`。以下是工具参数：
 
 ```json
 {
+  "product": "asr_stream",
   "audio": "/absolute/path/mono16k.wav",
   "mode": "realtime",
   "request": {
@@ -518,7 +465,7 @@ MCP 查询：`{"product": "translation"}`。
 
 来源：[官方来源1](https://docs.volcengine.com/docs/DoubaoVoice/MachineTranslationLargeModel-APIAccessDocumentation?lang=zh)、[官方来源2](https://docs.volcengine.com/docs/DoubaoVoice/SimultaneousInterpretation20APIAccessDocumentation?lang=zh)。
 
-- 固定品牌和专业术语用corpus.glossary_list；直传术语优先于术语表。不要把ASR热词当作翻译词典。
+- 固定品牌和专业术语用glossary；直传术语优先于术语表。不要把ASR热词当作翻译词典。
 - 机器翻译不指定source_language可自动检测；1–16条文本，按原顺序处理，每条<=1024 tokens。
 - 同传文件需16kHz/16bit/单声道；s2t只要字幕，s2s还返回目标语音。
 - 录音保持安静、避免多人同时发言；本工具处理文件，麦克风实时采集由客户端负责。
@@ -529,15 +476,13 @@ MCP 查询：`{"product": "translation"}`。
 
 ```json
 {
-  "text_list": [
+  "texts": [
     "火山引擎提供语音服务。"
   ],
   "target_language": "en",
   "source_language": "zh",
-  "corpus": {
-    "glossary_list": {
-      "火山引擎": "Volcengine"
-    }
+  "glossary": {
+    "火山引擎": "Volcengine"
   }
 }
 ```
@@ -574,87 +519,43 @@ MCP 查询：`{"product": "minutes"}`。
 
 来源：[官方来源1](https://docs.volcengine.com/docs/DoubaoVoice/DoubaoVoiceMinutes-APIAccessDocumentation?lang=zh)。
 
-- AllActivate选择计费方式，不等于自动开启功能；明确开启所需摘要、章节、翻译或信息提取。
-- 只需原始转写可使用ASR；妙记请求至少启用一项妙记附加功能。
-- 转写需显式填写SpeakerIdentification、NumberOfSpeaker（未知填0）和NeedWordTimeSeries。摘要传SummarizationParams.Types=[summary]，提取传InformationExtractionParams.Types。
-- 提交保留task_id/request_id，再查询；临时结果URL应及时保存，等待中不重复提交。
+- bundle_billing（AllActivate）只选择计费方式，不会开启功能；summary、chapters、todos、qa、translate_to按需打开。
+- 只需原始转写用speech_to_text；妙记至少启用一项附加功能。
+- speaker_count已知时填写，未知保持0自动识别。
+- 提交后用get_job查询，完成时自动下载结果JSON；等待中不要重复提交。
 
 ### 会议转写与摘要
 
-工具：`submit_minutes`。以下是工具参数：
+工具：`summarize_meeting`。以下是工具参数：
 
 ```json
 {
-  "request": {
-    "Input": {
-      "Offline": {
-        "FileURL": "https://example.com/meeting.wav",
-        "FileType": "audio"
-      }
-    },
-    "Params": {
-      "AllActivate": false,
-      "SourceLang": "zh_cn",
-      "AudioTranscriptionEnable": true,
-      "AudioTranscriptionParams": {
-        "SpeakerIdentification": true,
-        "NumberOfSpeaker": 0,
-        "NeedWordTimeSeries": false
-      },
-      "SummarizationEnabled": true,
-      "SummarizationParams": {
-        "Types": [
-          "summary"
-        ]
-      }
-    }
-  }
+  "file_url": "https://example.com/meeting.wav"
 }
 ```
 
 ### 转写并提取待办和问答
 
-工具：`submit_minutes`。以下是工具参数：
+工具：`summarize_meeting`。以下是工具参数：
 
 ```json
 {
-  "request": {
-    "Input": {
-      "Offline": {
-        "FileURL": "https://example.com/meeting.wav",
-        "FileType": "audio"
-      }
-    },
-    "Params": {
-      "AllActivate": false,
-      "SourceLang": "zh_cn",
-      "AudioTranscriptionEnable": true,
-      "AudioTranscriptionParams": {
-        "SpeakerIdentification": true,
-        "NumberOfSpeaker": 0,
-        "NeedWordTimeSeries": false
-      },
-      "InformationExtractionEnabled": true,
-      "InformationExtractionParams": {
-        "Types": [
-          "todo_list",
-          "question_answer"
-        ]
-      },
-      "ChapterEnabled": true
-    }
-  }
+  "file_url": "https://example.com/meeting.wav",
+  "summary": false,
+  "todos": true,
+  "qa": true,
+  "chapters": true
 }
 ```
 
 ### 查询妙记结果
 
-工具：`query_minutes`。以下是工具参数：
+工具：`get_job`。以下是工具参数：
 
 ```json
 {
-  "task_id": "REPLACE_WITH_SUBMIT_RESULT",
-  "request_id": "REPLACE_WITH_SUBMIT_REQUEST_ID"
+  "job_id": "REPLACE_WITH_SUMMARIZE_MEETING_JOB_ID",
+  "wait": 30
 }
 ```
 
@@ -664,6 +565,7 @@ MCP 查询：`{"product": "realtime"}`。
 
 来源：[官方来源1](https://docs.volcengine.com/docs/DoubaoVoice/endtoend-realtime-voice-full-duplex-version?lang=zh)。
 
+- 实时会话工具默认不启用，需在MCP配置设MCP_TOOL_GROUPS包含realtime并重启。
 - session.instructions定义角色、语气和回答范围；不要照搬音频生成的时间区间标记。
 - 按open→append音频→commit→receive→close处理；输入文件是16kHz单声道int16裸PCM，append后需显式commit。
 - response.cancel用于打断；工具调用应执行后按call_id回传结果，不能只收到调用就视为已完成。

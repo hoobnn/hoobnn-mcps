@@ -12,7 +12,7 @@
     "id": "doubao-apiinterfacedocumentation",
     "url": "https://docs.volcengine.com/docs/DoubaoVoice/APIinterfacedocumentation?lang=zh",
     "tools": [
-      "legacy_speech_request"
+      "speech_raw_request"
     ],
     "kind": "api",
     "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=APIinterfacedocumentation"
@@ -39,7 +39,7 @@
     "id": "doubao-audiofilerecognitionstandardedition",
     "url": "https://docs.volcengine.com/docs/DoubaoVoice/AudioFileRecognitionStandardEdition?lang=zh",
     "tools": [
-      "legacy_speech_request"
+      "speech_raw_request"
     ],
     "kind": "api",
     "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=AudioFileRecognitionStandardEdition"
@@ -48,7 +48,7 @@
     "id": "doubao-audiovideosubtitlegeneration",
     "url": "https://docs.volcengine.com/docs/DoubaoVoice/Audiovideosubtitlegeneration?lang=zh",
     "tools": [
-      "legacy_speech_request"
+      "speech_raw_request"
     ],
     "kind": "api",
     "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=Audiovideosubtitlegeneration"
@@ -57,7 +57,7 @@
     "id": "doubao-automaticsubtitletyping",
     "url": "https://docs.volcengine.com/docs/DoubaoVoice/Automaticsubtitletyping?lang=zh",
     "tools": [
-      "legacy_speech_request"
+      "speech_raw_request"
     ],
     "kind": "api",
     "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=Automaticsubtitletyping"
@@ -102,8 +102,9 @@
     "id": "doubao-doubaovoiceminutes-apiaccessdocumentation",
     "url": "https://docs.volcengine.com/docs/DoubaoVoice/DoubaoVoiceMinutes-APIAccessDocumentation?lang=zh",
     "tools": [
-      "submit_minutes",
-      "query_minutes"
+      "get_job",
+      "recover_job",
+      "summarize_meeting"
     ],
     "kind": "api",
     "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=DoubaoVoiceMinutes-APIAccessDocumentation"
@@ -121,8 +122,8 @@
     "id": "doubao-httpchunkedsseunidirectionalstreaming-v3",
     "url": "https://docs.volcengine.com/docs/DoubaoVoice/HTTPChunkedSSEUnidirectionalStreaming-V3?lang=zh",
     "tools": [
-      "text_to_speech",
-      "speech_http_request"
+      "speech_raw_request",
+      "text_to_speech"
     ],
     "kind": "api",
     "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=HTTPChunkedSSEUnidirectionalStreaming-V3"
@@ -131,7 +132,7 @@
     "id": "doubao-httpinterfaceone-timecomposition-non-streaming",
     "url": "https://docs.volcengine.com/docs/DoubaoVoice/HTTPinterfaceone-timecomposition-non-streaming?lang=zh",
     "tools": [
-      "legacy_speech_request"
+      "speech_raw_request"
     ],
     "kind": "api",
     "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=HTTPinterfaceone-timecomposition-non-streaming"
@@ -140,7 +141,7 @@
     "id": "doubao-httpone-timecompositenon-streaminginterface-v1notrecommended",
     "url": "https://docs.volcengine.com/docs/DoubaoVoice/HTTPone-timecompositenon-streaminginterface-V1notrecommended?lang=zh",
     "tools": [
-      "legacy_speech_request"
+      "speech_raw_request"
     ],
     "kind": "api",
     "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=HTTPone-timecompositenon-streaminginterface-V1notrecommended"
@@ -159,8 +160,8 @@
     "id": "doubao-largemodelrecordingfileliterecognitionapi",
     "url": "https://docs.volcengine.com/docs/DoubaoVoice/LargemodelrecordingfileLiterecognitionAPI?lang=zh",
     "tools": [
-      "speech_to_text",
-      "speech_http_request"
+      "speech_raw_request",
+      "speech_to_text"
     ],
     "kind": "api",
     "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=LargemodelrecordingfileLiterecognitionAPI"
@@ -169,8 +170,9 @@
     "id": "doubao-largemodelrecordingfilerecognitionidleversion",
     "url": "https://docs.volcengine.com/docs/DoubaoVoice/Largemodelrecordingfilerecognitionidleversion?lang=zh",
     "tools": [
-      "submit_transcription",
-      "query_transcription"
+      "get_job",
+      "recover_job",
+      "speech_to_text"
     ],
     "kind": "api",
     "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=Largemodelrecordingfilerecognitionidleversion"
@@ -179,8 +181,9 @@
     "id": "doubao-largemodelrecordingfilerecognitionstandardversionapi",
     "url": "https://docs.volcengine.com/docs/DoubaoVoice/LargemodelrecordingfilerecognitionstandardversionAPI?lang=zh",
     "tools": [
-      "submit_transcription",
-      "query_transcription"
+      "get_job",
+      "recover_job",
+      "speech_to_text"
     ],
     "kind": "api",
     "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=LargemodelrecordingfilerecognitionstandardversionAPI"
@@ -189,7 +192,7 @@
     "id": "doubao-largemodelstreamingautomaticspeechrecognitionapi",
     "url": "https://docs.volcengine.com/docs/DoubaoVoice/LargemodelstreamingautomaticspeechrecognitionAPI?lang=zh",
     "tools": [
-      "streaming_speech_to_text"
+      "speech_raw_request"
     ],
     "kind": "api",
     "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=LargemodelstreamingautomaticspeechrecognitionAPI"
@@ -352,7 +355,8 @@
     "id": "doubao-resultquery",
     "url": "https://docs.volcengine.com/docs/DoubaoVoice/Resultquery?lang=zh",
     "tools": [
-      "query_long_text_speech"
+      "get_job",
+      "recover_job"
     ],
     "kind": "api",
     "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=Resultquery"
@@ -398,9 +402,9 @@
     "url": "https://docs.volcengine.com/docs/DoubaoVoice/Soundreplicationorderingandusageguide?lang=zh",
     "tools": [
       "clone_voice",
-      "query_voice",
-      "upgrade_voice",
-      "design_voice"
+      "design_voice",
+      "get_voice",
+      "upgrade_voice"
     ],
     "kind": "guide",
     "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=Soundreplicationorderingandusageguide"
@@ -418,7 +422,7 @@
     "id": "doubao-tasksubmission",
     "url": "https://docs.volcengine.com/docs/DoubaoVoice/Tasksubmission?lang=zh",
     "tools": [
-      "submit_long_text_speech"
+      "text_to_speech"
     ],
     "kind": "api",
     "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=Tasksubmission"
@@ -436,8 +440,8 @@
     "id": "doubao-termwords",
     "url": "https://docs.volcengine.com/docs/DoubaoVoice/Termwords?lang=zh",
     "tools": [
-      "translate_text",
-      "interpret_audio"
+      "interpret_audio",
+      "translate_text"
     ],
     "kind": "guide",
     "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=Termwords"
@@ -446,9 +450,9 @@
     "id": "doubao-tonelist-1",
     "url": "https://docs.volcengine.com/docs/DoubaoVoice/Tonelist-1?lang=zh",
     "tools": [
-      "text_to_speech",
-      "websocket_text_to_speech",
-      "open_realtime_session"
+      "open_realtime_session",
+      "speech_raw_request",
+      "text_to_speech"
     ],
     "kind": "models",
     "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=Tonelist-1"
@@ -484,7 +488,7 @@
     "id": "doubao-websocketbidirectionalstreaming-v3",
     "url": "https://docs.volcengine.com/docs/DoubaoVoice/WebSocketBidirectionalStreaming-V3?lang=zh",
     "tools": [
-      "websocket_text_to_speech"
+      "speech_raw_request"
     ],
     "kind": "api",
     "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=WebSocketBidirectionalStreaming-V3"
@@ -493,7 +497,7 @@
     "id": "doubao-websocketunidirectionalstreaming-v3",
     "url": "https://docs.volcengine.com/docs/DoubaoVoice/WebSocketUnidirectionalStreaming-V3?lang=zh",
     "tools": [
-      "websocket_text_to_speech"
+      "speech_raw_request"
     ],
     "kind": "api",
     "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=WebSocketUnidirectionalStreaming-V3"
@@ -502,10 +506,10 @@
     "id": "doubao-access-mustread",
     "url": "https://docs.volcengine.com/docs/DoubaoVoice/access-mustread?lang=zh",
     "tools": [
+      "close_realtime_session",
       "open_realtime_session",
-      "send_realtime_event",
       "receive_realtime_events",
-      "close_realtime_session"
+      "send_realtime_event"
     ],
     "kind": "guide",
     "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=access-mustread"
@@ -515,7 +519,7 @@
     "url": "https://docs.volcengine.com/docs/DoubaoVoice/audio-generation-http?lang=zh",
     "tools": [
       "generate_audio",
-      "speech_http_request"
+      "speech_raw_request"
     ],
     "kind": "api",
     "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=audio-generation-http"
@@ -533,7 +537,7 @@
     "id": "doubao-bidirectional-streaming-automatic-speech-recognition-websocket",
     "url": "https://docs.volcengine.com/docs/DoubaoVoice/bidirectional-streaming-automatic-speech-recognition-websocket?lang=zh",
     "tools": [
-      "streaming_speech_to_text"
+      "speech_raw_request"
     ],
     "kind": "api",
     "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=bidirectional-streaming-automatic-speech-recognition-websocket"
@@ -542,7 +546,7 @@
     "id": "doubao-bidirectional-streaming-text-to-speech-websocket",
     "url": "https://docs.volcengine.com/docs/DoubaoVoice/bidirectional-streaming-text-to-speech-websocket?lang=zh",
     "tools": [
-      "websocket_text_to_speech"
+      "speech_raw_request"
     ],
     "kind": "api",
     "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=bidirectional-streaming-text-to-speech-websocket"
@@ -551,10 +555,10 @@
     "id": "doubao-endtoend-realtime-voice-full-duplex-version",
     "url": "https://docs.volcengine.com/docs/DoubaoVoice/endtoend-realtime-voice-full-duplex-version?lang=zh",
     "tools": [
+      "close_realtime_session",
       "open_realtime_session",
-      "send_realtime_event",
       "receive_realtime_events",
-      "close_realtime_session"
+      "send_realtime_event"
     ],
     "kind": "api",
     "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=endtoend-realtime-voice-full-duplex-version"
@@ -563,12 +567,12 @@
     "id": "doubao-model-list",
     "url": "https://docs.volcengine.com/docs/DoubaoVoice/model-list?lang=zh",
     "tools": [
-      "text_to_speech",
       "generate_audio",
-      "streaming_speech_to_text",
-      "submit_transcription",
+      "list_speech_capabilities",
       "open_realtime_session",
-      "list_speech_capabilities"
+      "speech_raw_request",
+      "speech_to_text",
+      "text_to_speech"
     ],
     "kind": "models",
     "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=model-list"
@@ -586,8 +590,8 @@
     "id": "doubao-recording-file-recognition-lite-http",
     "url": "https://docs.volcengine.com/docs/DoubaoVoice/recording-file-recognition-lite-http?lang=zh",
     "tools": [
-      "speech_to_text",
-      "speech_http_request"
+      "speech_raw_request",
+      "speech_to_text"
     ],
     "kind": "api",
     "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=recording-file-recognition-lite-http"
@@ -596,7 +600,8 @@
     "id": "doubao-result-query-http-1",
     "url": "https://docs.volcengine.com/docs/DoubaoVoice/result-query-http-1?lang=zh",
     "tools": [
-      "query_transcription"
+      "get_job",
+      "recover_job"
     ],
     "kind": "api",
     "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=result-query-http-1"
@@ -605,7 +610,8 @@
     "id": "doubao-result-query-http",
     "url": "https://docs.volcengine.com/docs/DoubaoVoice/result-query-http?lang=zh",
     "tools": [
-      "query_transcription"
+      "get_job",
+      "recover_job"
     ],
     "kind": "api",
     "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=result-query-http"
@@ -614,7 +620,7 @@
     "id": "doubao-task-submission-http-1",
     "url": "https://docs.volcengine.com/docs/DoubaoVoice/task-submission-http-1?lang=zh",
     "tools": [
-      "submit_transcription"
+      "speech_to_text"
     ],
     "kind": "api",
     "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=task-submission-http-1"
@@ -623,7 +629,7 @@
     "id": "doubao-task-submission-http",
     "url": "https://docs.volcengine.com/docs/DoubaoVoice/task-submission-http?lang=zh",
     "tools": [
-      "submit_transcription"
+      "speech_to_text"
     ],
     "kind": "api",
     "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=task-submission-http"
@@ -632,7 +638,7 @@
     "id": "doubao-tone-query-http",
     "url": "https://docs.volcengine.com/docs/DoubaoVoice/tone-query-http?lang=zh",
     "tools": [
-      "query_voice"
+      "get_voice"
     ],
     "kind": "api",
     "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=tone-query-http"
@@ -659,7 +665,7 @@
     "id": "doubao-unidirectional-streaming-automatic-speech-recognition-websocket",
     "url": "https://docs.volcengine.com/docs/DoubaoVoice/unidirectional-streaming-automatic-speech-recognition-websocket?lang=zh",
     "tools": [
-      "streaming_speech_to_text"
+      "speech_raw_request"
     ],
     "kind": "api",
     "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=unidirectional-streaming-automatic-speech-recognition-websocket"
@@ -668,8 +674,8 @@
     "id": "doubao-unidirectional-streaming-text-to-speech-http",
     "url": "https://docs.volcengine.com/docs/DoubaoVoice/unidirectional-streaming-text-to-speech-http?lang=zh",
     "tools": [
-      "text_to_speech",
-      "speech_http_request"
+      "speech_raw_request",
+      "text_to_speech"
     ],
     "kind": "api",
     "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=unidirectional-streaming-text-to-speech-http"
@@ -678,7 +684,7 @@
     "id": "doubao-unidirectional-streaming-text-to-speech-websocket",
     "url": "https://docs.volcengine.com/docs/DoubaoVoice/unidirectional-streaming-text-to-speech-websocket?lang=zh",
     "tools": [
-      "websocket_text_to_speech"
+      "speech_raw_request"
     ],
     "kind": "api",
     "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=unidirectional-streaming-text-to-speech-websocket"
@@ -687,8 +693,8 @@
     "id": "doubao-voice-document-index",
     "url": "https://docs.volcengine.com/docs/DoubaoVoice",
     "tools": [
-      "list_speech_capabilities",
-      "get_speech_usage_examples"
+      "get_speech_usage_examples",
+      "list_speech_capabilities"
     ],
     "kind": "guide",
     "fetch_url": "https://docs.volcengine.com/api/doc/getDocList?LibraryCode=DoubaoVoice",
