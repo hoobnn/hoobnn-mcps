@@ -1,6 +1,6 @@
 <div align="center">
 
-# ali-bailian-mcp: Alibaba Cloud Model Studio (Bailian) MCP server
+# ali-bailian-mcp
 
 An MCP server for Alibaba Cloud Model Studio (Bailian, DashScope) that saves results directly to your machine.
 

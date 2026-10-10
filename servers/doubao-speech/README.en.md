@@ -1,6 +1,8 @@
 <div align="center">
 
-# doubao-speech-mcp: Doubao Speech MCP server
+# doubao-speech-mcp
+
+An MCP server for Doubao Speech.
 
 [![PyPI](https://img.shields.io/pypi/v/doubao-speech-mcp?style=flat-square)](https://pypi.org/project/doubao-speech-mcp/)
 [![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)

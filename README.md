@@ -1,6 +1,8 @@
 <div align="center">
 
-# hoobnn-mcps：火山方舟、豆包语音与阿里云百炼的 MCP server
+# hoobnn-mcps
+
+火山方舟、豆包语音与阿里云百炼的 MCP server 合集。
 
 [![CI](https://img.shields.io/github/actions/workflow/status/hoobnn/hoobnn-mcps/test.yml?branch=main&style=flat-square&label=CI)](https://github.com/hoobnn/hoobnn-mcps/actions/workflows/test.yml)
 [![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)

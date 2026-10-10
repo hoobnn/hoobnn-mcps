@@ -1,6 +1,8 @@
 <div align="center">
 
-# volcengine-ark-mcp: Volcengine Ark MCP server
+# volcengine-ark-mcp
+
+An MCP server for Volcengine Ark.
 
 [![PyPI](https://img.shields.io/pypi/v/volcengine-ark-mcp?style=flat-square)](https://pypi.org/project/volcengine-ark-mcp/)
 [![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)

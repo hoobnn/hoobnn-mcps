@@ -1,6 +1,6 @@
 <div align="center">
 
-# ali-bailian-mcp：阿里云百炼 MCP server
+# ali-bailian-mcp
 
 调用阿里云百炼（DashScope）的 MCP server，结果直接存到本地。
 
