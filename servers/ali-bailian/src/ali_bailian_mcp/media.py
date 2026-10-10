@@ -7,6 +7,7 @@ import urllib.error
 import urllib.request
 
 from . import transport
+from .mcp_runtime import merge_parameters
 import uuid
 import wave
 from pathlib import Path
@@ -145,10 +146,12 @@ def resume_tts(job):
                 inp["language_type"] = opts["language"]
             if opts["instructions"]:
                 inp.update(instructions=opts["instructions"], optimize_instructions=True)
+            body = {"model": job["model"], "input": inp}
+            if opts.get("parameters"):
+                body["parameters"] = dict(opts["parameters"])
             chunk["state"] = "unknown"
             STORE.save(job)  # Crash during request is ambiguous, not safe to resubmit.
-            response, error = request("/api/v1/services/aigc/multimodal-generation/generation",
-                                      {"model": job["model"], "input": inp}, 120)
+            response, error = request("/api/v1/services/aigc/multimodal-generation/generation", body, 120)
             if not error and response.get("code"):
                 error = f"{response['code']}: {response.get('message')}"
             if error:
@@ -238,8 +241,13 @@ def speech_to_text(o):
     asr = {"enable_itn": o["itn"]}
     if o["language"]:
         asr["language"] = o["language"]
-    resp, err = request("/compatible-mode/v1/chat/completions",
-                        {"model": model, "messages": messages, "asr_options": asr}, 300)
+    body = {"model": model, "messages": messages, "asr_options": asr}
+    extra = o.get("parameters") or {}
+    if set(extra) & {"model", "messages", "stream"}:
+        result["error"] = "parameters 不能覆盖 model/messages/stream"
+        return result
+    merge_parameters(body, extra)
+    resp, err = request("/compatible-mode/v1/chat/completions", body, 300)
     if err:
         result["error"] = err
         return result
@@ -275,6 +283,7 @@ def build_video_body(o, model):
     for k in ("duration", "prompt_extend", "seed"):
         if o[k] is not None:
             params[k] = o[k]
+    merge_parameters(params, o.get("parameters"))
     return {"model": model, "input": inp, "parameters": params}, oss
 
 
@@ -314,23 +323,6 @@ def generate_video(o, out_dir, wait, mode="local"):
         return result
     from .products import submit_video
     return submit_video(body, out_dir, wait, mode, oss=oss)
-
-
-def query_video(task_id, out_dir, wait, mode="local", job_id=None):
-    from .products import STORE
-    if not 0 <= wait <= 90 or not task_id:
-        return {"ok": False, "error": "需task_id，wait范围0–90秒"}
-    if job_id:
-        def handle(job):
-            if job["kind"] != "video" or job["task_id"] != task_id:
-                raise ValueError("job_id与视频任务不匹配")
-            return poll_job(job, wait)
-        return STORE.recover(job_id, handle)
-    job = STORE.create("video", None, out_dir, mode)
-    with STORE.processing(job):
-        job.update(task_id=task_id, state="running")
-        STORE.save(job)
-        return poll_job(job, wait)
 
 
 def poll_job(job, wait=0):

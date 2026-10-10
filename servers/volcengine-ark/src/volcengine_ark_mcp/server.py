@@ -19,7 +19,7 @@ if MODE not in ("local", "url"):
     raise SystemExit(f"ARK_RESOURCE_MODE 只能是 local 或 url，当前是 {MODE!r}")
 
 mcp = ReliableMCPServer("volcengine-ark", groups={
-    "image": {"generate_image"}, "video": {"generate_video", "query_video"},
+    "image": {"generate_image"}, "video": {"generate_video"},
     "language": {"chat"}, "embedding": {"embed"},
     "jobs": {"list_jobs", "get_job", "recover_job"}, "help": {"list_capabilities", "get_tool_help"}})
 
@@ -43,6 +43,7 @@ def generate_image(
     fast: bool = False,
     watermark: bool = False,
     out_dir: str | None = None,
+    parameters: dict | None = None,
 ) -> dict:
     """用火山方舟 Seedream 5.0 生成或编辑图片，结果保存到本地，返回文件路径。
 
@@ -63,6 +64,7 @@ def generate_image(
     - output_format：png 或 jpeg。图层拆分时只影响底图，图层总是 png。
     - watermark：是否加「AI 生成」水印，默认不加。
     - out_dir：输出目录，默认 ARK_OUT_DIR 下按时间戳新建。交付方式为 url 时忽略。
+    - parameters：官方请求体里本工具没有单独列出的字段，深度合并进请求，不能覆盖 model/response_format。
 
     场景写法：
     - 图层拆分：prompt 可留空自动拆主要元素；要指定拆哪些，用 0–1000 的归一化坐标框选，如
@@ -79,7 +81,7 @@ def generate_image(
     """
     opts = dict(prompt=prompt or None, model=model, images=images or [], size=size,
                 output_format=output_format, transparent=transparent, layers=layers, group=group,
-                web_search=web_search, fast=fast, watermark=watermark)
+                web_search=web_search, fast=fast, watermark=watermark, parameters=parameters)
     target = target_dir(out_dir)
     return ark.generate(opts, target, mode=MODE)
 
@@ -93,13 +95,13 @@ def generate_video(
     audio: bool = True, watermark: bool = False, seed: int | None = None, wait: int = 0,
     out_dir: str | None = None, parameters: dict | None = None,
 ) -> dict:
-    """调用火山方舟 Seedance 生成视频。seedance=2.5，seedance-2/seedance-fast/seedance-mini=2.0 系列，也可传完整模型或 Endpoint ID。
+    """调用火山方舟 Seedance 生成视频。seedance=2.5，seedance-2/seedance-fast/seedance-mini=2.0 系列，也可传完整模型或 Endpoint ID。本地参考视频/音频需改用 ali-bailian 的 generate_video（自动上传）。
     支持文生、首帧、首尾帧、多模态参考；2.5 可在 prompt 明确写视频编辑或延长意图，编辑须 duration=-1、ratio=adaptive。
     图片支持本地路径/URL，参考视频和音频须公网 URL 或 asset://ID；本工具不上传本地视频/音频。
     具体素材数量、时长、分辨率由模型校验。parameters 透传官方顶层选项，如 draft、return_last_frame、output_format、omni_reference_task_type。
     2.5时长4–30秒，2.0系列4–15秒（均支持-1）；首尾帧与参考素材互斥。mini/fast最高720p，2.0支持4k。
     seed/frames仅支持1.0系列；2.5 edit任务可显式传omni_reference_task_type=edit以提前校验。
-    wait=0 默认只提交，1–90 秒可轮询，返回 task_id/job_id；query_video 查询，recover_job 可跨重启恢复。
+    wait=0 默认只提交，1–90 秒可轮询，返回 task_id/job_id；之后用 get_job 查进度并在完成时自动下载，下载失败用 recover_job 补。
     按生成视频计费；账户需开通模型。所有新增能力尚未完成云端验证，返回文件仅表示下载完成。
     """
     opts = dict(prompt=prompt, model=model, first_frame=first_frame, last_frame=last_frame,
@@ -111,20 +113,11 @@ def generate_video(
 
 
 @mcp.tool()
-def query_video(task_id: str, wait: int = 0, job_id: str | None = None, out_dir: str | None = None) -> dict:
-    """查询 Seedance 任务并交付视频。wait=0 查一次，最多90秒；传原 job_id 复用原输出目录并跳过已完整保存的产物。
-    未传job_id会创建新的本地记录；不会重新提交生成。返回status、job_state、files、usage、原始response。
-    """
-    target = target_dir(out_dir)
-    return products.query_video(task_id, target, wait, MODE, job_id)
-
-
-@mcp.tool()
 def chat(prompt: str, model: str = "pro", system: str | None = None, history: list[dict] | None = None,
          images: list[str] | None = None, videos: list[str] | None = None, thinking: bool | None = None,
          max_tokens: int | None = None, temperature: float | None = None, json_mode: bool = False,
          web_search: bool = False, previous_response_id: str | None = None, parameters: dict | None = None) -> dict:
-    """调用方舟语言/多模态模型，pro=豆包Seed 2.1 pro；其他模型传完整ID。
+    """调用方舟语言/多模态模型，pro=豆包Seed 2.1 pro；其他模型传完整ID。千问及 DeepSeek、Kimi、GLM 等用 ali-bailian 的 chat。
     images支持本地图片或URL，videos为公网URL。history用Chat消息格式，工具不保存对话。
     web_search=true或传previous_response_id时使用Responses API，保留sources和response_id；否则走Chat API。
     thinking控制深度思考；json_mode要求提示词明确JSON结构；parameters透传模型支持的高级字段。
@@ -140,7 +133,7 @@ def embed(model: str, texts: list[str] | None = None, contents: list[dict] | Non
     """方舟文本/多模态向量化，model必须显式指定。texts为文本列表；contents用官方格式，如
     [{"type":"text","text":"猫"},{"type":"image_url","image_url":{"url":"/absolute/cat.png"}}]。
     两项只能选一项；图片支持本地路径，视频须URL。parameters支持instructions、multi_embedding等模型选项。
-    保留data和usage，不自动建索引或知识库；按输入计费。尚未完成云端验证。
+    保留data和usage，不自动建索引或知识库；按输入计费。尚未完成云端验证。百炼 text-embedding / qwen3-vl-embedding 及 rerank 用 ali-bailian。
     """
     return products.embed(model, texts, contents, dimensions, parameters)
 
@@ -152,14 +145,19 @@ def list_jobs(limit: int = 20, kind: str | None = None) -> dict:
 
 
 @mcp.tool()
-def get_job(job_id: str) -> dict:
-    """读取本地图片/视频任务记录，不联网。ok仅代表记录读取成功，job_state才表示交付状态。"""
-    return products.STORE.get(job_id)
+def get_job(job_id: str | None = None, task_id: str | None = None, wait: int = 0) -> dict:
+    """查任务进度和结果，job_id 或 task_id 二选一（都给时须属于同一任务）。
+    视频还在生成时查询方舟一次（wait 1–90 秒可轮询），完成即下载到原输出目录；已结束的任务只读本地记录。
+    只给 task_id 且本地没有记录（如别处提交的 Seedance 任务）时，新建本地记录再查询。不会重新提交生成。
+    返回 job_state（running/delivered/failed/download_failed 等）、completed、files、usage；ok=false 表示查询或交付失败。
+    """
+    return products.get_job(job_id, task_id, wait, target_dir(None), MODE)
 
 
 @mcp.tool()
 def recover_job(job_id: str, wait: int = 0) -> dict:
-    """恢复已有任务：图片只补交付；视频查询原task_id并刷新结果URL。跳过校验完整的本地文件。
+    """修复已有任务的交付：图片只补下载；视频重新查询原task_id刷新结果URL再下载。跳过校验完整的本地文件。
+    正常查进度用 get_job；本工具用于 download_failed 或链接过期。
     不重新生成；状态未知且没有task_id的任务不可自动恢复。wait=0查一次，最多90秒。临时链接过期可能无法恢复。
     """
     if not 0 <= wait <= 90:
@@ -171,7 +169,7 @@ def recover_job(job_id: str, wait: int = 0) -> dict:
 def list_capabilities() -> dict:
     """列出本MCP的方舟能力和官方来源，不联网，不代表当前账号权限；新增功能尚未完成云端验证。"""
     return {"ok": True, "account_verified": False, "validation": "offline_only",
-            "tools": {"image": ["generate_image"], "video": ["generate_video", "query_video"],
+            "tools": {"image": ["generate_image"], "video": ["generate_video"],
                       "language": ["chat"], "embedding": ["embed"], "jobs": ["list_jobs", "get_job", "recover_job"]},
             "video_models": products.VIDEO_MODELS, "chat_models": products.CHAT_MODELS,
             "image_models": ark.MODELS, "docs": products.DOCS,

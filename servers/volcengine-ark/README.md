@@ -4,6 +4,8 @@
 
 原名 `seedream-mcp`（PyPI 上该名已被他人占用），0.4 起改名，不保留旧命令和 `SEEDREAM_*` 环境变量。
 
+`0.6.0` 去掉 `query_video`：视频进度统一用 `get_job(job_id=...)` 或 `get_job(task_id=...)` 查询，完成时自动下载；`generate_image` 新增 `parameters`。这是不兼容变更。
+
 ## Seedream 图片生成
 
 | 模型 | 参数 | 独有能力 |
@@ -31,19 +33,19 @@
 
 | 工具 | 能力 | 官方来源 |
 |---|---|---|
-| `generate_video` / `query_video` | Seedance文生、首帧、首尾帧、多模态参考视频 | [创建任务](https://docs.volcengine.com/docs/ark/create-video-generation-task-api?lang=zh)、[查询任务](https://docs.volcengine.com/docs/ark/get-video-generation-task-api?lang=zh) |
+| `generate_video` | Seedance文生、首帧、首尾帧、多模态参考视频 | [创建任务](https://docs.volcengine.com/docs/ark/create-video-generation-task-api?lang=zh)、[查询任务](https://docs.volcengine.com/docs/ark/get-video-generation-task-api?lang=zh) |
 | `chat` | 语言、图片/视频理解、深度思考、结构化输出 | [Chat](https://docs.volcengine.com/docs/ark/chat-api?lang=zh)、[Responses](https://docs.volcengine.com/docs/ark/create-model-responses-api?lang=zh) |
 | `chat(web_search=true)` | 联网搜索，保留来源和完整响应 | [Web Search](https://docs.volcengine.com/docs/ark/web-search?lang=zh) |
 | `embed` | 文本与多模态向量化 | [向量化](https://docs.volcengine.com/docs/ark/vectorization?lang=zh)、[多模态API](https://docs.volcengine.com/docs/ark/multimodal-vectorization-api?lang=zh) |
 | `list_capabilities` | 静态能力目录和边界 | 不联网，不代表账号权限 |
-| `list_jobs` / `get_job` / `recover_job` | 本地任务查询与补交付 | 图片和视频留档，跨进程重启恢复 |
+| `list_jobs` / `get_job` / `recover_job` | 查任务进度（视频生成中会查询方舟并在完成时下载）、补交付 | 图片和视频留档，跨进程重启恢复 |
 
 ### Seedance视频
 
 模型别名：`seedance` → `doubao-seedance-2-5-260628`；`seedance-2` / `seedance-fast` / `seedance-mini` → 相应2.0系列。
 也可直接指定完整模型ID或Endpoint ID。不同模型的素材数量、时长、分辨率限制以官方接口为准。
 
-默认 `wait=0`，提交后返回 `task_id`、`job_id`。`query_video(task_id=..., job_id=...)` 复用原目录和下载进度；`recover_job(job_id=...)` 查询原任务，不提交新生成。
+默认 `wait=0`，提交后返回 `task_id`、`job_id`。`get_job(job_id=..., wait=30)` 查询进度，完成后下载到原目录；别处提交的任务可传 `get_job(task_id=...)`，首次查询会新建本地记录。下载失败或链接过期用 `recover_job(job_id=...)`。都不会提交新生成。
 
 图片支持本地路径/data URL/公网URL；视频和音频参考使用公网URL或 `asset://` ID。本轮没有自动上传本地视频/音频。
 2.5首帧/首尾帧任务 `ratio=adaptive`；输出时长为4–30秒，2.0系列为4–15秒，均可用 `duration=-1`。首尾帧与全模态参考不能混用；2.0系列不能仅传音频。

@@ -41,7 +41,7 @@
     "url": "https://docs.volcengine.com/docs/ark/get-video-generation-task-api?lang=zh",
     "fetch_url": "https://www.volcengine.com/api/doc/getDocDetail?LibraryCode=ark&DocumentCode=get-video-generation-task-api",
     "tools": [
-      "query_video",
+      "get_job",
       "recover_job"
     ],
     "kind": "api"
@@ -52,7 +52,7 @@
     "fetch_url": "https://www.volcengine.com/api/doc/getDocDetail?LibraryCode=ark&DocumentCode=seedance-2-5",
     "tools": [
       "generate_video",
-      "query_video",
+      "get_job",
       "recover_job"
     ],
     "kind": "guide"
@@ -125,11 +125,11 @@
     "url": "https://docs.volcengine.com/docs/ark/base-url-and-authentication?lang=zh",
     "fetch_url": "https://www.volcengine.com/api/doc/getDocDetail?LibraryCode=ark&DocumentCode=base-url-and-authentication",
     "tools": [
-      "generate_image",
-      "generate_video",
-      "query_video",
       "chat",
       "embed",
+      "generate_image",
+      "generate_video",
+      "get_job",
       "recover_job"
     ],
     "kind": "guide"
@@ -139,10 +139,10 @@
     "url": "https://docs.volcengine.com/docs/ark/model-list?lang=zh",
     "fetch_url": "https://www.volcengine.com/api/doc/getDocDetail?LibraryCode=ark&DocumentCode=model-list",
     "tools": [
-      "generate_image",
-      "generate_video",
       "chat",
       "embed",
+      "generate_image",
+      "generate_video",
       "list_capabilities"
     ],
     "kind": "models"
@@ -152,10 +152,10 @@
     "url": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
     "fetch_url": "https://www.volcengine.com/api/doc/getDocDetail?LibraryCode=ark&DocumentCode=model-deprecation-notice",
     "tools": [
-      "generate_image",
-      "generate_video",
       "chat",
-      "embed"
+      "embed",
+      "generate_image",
+      "generate_video"
     ],
     "kind": "models"
   },

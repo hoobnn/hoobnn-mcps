@@ -75,9 +75,9 @@
     "id": "bailian-tts-models",
     "url": "https://help.aliyun.com/zh/model-studio/tts-model",
     "tools": [
-      "text_to_speech",
       "clone_voice",
-      "design_voice"
+      "design_voice",
+      "text_to_speech"
     ],
     "kind": "models",
     "fetch_url": "https://help.aliyun.com/zh/model-studio/tts-model.md"
@@ -105,8 +105,8 @@
     "url": "https://help.aliyun.com/zh/model-studio/voice-clone-design-http-api",
     "tools": [
       "clone_voice",
-      "list_voices",
-      "get_voice"
+      "get_voice",
+      "list_voices"
     ],
     "kind": "api",
     "fetch_url": "https://help.aliyun.com/zh/model-studio/voice-clone-design-http-api.md"
@@ -116,8 +116,8 @@
     "url": "https://help.aliyun.com/zh/model-studio/voice-design-api-references",
     "tools": [
       "design_voice",
-      "list_voices",
-      "get_voice"
+      "get_voice",
+      "list_voices"
     ],
     "kind": "api",
     "fetch_url": "https://help.aliyun.com/zh/model-studio/voice-design-api-references.md"
@@ -127,7 +127,7 @@
     "url": "https://help.aliyun.com/zh/model-studio/wan3-video-generation-api-reference",
     "tools": [
       "generate_video",
-      "query_video",
+      "get_job",
       "recover_job"
     ],
     "kind": "api",
@@ -138,7 +138,7 @@
     "url": "https://help.aliyun.com/zh/model-studio/happyhorse-video-edit-api-reference",
     "tools": [
       "edit_video",
-      "query_video"
+      "get_job"
     ],
     "kind": "api",
     "fetch_url": "https://help.aliyun.com/zh/model-studio/happyhorse-video-edit-api-reference.md"
@@ -148,7 +148,7 @@
     "url": "https://help.aliyun.com/zh/model-studio/wan-s2v-api",
     "tools": [
       "animate_portrait",
-      "query_video"
+      "get_job"
     ],
     "kind": "api",
     "fetch_url": "https://help.aliyun.com/zh/model-studio/wan-s2v-api.md"
@@ -202,9 +202,9 @@
     "id": "bailian-upload",
     "url": "https://help.aliyun.com/zh/model-studio/get-temporary-file-url",
     "tools": [
-      "generate_video",
+      "animate_portrait",
       "edit_video",
-      "animate_portrait"
+      "generate_video"
     ],
     "kind": "guide",
     "fetch_url": "https://help.aliyun.com/zh/model-studio/get-temporary-file-url.md"
@@ -213,9 +213,9 @@
     "id": "bailian-video-models",
     "url": "https://help.aliyun.com/zh/model-studio/video-generate-edit-model",
     "tools": [
-      "generate_video",
+      "animate_portrait",
       "edit_video",
-      "animate_portrait"
+      "generate_video"
     ],
     "kind": "models",
     "fetch_url": "https://help.aliyun.com/zh/model-studio/video-generate-edit-model.md"

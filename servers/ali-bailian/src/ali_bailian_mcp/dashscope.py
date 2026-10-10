@@ -8,6 +8,7 @@ import urllib.error
 import urllib.request
 
 from . import transport
+from .mcp_runtime import merge_parameters
 from pathlib import Path
 
 HOST = os.environ.get("DASHSCOPE_BASE_URL", "https://dashscope.aliyuncs.com").rstrip("/")
@@ -144,6 +145,7 @@ def build_image_body(o, model):
         params["seed"] = o["seed"]
     if o["thinking"] is not None:
         params["thinking_mode"] = o["thinking"]
+    merge_parameters(params, o.get("parameters"))
     return {"model": model, "input": {"messages": [{"role": "user", "content": content}]}, "parameters": params}
 
 
@@ -229,6 +231,10 @@ def build_chat_body(o, model):
         body["response_format"] = {"type": "json_object"}
     if o["web_search"]:
         body["enable_search"] = True
+    extra = o.get("parameters") or {}
+    if set(extra) & {"model", "messages", "stream"}:
+        raise InputError("parameters 不能覆盖 model/messages/stream")
+    merge_parameters(body, extra)
     return body
 
 

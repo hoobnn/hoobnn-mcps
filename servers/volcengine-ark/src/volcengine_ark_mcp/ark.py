@@ -8,6 +8,7 @@ import urllib.error
 import urllib.request
 
 from . import transport
+from .mcp_runtime import merge_parameters
 from pathlib import Path
 
 BASE_URL = os.environ.get("ARK_BASE_URL", "https://ark.cn-beijing.volces.com/api/v3")
@@ -115,6 +116,11 @@ def build_body(o, model, mode="local"):
         body["tools"] = [{"type": "web_search"}]
     if o["fast"]:
         body["optimize_prompt_options"] = {"mode": "fast"}
+    extra = o.get("parameters")
+    if extra:
+        if not isinstance(extra, dict) or set(extra) & {"model", "response_format"}:
+            raise InputError("parameters 必须是 object，且不能覆盖 model/response_format")
+        merge_parameters(body, extra)
     return body
 
 

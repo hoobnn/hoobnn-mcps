@@ -1,6 +1,8 @@
 # ali-bailian-mcp
 
-调用阿里云百炼（DashScope）的 MCP server，结果直接存到本地：
+调用阿里云百炼（DashScope）的 MCP server，结果直接存到本地。
+
+`0.5.0` 去掉 `query_video`：视频进度统一用 `get_job` 查询，完成时自动下载；生成类工具和 `chat`、`text_to_speech`、`speech_to_text` 新增 `parameters`。这是不兼容变更。
 
 | 工具 | 作用 | 默认模型 |
 |---|---|---|
@@ -8,8 +10,9 @@
 | `chat` | 调用百炼上的语言模型（千问，以及托管的 DeepSeek、Kimi、GLM、MiniMax 等） | `qwen3.8-max` |
 | `text_to_speech` | 语音合成，20 个系统音色，可用自然语言控制语气，长文本自动分段拼接 | `qwen3-tts-flash` / `qwen3-tts-instruct-flash` |
 | `speech_to_text` | 语音识别（5 分钟 / 10MB 以内），返回文本、语种、情绪 | `qwen3-asr-flash` |
-| `generate_video` / `query_video` | 视频生成：文生、首帧、首尾帧、多主体参考、续写，最长 30 秒，带音频 | `wan3.0-video` |
+| `generate_video` | 视频生成：文生、首帧、首尾帧、多主体参考、续写，最长 30 秒，带音频 | `wan3.0-video` |
 | `list_models` | 列出当前 API Key 能调用的模型 ID | — |
+| `list_jobs` / `get_job` / `recover_job` | 查任务进度（视频生成中会查询百炼并在完成时下载）、补交付、TTS 续做 | 本地任务记录 |
 
 生图模型（`model` 写别名或完整 ID）：
 
@@ -23,9 +26,11 @@
 
 语言模型别名：`max` → `qwen3.8-max`（默认，能看图）、`plus` → `qwen3.7-plus`、`flash` → `qwen3.8-flash`；其他模型直接写 ID，如 `deepseek-v4-pro`、`kimi-k3`、`glm-5.3`。`chat` 统一走流式接口，支持多轮历史、看图、深度思考开关、JSON 输出和联网搜索。
 
-视频是异步任务：`generate_video` 默认 `wait=0`，提交后返回 `task_id`；`query_video` 也默认单次查询。需要短轮询可显式指定 `wait`，最多 90 秒。视频的参考素材和本地文件会自动上传到百炼临时存储（48 小时有效）。
+视频是异步任务：`generate_video` 默认 `wait=0`，提交后返回 `task_id`、`job_id`；之后 `get_job(job_id=...)` 查进度，默认单次查询，需要短轮询可指定 `wait`，最多 90 秒。视频的参考素材和本地文件会自动上传到百炼临时存储（48 小时有效）。
 
 模型不支持的明显参数组合在本地直接报错，其余交给服务端校验。
+
+`parameters` 放工具没单独列出的官方字段，深度合并：原生接口（生图、视频、TTS）合并进官方请求的 `parameters` 对象，OpenAI 兼容接口（`chat`、`speech_to_text`）合并进请求体顶层。
 
 ## 环境变量
 
@@ -63,7 +68,7 @@ Qwen没有独立的详情接口，`get_voice` 会从列表分页查找；达到 
 
 ### 视频编辑和数字人
 
-新增视频工具默认 `wait=0`，只提交并立刻留档；之后调用 `query_video(task_id=..., job_id=...)` 或 `recover_job(job_id=...)`。
+新增视频工具默认 `wait=0`，只提交并立刻留档；之后用 `get_job(job_id=...)` 查进度，下载失败用 `recover_job(job_id=...)`。
 
 HappyHorse编辑输入视频3–60秒，输出最多15秒。数字人音频须小于20秒、小于15MB，分辨率480P/720P，北京地域。
 本地视频素材会上传百炼临时存储；参考图片在编辑接口中使用data URL。模型和地域权限需后续真实调用确认。

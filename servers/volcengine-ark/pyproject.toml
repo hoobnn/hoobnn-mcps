@@ -1,6 +1,6 @@
 [project]
 name = "volcengine-ark-mcp"
-version = "0.5.1"
+version = "0.6.0"
 description = "火山方舟图片、Seedance视频、语言模型、搜索、向量与任务恢复 MCP server"
 readme = "README.md"
 license = "MIT"

@@ -7,6 +7,7 @@ from pathlib import Path
 
 from .dashscope import encode_image, request
 from .jobs import Store
+from .mcp_runtime import merge_parameters
 
 STORE = Store("BAILIAN_JOB_DIR", "~/.local/share/ali-bailian-mcp/jobs")
 CUSTOMIZATION = "/api/v1/services/audio/tts/customization"
@@ -187,7 +188,7 @@ def api_with_headers(path, body, headers):
     return response, error
 
 
-def edit_video(video, prompt, images, resolution, audio_setting, watermark, seed, out_dir, wait, mode):
+def edit_video(video, prompt, images, resolution, audio_setting, watermark, seed, out_dir, wait, mode, parameters=None):
     from .media import is_remote, upload
     if not video or not prompt.strip() or len(images) > 5 or resolution not in ("720P", "1080P") or audio_setting not in ("auto", "origin"):
         return {"ok": False, "error": "需video和prompt；最多5张参考图；resolution=720P/1080P，audio_setting=auto/origin"}
@@ -202,11 +203,15 @@ def edit_video(video, prompt, images, resolution, audio_setting, watermark, seed
     params = {"resolution": resolution, "audio_setting": audio_setting, "watermark": watermark}
     if seed is not None:
         params["seed"] = seed
+    try:
+        merge_parameters(params, parameters)
+    except ValueError as exc:
+        return {"ok": False, "error": str(exc)}
     return submit_video({"model": "happyhorse-1.0-video-edit", "input": {"prompt": prompt, "media": items},
                          "parameters": params}, out_dir, wait, mode, oss=oss)
 
 
-def animate_portrait(image, audio, resolution, out_dir, wait, mode):
+def animate_portrait(image, audio, resolution, out_dir, wait, mode, parameters=None):
     from .media import is_remote, upload
     if resolution not in ("480P", "720P"):
         return {"ok": False, "error": "resolution=480P/720P"}
@@ -218,6 +223,10 @@ def animate_portrait(image, audio, resolution, out_dir, wait, mode):
         return {"ok": False, "error": str(exc)}
     body = {"model": "wan2.2-s2v", "input": {"image_url": sources[0], "audio_url": sources[1]},
             "parameters": {"resolution": resolution}}
+    try:
+        merge_parameters(body["parameters"], parameters)
+    except ValueError as exc:
+        return {"ok": False, "error": str(exc)}
     return submit_video(body, out_dir, wait, mode, path="/api/v1/services/aigc/image2video/video-synthesis",
                         oss=any(src.startswith("oss://") for src in sources))
 
@@ -268,6 +277,18 @@ def rerank(query, documents, model, top_n=None, return_documents=False):
     result = response or {}
     return {"ok": not error, "model": model, "results": result.get("results") or (result.get("output") or {}).get("results"),
             "usage": result.get("usage"), "request_id": result.get("request_id"), "response": response, "error": error}
+
+
+def get_job(job_id=None, task_id=None, wait=0, out_dir=None, mode="local"):
+    """Local record; pending video tasks are polled and delivered without resubmission."""
+    from . import media
+    def adopt(task_id, wait):
+        job = STORE.create("video", None, out_dir, mode)
+        with STORE.processing(job):
+            job.update(task_id=task_id, state="running")
+            STORE.save(job)
+            return media.poll_job(job, wait)
+    return STORE.lookup(job_id, task_id, wait, {"video": media.poll_job}, adopt)
 
 
 def recover(job_id, wait=0):

@@ -207,22 +207,16 @@ def poll_video(job, wait=0):
         transport.sleep(min(5, max(0, deadline - time.monotonic())))
 
 
-def query_video(task_id, out_dir, wait=0, mode="local", job_id=None):
-    if not 0 <= wait <= 90:
-        return {"ok": False, "error": "wait 范围为 0–90 秒"}
-    if job_id:
-        def handle(job):
-            if job["kind"] != "video" or job["task_id"] != task_id:
-                raise ValueError("job_id 与视频任务不匹配")
+def get_job(job_id=None, task_id=None, wait=0, out_dir=None, mode="local"):
+    """Local record; pending video tasks are polled and delivered without resubmission."""
+    def adopt(task_id, wait):
+        # A task submitted elsewhere gets a fresh local record for delivery.
+        job = STORE.create("video", None, out_dir, mode)
+        with STORE.processing(job):
+            job.update(task_id=task_id, state="running")
+            STORE.save(job)
             return poll_video(job, wait)
-        return STORE.recover(job_id, handle)
-    if not task_id:
-        return {"ok": False, "error": "缺少 task_id"}
-    job = STORE.create("video", None, out_dir, mode)
-    with STORE.processing(job):
-        job.update(task_id=task_id, state="running")
-        STORE.save(job)
-        return poll_video(job, wait)
+    return STORE.lookup(job_id, task_id, wait, {"video": poll_video}, adopt)
 
 
 def recover(job_id, wait=0):
