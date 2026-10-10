@@ -1,6 +1,16 @@
-# doubao-speech-mcp
+<div align="center">
 
-豆包语音云 API 的 stdio MCP server。接口依据[官方目录](https://docs.volcengine.com/docs/DoubaoVoice/list?lang=zh)于 **2026-10-10** 核对。
+# doubao-speech-mcp：豆包语音 MCP server
+
+[![PyPI](https://img.shields.io/pypi/v/doubao-speech-mcp?style=flat-square)](https://pypi.org/project/doubao-speech-mcp/)
+[![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
+[![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)](https://github.com/hoobnn/hoobnn-mcps/blob/main/LICENSE)
+
+**简体中文** · [English](https://github.com/hoobnn/hoobnn-mcps/blob/main/servers/doubao-speech/README.en.md)
+
+</div>
+
+豆包语音云 API 的 stdio MCP server。接口依据[官方目录](https://docs.volcengine.com/docs/DoubaoVoice/list?lang=zh)于 2026-10-10 核对。
 
 `0.4.0` 按用途重组工具：一件事只有一个入口，常用能力全部是具名参数，只剩 `speech_raw_request` 需要手写官方 JSON。默认暴露 18 个工具（原 29 个）；实时会话和管理接口改为按需启用。这是不兼容变更，旧工具名不保留别名，对照见下方[迁移](#从-03x-迁移)。
 
@@ -27,18 +37,26 @@
 
 所有具名参数工具都有 `parameters`：官方请求体里工具没单独列出的字段（SSML、水印、bit_rate、`ssd_version` 等）深度合并进去，同名以 `parameters` 为准；TTS 的 `req_params.additions` 可直接写成对象。提交类调用只提交一次，查询不会重新提交或购买资源。
 
+## 安装
+
+```bash
+uv tool install doubao-speech-mcp
+```
+
+命令装在 `~/.local/bin/doubao-speech-mcp`。各客户端的配置方法见 [仓库 README](https://github.com/hoobnn/hoobnn-mcps#配置客户端)。
+
 ## 环境变量
 
 | 变量 | 说明 |
 |---|---|
-| `VOLC_SPEECH_API_KEY` | 必需，豆包语音控制台 → API Key 管理（新版控制台单 key 鉴权），并开通对应服务 |
+| `VOLC_SPEECH_API_KEY` | 必需，豆包语音控制台 › API Key 管理（新版控制台单 key 鉴权），并开通对应服务 |
 | `VOLC_ACCESS_KEY_ID` / `VOLC_SECRET_ACCESS_KEY` | IAM AK/SK，控制台 API 与替换词管理需要；区别于语音 API Key |
 | `VOLC_SPEECH_APP_ID` / `VOLC_SPEECH_ACCESS_TOKEN` | 历史产品（如字幕）的旧版凭据，不自动拿新版 Key 替代 |
 | `DOUBAO_SPEECH_OUT_DIR` | 音频输出目录，默认 `~/Downloads/doubao-speech` |
 | `DOUBAO_SPEECH_JOB_DIR` | 异步任务记录，默认 `~/.local/share/doubao-speech-mcp/jobs` |
 | `VOLC_SPEECH_BASE_URL` | 默认 `https://openspeech.bytedance.com` |
 
-音频生成和播客可能超过300秒，客户端需设置相应超时。异步任务提交前先写本地记录，`get_job` 完成时自动把官方临时 URL 的结果下载到输出目录。
+音频生成和播客可能超过 300 秒，客户端需设置相应超时。异步任务提交前先写本地记录，`get_job` 完成时自动把官方临时 URL 的结果下载到输出目录。
 
 本地运行与验证：
 
@@ -48,7 +66,7 @@ uv run --project servers/doubao-speech doubao-speech-mcp
 servers/doubao-speech/.venv/bin/python -m unittest discover -s servers/doubao-speech/tests -v
 ```
 
-MCP 客户端本地启动命令可指定本项目 `.venv/bin/doubao-speech-mcp` 的绝对路径。已安装的 GitHub 版本需在发布后升级并重启客户端，本次源码修改不会自动替换已经运行的 server。
+MCP 客户端本地启动命令可指定本项目 `.venv/bin/doubao-speech-mcp` 的绝对路径。已安装的 GitHub 版本需在发布后升级并重启客户端，源码修改不会自动替换已经运行的 server。
 
 ## 调用示例
 
@@ -62,7 +80,7 @@ MCP 客户端本地启动命令可指定本项目 `.venv/bin/doubao-speech-mcp` 
 
 ### 音频生成 1.0：官方四类用法
 
-2026-10-09 核对[官方体验中心的模板分类](https://console.volcengine.com/speech/new/experience/audio?projectName=default)：**文本生成、参考生成、时间控制、多语种**。四类均使用 `generate_audio`，可以组合使用；以下 JSON 是 MCP 工具参数，示例提示词为根据官方用法改写，未做真实云端生成验证。
+2026-10-09 核对[官方体验中心的模板分类](https://console.volcengine.com/speech/new/experience/audio?projectName=default)：文本生成、参考生成、时间控制、多语种。四类均使用 `generate_audio`，可以组合使用；以下 JSON 是 MCP 工具参数，示例提示词为根据官方用法改写，未做真实云端生成验证。
 
 | 官方分类 | 写法与 MCP 参数 | 官方模板举例 |
 |---|---|---|
@@ -71,7 +89,7 @@ MCP 客户端本地启动命令可指定本项目 `.venv/bin/doubao-speech-mcp` 
 | 时间控制 | `prompt` 写总时长及 `[开始秒s:结束秒s]`，支持小数秒 | 控制音效卡点、控制情绪递进、控制叙事转场、控制旁白推进 |
 | 多语种 | `prompt` 直接使用目标语言台词，说明语言、口音、角色与表演方式 | 英语、日语、韩语、法语等模板 |
 
-**文本生成**：先定义角色和场景，再按发生顺序编排声音；台词用引号，区分台词与表演指令。
+文本生成：先定义角色和场景，再按发生顺序编排声音；台词用引号，区分台词与表演指令。
 
 ```json
 {
@@ -81,7 +99,7 @@ MCP 客户端本地启动命令可指定本项目 `.venv/bin/doubao-speech-mcp` 
 }
 ```
 
-**参考生成**：样音列表的第一条对应 `@音频1`，第二条对应 `@音频2`。多人对白要明确每个角色的引用关系；下列绝对路径需替换为真实文件，也可以传可访问的音频 URL。最多3段，每段不超过30秒、10MB。
+参考生成：样音列表的第一条对应 `@音频1`，第二条对应 `@音频2`。多人对白要明确每个角色的引用关系；下列绝对路径需替换为真实文件，也可以传可访问的音频 URL。最多 3 段，每段不超过 30 秒、10MB。
 
 ```json
 {
@@ -91,9 +109,9 @@ MCP 客户端本地启动命令可指定本项目 `.venv/bin/doubao-speech-mcp` 
 }
 ```
 
-需要指定现有音色时可用 `speaker`；图片参考用 `reference_image`（本地绝对路径或URL），不能与 `speaker` 或 `reference_audios` 混用。图片参考是 API 支持的另一种输入方式，不是体验中心第五个模板分类。
+需要指定现有音色时可用 `speaker`；图片参考用 `reference_image`（本地绝对路径或 URL），不能与 `speaker` 或 `reference_audios` 混用。图片参考是 API 支持的另一种输入方式，不是体验中心第五个模板分类。
 
-**时间控制**：官方输入提示使用 `[2s:5s]`，音效卡点模板使用 `[2.7s:5.7s]` 等小数秒区间。将标记写在对应台词或声音事件前，同时描述停顿、情绪递进、转场和声音强弱。
+时间控制：官方输入提示使用 `[2s:5s]`，音效卡点模板使用 `[2.7s:5.7s]` 等小数秒区间。将标记写在对应台词或声音事件前，同时描述停顿、情绪递进、转场和声音强弱。
 
 ```json
 {
@@ -103,9 +121,9 @@ MCP 客户端本地启动命令可指定本项目 `.venv/bin/doubao-speech-mcp` 
 }
 ```
 
-区间标记随 `prompt` 原样传给官方 `text_prompt`；没有独立的 `timeline` 参数，也不在 MCP 内做音频裁切或强制对齐。`subtitles=true` 返回的是生成后的人声字幕，`subtitle.sentences` 及其 `words` 的 `start_time` / `end_time` 单位为**毫秒**，不标注所有音效。实际时间落点需核对音频与字幕；不要把提示词控制理解为每次严格命中指定时间。单次最长120秒，台词过长或区间过短可能影响节奏。
+区间标记随 `prompt` 原样传给官方 `text_prompt`；没有独立的 `timeline` 参数，也不在 MCP 内做音频裁切或强制对齐。`subtitles=true` 返回的是生成后的人声字幕，`subtitle.sentences` 及其 `words` 的 `start_time` / `end_time` 单位为毫秒，不标注所有音效。实际时间落点需核对音频与字幕；不要把提示词控制理解为每次严格命中指定时间。单次最长 120 秒，台词过长或区间过短可能影响节奏。
 
-**多语种**：目标语言台词配合角色、口音和表演说明；不需要额外的 `language` 参数。官方英语模板用英文描述人物声线、标准美式英语、情绪、环境音和配乐。
+多语种：目标语言台词配合角色、口音和表演说明；不需要额外的 `language` 参数。官方英语模板用英文描述人物声线、标准美式英语、情绪、环境音和配乐。
 
 ```json
 {
@@ -155,7 +173,7 @@ MCP 客户端本地启动命令可指定本项目 `.venv/bin/doubao-speech-mcp` 
 4. 调用者执行 Function Calling，再通过 `conversation.item.create` 回传 `role=tool` 和对应 `call_id`。可发送 `response.cancel` 打断、上下文增删查和 `session.update`。
 5. `close_realtime_session` 等待关闭确认并释放连接；MCP 退出也会清理全部会话。
 
-实时上传20ms一包。MCP 不直接采集麦克风、播放声音或驱动声卡，客户端负责设备输入输出。同传需16kHz / mono / 16bit WAV或PCM；WAV自动去容器。目标 PCM16k 保存有效WAV，PCM24k保留float32原始PCM并返回格式信息。
+实时上传 20ms 一包。MCP 不直接采集麦克风、播放声音或驱动声卡，客户端负责设备输入输出。同传需 16kHz / mono / 16bit WAV 或 PCM；WAV 自动去容器。目标 PCM16k 保存有效 WAV，PCM24k 保留 float32 原始 PCM 并返回格式信息。
 
 播客断线保留 `.partial.*`、`task_id` 和 `last_finished_round_id`，可通过 `parameters.retry_info` 显式续传；返回的是续传片段，不自动和旧文件合并。
 
@@ -178,18 +196,22 @@ MCP 客户端本地启动命令可指定本项目 `.venv/bin/doubao-speech-mcp` 
 
 ## 官方来源与覆盖边界
 
-新增接口来源包括[长文本提交](https://docs.volcengine.com/docs/DoubaoVoice/Tasksubmission?lang=zh)、[音色注册](https://docs.volcengine.com/docs/DoubaoVoice/tone-training-http?lang=zh)、[音色设计](https://docs.volcengine.com/docs/DoubaoVoice/SoundDesignAPI?lang=zh)、[实时识别](https://docs.volcengine.com/docs/DoubaoVoice/bidirectional-streaming-automatic-speech-recognition-websocket?lang=zh)、[播客](https://docs.volcengine.com/docs/DoubaoVoice/PodcastAPI-websocket-v3protocol?lang=zh)、[实时3.0](https://docs.volcengine.com/docs/DoubaoVoice/endtoend-realtime-voice-full-duplex-version?lang=zh)、[同传](https://docs.volcengine.com/docs/DoubaoVoice/SimultaneousInterpretation20APIAccessDocumentation?lang=zh)、[机器翻译](https://docs.volcengine.com/docs/DoubaoVoice/MachineTranslationLargeModel-APIAccessDocumentation?lang=zh)、[妙记](https://docs.volcengine.com/docs/DoubaoVoice/DoubaoVoiceMinutes-APIAccessDocumentation?lang=zh)、[热词](https://docs.volcengine.com/docs/DoubaoVoice/HotWordManagementAPIv10?lang=zh)、[替换词](https://docs.volcengine.com/docs/DoubaoVoice/ReplacementWordAPIv11?lang=zh)及[控制台OpenAPI](https://api.volcengine.com/api-docs/view?action=ActivateService&serviceCode=speech_saas_prod&version=2025-05-20)。
+新增接口来源包括[长文本提交](https://docs.volcengine.com/docs/DoubaoVoice/Tasksubmission?lang=zh)、[音色注册](https://docs.volcengine.com/docs/DoubaoVoice/tone-training-http?lang=zh)、[音色设计](https://docs.volcengine.com/docs/DoubaoVoice/SoundDesignAPI?lang=zh)、[实时识别](https://docs.volcengine.com/docs/DoubaoVoice/bidirectional-streaming-automatic-speech-recognition-websocket?lang=zh)、[播客](https://docs.volcengine.com/docs/DoubaoVoice/PodcastAPI-websocket-v3protocol?lang=zh)、[实时 3.0](https://docs.volcengine.com/docs/DoubaoVoice/endtoend-realtime-voice-full-duplex-version?lang=zh)、[同传](https://docs.volcengine.com/docs/DoubaoVoice/SimultaneousInterpretation20APIAccessDocumentation?lang=zh)、[机器翻译](https://docs.volcengine.com/docs/DoubaoVoice/MachineTranslationLargeModel-APIAccessDocumentation?lang=zh)、[妙记](https://docs.volcengine.com/docs/DoubaoVoice/DoubaoVoiceMinutes-APIAccessDocumentation?lang=zh)、[热词](https://docs.volcengine.com/docs/DoubaoVoice/HotWordManagementAPIv10?lang=zh)、[替换词](https://docs.volcengine.com/docs/DoubaoVoice/ReplacementWordAPIv11?lang=zh)及[控制台 OpenAPI](https://api.volcengine.com/api-docs/view?action=ActivateService&serviceCode=speech_saas_prod&version=2025-05-20)。
 
-Speech SDK的离线模型、端侧VAD / 音频处理和Android / iOS接入需原生应用，不能等同于云MCP。术语词表CRUD官方仅公开控制台流程；翻译 / 同传通过 `glossary`、`glossary_table_id`（或 `parameters` 里的 `glossary_table_name`）使用术语。同传官方附件的Protobuf尚未声明文档新增的 `detected_language`，本版不猜字段编号。
+Speech SDK 的离线模型、端侧 VAD / 音频处理和 Android / iOS 接入需原生应用，不能等同于云 MCP。术语词表 CRUD 官方仅公开控制台流程；翻译 / 同传通过 `glossary`、`glossary_table_id`（或 `parameters` 里的 `glossary_table_name`）使用术语。同传官方附件的 Protobuf 尚未声明文档新增的 `detected_language`，本版不猜字段编号。
 
-历史产品使用独立工具与旧版凭据，返回各操作的精确官方 `source` 链接。传统 `/api/v2/asr` 旧 WebSocket 协议未重复实现；一句话和流式识别功能通过现行大模型接口提供。实时对话采用最新3.0，未复制旧1.0/2.0会话协议。所有产品覆盖不等于每个历史 SDK / 协议版本都已适配。
+历史产品使用独立工具与旧版凭据，返回各操作的精确官方 `source` 链接。传统 `/api/v2/asr` 旧 WebSocket 协议未重复实现；一句话和流式识别功能通过现行大模型接口提供。实时对话采用最新 3.0，未复制旧 1.0 / 2.0 会话协议。所有产品覆盖不等于每个历史 SDK / 协议版本都已适配。
 
-`_ast/` 的Protobuf bindings来自同传官方Python示例，生成日期2026-06-12，调整为包内相对import；运行依赖 `mcp`、`websockets`、`protobuf`。
+`_ast/` 的 Protobuf bindings 来自同传官方 Python 示例，生成日期 2026-06-12，调整为包内相对 import；运行依赖 `mcp`、`websockets`、`protobuf`。
 
-离线测试覆盖HTTP合同、任务状态、签名、Protobuf、二进制帧、模拟WebSocket收发、音频文件、超时 / 取消清理，以及实际stdio MCP初始化、工具发现与调用。未调用付费云接口，因此不能证明账号开通、配额可用或实际生成质量。
+离线测试覆盖 HTTP 合同、任务状态、签名、Protobuf、二进制帧、模拟 WebSocket 收发、音频文件、超时 / 取消清理，以及实际 stdio MCP 初始化、工具发现与调用。未调用付费云接口，因此不能证明账号开通、配额可用或实际生成质量。
 
 参数说明见工具描述（`src/doubao_speech_mcp/server.py`）。接口细节以官方文档为准：[单向流式语音合成](https://docs.volcengine.com/docs/DoubaoVoice/unidirectional-streaming-text-to-speech-http)、[录音文件识别极速版](https://docs.volcengine.com/docs/DoubaoVoice/recording-file-recognition-lite-http)、[音频生成](https://docs.volcengine.com/docs/DoubaoVoice/audio-generation-http)、[音色列表](https://docs.volcengine.com/docs/6561/1257544)。
 
 ## 运行时与稳定性
 
 共享连接池、总超时、工具分组、错误语义和迁移说明见 [MCP 构建与稳定性](https://github.com/hoobnn/hoobnn-mcps/blob/main/docs/mcp-reliability.md)。完整工具说明可调用 `get_tool_help(tool="工具名")`。
+
+## 许可证
+
+[MIT](https://github.com/hoobnn/hoobnn-mcps/blob/main/LICENSE) © 2026 hoobnn。可自由使用、修改和分发，需保留版权声明。
