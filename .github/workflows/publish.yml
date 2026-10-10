@@ -1,0 +1,59 @@
+name: Publish to PyPI
+
+# 推送 <server>-v<version> 形式的 tag 发布对应包，例如 volcengine-ark-v0.6.0
+on:
+  push:
+    tags:
+      - "volcengine-ark-v*"
+      - "ali-bailian-v*"
+      - "doubao-speech-v*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      server: ${{ steps.target.outputs.server }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.13"
+      - name: Resolve server and check version
+        id: target
+        run: |
+          tag="${GITHUB_REF_NAME}"
+          server="${tag%-v*}"
+          version="${tag##*-v}"
+          project="servers/${server}"
+          test -f "${project}/pyproject.toml" || { echo "unknown server: ${server}"; exit 1; }
+          declared=$(uv run --no-project python -c "import tomllib,sys; print(tomllib.load(open(sys.argv[1],'rb'))['project']['version'])" "${project}/pyproject.toml")
+          [ "${declared}" = "${version}" ] || { echo "tag ${version} != pyproject ${declared}"; exit 1; }
+          echo "server=${server}" >> "$GITHUB_OUTPUT"
+      - name: Check shared runtime drift
+        run: uv run --no-project python scripts/sync_shared.py --check
+      - name: Test
+        run: |
+          project="servers/${{ steps.target.outputs.server }}"
+          uv sync --locked --project "${project}"
+          "${project}/.venv/bin/python" -m unittest discover -s "${project}/tests"
+      - name: Build
+        run: uv build --project "servers/${{ steps.target.outputs.server }}" --out-dir dist
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi-${{ needs.build.outputs.server }}
+      url: https://pypi.org/p/${{ needs.build.outputs.server }}-mcp
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - uses: pypa/gh-action-pypi-publish@release/v1
