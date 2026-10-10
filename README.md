@@ -88,3 +88,7 @@ servers/doubao-speech/.venv/bin/python -m unittest discover -s tests
 三个 MCP 的逐项接口/模型核实、差异修正及文档抓取方式见 [官方契约审计](docs/official-contracts.md)。
 
 `python3 scripts/upstream_docs.py --check-coverage` 检查远程工具的官方来源映射；`python3 scripts/upstream_docs.py` 拉取正文并生成模型/接口候选变化及完整 diff。已准备手动触发的 GitHub Actions 工作流，尚未启用定时运行或自动修改实现。
+
+## 许可证
+
+[MIT](LICENSE) © 2026 hoobnn。可自由使用、修改和分发，需保留版权声明。
