@@ -1,6 +1,6 @@
 # hoobnn-mcps
 
-hoobnn 的个人 MCP server 集合。每个 server 是 `servers/<name>/` 下的一个独立 Python 包，用 [uv](https://docs.astral.sh/uv/) 直接从 GitHub 安装，不发 PyPI。
+hoobnn 的个人 MCP server 集合。每个 server 是 `servers/<name>/` 下的一个独立 Python 包，已发布到 PyPI，推荐用 [uv](https://docs.astral.sh/uv/) 安装。
 
 | Server | 作用 |
 |---|---|
@@ -23,18 +23,20 @@ hoobnn 的个人 MCP server 集合。每个 server 是 `servers/<name>/` 下的�
 
 ## 安装
 
-用 `uv tool install` 从 GitHub 装到本机，命令在 `~/.local/bin/<name>-mcp`：
+用 `uv tool install` 从 PyPI 装到本机，命令在 `~/.local/bin/<name>-mcp`：
 
 ```bash
-uv tool install "git+https://github.com/hoobnn/hoobnn-mcps#subdirectory=servers/volcengine-ark"
-uv tool install "git+https://github.com/hoobnn/hoobnn-mcps#subdirectory=servers/ali-bailian"
-uv tool install "git+https://github.com/hoobnn/hoobnn-mcps#subdirectory=servers/doubao-speech"
-uv tool upgrade volcengine-ark-mcp ali-bailian-mcp doubao-speech-mcp     # 推送新代码后更新
+uv tool install volcengine-ark-mcp
+uv tool install ali-bailian-mcp
+uv tool install doubao-speech-mcp
+uv tool upgrade volcengine-ark-mcp ali-bailian-mcp doubao-speech-mcp     # 发布新版本后更新
 ```
+
+需要未发布的最新代码时，从 GitHub 子目录安装，例如 `uv tool install "git+https://github.com/hoobnn/hoobnn-mcps#subdirectory=servers/volcengine-ark"`。
 
 从 `seedream-mcp` 迁移：`uv tool uninstall seedream-mcp` 后安装 `volcengine-ark`，客户端里的 MCP 名和命令一并替换，`SEEDREAM_*` 环境变量改为 `ARK_OUT_DIR` / `ARK_RESOURCE_MODE` / `ARK_JOB_DIR`。
 
-推荐先安装，再通过本地入口运行，避免启动时额外解析 Git 依赖和访问网络。实际启动时间受机器、依赖缓存和客户端握手影响；仓库测试验证三个入口都能完成 stdio 初始化、工具发现、调用及退出。
+推荐先安装，再通过本地入口运行，避免每次启动都解析依赖和访问网络。实际启动时间受机器、依赖缓存和客户端握手影响；仓库测试验证三个入口都能完成 stdio 初始化、工具发现、调用及退出。
 
 各客户端的 MCP 配置里写绝对路径，避免 GUI 客户端找不到 `PATH`：
 
@@ -78,6 +80,8 @@ servers/doubao-speech/.venv/bin/python -m unittest discover -s tests
 ```
 
 共享源码修改后执行 `python3 scripts/sync_shared.py`。CI 检查独立包、同步漂移、故障契约与真实 stdio，不需要云服务密钥。
+
+发布：改好 `servers/<name>/pyproject.toml` 的版本号并提交后，推送 `<name>-v<版本>` tag（如 `git tag volcengine-ark-v0.6.0 && git push origin volcengine-ark-v0.6.0`），`publish.yml` 校验版本、跑测试、构建，并通过 PyPI Trusted Publishing 发布，无需 token。
 
 ## 官方契约与文档更新
 

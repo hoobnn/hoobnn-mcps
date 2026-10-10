@@ -52,7 +52,7 @@ MCP 客户端本地启动命令可指定本项目 `.venv/bin/doubao-speech-mcp` 
 
 ## 调用示例
 
-完整示例与技巧见 [使用指南](docs/usage-examples.md)。MCP 内可直接调用 `get_speech_usage_examples`，返回官方模板分析、工具参数、技巧和来源链接：
+完整示例与技巧见 [使用指南](https://github.com/hoobnn/hoobnn-mcps/blob/main/servers/doubao-speech/docs/usage-examples.md)。MCP 内可直接调用 `get_speech_usage_examples`，返回官方模板分析、工具参数、技巧和来源链接：
 
 ```json
 {"product": "audio", "category": "timing"}
@@ -192,4 +192,4 @@ Speech SDK的离线模型、端侧VAD / 音频处理和Android / iOS接入需原
 
 ## 运行时与稳定性
 
-共享连接池、总超时、工具分组、错误语义和迁移说明见 [MCP 构建与稳定性](../../docs/mcp-reliability.md)。完整工具说明可调用 `get_tool_help(tool="工具名")`。
+共享连接池、总超时、工具分组、错误语义和迁移说明见 [MCP 构建与稳定性](https://github.com/hoobnn/hoobnn-mcps/blob/main/docs/mcp-reliability.md)。完整工具说明可调用 `get_tool_help(tool="工具名")`。

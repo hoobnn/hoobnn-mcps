@@ -80,14 +80,14 @@
 `url`模式也留存任务元数据；任务目录保存签名URL、响应与图片缓存，不保存API Key。缓存用于恢复，不自动清理。
 恢复锁使用POSIX `flock`，面向macOS/Linux。产物默认目录增加随机后缀，避免同秒调用碰撞。
 
-原始接入范围见 [接入记录](../../docs/mcp-expansion.md)。当前运行时和任务恢复已通过离线故障测试及真实 stdio 检查；尚未验证云端生成、账号权限和媒体质量。
+原始接入范围见 [接入记录](https://github.com/hoobnn/hoobnn-mcps/blob/main/docs/mcp-expansion.md)。当前运行时和任务恢复已通过离线故障测试及真实 stdio 检查；尚未验证云端生成、账号权限和媒体质量。
 
 产物的 `media_info` 读取PNG头中的实际宽高；若系统已有 `ffprobe`，可读取其他媒体的实际尺寸、时长和音轨信息。不可读取时显式返回 `available=false`，不把请求参数当作实际输出规格。无需新增Python依赖。
 
 ## 运行时与稳定性
 
-共享连接池、总超时、工具分组、错误语义和迁移说明见 [MCP 构建与稳定性](../../docs/mcp-reliability.md)。完整工具说明可调用 `get_tool_help(tool="工具名")`。
+共享连接池、总超时、工具分组、错误语义和迁移说明见 [MCP 构建与稳定性](https://github.com/hoobnn/hoobnn-mcps/blob/main/docs/mcp-reliability.md)。完整工具说明可调用 `get_tool_help(tool="工具名")`。
 
 ## 官方接口核实
 
-逐工具映射、模型版本、参数差异和可程序化获取的官方文档来源见 [火山方舟接口审计](../../docs/audits/volcengine-ark.md)。本地校验依据2026-10-10官方文档快照；账号权限及实际云端生成仍未验证。
+逐工具映射、模型版本、参数差异和可程序化获取的官方文档来源见 [火山方舟接口审计](https://github.com/hoobnn/hoobnn-mcps/blob/main/docs/audits/volcengine-ark.md)。本地校验依据2026-10-10官方文档快照；账号权限及实际云端生成仍未验证。

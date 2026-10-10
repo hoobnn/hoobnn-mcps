@@ -99,14 +99,14 @@ HappyHorse编辑输入视频3–60秒，输出最多15秒。数字人音频须�
 任务记录保留签名URL、生成响应及TTS文本；不保存API Key。`url`模式也写任务记录，音色试听若只有内联数据会保存本地文件。
 分段文件和响应缓存是恢复所需资产，不自动清理。恢复锁使用POSIX `flock`，面向macOS/Linux。
 
-已通过离线故障测试与真实 stdio 检查；未发起云端付费生成，新增产品仍待云端验证。历史接入范围见 [接入记录](../../docs/mcp-expansion.md)，本轮验证见 [稳定性记录](../../docs/mcp-reliability.md)。
+已通过离线故障测试与真实 stdio 检查；未发起云端付费生成，新增产品仍待云端验证。历史接入范围见 [接入记录](https://github.com/hoobnn/hoobnn-mcps/blob/main/docs/mcp-expansion.md)，本轮验证见 [稳定性记录](https://github.com/hoobnn/hoobnn-mcps/blob/main/docs/mcp-reliability.md)。
 
 产物的 `media_info` 读取PNG头中的实际宽高；若系统已有 `ffprobe`，可读取其他媒体的实际尺寸、时长和音轨信息。不可读取时显式返回 `available=false`，不把请求参数当作实际输出规格。无需新增Python依赖。
 
 ## 运行时与稳定性
 
-共享连接池、总超时、工具分组、错误语义和迁移说明见 [MCP 构建与稳定性](../../docs/mcp-reliability.md)。完整工具说明可调用 `get_tool_help(tool="工具名")`。
+共享连接池、总超时、工具分组、错误语义和迁移说明见 [MCP 构建与稳定性](https://github.com/hoobnn/hoobnn-mcps/blob/main/docs/mcp-reliability.md)。完整工具说明可调用 `get_tool_help(tool="工具名")`。
 
 ## 官方契约与最新文档
 
-2026-10-10 完成全部工具和默认模型的官方对照；详见 [百炼审计](../../docs/audits/ali-bailian.md)。`list_models` 现在查询原生 `/api/v1/models` 全模态分页目录，返回 `complete` 与官方元数据；目录存在不等于账号授权。北京建议将 `DASHSCOPE_BASE_URL` 设置为真实 workspace 根域名。Wan3 支持 `link` 网页参考，不能与 `file` 同用，也不能与首尾帧混用。ASR 工具仅接入 Qwen3-ASR-Flash HTTP 系列，Fun-ASR、filetrans 和 realtime 需要独立协议。
+2026-10-10 完成全部工具和默认模型的官方对照；详见 [百炼审计](https://github.com/hoobnn/hoobnn-mcps/blob/main/docs/audits/ali-bailian.md)。`list_models` 现在查询原生 `/api/v1/models` 全模态分页目录，返回 `complete` 与官方元数据；目录存在不等于账号授权。北京建议将 `DASHSCOPE_BASE_URL` 设置为真实 workspace 根域名。Wan3 支持 `link` 网页参考，不能与 `file` 同用，也不能与首尾帧混用。ASR 工具仅接入 Qwen3-ASR-Flash HTTP 系列，Fun-ASR、filetrans 和 realtime 需要独立协议。
