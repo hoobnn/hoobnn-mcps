@@ -7,12 +7,14 @@ on:
       - "volcengine-ark-v*"
       - "ali-bailian-v*"
       - "doubao-speech-v*"
+      - "minimax-v*"
 
 jobs:
   build:
     runs-on: ubuntu-latest
     outputs:
       server: ${{ steps.target.outputs.server }}
+      package: ${{ steps.target.outputs.package }}
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v6
@@ -29,6 +31,8 @@ jobs:
           declared=$(uv run --no-project python -c "import tomllib,sys; print(tomllib.load(open(sys.argv[1],'rb'))['project']['version'])" "${project}/pyproject.toml")
           [ "${declared}" = "${version}" ] || { echo "tag ${version} != pyproject ${declared}"; exit 1; }
           echo "server=${server}" >> "$GITHUB_OUTPUT"
+          package=$(uv run --no-project python -c "import tomllib,sys; print(tomllib.load(open(sys.argv[1],'rb'))['project']['name'])" "${project}/pyproject.toml")
+          echo "package=${package}" >> "$GITHUB_OUTPUT"
       - name: Check shared runtime drift
         run: uv run --no-project python scripts/sync_shared.py --check
       - name: Test
@@ -48,7 +52,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: pypi-${{ needs.build.outputs.server }}
-      url: https://pypi.org/p/${{ needs.build.outputs.server }}-mcp
+      url: https://pypi.org/p/${{ needs.build.outputs.package }}
     permissions:
       id-token: write
     steps:
