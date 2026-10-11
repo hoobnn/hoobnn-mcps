@@ -13,6 +13,20 @@ spec.loader.exec_module(docs)
 
 
 class DocumentContracts(unittest.TestCase):
+    def test_minimax_export_requires_openapi_body_and_known_preamble(self):
+        body = ("> ## Documentation Index\n> https://platform.minimaxi.com/docs/llms.txt\n\n"
+                "# Video API\n\n```yaml\nopenapi: 3.1.0\npaths:\n  /v2/video_generation:\n"
+                "    post:\n      description: Create an asynchronous video task.\n```\n")
+        text, meta = docs.extract(body, {"fetch_kind": "minimax_markdown"})
+        self.assertTrue(text.startswith("# Video API"))
+        self.assertEqual(meta["title"], "Video API")
+        for broken in (body.replace("openapi: 3.1.0", ""), body.replace("paths:\n", ""), "<html>" + body):
+            with self.assertRaises(ValueError):
+                docs.extract(broken, {"fetch_kind": "minimax_markdown"})
+        docs.official_url("https://platform.minimax.cn/docs/api-reference/video-generation-v2-create.md")
+        self.assertTrue(docs.is_api_endpoint("https://api.minimax.cn/v2/video_generation"))
+        self.assertFalse(docs.is_api_endpoint("https://api.minimax.cn.evil.test/v2/video_generation"))
+
     def test_allowlist_rejects_nonofficial_and_redirect_targets(self):
         for url in ("http://docs.volcengine.com/api/doc/getDocDetail", "https://evil.com/page",
                     "https://docs.volcengine.com.evil.com/page", "https://user@help.aliyun.com/page"):

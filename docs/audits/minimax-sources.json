@@ -1,0 +1,149 @@
+[
+  {
+    "id": "video-generation-v2-create",
+    "url": "https://platform.minimax.cn/docs/api-reference/video-generation-v2-create",
+    "fetch_url": "https://platform.minimax.cn/docs/api-reference/video-generation-v2-create.md",
+    "fetch_kind": "minimax_markdown",
+    "tools": [
+      "generate_video"
+    ],
+    "kind": "api"
+  },
+  {
+    "id": "video-generation-v2-query",
+    "url": "https://platform.minimax.cn/docs/api-reference/video-generation-v2-query",
+    "fetch_url": "https://platform.minimax.cn/docs/api-reference/video-generation-v2-query.md",
+    "fetch_kind": "minimax_markdown",
+    "tools": [
+      "get_job",
+      "query_video_generation",
+      "recover_job"
+    ],
+    "kind": "api"
+  },
+  {
+    "id": "video-generation-v2-list",
+    "url": "https://platform.minimax.cn/docs/api-reference/video-generation-v2-list",
+    "fetch_url": "https://platform.minimax.cn/docs/api-reference/video-generation-v2-list.md",
+    "fetch_kind": "minimax_markdown",
+    "tools": [
+      "list_video_tasks"
+    ],
+    "kind": "api"
+  },
+  {
+    "id": "video-generation-v2-delete",
+    "url": "https://platform.minimax.cn/docs/api-reference/video-generation-v2-delete",
+    "fetch_url": "https://platform.minimax.cn/docs/api-reference/video-generation-v2-delete.md",
+    "fetch_kind": "minimax_markdown",
+    "tools": [
+      "delete_video_task"
+    ],
+    "kind": "api"
+  },
+  {
+    "id": "video-generation-v2-h3-context-ir",
+    "url": "https://platform.minimax.cn/docs/api-reference/video-generation-v2-h3-context-ir",
+    "fetch_url": "https://platform.minimax.cn/docs/api-reference/video-generation-v2-h3-context-ir.md",
+    "fetch_kind": "minimax_markdown",
+    "tools": [
+      "enhance_video_prompt"
+    ],
+    "kind": "api"
+  },
+  {
+    "id": "video-generation-v2-regeneration",
+    "url": "https://platform.minimax.cn/docs/api-reference/video-generation-v2-regeneration",
+    "fetch_url": "https://platform.minimax.cn/docs/api-reference/video-generation-v2-regeneration.md",
+    "fetch_kind": "minimax_markdown",
+    "tools": [
+      "regenerate_video"
+    ],
+    "kind": "api"
+  },
+  {
+    "id": "file-management-upload",
+    "url": "https://platform.minimax.cn/docs/api-reference/file-management-upload",
+    "fetch_url": "https://platform.minimax.cn/docs/api-reference/file-management-upload.md",
+    "fetch_kind": "minimax_markdown",
+    "tools": [
+      "upload_file",
+      "generate_video",
+      "voice_clone",
+      "enhance_video_prompt",
+      "regenerate_video"
+    ],
+    "kind": "api"
+  },
+  {
+    "id": "speech-t2a-http",
+    "url": "https://platform.minimax.cn/docs/api-reference/speech-t2a-http",
+    "fetch_url": "https://platform.minimax.cn/docs/api-reference/speech-t2a-http.md",
+    "fetch_kind": "minimax_markdown",
+    "tools": [
+      "text_to_audio",
+      "recover_job"
+    ],
+    "kind": "api"
+  },
+  {
+    "id": "voice-management-get",
+    "url": "https://platform.minimax.cn/docs/api-reference/voice-management-get",
+    "fetch_url": "https://platform.minimax.cn/docs/api-reference/voice-management-get.md",
+    "fetch_kind": "minimax_markdown",
+    "tools": [
+      "list_voices"
+    ],
+    "kind": "api"
+  },
+  {
+    "id": "voice-cloning-clone",
+    "url": "https://platform.minimax.cn/docs/api-reference/voice-cloning-clone",
+    "fetch_url": "https://platform.minimax.cn/docs/api-reference/voice-cloning-clone.md",
+    "fetch_kind": "minimax_markdown",
+    "tools": [
+      "voice_clone"
+    ],
+    "kind": "api"
+  },
+  {
+    "id": "voice-design-design",
+    "url": "https://platform.minimax.cn/docs/api-reference/voice-design-design",
+    "fetch_url": "https://platform.minimax.cn/docs/api-reference/voice-design-design.md",
+    "fetch_kind": "minimax_markdown",
+    "tools": [
+      "voice_design"
+    ],
+    "kind": "api"
+  },
+  {
+    "id": "image-generation-t2i",
+    "url": "https://platform.minimax.cn/docs/api-reference/image-generation-t2i",
+    "fetch_url": "https://platform.minimax.cn/docs/api-reference/image-generation-t2i.md",
+    "fetch_kind": "minimax_markdown",
+    "tools": [
+      "text_to_image"
+    ],
+    "kind": "api"
+  },
+  {
+    "id": "image-generation-i2i",
+    "url": "https://platform.minimax.cn/docs/api-reference/image-generation-i2i",
+    "fetch_url": "https://platform.minimax.cn/docs/api-reference/image-generation-i2i.md",
+    "fetch_kind": "minimax_markdown",
+    "tools": [
+      "text_to_image"
+    ],
+    "kind": "api"
+  },
+  {
+    "id": "music-generation",
+    "url": "https://platform.minimax.cn/docs/api-reference/music-generation",
+    "fetch_url": "https://platform.minimax.cn/docs/api-reference/music-generation.md",
+    "fetch_kind": "minimax_markdown",
+    "tools": [
+      "music_generation"
+    ],
+    "kind": "api"
+  }
+]

@@ -2,7 +2,7 @@
 
 # hoobnn-mcps
 
-火山方舟、豆包语音与阿里云百炼的 MCP server 合集。
+火山方舟、豆包语音、阿里云百炼与 MiniMax 的 MCP server 合集。
 
 [![CI](https://img.shields.io/github/actions/workflow/status/hoobnn/hoobnn-mcps/test.yml?branch=main&style=flat-square&label=CI)](https://github.com/hoobnn/hoobnn-mcps/actions/workflows/test.yml)
 [![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
@@ -12,15 +12,16 @@
 
 </div>
 
-hoobnn 的个人 MCP server 集合。每个 server 是 `servers/<name>/` 下的一个独立 Python 包，已发布到 PyPI，推荐用 [uv](https://docs.astral.sh/uv/) 安装。
+hoobnn 的个人 MCP server 集合。每个 server 是 `servers/<name>/` 下的一个独立 Python 包。包通过 PyPI 分发。推荐用 [uv](https://docs.astral.sh/uv/) 安装。
 
 | Server | 作用 |
 |---|---|
+| [`minimax`](servers/minimax) | MiniMax：H3 / H3-Max 视频、提示词增强、2K 再生成、语音/音色、图片、音乐与任务恢复（离线验证） |
 | [`volcengine-ark`](servers/volcengine-ark) | 火山方舟：Seedream 图像、Seedance 视频、语言与多模态理解、联网搜索、向量化和任务恢复（新增产品待云端验证） |
 | [`doubao-speech`](servers/doubao-speech) | 豆包语音：合成（含异步长文本）、识别、音频生成、播客、同传、翻译、妙记、复刻与音色设计；实时对话 3.0、词表及控制台管理按需启用 |
 | [`ali-bailian`](servers/ali-bailian) | 阿里云百炼：图像、语言、TTS / ASR、音色复刻与设计、视频生成 / 编辑 / 数字人、向量与重排序、任务恢复（新增产品待云端验证） |
 
-三个 server 有重叠的能力，工具描述里写明了各自适合的场景，大致分工：
+这些 server 有重叠的能力，工具描述里写明了各自适合的场景，大致分工：
 
 | 需求 | 优先用 | 另一选择 |
 |---|---|---|
@@ -31,7 +32,7 @@ hoobnn 的个人 MCP server 集合。每个 server 是 `servers/<name>/` 下的�
 | 对话：千问、DeepSeek、Kimi、GLM 等 | `ali-bailian` `chat` | — |
 | 语音合成、识别、复刻 | `doubao-speech`（中文音色、方言、字幕、长文本、说话人分离） | `ali-bailian`（千问音色；ASR 返回情绪和语种） |
 
-各家复刻 / 设计的音色只能在同一家的合成工具里使用。异步任务在三个 server 里都用 `get_job` 查进度，完成后自动下载结果；`recover_job` 只用来修复交付。
+各家复刻 / 设计的音色只能在同一家的合成工具里使用。异步任务统一用 `get_job` 查进度，完成后自动下载结果；`recover_job` 只用来修复交付。
 
 ## 安装
 
@@ -44,6 +45,8 @@ uv tool install volcengine-ark-mcp
 uv tool install ali-bailian-mcp
 uv tool install doubao-speech-mcp
 ```
+
+MiniMax：运行 `uv tool install hoobnn-minimax-mcp`，入口为 `~/.local/bin/hoobnn-minimax-mcp`，详见 [迁移说明](servers/minimax/README.md)。
 
 需要未发布的最新代码时，从 GitHub 子目录安装，例如 `uv tool install "git+https://github.com/hoobnn/hoobnn-mcps#subdirectory=servers/volcengine-ark"`。
 
@@ -89,9 +92,9 @@ uv tool upgrade volcengine-ark-mcp ali-bailian-mcp doubao-speech-mcp
 
 ## 工作原理
 
-三个独立包共用经过同步校验的 HTTP / MCP 运行时：连接池、总超时、取消、有限并发、明确错误与结构化结果。构建规范、同类实现对照、兼容性变化和验证边界见 [MCP 构建与稳定性](docs/mcp-reliability.md)。
+四个独立包共用经过同步校验的 HTTP / MCP 运行时：连接池、总超时、取消、有限并发、明确错误与结构化结果。构建规范、同类实现对照、兼容性变化和验证边界见 [MCP 构建与稳定性](docs/mcp-reliability.md)。
 
-三个 MCP 的逐项接口 / 模型核实、差异修正及文档抓取方式见 [官方契约审计](docs/official-contracts.md)。
+原三个 MCP 的逐项接口 / 模型核实见 [官方契约审计](docs/official-contracts.md)；MiniMax 见 [H3 契约与迁移](docs/minimax-contracts.md)。
 
 ## 开发
 
@@ -102,9 +105,11 @@ python3 scripts/sync_shared.py --check
 uv sync --locked --project servers/volcengine-ark
 uv sync --locked --project servers/ali-bailian
 uv sync --locked --project servers/doubao-speech
+uv sync --locked --project servers/minimax
 servers/volcengine-ark/.venv/bin/python -m unittest discover -s servers/volcengine-ark/tests
 servers/ali-bailian/.venv/bin/python -m unittest discover -s servers/ali-bailian/tests
 servers/doubao-speech/.venv/bin/python -m unittest discover -s servers/doubao-speech/tests
+servers/minimax/.venv/bin/python -m unittest discover -s servers/minimax/tests
 servers/doubao-speech/.venv/bin/python -m unittest discover -s tests
 ```
 
@@ -117,6 +122,8 @@ servers/doubao-speech/.venv/bin/python -m unittest discover -s tests
 3. 在上面的表格里登记。
 
 ### 发布
+
+MiniMax 的 tag 使用 `minimax-v<版本>`（如 `minimax-v0.1.0`），对应 PyPI 包 `hoobnn-minimax-mcp` 和 GitHub environment `pypi-minimax`。
 
 改好 `servers/<name>/pyproject.toml` 的版本号并提交后，推送 `<name>-v<版本>` tag（如 `git tag volcengine-ark-v0.6.0 && git push origin volcengine-ark-v0.6.0`），`publish.yml` 校验版本、跑测试、构建，并通过 PyPI Trusted Publishing 发布，无需 token。
 

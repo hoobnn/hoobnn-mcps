@@ -11,7 +11,7 @@ def main():
     parser.add_argument("--check", action="store_true")
     args = parser.parse_args()
     stale = []
-    for name in ("ali-bailian", "volcengine-ark", "doubao-speech"):
+    for name in ("ali-bailian", "volcengine-ark", "doubao-speech", "minimax"):
         package = ROOT / "servers" / name / "src" / (name.replace("-", "_") + "_mcp")
         for module in MODULES:
             source = (ROOT / "shared" / module).read_bytes()

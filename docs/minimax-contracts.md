@@ -1,0 +1,46 @@
+# MiniMax 契约与迁移
+
+核对时间：2026-10-11。依据用户指定的 [中国站接口概览](https://platform.minimax.cn/docs/api-reference/api-overview) 及其链接的 OpenAPI Markdown 正文；14 个接口来源纳入 `docs/audits/minimax-sources.json`、SHA-256 基线和 gzip 正文快照。现有其他供应商基线保持不变。
+
+## 官方 MCP 与新实现
+
+本机 Codex 配置通过 `uvx minimax-mcp -y` 启动官方包，发现的本机缓存为 `0.0.19`。本次读取的 [官方 main 分支 server.py](https://github.com/MiniMax-AI/MiniMax-MCP/blob/main/minimax_mcp/server.py) 仍采用 V1 视频创建、查询和文件下载链路。缓存版本不能证明每次 uvx 最终选择的版本；因此判断依据同时包含源码接口。
+
+| 项目 | 官方 MCP 读取到的实现 | 本次独立实现 |
+|---|---|---|
+| 包名 / 命令 | minimax-mcp | hoobnn-minimax-mcp |
+| 视频提交 | POST /v1/video_generation，prompt + first_frame_image | POST /v2/video_generation，多模态 content[] |
+| 任务查询 | GET /v1/query/video_generation?task_id=... | GET /v2/query/video_generation/{task_id} |
+| 视频结果 | file_id → /v1/files/retrieve | task.content.url |
+| 完成状态 | Success / Fail | succeeded / failed / cancelled |
+| 未完成 | Preparing / Processing 等 | queued / running，ok=true、completed=false |
+| 默认行为 | 长时间轮询 | 只提交，持久保存task_id，后续get_job查询 |
+| 结果交付 | 一次下载 | 原子文件、完整性指纹、只补下载、刷新H3临时URL |
+
+实现不复制官方项目代码，使用本仓库共享运行时；旧四个环境变量可继续使用。工具名保留常用媒体名称，但视频参数和任务不做 V1 兼容。`play_audio`、语言/ASR/流式与长文本异步语音不在此次范围。具体迁移见 [MiniMax README](../servers/minimax/README.md)。
+
+## H3 与 H3-Max
+
+以 [创建任务](https://platform.minimax.cn/docs/api-reference/video-generation-v2-create) 的正文和枚举为准：H3 为 768P/2K、4–15 秒；H3-Max 为 480P/768P、5–15 秒且没有 2K。二者共用 content[]；H3-Max 的 extra.prompt_expansion_mode 支持 disabled/balanced/quality。
+
+本地验证提示词、输入类型、文件大小、引用数量、互斥关系和模型档位；素材真实尺寸、编码、参考视频/音频时长由平台上传和生成校验。所有本地素材在生成前上传为 mm_file://，上传回执保存在任务记录中。
+
+文档对尾帧存在表述差异：输入组合和模型介绍明确支持仅尾帧，role 字段注释却说需与首帧成对。本实现按明确列出的尾帧输入模式支持单独 last_frame，尚未以付费云端请求验证。
+
+[H3-Context-IR](https://platform.minimax.cn/docs/api-reference/video-generation-v2-h3-context-ir) 使用 /v2/h3_context_ir，只返回增强提示词；请求不带 resolution。[再生成](https://platform.minimax.cn/docs/api-reference/video-generation-v2-regeneration) 使用 /v2/video_regeneration，不带 duration/ratio。允许 source_task_id 或含一个 base_video 的原始生成输入，二者互斥；前者需要白名单。接口概览只提 base_video，本实现以具体接口新增的两种输入规范为准。
+
+## 故障与恢复
+
+- 生成前持久保存任务并持有跨进程锁，付费 POST 不自动重试。
+- 明确业务拒绝记录为 failed；网络异常、5xx 或缺 task_id 的提交结果记为 unknown。
+- 有 task_id 的查询失败保留原ID，可继续查询；queued/running 不作为 MCP 错误。
+- H3 下载失败通过原任务刷新 URL，再补下载；已完整落地的文件复用指纹验证。
+- 无 task_id 的 unknown 不自动恢复生成。可核对云端任务列表，按找到的 task_id 接续。
+- 云端查询窗口、视频输入文件有效期均为7天；同步媒体临时URL过期不保证可恢复。
+- 运行域名变化时拒绝继续查询已有任务，避免把国内任务发给国际区；同域名切换账号仍由平台鉴权判断。
+
+## 验证证据
+
+Python 3.13：新增 15 项测试通过，包括真实 stdio 初始化、工具发现、参数错误、模拟提交/查询和 MCP is_error；共享契约/文档/stdio 的 38 项测试通过。模拟供应商响应不产生付费请求。wheel 与 sdist 独立构建成功。
+
+官方来源映射、共享源码同步检查通过。CI 已加入独立依赖锁安装、MiniMax 测试和构建，Python 3.10/3.13 由已有矩阵运行；本次未触发远端 CI、未执行付费云端生成、未发布或替换用户当前 MCP 配置。

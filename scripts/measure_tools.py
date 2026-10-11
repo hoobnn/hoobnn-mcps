@@ -10,7 +10,7 @@ from pathlib import Path
 
 async def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("server", choices=("volcengine-ark", "ali-bailian", "doubao-speech"))
+    parser.add_argument("server", choices=("volcengine-ark", "ali-bailian", "doubao-speech", "minimax"))
     parser.add_argument("--groups", default="")
     args = parser.parse_args()
     os.environ["MCP_TOOL_GROUPS"] = args.groups

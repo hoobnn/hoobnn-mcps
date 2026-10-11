@@ -16,9 +16,10 @@ ROOT = Path(__file__).resolve().parents[1]
 
 class StandaloneStdio(unittest.IsolatedAsyncioTestCase):
     async def test_all_servers_initialize_discover_call_and_shutdown(self):
-        for name in ("volcengine-ark", "ali-bailian", "doubao-speech"):
+        for name in ("volcengine-ark", "ali-bailian", "doubao-speech", "minimax"):
             with self.subTest(server=name), tempfile.TemporaryDirectory() as directory:
-                command = ROOT / "servers" / name / ".venv" / "bin" / (name + "-mcp")
+                executable = "hoobnn-minimax-mcp" if name == "minimax" else name + "-mcp"
+                command = ROOT / "servers" / name / ".venv" / "bin" / executable
                 params = StdioServerParameters(command=str(command), env={"ARK_JOB_DIR": directory,
                     "BAILIAN_JOB_DIR": directory, "MCP_TOOL_GROUPS": "help", "MCP_TOOL_TIMEOUT_SEC": "10"})
                 started = time.monotonic()

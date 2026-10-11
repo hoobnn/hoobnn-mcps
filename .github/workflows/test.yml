@@ -22,14 +22,17 @@ jobs:
           uv sync --locked --project servers/volcengine-ark
           uv sync --locked --project servers/ali-bailian
           uv sync --locked --project servers/doubao-speech
+          uv sync --locked --project servers/minimax
       - name: Provider contracts and real stdio
         run: |
           servers/volcengine-ark/.venv/bin/python -m unittest discover -s servers/volcengine-ark/tests
           servers/ali-bailian/.venv/bin/python -m unittest discover -s servers/ali-bailian/tests
           servers/doubao-speech/.venv/bin/python -m unittest discover -s servers/doubao-speech/tests
+          servers/minimax/.venv/bin/python -m unittest discover -s servers/minimax/tests
           servers/doubao-speech/.venv/bin/python -m unittest discover -s tests
       - name: Build standalone distributions
         run: |
           uv build --project servers/volcengine-ark
           uv build --project servers/ali-bailian
           uv build --project servers/doubao-speech
+          uv build --project servers/minimax

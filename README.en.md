@@ -2,7 +2,7 @@
 
 # hoobnn-mcps
 
-MCP servers for Volcengine Ark, Doubao Speech and Alibaba Cloud Model Studio.
+MCP servers for Volcengine Ark, Doubao Speech, Alibaba Cloud Model Studio and MiniMax.
 
 [![CI](https://img.shields.io/github/actions/workflow/status/hoobnn/hoobnn-mcps/test.yml?branch=main&style=flat-square&label=CI)](https://github.com/hoobnn/hoobnn-mcps/actions/workflows/test.yml)
 [![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
@@ -12,15 +12,16 @@ MCP servers for Volcengine Ark, Doubao Speech and Alibaba Cloud Model Studio.
 
 </div>
 
-hoobnn's personal collection of MCP servers. Each server is a standalone Python package under `servers/<name>/`, published to PyPI; installing with [uv](https://docs.astral.sh/uv/) is recommended.
+hoobnn's personal collection of MCP servers. Each server is a standalone Python package under `servers/<name>/`. Packages are distributed through PyPI. Installing with [uv](https://docs.astral.sh/uv/) is recommended.
 
 | Server | What it does |
 |---|---|
+| [`minimax`](servers/minimax) | Independent H3 / H3-Max video, prompt enhancement, 2K regeneration, speech/voices, images, music and recovery (offline validation) |
 | [`volcengine-ark`](servers/volcengine-ark) | Volcengine Ark: Seedream images, Seedance video, language and multimodal understanding, web search, embeddings and job recovery (newly added products are not yet verified against the cloud) |
 | [`doubao-speech`](servers/doubao-speech) | Doubao Speech: synthesis (including async long text), recognition, audio generation, podcasts, simultaneous interpretation, translation, Minutes, voice cloning and voice design; Realtime Dialogue 3.0, word tables and console management are opt-in |
 | [`ali-bailian`](servers/ali-bailian) | Alibaba Cloud Model Studio (Bailian): images, language, TTS / ASR, voice cloning and design, video generation / editing / digital humans, embeddings and reranking, job recovery (newly added products are not yet verified against the cloud) |
 
-The three servers overlap in places. Each tool description states which scenarios it suits; roughly:
+The servers overlap in places. Each tool description states which scenarios it suits; roughly:
 
 | Need | Prefer | Alternative |
 |---|---|---|
@@ -44,6 +45,8 @@ uv tool install volcengine-ark-mcp
 uv tool install ali-bailian-mcp
 uv tool install doubao-speech-mcp
 ```
+
+For the new MiniMax package, run `uv tool install hoobnn-minimax-mcp` and use `~/.local/bin/hoobnn-minimax-mcp`. See [migration notes](servers/minimax/README.en.md).
 
 For the latest unreleased code, install from the GitHub subdirectory, for example `uv tool install "git+https://github.com/hoobnn/hoobnn-mcps#subdirectory=servers/volcengine-ark"`.
 
@@ -102,9 +105,11 @@ python3 scripts/sync_shared.py --check
 uv sync --locked --project servers/volcengine-ark
 uv sync --locked --project servers/ali-bailian
 uv sync --locked --project servers/doubao-speech
+uv sync --locked --project servers/minimax
 servers/volcengine-ark/.venv/bin/python -m unittest discover -s servers/volcengine-ark/tests
 servers/ali-bailian/.venv/bin/python -m unittest discover -s servers/ali-bailian/tests
 servers/doubao-speech/.venv/bin/python -m unittest discover -s servers/doubao-speech/tests
+servers/minimax/.venv/bin/python -m unittest discover -s servers/minimax/tests
 servers/doubao-speech/.venv/bin/python -m unittest discover -s tests
 ```
 

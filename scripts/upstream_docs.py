@@ -23,10 +23,11 @@ import urllib.request
 import zlib
 
 ROOT = Path(__file__).resolve().parents[1]
-HOSTS = {"docs.volcengine.com", "www.volcengine.com", "help.aliyun.com"}
+HOSTS = {"docs.volcengine.com", "www.volcengine.com", "help.aliyun.com",
+         "platform.minimax.cn", "platform.minimaxi.com", "platform.minimax.io"}
 MODEL = re.compile(r"\b(?:doubao|seedream|seedance|qwen|wan[0-9]|happyhorse|cosyvoice|"
                    r"text-embedding|multimodal-embedding|gte-rerank|seed-tts|seed-icl|"
-                   r"volc\.speech|bigmodel)[A-Za-z0-9_.-]*", re.I)
+                   r"volc\.speech|bigmodel|MiniMax-|speech-2|music-|image-01)[A-Za-z0-9_.-]*", re.I)
 URL = re.compile(r"(?:https?|wss)://[^\s<>\"'`\\]+")
 
 
@@ -36,6 +37,8 @@ def is_api_endpoint(url):
     except ValueError:
         return False  # Literal placeholders/examples are not concrete URLs.
     host = parsed.hostname or ""
+    if host in {"api.minimax.cn", "api.minimaxi.com", "api.minimax.io"}:
+        return parsed.scheme == "https" and parsed.path.startswith(("/v1/", "/v2/"))
     valid = (host == "openspeech.bytedance.com" or host == "open.volcengineapi.com"
              or bool(re.fullmatch(r"dashscope(?:-intl|-us)?\.aliyuncs\.com", host))
              or bool(re.fullmatch(r"ark\.[a-z0-9-]+\.volces\.com", host))
@@ -97,6 +100,14 @@ def normalize(text):
 def extract(body, source):
     """Only documented bodies/official structured responses count as success."""
     mode = source.get("fetch_kind", "auto")
+    if mode == "minimax_markdown":
+        # Mintlify export prepends an index blockquote before the actual heading.
+        # Require both the known preamble and the API schema, not an HTML shell.
+        marker = "\n# "
+        if (not body.startswith("> ## Documentation Index\n") or marker not in body
+                or "openapi: 3.1.0" not in body or "paths:\n" not in body):
+            raise ValueError("MiniMax Markdown export missing documentation preamble or OpenAPI body")
+        body = body[body.index(marker) + 1:]
     stripped = body.lstrip()
     if mode in {"volcengine_doc", "volcengine_index"} or (mode == "auto" and stripped.startswith("{")):
         response = json.loads(body)
@@ -173,7 +184,7 @@ def load_sources(directory):
 def check_coverage(sources, root=ROOT):
     local = {"list_jobs", "get_job", "list_capabilities", "list_speech_capabilities", "get_speech_usage_examples"}
     errors = []
-    for server in ("volcengine-ark", "ali-bailian", "doubao-speech"):
+    for server in ("volcengine-ark", "ali-bailian", "doubao-speech", "minimax"):
         path = root / "servers" / server / "src" / (server.replace("-", "_") + "_mcp") / "server.py"
         tree = ast.parse(path.read_text())
         tools = {node.name for node in tree.body if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))
