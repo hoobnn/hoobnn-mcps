@@ -2,36 +2,107 @@ name: Official MCP contract documents
 
 on:
   workflow_dispatch:
+    inputs:
+      server:
+        description: Platform to fetch
+        type: choice
+        default: all
+        options: [all, volcengine-ark, ali-bailian, doubao-speech, minimax]
+  schedule:
+    # 10:23 Asia/Shanghai every day.
+    - cron: '23 2 * * *'
 
 permissions:
-  contents: read
+  contents: write
+  pull-requests: write
 
 concurrency:
-  group: upstream-docs-${{ github.ref }}
+  group: upstream-docs
   cancel-in-progress: false
 
 jobs:
-  documents:
+  platform:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        server: ${{ fromJSON(inputs.server && inputs.server != 'all' && format('["{0}"]', inputs.server) || '["volcengine-ark","ali-bailian","doubao-speech","minimax"]') }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.repository.default_branch }}
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.13"
-      - name: Fetch official bodies and compare reviewed baseline
-        run: python scripts/upstream_docs.py --output .upstream-docs
+          python-version: '3.13'
+      - name: Find an existing platform PR without touching its branch
+        id: pending
+        uses: actions/github-script@v7
+        env:
+          SERVER: ${{ matrix.server }}
+        with:
+          script: |
+            const prs = await github.paginate(github.rest.pulls.list, {
+              ...context.repo, state: 'open', base: context.payload.repository.default_branch
+            });
+            const prefix = `docs/upstream-${process.env.SERVER}-`;
+            const pr = prs.find(p => p.head.repo?.full_name === `${context.repo.owner}/${context.repo.repo}` && p.head.ref.startsWith(prefix));
+            core.setOutput('exists', pr ? 'true' : 'false');
+            if (pr) {
+              await core.summary.addRaw(`已有 ${process.env.SERVER} 待审 PR：${pr.html_url}。本次只拉取并保存报告，不改写分支或人工提交。\n`).write();
+            }
+      - name: Fetch only this platform and compare its merged baseline
+        env:
+          SERVER: ${{ matrix.server }}
+        run: python scripts/upstream_docs.py --server "$SERVER" --output .upstream-docs
+      - name: Stage captured documents for manual review
+        id: audit
+        if: steps.pending.outputs.exists != 'true'
+        env:
+          SERVER: ${{ matrix.server }}
+        run: python scripts/upstream_pr.py --server "$SERVER" --output .upstream-docs
+      - name: Check staged document formatting
+        if: steps.audit.outputs.changed == 'true'
+        run: git diff --check
       - name: Attach audit summary
         if: always()
         run: |
           if test -f .upstream-docs/report.md; then
             cat .upstream-docs/report.md >> "$GITHUB_STEP_SUMMARY"
           fi
-      - name: Save bodies, fingerprints and impacted tools
+      - name: Retain separate platform audit
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: official-document-audit-${{ github.run_id }}
+          name: official-document-audit-${{ matrix.server }}-${{ github.run_id }}
           path: .upstream-docs/
           retention-days: 14
-          if-no-files-found: error
+          if-no-files-found: warn
+      - name: Open a platform documentation PR
+        if: steps.audit.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: docs/upstream-${{ matrix.server }}-${{ steps.audit.outputs.fingerprint }}
+          base: ${{ github.event.repository.default_branch }}
+          title: 'docs(${{ matrix.server }}): 更新官方文档快照，待人工适配'
+          body: |
+            ${{ matrix.server }} 的官方文档发生变化。本 PR 只包含该平台的捕获快照、差异、候选模型/接口报告及待审基线。
+
+            请查看 docs/upstream/${{ matrix.server }}/review/${{ steps.audit.outputs.fingerprint }}/report.md 和 diffs/，在此 PR 分支补充代码、测试与说明，再手动合并。正文变化不代表接口必然变化，也不代表当前账号已有模型权限。
+
+            基线在合并后生效；合并前请确认已处理全部契约变化。后续自动检查不会更新已有待审 PR 或覆盖人工提交，新的变化仍保留在各平台 Actions 报告中。
+
+            本 PR 使用 GITHUB_TOKEN 创建，不会自动触发后续 PR CI；你的后续提交会触发正常 CI。此次自动操作只验证抓取完整性及快照 SHA-256，不代表实现或云端运行验收。
+
+            不自动修改实现、触发 Codex、批准、合并、打 tag 或发布。
+
+            检测回执：https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+            Co-Authored-By: Codex <noreply@openai.com>
+          commit-message: |
+            docs(${{ matrix.server }}): 更新待审官方文档快照
+
+            Co-Authored-By: Codex <noreply@openai.com>
+          add-paths: |
+            docs/upstream/${{ matrix.server }}/
+            docs/upstream/snapshots/

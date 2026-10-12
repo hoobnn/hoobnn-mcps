@@ -129,7 +129,7 @@ MiniMax 的 tag 使用 `minimax-v<版本>`（如 `minimax-v0.1.0`），对应 Py
 
 ### 官方文档更新
 
-`python3 scripts/upstream_docs.py --check-coverage` 检查远程工具的官方来源映射；`python3 scripts/upstream_docs.py` 拉取正文并生成模型 / 接口候选变化及完整 diff。已准备手动触发的 GitHub Actions 工作流，尚未启用定时运行或自动修改实现。
+`python3 scripts/upstream_docs.py --check-coverage` 检查来源覆盖；`python3 scripts/upstream_docs.py --server minimax` 只拉取对应平台。GitHub Actions 每天北京时间 10:23 分别检查四个平台，有变化时按平台创建文档更新 PR，包含正文快照、差异、报告和待审基线。你在 PR 中补充实现、测试和说明后手动合并；已有待审 PR 时不会覆盖人工提交。无需 API Key，不自动触发 Codex、合并或发布。需允许 Actions 创建 PR，详见 [接入说明](docs/official-contracts.md#github-actions)。
 
 ## 许可证
 

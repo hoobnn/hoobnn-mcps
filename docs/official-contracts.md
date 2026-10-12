@@ -70,11 +70,33 @@ python3 scripts/upstream_docs.py --accept-baseline
 
 ## GitHub Actions
 
-[upstream-docs.yml](../.github/workflows/upstream-docs.yml) 提供 `workflow_dispatch` 手动触发，权限 `contents: read`。输出 Job Summary 和保留 14 天的 artifact，失败也尽量留报告；不自动接受基线、改默认模型、提交、发 Issue/PR 或部署。
+[upstream-docs.yml](../.github/workflows/upstream-docs.yml) 每天北京时间 **10:23**（UTC 02:23）检查一次，并支持手动选择全部或单个平台。任务、失败、artifact、基线和 PR 按 `volcengine-ark`、`ali-bailian`、`doubao-speech`、`minimax` 分开；一个平台失败不阻断其他平台。
 
-工作流已推送到默认分支，可在 GitHub 手动触发文档检查，目前没有启用 schedule。后续确定频率时可添加每天一次、避开整点的 schedule。GitHub 定时任务在默认分支运行，繁忙时可能延迟，不能保证实时提醒。[GitHub 触发规则](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule)
+流程：拉取该平台公开官方正文 → 对比默认分支中该平台的基线 → 验证抓取完整性及 SHA-256 → 创建该平台的文档更新 PR。无需 API Key，不自动修改实现或触发 Codex，不批准、合并、打 tag 或发布。
 
-处理顺序：正文/目录 diff → 判断新增、兼容变化、下线或文案调整 → 定位工具/模型 → 更新契约和必要实现 → 合同回归 → 确有需要的云端小样本 → 审查基线与发布。自动抓取和差异定位可运行，自动修改/提交/合并未启用。
+PR 提交的内容：
+
+- `docs/upstream/<server>/baseline.json`：本次捕获的待审基线，只有手动合并后成为后续检测基线。
+- `docs/upstream/<server>/review/<fingerprint>/report.md`、`result.json`、`diffs/`：受影响工具、候选模型/接口变化及完整正文差异；不同批次分目录保留，不删除你补充的说明。
+- `docs/upstream/snapshots/<sha256>.md.gz`：经过指纹核验的官方正文快照，共享内容寻址目录；不会修改其他平台基线。
+
+用户查看 PR，在同一分支补充实现、测试和说明，处理完契约变化后手动合并。正文变化不代表接口必然变化，也不代表账号已有模型权限。自动提交仅验证文档与快照，不代表实现或云端验收。
+
+每个平台最多保留一个待审 PR，分支为 `docs/upstream-<server>-<fingerprint>`。已有待审 PR 时继续拉取并输出新报告，但**不改写 PR 分支、报告、描述或人工提交**。新变化在 Actions 的平台 artifact 中保留 14 天；合并或关闭后下一次检查再处理。没有变化不创建 PR。
+
+分平台基线优先于旧的 `docs/upstream/baseline.json`；首次分平台运行从旧基线只取对应平台。全量 CLI 检查也会读取分平台基线，不会将其他平台来源误判删除：
+
+```bash
+python3 scripts/upstream_docs.py --server minimax --output .upstream-docs/minimax
+# 人工完成契约审查后，显式接受对应平台的新基线
+python3 scripts/upstream_docs.py --server minimax --accept-baseline
+```
+
+前置条件：将工作流合并到默认分支，并在 Settings → Actions → General → Workflow permissions 允许 Actions 创建 PR。GitHub 将创建与批准合并为同一仓库设置；本工作流只创建 PR，没有批准或合并步骤。仓库默认 token 权限仍可保留 read，本工作流显式申请 `contents: write`、`pull-requests: write`。未开启创建权限时会保留平台报告，但创建 PR 会失败。
+
+自动 PR 使用 `GITHUB_TOKEN`，该事件不自动触发后续 PR CI；你的人工提交会触发正常 CI。定时任务可能延迟。[GitHub token 说明](https://docs.github.com/en/actions/tutorials/authenticate-with-github_token)
+
+首次验收：合入工作流并开启创建权限后，手动选择一个平台运行，查看该平台报告和实际 PR。其他平台依次核对；无变化的运行只能验证抓取和跳过路径，不能证明创建 PR 已运行。
 
 ## 本轮验证回执
 

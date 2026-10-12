@@ -23,6 +23,7 @@ import urllib.request
 import zlib
 
 ROOT = Path(__file__).resolve().parents[1]
+SERVERS = ("volcengine-ark", "ali-bailian", "doubao-speech", "minimax")
 HOSTS = {"docs.volcengine.com", "www.volcengine.com", "help.aliyun.com",
          "platform.minimax.cn", "platform.minimaxi.com", "platform.minimax.io"}
 MODEL = re.compile(r"\b(?:doubao|seedream|seedance|qwen|wan[0-9]|happyhorse|cosyvoice|"
@@ -334,10 +335,28 @@ def run(sources, baseline, output, workers=4, timeout=30, snapshot_dir=None):
     return result
 
 
+def load_baseline(directory, server=None):
+    """Per-platform baselines override the legacy combined baseline."""
+    legacy = directory / "baseline.json"
+    baseline = json.loads(legacy.read_text()) if legacy.exists() else {"sources": []}
+    records = baseline.get("sources", [])
+    for name in SERVERS:
+        path = directory / name / "baseline.json"
+        if path.exists():
+            separate = json.loads(path.read_text())
+            if any(record["server"] != name for record in separate["sources"]):
+                raise ValueError("Cross-platform baseline record")
+            records = [r for r in records if r["server"] != name] + separate["sources"]
+    if server:
+        records = [r for r in records if r["server"] == server]
+    return dict(baseline, sources=records)
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--sources-dir", type=Path, default=ROOT / "docs" / "audits")
-    parser.add_argument("--baseline", type=Path, default=ROOT / "docs" / "upstream" / "baseline.json")
+    parser.add_argument("--baseline", type=Path)
+    parser.add_argument("--server", choices=SERVERS, help="Fetch and compare only one platform")
     parser.add_argument("--output", type=Path, default=ROOT / ".upstream-docs")
     parser.add_argument("--snapshot-dir", type=Path, default=ROOT / "docs" / "upstream" / "snapshots")
     parser.add_argument("--workers", type=int, default=4, choices=range(1, 9))
@@ -345,6 +364,7 @@ def main():
     parser.add_argument("--accept-baseline", action="store_true", help="Replace reviewed local baseline only if every source fetched")
     parser.add_argument("--check-coverage", action="store_true", help="Check source mapping only, without network")
     args = parser.parse_args()
+    explicit_baseline = args.baseline is not None
     if not 0 < args.timeout <= 120:
         parser.error("timeout must be in (0, 120]")
     sources = load_sources(args.sources_dir)
@@ -352,7 +372,15 @@ def main():
     if args.check_coverage:
         print(f"Official document mapping covers every remote tool ({len(sources)} sources)")
         return
-    baseline = json.loads(args.baseline.read_text()) if args.baseline.exists() else {"sources": []}
+    if args.server:
+        sources = [source for source in sources if source["server"] == args.server]
+    if args.baseline:
+        baseline = json.loads(args.baseline.read_text()) if args.baseline.exists() else {"sources": []}
+        if args.server:
+            baseline["sources"] = [r for r in baseline["sources"] if r["server"] == args.server]
+    else:
+        baseline = load_baseline(ROOT / "docs/upstream", args.server)
+        args.baseline = ROOT / "docs/upstream" / (args.server or "") / "baseline.json"
     result = run(sources, baseline, args.output, args.workers, args.timeout, args.snapshot_dir)
     if args.accept_baseline and not result["errors"]:
         args.snapshot_dir.mkdir(parents=True, exist_ok=True)
@@ -362,6 +390,12 @@ def main():
                 raise ValueError("Fetched body fingerprint mismatch; refusing baseline")
             atomic_bytes(args.snapshot_dir / (record["sha256"] + ".md.gz"), gzip.compress(content, mtime=0))
         atomic_json(args.baseline, {"format_version": 1, "reviewed_at": result["checked_at"], "sources": result["sources"]})
+        if not explicit_baseline and not args.server:
+            for server in SERVERS:
+                path = ROOT / "docs/upstream" / server / "baseline.json"
+                if path.exists():
+                    atomic_json(path, {"format_version": 1, "reviewed_at": result["checked_at"],
+                                       "sources": [r for r in result["sources"] if r["server"] == server]})
     print(f"sources={len(result['sources'])}/{len(sources)} changes={len(result['changes'])} errors={len(result['errors'])}")
     raise SystemExit(1 if result["errors"] else 0)
 

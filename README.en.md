@@ -127,7 +127,7 @@ Bump the version in `servers/<name>/pyproject.toml` and commit, then push a `<na
 
 ### Official documentation updates
 
-`python3 scripts/upstream_docs.py --check-coverage` checks the official source mapping for the remote tools; `python3 scripts/upstream_docs.py` fetches the document bodies and produces candidate model / endpoint changes with a full diff. A manually triggered GitHub Actions workflow is ready; scheduled runs and automatic implementation changes are not enabled.
+`python3 scripts/upstream_docs.py --check-coverage` checks source coverage; `python3 scripts/upstream_docs.py --server minimax` fetches one platform only. GitHub Actions checks all four platforms independently every day at 02:23 UTC (10:23 Asia/Shanghai). Changes produce a separate documentation PR per platform, containing captured bodies, diffs, reports and a proposed baseline. Add implementation, tests and documentation to that PR, then merge manually. Pending PR branches are never overwritten by later checks. No API key or Codex trigger is used; nothing is auto-merged or published. Allow Actions to create PRs; see the [integration notes](docs/official-contracts.md#github-actions).
 
 ## License
 
