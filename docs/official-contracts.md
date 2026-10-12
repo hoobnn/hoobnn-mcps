@@ -70,22 +70,33 @@ python3 scripts/upstream_docs.py --accept-baseline
 
 ## GitHub Actions
 
-[upstream-docs.yml](../.github/workflows/upstream-docs.yml) 每天北京时间 **10:23**（UTC 02:23，`23 2 * * *`）检查一次，并保留 `workflow_dispatch` 手动触发。始终检查默认分支。定时运行可能延迟，不能保证实时提醒。[GitHub 触发规则](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule)
+[upstream-docs.yml](../.github/workflows/upstream-docs.yml) 每天北京时间 **10:23**（UTC 02:23）检查一次，并支持手动选择全部或单个平台。任务、失败、artifact、基线和 PR 按 `volcengine-ark`、`ali-bailian`、`doubao-speech`、`minimax` 分开；一个平台失败不阻断其他平台。
 
-接入前置条件：在仓库 Settings → Secrets and variables → Actions 配置 `OPENAI_API_KEY`；在 Settings → Actions → General → Workflow permissions 允许 Actions 创建 PR（GitHub 将创建与批准合并为同一设置，但本工作流不批准 PR）。全部配置完成后，设置 Actions Variable `UPSTREAM_CODEX_ENABLED=true` 启用自动修改及 PR。默认只检测和保留报告，不调用 Codex；若显式启用但缺少 Secret，Codex 任务明确失败。Codex Action 使用 OpenAI API 计费，不使用本机 ChatGPT 登录凭据，也不复用 GitHub 原生 Codex 自动审核的账号认证。[Codex 官方 Action 文档](https://learn.chatgpt.com/docs/github-action)
+流程：拉取该平台公开官方正文 → 对比默认分支中该平台的基线 → 验证抓取完整性及 SHA-256 → 创建该平台的文档更新 PR。无需 API Key，不自动修改实现或触发 Codex，不批准、合并、打 tag 或发布。
 
-流程分为四个任务：
+PR 提交的内容：
 
-1. **documents**：只读权限拉取公开正文，输出报告、真实 diff 和 artifact（保留 14 天）。抓取失败不触发 Codex；无变化结束；同一正文指纹已有待审 PR 时跳过重复调用。
-2. **generate**：只读 GitHub 权限，用 `openai/codex-action@v1` 和代理传入 API Key，在工作区沙箱内核对全部变化。文档属于证据而非指令。允许更新供应商代码、共享运行时、离线测试和说明；禁止修改工作流、脚本、基线、版本号或发布。无法核实的变化必须返回 `blocked`，不接受基线。结构化决策与补丁保留为 artifact。
-3. **validate**：在没有 OpenAI Key 和仓库写权限的全新任务中应用补丁，在 Python 3.10 / 3.13 运行共享源码同步、来源覆盖、四个供应商及跨包离线测试，并构建四个独立包。通过后，`scripts/upstream_codex.py accept` 验证捕获正文指纹，将**同一次检测的正文**和基线放进补丁，不再重新抓取未审查的新内容。
-4. **propose**：单独授予 `contents: write`、`pull-requests: write`，不运行项目代码，只应用已验证补丁并创建或更新 `codex/upstream-docs` 草稿 PR。若默认分支已变化，拒绝应用过期补丁，下一次检查重新核对。
+- `docs/upstream/<server>/baseline.json`：本次捕获的待审基线，只有手动合并后成为后续检测基线。
+- `docs/upstream/<server>/review/<fingerprint>/report.md`、`result.json`、`diffs/`：受影响工具、候选模型/接口变化及完整正文差异；不同批次分目录保留，不删除你补充的说明。
+- `docs/upstream/snapshots/<sha256>.md.gz`：经过指纹核验的官方正文快照，共享内容寻址目录；不会修改其他平台基线。
 
-PR 包含变化说明、基线、验证边界及项目规定的 `Co-Authored-By`；不自动合并、打 tag 或发布，也不调用付费供应商 API。正文变化不是接口一定变化，模型候选仍须回到捕获的官方契约确认。基线只有合并 PR 后才成为默认分支的新基线。
+用户查看 PR，在同一分支补充实现、测试和说明，处理完契约变化后手动合并。正文变化不代表接口必然变化，也不代表账号已有模型权限。自动提交仅验证文档与快照，不代表实现或云端验收。
 
-自动 PR 使用 `GITHUB_TOKEN`；该 token 创建的 PR 不会自动触发后续 `pull_request` CI，所以必要测试和构建在本工作流中先执行。人工后续修改 PR 仍应通过正常 CI。关闭 PR 而不合并会在后续检测重新提出相同更新；新变化会重建固定分支，审阅者不应直接在该自动分支提交人工修改。[GitHub token 触发限制](https://docs.github.com/en/actions/security-for-github-actions/security-guides/automatic-token-authentication)
+每个平台最多保留一个待审 PR，分支为 `docs/upstream-<server>-<fingerprint>`。已有待审 PR 时继续拉取并输出新报告，但**不改写 PR 分支、报告、描述或人工提交**。新变化在 Actions 的平台 artifact 中保留 14 天；合并或关闭后下一次检查再处理。没有变化不创建 PR。
 
-首次验收：配置 Secret、PR 权限及启用变量，将流程推送到默认分支后，手动运行工作流，检查 documents / generate / validate / propose 各层回执。未启用或无正文变化的运行只验证检测与跳过路径，不能证明 Codex 修改及 PR 创建链路已运行。
+分平台基线优先于旧的 `docs/upstream/baseline.json`；首次分平台运行从旧基线只取对应平台。全量 CLI 检查也会读取分平台基线，不会将其他平台来源误判删除：
+
+```bash
+python3 scripts/upstream_docs.py --server minimax --output .upstream-docs/minimax
+# 人工完成契约审查后，显式接受对应平台的新基线
+python3 scripts/upstream_docs.py --server minimax --accept-baseline
+```
+
+前置条件：将工作流合并到默认分支，并在 Settings → Actions → General → Workflow permissions 允许 Actions 创建 PR。GitHub 将创建与批准合并为同一仓库设置；本工作流只创建 PR，没有批准或合并步骤。仓库默认 token 权限仍可保留 read，本工作流显式申请 `contents: write`、`pull-requests: write`。未开启创建权限时会保留平台报告，但创建 PR 会失败。
+
+自动 PR 使用 `GITHUB_TOKEN`，该事件不自动触发后续 PR CI；你的人工提交会触发正常 CI。定时任务可能延迟。[GitHub token 说明](https://docs.github.com/en/actions/tutorials/authenticate-with-github_token)
+
+首次验收：合入工作流并开启创建权限后，手动选择一个平台运行，查看该平台报告和实际 PR。其他平台依次核对；无变化的运行只能验证抓取和跳过路径，不能证明创建 PR 已运行。
 
 ## 本轮验证回执
 

@@ -2,233 +2,107 @@ name: Official MCP contract documents
 
 on:
   workflow_dispatch:
+    inputs:
+      server:
+        description: Platform to fetch
+        type: choice
+        default: all
+        options: [all, volcengine-ark, ali-bailian, doubao-speech, minimax]
   schedule:
-    # 10:23 Asia/Shanghai every day (02:23 UTC).
+    # 10:23 Asia/Shanghai every day.
     - cron: '23 2 * * *'
 
 permissions:
-  contents: read
-  pull-requests: read
+  contents: write
+  pull-requests: write
 
 concurrency:
   group: upstream-docs
   cancel-in-progress: false
 
 jobs:
-  documents:
+  platform:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
-    outputs:
-      changed: ${{ steps.audit.outputs.changed }}
-      fingerprint: ${{ steps.audit.outputs.fingerprint }}
-      base_sha: ${{ steps.base.outputs.sha }}
-      duplicate: ${{ steps.existing.outputs.duplicate }}
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        server: ${{ fromJSON(inputs.server && inputs.server != 'all' && format('["{0}"]', inputs.server) || '["volcengine-ark","ali-bailian","doubao-speech","minimax"]') }}
     steps:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.repository.default_branch }}
-          persist-credentials: false
-      - name: Record audited base
-        id: base
-        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.13"
-      - name: Fetch official bodies and compare reviewed baseline
-        run: python scripts/upstream_docs.py --output .upstream-docs
-      - name: Gate complete audit and fingerprint captured sources
-        id: audit
-        run: python scripts/upstream_codex.py prepare
-      - name: Skip an already proposed audit
-        id: existing
-        if: steps.audit.outputs.changed == 'true'
+          python-version: '3.13'
+      - name: Find an existing platform PR without touching its branch
+        id: pending
         uses: actions/github-script@v7
         env:
-          AUDIT_FINGERPRINT: ${{ steps.audit.outputs.fingerprint }}
+          SERVER: ${{ matrix.server }}
         with:
           script: |
             const prs = await github.paginate(github.rest.pulls.list, {
-              ...context.repo, state: 'open',
-              head: `${context.repo.owner}:codex/upstream-docs`,
-              base: context.payload.repository.default_branch
+              ...context.repo, state: 'open', base: context.payload.repository.default_branch
             });
-            const marker = `<!-- upstream-audit:${process.env.AUDIT_FINGERPRINT} -->`;
-            core.setOutput('duplicate', prs.some(pr => (pr.body || '').includes(marker)) ? 'true' : 'false');
+            const prefix = `docs/upstream-${process.env.SERVER}-`;
+            const pr = prs.find(p => p.head.repo?.full_name === `${context.repo.owner}/${context.repo.repo}` && p.head.ref.startsWith(prefix));
+            core.setOutput('exists', pr ? 'true' : 'false');
+            if (pr) {
+              await core.summary.addRaw(`已有 ${process.env.SERVER} 待审 PR：${pr.html_url}。本次只拉取并保存报告，不改写分支或人工提交。\n`).write();
+            }
+      - name: Fetch only this platform and compare its merged baseline
+        env:
+          SERVER: ${{ matrix.server }}
+        run: python scripts/upstream_docs.py --server "$SERVER" --output .upstream-docs
+      - name: Stage captured documents for manual review
+        id: audit
+        if: steps.pending.outputs.exists != 'true'
+        env:
+          SERVER: ${{ matrix.server }}
+        run: python scripts/upstream_pr.py --server "$SERVER" --output .upstream-docs
+      - name: Check staged document formatting
+        if: steps.audit.outputs.changed == 'true'
+        run: git diff --check
       - name: Attach audit summary
         if: always()
         run: |
           if test -f .upstream-docs/report.md; then
             cat .upstream-docs/report.md >> "$GITHUB_STEP_SUMMARY"
           fi
-      - name: Explain inactive Codex integration
-        if: vars.UPSTREAM_CODEX_ENABLED != 'true'
-        run: echo 'Codex updates are disabled. Configure OPENAI_API_KEY and PR permissions, then set UPSTREAM_CODEX_ENABLED=true to enable them.' >> "$GITHUB_STEP_SUMMARY"
-      - name: Save bodies, fingerprints and impacted tools
+      - name: Retain separate platform audit
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: official-document-audit-${{ github.run_id }}
+          name: official-document-audit-${{ matrix.server }}-${{ github.run_id }}
           path: .upstream-docs/
           retention-days: 14
-          if-no-files-found: error
-
-  generate:
-    needs: documents
-    if: vars.UPSTREAM_CODEX_ENABLED == 'true' && needs.documents.outputs.changed == 'true' && needs.documents.outputs.duplicate != 'true'
-    runs-on: ubuntu-latest
-    timeout-minutes: 40
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ needs.documents.outputs.base_sha }}
-          persist-credentials: false
-      - uses: actions/download-artifact@v4
-        with:
-          name: official-document-audit-${{ github.run_id }}
-          path: .upstream-docs
-      - name: Require Codex credential
-        env:
-          KEY_CONFIGURED: ${{ secrets.OPENAI_API_KEY != '' }}
-        run: |
-          if [ "$KEY_CONFIGURED" != true ]; then
-            echo 'Configure repository secret OPENAI_API_KEY to enable Codex updates.' >&2
-            exit 1
-          fi
-      - uses: openai/codex-action@v1
-        with:
-          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
-          prompt-file: .github/codex/upstream-prompt.md
-          output-schema-file: .github/codex/upstream-schema.json
-          output-file: .upstream-docs/decision.json
-          sandbox: workspace-write
-          safety-strategy: drop-sudo
-      - name: Export only allowed changes with a complete decision
-        # Load orchestration from the audited commit, not Codex's edited files.
-        env:
-          UPSTREAM_REPO_ROOT: ${{ github.workspace }}
-          AUDITED_BASE: ${{ needs.documents.outputs.base_sha }}
-        run: |
-          test "$(git rev-parse HEAD)" = "$AUDITED_BASE"
-          git show HEAD:scripts/upstream_codex.py > "$RUNNER_TEMP/upstream_codex.py"
-          python "$RUNNER_TEMP/upstream_codex.py" export
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: codex-upstream-${{ github.run_id }}
-          path: |
-            .upstream-docs/codex.patch
-            .upstream-docs/decision.json
-          retention-days: 14
           if-no-files-found: warn
-
-  validate:
-    needs: [documents, generate]
-    runs-on: ubuntu-latest
-    timeout-minutes: 25
-    strategy:
-      matrix:
-        python: ['3.10', '3.13']
-    steps:
-      - uses: actions/checkout@v4
+      - name: Open a platform documentation PR
+        if: steps.audit.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v7
         with:
-          ref: ${{ needs.documents.outputs.base_sha }}
-          persist-credentials: false
-      - uses: actions/download-artifact@v4
-        with:
-          name: official-document-audit-${{ github.run_id }}
-          path: .upstream-docs
-      - uses: actions/download-artifact@v4
-        with:
-          name: codex-upstream-${{ github.run_id }}
-          path: .upstream-docs
-      - name: Apply proposed implementation changes
-        run: |
-          if [ -s .upstream-docs/codex.patch ]; then
-            git apply --check .upstream-docs/codex.patch
-            git apply .upstream-docs/codex.patch
-          fi
-      - uses: astral-sh/setup-uv@v6
-        with:
-          python-version: ${{ matrix.python }}
-      - name: Validate all offline contracts and distributions
-        run: |
-          uv run --no-project python scripts/sync_shared.py --check
-          uv run --no-project python scripts/upstream_docs.py --check-coverage
-          for server in volcengine-ark ali-bailian doubao-speech minimax; do
-            uv sync --locked --project "servers/$server"
-            "servers/$server/.venv/bin/python" -m unittest discover -s "servers/$server/tests"
-            uv build --project "servers/$server"
-          done
-          servers/doubao-speech/.venv/bin/python -m unittest discover -s tests
-      - name: Propose the exact captured baseline after validation
-        run: |
-          python scripts/upstream_codex.py accept
-          git add -N .
-          git diff --check
-          git diff --binary HEAD > .upstream-docs/validated.patch
-      - uses: actions/upload-artifact@v4
-        if: matrix.python == '3.13'
-        with:
-          name: validated-upstream-${{ github.run_id }}
-          path: .upstream-docs/validated.patch
-          retention-days: 14
-          if-no-files-found: error
-
-  propose:
-    needs: [documents, validate]
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    permissions:
-      contents: write
-      pull-requests: write
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.repository.default_branch }}
-      - name: Refuse a stale base
-        env:
-          AUDITED_BASE: ${{ needs.documents.outputs.base_sha }}
-        run: test "$(git rev-parse HEAD)" = "$AUDITED_BASE"
-      - uses: actions/download-artifact@v4
-        with:
-          name: validated-upstream-${{ github.run_id }}
-          path: .upstream-docs
-      - uses: actions/download-artifact@v4
-        with:
-          name: codex-upstream-${{ github.run_id }}
-          path: .upstream-docs/decision
-      - name: Apply validated patch and prepare review description
-        env:
-          AUDIT_FINGERPRINT: ${{ needs.documents.outputs.fingerprint }}
-        run: |
-          git apply --index .upstream-docs/validated.patch
-          python - <<'PY'
-          import json, os
-          from pathlib import Path
-          decision = json.loads(Path('.upstream-docs/decision/decision.json').read_text())
-          body = ('官方文档变化已由 Codex 核对，并通过四个供应商离线测试、跨包测试、共享同步与构建检查。\n\n'
-                  + decision['summary'] + '\n\n'
-                  + '基线对应本次捕获的正文；不代表账号权限或云端运行验收。请审查后手动合并；本流程不自动合并、打 tag 或发布。\n\n'
-                  + '本 PR 使用 GITHUB_TOKEN 创建，后续 PR CI 不会由该事件自动触发；上述检查已在本工作流运行。\n\n'
-                  + f'<!-- upstream-audit:{os.environ["AUDIT_FINGERPRINT"]} -->\n\n'
-                  + 'Co-Authored-By: Codex <noreply@openai.com>\n')
-          Path('.upstream-docs/pr-body.md').write_text(body)
-          PY
-      - uses: peter-evans/create-pull-request@v7
-        with:
-          branch: codex/upstream-docs
+          branch: docs/upstream-${{ matrix.server }}-${{ steps.audit.outputs.fingerprint }}
           base: ${{ github.event.repository.default_branch }}
-          title: 'chore(contracts): reconcile official MCP document updates'
-          body-path: .upstream-docs/pr-body.md
-          commit-message: |
-            chore(contracts): reconcile official MCP document updates
+          title: 'docs(${{ matrix.server }}): 更新官方文档快照，待人工适配'
+          body: |
+            ${{ matrix.server }} 的官方文档发生变化。本 PR 只包含该平台的捕获快照、差异、候选模型/接口报告及待审基线。
+
+            请查看 docs/upstream/${{ matrix.server }}/review/${{ steps.audit.outputs.fingerprint }}/report.md 和 diffs/，在此 PR 分支补充代码、测试与说明，再手动合并。正文变化不代表接口必然变化，也不代表当前账号已有模型权限。
+
+            基线在合并后生效；合并前请确认已处理全部契约变化。后续自动检查不会更新已有待审 PR 或覆盖人工提交，新的变化仍保留在各平台 Actions 报告中。
+
+            本 PR 使用 GITHUB_TOKEN 创建，不会自动触发后续 PR CI；你的后续提交会触发正常 CI。此次自动操作只验证抓取完整性及快照 SHA-256，不代表实现或云端运行验收。
+
+            不自动修改实现、触发 Codex、批准、合并、打 tag 或发布。
+
+            检测回执：https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
             Co-Authored-By: Codex <noreply@openai.com>
-          draft: true
+          commit-message: |
+            docs(${{ matrix.server }}): 更新待审官方文档快照
+
+            Co-Authored-By: Codex <noreply@openai.com>
           add-paths: |
-            servers/
-            shared/
-            tests/
-            docs/
-            README.md
-            README.en.md
+            docs/upstream/${{ matrix.server }}/
+            docs/upstream/snapshots/
