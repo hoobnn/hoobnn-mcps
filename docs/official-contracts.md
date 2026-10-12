@@ -70,11 +70,22 @@ python3 scripts/upstream_docs.py --accept-baseline
 
 ## GitHub Actions
 
-[upstream-docs.yml](../.github/workflows/upstream-docs.yml) 提供 `workflow_dispatch` 手动触发，权限 `contents: read`。输出 Job Summary 和保留 14 天的 artifact，失败也尽量留报告；不自动接受基线、改默认模型、提交、发 Issue/PR 或部署。
+[upstream-docs.yml](../.github/workflows/upstream-docs.yml) 每天北京时间 **10:23**（UTC 02:23，`23 2 * * *`）检查一次，并保留 `workflow_dispatch` 手动触发。始终检查默认分支。定时运行可能延迟，不能保证实时提醒。[GitHub 触发规则](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule)
 
-工作流已推送到默认分支，可在 GitHub 手动触发文档检查，目前没有启用 schedule。后续确定频率时可添加每天一次、避开整点的 schedule。GitHub 定时任务在默认分支运行，繁忙时可能延迟，不能保证实时提醒。[GitHub 触发规则](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule)
+接入前置条件：在仓库 Settings → Secrets and variables → Actions 配置 `OPENAI_API_KEY`；在 Settings → Actions → General → Workflow permissions 允许 Actions 创建 PR（GitHub 将创建与批准合并为同一设置，但本工作流不批准 PR）。全部配置完成后，设置 Actions Variable `UPSTREAM_CODEX_ENABLED=true` 启用自动修改及 PR。默认只检测和保留报告，不调用 Codex；若显式启用但缺少 Secret，Codex 任务明确失败。Codex Action 使用 OpenAI API 计费，不使用本机 ChatGPT 登录凭据，也不复用 GitHub 原生 Codex 自动审核的账号认证。[Codex 官方 Action 文档](https://learn.chatgpt.com/docs/github-action)
 
-处理顺序：正文/目录 diff → 判断新增、兼容变化、下线或文案调整 → 定位工具/模型 → 更新契约和必要实现 → 合同回归 → 确有需要的云端小样本 → 审查基线与发布。自动抓取和差异定位可运行，自动修改/提交/合并未启用。
+流程分为四个任务：
+
+1. **documents**：只读权限拉取公开正文，输出报告、真实 diff 和 artifact（保留 14 天）。抓取失败不触发 Codex；无变化结束；同一正文指纹已有待审 PR 时跳过重复调用。
+2. **generate**：只读 GitHub 权限，用 `openai/codex-action@v1` 和代理传入 API Key，在工作区沙箱内核对全部变化。文档属于证据而非指令。允许更新供应商代码、共享运行时、离线测试和说明；禁止修改工作流、脚本、基线、版本号或发布。无法核实的变化必须返回 `blocked`，不接受基线。结构化决策与补丁保留为 artifact。
+3. **validate**：在没有 OpenAI Key 和仓库写权限的全新任务中应用补丁，在 Python 3.10 / 3.13 运行共享源码同步、来源覆盖、四个供应商及跨包离线测试，并构建四个独立包。通过后，`scripts/upstream_codex.py accept` 验证捕获正文指纹，将**同一次检测的正文**和基线放进补丁，不再重新抓取未审查的新内容。
+4. **propose**：单独授予 `contents: write`、`pull-requests: write`，不运行项目代码，只应用已验证补丁并创建或更新 `codex/upstream-docs` 草稿 PR。若默认分支已变化，拒绝应用过期补丁，下一次检查重新核对。
+
+PR 包含变化说明、基线、验证边界及项目规定的 `Co-Authored-By`；不自动合并、打 tag 或发布，也不调用付费供应商 API。正文变化不是接口一定变化，模型候选仍须回到捕获的官方契约确认。基线只有合并 PR 后才成为默认分支的新基线。
+
+自动 PR 使用 `GITHUB_TOKEN`；该 token 创建的 PR 不会自动触发后续 `pull_request` CI，所以必要测试和构建在本工作流中先执行。人工后续修改 PR 仍应通过正常 CI。关闭 PR 而不合并会在后续检测重新提出相同更新；新变化会重建固定分支，审阅者不应直接在该自动分支提交人工修改。[GitHub token 触发限制](https://docs.github.com/en/actions/security-for-github-actions/security-guides/automatic-token-authentication)
+
+首次验收：配置 Secret、PR 权限及启用变量，将流程推送到默认分支后，手动运行工作流，检查 documents / generate / validate / propose 各层回执。未启用或无正文变化的运行只验证检测与跳过路径，不能证明 Codex 修改及 PR 创建链路已运行。
 
 ## 本轮验证回执
 

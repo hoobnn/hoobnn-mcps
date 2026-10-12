@@ -2,31 +2,67 @@ name: Official MCP contract documents
 
 on:
   workflow_dispatch:
+  schedule:
+    # 10:23 Asia/Shanghai every day (02:23 UTC).
+    - cron: '23 2 * * *'
 
 permissions:
   contents: read
+  pull-requests: read
 
 concurrency:
-  group: upstream-docs-${{ github.ref }}
+  group: upstream-docs
   cancel-in-progress: false
 
 jobs:
   documents:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    outputs:
+      changed: ${{ steps.audit.outputs.changed }}
+      fingerprint: ${{ steps.audit.outputs.fingerprint }}
+      base_sha: ${{ steps.base.outputs.sha }}
+      duplicate: ${{ steps.existing.outputs.duplicate }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          persist-credentials: false
+      - name: Record audited base
+        id: base
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
       - uses: actions/setup-python@v5
         with:
           python-version: "3.13"
       - name: Fetch official bodies and compare reviewed baseline
         run: python scripts/upstream_docs.py --output .upstream-docs
+      - name: Gate complete audit and fingerprint captured sources
+        id: audit
+        run: python scripts/upstream_codex.py prepare
+      - name: Skip an already proposed audit
+        id: existing
+        if: steps.audit.outputs.changed == 'true'
+        uses: actions/github-script@v7
+        env:
+          AUDIT_FINGERPRINT: ${{ steps.audit.outputs.fingerprint }}
+        with:
+          script: |
+            const prs = await github.paginate(github.rest.pulls.list, {
+              ...context.repo, state: 'open',
+              head: `${context.repo.owner}:codex/upstream-docs`,
+              base: context.payload.repository.default_branch
+            });
+            const marker = `<!-- upstream-audit:${process.env.AUDIT_FINGERPRINT} -->`;
+            core.setOutput('duplicate', prs.some(pr => (pr.body || '').includes(marker)) ? 'true' : 'false');
       - name: Attach audit summary
         if: always()
         run: |
           if test -f .upstream-docs/report.md; then
             cat .upstream-docs/report.md >> "$GITHUB_STEP_SUMMARY"
           fi
+      - name: Explain inactive Codex integration
+        if: vars.UPSTREAM_CODEX_ENABLED != 'true'
+        run: echo 'Codex updates are disabled. Configure OPENAI_API_KEY and PR permissions, then set UPSTREAM_CODEX_ENABLED=true to enable them.' >> "$GITHUB_STEP_SUMMARY"
       - name: Save bodies, fingerprints and impacted tools
         if: always()
         uses: actions/upload-artifact@v4
@@ -35,3 +71,164 @@ jobs:
           path: .upstream-docs/
           retention-days: 14
           if-no-files-found: error
+
+  generate:
+    needs: documents
+    if: vars.UPSTREAM_CODEX_ENABLED == 'true' && needs.documents.outputs.changed == 'true' && needs.documents.outputs.duplicate != 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.documents.outputs.base_sha }}
+          persist-credentials: false
+      - uses: actions/download-artifact@v4
+        with:
+          name: official-document-audit-${{ github.run_id }}
+          path: .upstream-docs
+      - name: Require Codex credential
+        env:
+          KEY_CONFIGURED: ${{ secrets.OPENAI_API_KEY != '' }}
+        run: |
+          if [ "$KEY_CONFIGURED" != true ]; then
+            echo 'Configure repository secret OPENAI_API_KEY to enable Codex updates.' >&2
+            exit 1
+          fi
+      - uses: openai/codex-action@v1
+        with:
+          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          prompt-file: .github/codex/upstream-prompt.md
+          output-schema-file: .github/codex/upstream-schema.json
+          output-file: .upstream-docs/decision.json
+          sandbox: workspace-write
+          safety-strategy: drop-sudo
+      - name: Export only allowed changes with a complete decision
+        # Load orchestration from the audited commit, not Codex's edited files.
+        env:
+          UPSTREAM_REPO_ROOT: ${{ github.workspace }}
+          AUDITED_BASE: ${{ needs.documents.outputs.base_sha }}
+        run: |
+          test "$(git rev-parse HEAD)" = "$AUDITED_BASE"
+          git show HEAD:scripts/upstream_codex.py > "$RUNNER_TEMP/upstream_codex.py"
+          python "$RUNNER_TEMP/upstream_codex.py" export
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: codex-upstream-${{ github.run_id }}
+          path: |
+            .upstream-docs/codex.patch
+            .upstream-docs/decision.json
+          retention-days: 14
+          if-no-files-found: warn
+
+  validate:
+    needs: [documents, generate]
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      matrix:
+        python: ['3.10', '3.13']
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.documents.outputs.base_sha }}
+          persist-credentials: false
+      - uses: actions/download-artifact@v4
+        with:
+          name: official-document-audit-${{ github.run_id }}
+          path: .upstream-docs
+      - uses: actions/download-artifact@v4
+        with:
+          name: codex-upstream-${{ github.run_id }}
+          path: .upstream-docs
+      - name: Apply proposed implementation changes
+        run: |
+          if [ -s .upstream-docs/codex.patch ]; then
+            git apply --check .upstream-docs/codex.patch
+            git apply .upstream-docs/codex.patch
+          fi
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Validate all offline contracts and distributions
+        run: |
+          uv run --no-project python scripts/sync_shared.py --check
+          uv run --no-project python scripts/upstream_docs.py --check-coverage
+          for server in volcengine-ark ali-bailian doubao-speech minimax; do
+            uv sync --locked --project "servers/$server"
+            "servers/$server/.venv/bin/python" -m unittest discover -s "servers/$server/tests"
+            uv build --project "servers/$server"
+          done
+          servers/doubao-speech/.venv/bin/python -m unittest discover -s tests
+      - name: Propose the exact captured baseline after validation
+        run: |
+          python scripts/upstream_codex.py accept
+          git add -N .
+          git diff --check
+          git diff --binary HEAD > .upstream-docs/validated.patch
+      - uses: actions/upload-artifact@v4
+        if: matrix.python == '3.13'
+        with:
+          name: validated-upstream-${{ github.run_id }}
+          path: .upstream-docs/validated.patch
+          retention-days: 14
+          if-no-files-found: error
+
+  propose:
+    needs: [documents, validate]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+      - name: Refuse a stale base
+        env:
+          AUDITED_BASE: ${{ needs.documents.outputs.base_sha }}
+        run: test "$(git rev-parse HEAD)" = "$AUDITED_BASE"
+      - uses: actions/download-artifact@v4
+        with:
+          name: validated-upstream-${{ github.run_id }}
+          path: .upstream-docs
+      - uses: actions/download-artifact@v4
+        with:
+          name: codex-upstream-${{ github.run_id }}
+          path: .upstream-docs/decision
+      - name: Apply validated patch and prepare review description
+        env:
+          AUDIT_FINGERPRINT: ${{ needs.documents.outputs.fingerprint }}
+        run: |
+          git apply --index .upstream-docs/validated.patch
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          decision = json.loads(Path('.upstream-docs/decision/decision.json').read_text())
+          body = ('官方文档变化已由 Codex 核对，并通过四个供应商离线测试、跨包测试、共享同步与构建检查。\n\n'
+                  + decision['summary'] + '\n\n'
+                  + '基线对应本次捕获的正文；不代表账号权限或云端运行验收。请审查后手动合并；本流程不自动合并、打 tag 或发布。\n\n'
+                  + '本 PR 使用 GITHUB_TOKEN 创建，后续 PR CI 不会由该事件自动触发；上述检查已在本工作流运行。\n\n'
+                  + f'<!-- upstream-audit:{os.environ["AUDIT_FINGERPRINT"]} -->\n\n'
+                  + 'Co-Authored-By: Codex <noreply@openai.com>\n')
+          Path('.upstream-docs/pr-body.md').write_text(body)
+          PY
+      - uses: peter-evans/create-pull-request@v7
+        with:
+          branch: codex/upstream-docs
+          base: ${{ github.event.repository.default_branch }}
+          title: 'chore(contracts): reconcile official MCP document updates'
+          body-path: .upstream-docs/pr-body.md
+          commit-message: |
+            chore(contracts): reconcile official MCP document updates
+
+            Co-Authored-By: Codex <noreply@openai.com>
+          draft: true
+          add-paths: |
+            servers/
+            shared/
+            tests/
+            docs/
+            README.md
+            README.en.md

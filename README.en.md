@@ -127,7 +127,7 @@ Bump the version in `servers/<name>/pyproject.toml` and commit, then push a `<na
 
 ### Official documentation updates
 
-`python3 scripts/upstream_docs.py --check-coverage` checks the official source mapping for the remote tools; `python3 scripts/upstream_docs.py` fetches the document bodies and produces candidate model / endpoint changes with a full diff. A manually triggered GitHub Actions workflow is ready; scheduled runs and automatic implementation changes are not enabled.
+`python3 scripts/upstream_docs.py --check-coverage` checks the official source mapping for the remote tools; `python3 scripts/upstream_docs.py` fetches document bodies and produces candidate model / endpoint changes with a full diff. GitHub Actions checks daily at 02:23 UTC (10:23 Asia/Shanghai), with manual runs also available. Once enabled, complete audits with changes trigger Codex to reconcile code, tests and documentation, then create or update a draft PR on `codex/upstream-docs` after offline tests and builds pass. It never auto-merges, tags or publishes. Configure the repository secret `OPENAI_API_KEY`, allow Actions to create PRs, and set the Actions variable `UPSTREAM_CODEX_ENABLED=true`. Until enabled, runs only detect changes and retain reports; see the [integration notes](docs/official-contracts.md#github-actions).
 
 ## License
 
