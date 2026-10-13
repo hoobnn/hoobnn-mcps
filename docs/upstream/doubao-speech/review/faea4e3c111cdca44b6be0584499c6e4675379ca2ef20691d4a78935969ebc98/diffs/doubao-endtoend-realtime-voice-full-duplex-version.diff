@@ -1,0 +1,11 @@
+--- reviewed/doubao-speech/doubao-endtoend-realtime-voice-full-duplex-version
++++ current/doubao-speech/doubao-endtoend-realtime-voice-full-duplex-version
+@@ -842,7 +842,7 @@
+ ||response.output_text.done |模型回复文本生成结束 |
+ |&nbsp;<br><br>TTS |response.output_audio.started |合成音频的起始事件 |
+ ||response.output_audio.delta |返回的流式音频数据块，Base64 编码 |
+-||response.output_audio.done |模型一轮音频合成结束。其中 `status_code="20000002"` 表示模型识别到用户的退出意图 |
++||response.output_audio.done |模型一轮音频合成结束。 |
+ |Context |conversation.item.added |新增上下文请求的确认（ack），返回创建成功的上下文数组 |
+ ||conversation.item.retrieved |查询上下文请求的确认（ack），返回查询到的上下文内容 |
+ ||conversation.item.deleted |删除上下文请求的确认（ack），返回被删除的上下文内容。若没有可删除的上下文<br><br>`{   "status_code":40000010,`<br><br>`    "message":"empty conversation deleted messages"   }` |
