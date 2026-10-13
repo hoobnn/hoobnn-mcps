@@ -30,7 +30,7 @@ The servers overlap in places. Each tool description states which scenarios it s
 | Video: local reference video / audio, document or web page reference | `ali-bailian` Wan (uploads automatically) | `volcengine-ark` Seedance (reference media must be public URLs) |
 | Chat: Doubao Seed | `volcengine-ark` `chat` | — |
 | Chat: Qwen, DeepSeek, Kimi, GLM and others | `ali-bailian` `chat` | — |
-| Speech synthesis, recognition, cloning | `doubao-speech` (Chinese voices, dialects, subtitles, long text, speaker diarization) | `ali-bailian` (Qwen voices; ASR returns emotion and language) |
+| Speech synthesis, recognition, cloning | `doubao-speech` (Chinese voices, dialects, subtitles, long text, speaker diarization) | `ali-bailian` (Qwen-Audio-TTS / CosyVoice cloning, design and tone instructions; ASR returns emotion and language) |
 
 A voice cloned or designed with one provider can only be used by that provider's synthesis tool. All three servers use `get_job` to check async job progress and download results automatically on completion; `recover_job` is only for repairing delivery.
 

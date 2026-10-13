@@ -18,8 +18,8 @@ An MCP server for Alibaba Cloud Model Studio (Bailian, DashScope) that saves res
 |---|---|---|
 | `generate_image` | Image generation and editing | `qwen-image-3.0-pro` |
 | `chat` | Calls language models on Bailian (Qwen, plus hosted DeepSeek, Kimi, GLM, MiniMax and others) | `qwen3.8-max` |
-| `text_to_speech` | Speech synthesis with 20 system voices and automatic splitting and joining of long text | `qwen3-tts-flash` |
-| `speech_to_text` | Speech recognition (up to 5 minutes / 10MB), returning text, language and emotion | `qwen3-asr-flash` |
+| `text_to_speech` | Speech synthesis with automatic splitting and joining of long text; routed by model: `qwen3-tts-flash` system voices, Qwen-Audio-TTS / CosyVoice with custom voices and `instructions` tone control | `qwen3-tts-flash` |
+| `speech_to_text` | Speech recognition (up to 5 minutes / 10MB), returning text, language and emotion; retired dated snapshots are rejected locally | `qwen3-asr-flash` |
 | `generate_video` | Video generation: text-to-video, first frame, first and last frames, multi-subject reference, continuation, up to 30 seconds, with audio | `wan3.0-video` |
 | `list_models` | Lists model IDs in the official Bailian model catalog, filterable by name | — |
 | `list_jobs` / `get_job` / `recover_job` | Check job progress (in-progress video jobs query Bailian and download on completion), repair delivery, resume TTS | Local job records |
@@ -40,7 +40,7 @@ Video is an async job: `generate_video` defaults to `wait=0` and returns `task_i
 
 Obviously unsupported parameter combinations fail locally; everything else is left to server-side validation.
 
-`parameters` carries official fields the tool does not expose individually, deep-merged: for native endpoints (images, video, TTS) into the `parameters` object of the official request, and for OpenAI-compatible endpoints (`chat`, `speech_to_text`) into the top level of the request body.
+`parameters` carries official fields the tool does not expose individually, deep-merged: for native endpoints (images, video, `qwen3-tts-flash`) into the `parameters` object of the official request, for Qwen-Audio-TTS / CosyVoice into the official `input` object, and for OpenAI-compatible endpoints (`chat`, `speech_to_text`) into the top level of the request body.
 
 ## Install
 
@@ -60,15 +60,15 @@ The command is installed at `~/.local/bin/ali-bailian-mcp`. For client configura
 | `BAILIAN_JOB_DIR` | Job record directory, default `~/.local/share/ali-bailian-mcp/jobs` |
 | `DASHSCOPE_BASE_URL` | Default `https://dashscope.aliyuncs.com`; for the Singapore region use `https://dashscope-intl.aliyuncs.com`. Keys cannot be used across regions |
 
-Parameters are documented in the tool descriptions (`src/ali_bailian_mcp/server.py`). For endpoint details, Bailian's [text-to-image](https://help.aliyun.com/zh/model-studio/text-to-image), [OpenAI-compatible API](https://help.aliyun.com/zh/model-studio/compatibility-of-openai-with-dashscope), [Qwen TTS](https://help.aliyun.com/zh/model-studio/qwen-tts-api), [Qwen ASR](https://help.aliyun.com/zh/model-studio/qwen-asr-api-reference) and [Wan 3.0 video](https://help.aliyun.com/zh/model-studio/wan3-video-generation-api-reference) documentation is authoritative.
+Parameters are documented in the tool descriptions (`src/ali_bailian_mcp/server.py`). For endpoint details, Bailian's [text-to-image](https://help.aliyun.com/zh/model-studio/text-to-image), [OpenAI-compatible API](https://help.aliyun.com/zh/model-studio/compatibility-of-openai-with-dashscope), [Qwen TTS](https://help.aliyun.com/zh/model-studio/qwen-tts-api), [Qwen-Audio-TTS](https://help.aliyun.com/zh/model-studio/qwen-audio-tts-http-api), [CosyVoice](https://help.aliyun.com/zh/model-studio/cosyvoice-tts-http-api), [Qwen ASR](https://help.aliyun.com/zh/model-studio/qwen-asr-api-reference) and [Wan 3.0 video](https://help.aliyun.com/zh/model-studio/wan3-video-generation-api-reference) documentation is authoritative.
 
 ## Added in 0.3 (pending cloud verification)
 
 | Tool | Capability | Official contract |
 |---|---|---|
-| `clone_voice` | Currently unavailable (target models retired, see below) | [Cloning HTTP API](https://help.aliyun.com/en/model-studio/voice-clone-design-http-api) |
-| `design_voice` | Currently unavailable (models retired, see below) | [Design API](https://help.aliyun.com/zh/model-studio/voice-design-api-references) |
-| `list_voices` / `get_voice` | Paged listing and lookup of custom voices | Same as above; Qwen details are found by scanning the paged list |
+| `clone_voice` | Clone a voice from a public recording URL (voice-enrollment) | [Cloning HTTP API](https://help.aliyun.com/zh/model-studio/voice-clone-design-http-api) |
+| `design_voice` | Design a voice from a text description and save the preview (voice-enrollment) | [Design API](https://help.aliyun.com/zh/model-studio/voice-design-api-references) |
+| `list_voices` / `get_voice` | Paged listing / detail lookup of voice-enrollment custom voices and their review status | Same as above |
 | `edit_video` | HappyHorse instruction-based editing, style and element replacement | [Video editing API](https://help.aliyun.com/en/model-studio/happyhorse-video-edit-api-reference) |
 | `animate_portrait` | Portrait image + voice → lip-synced digital human | [wan2.2-s2v](https://help.aliyun.com/zh/model-studio/wan-s2v-api) |
 | `embed` | Text, image and video embeddings | [Embeddings](https://help.aliyun.com/zh/model-studio/embedding), [Multimodal API](https://help.aliyun.com/en/model-studio/multimodal-embedding-api-reference) |
@@ -78,9 +78,15 @@ Parameters are documented in the tool descriptions (`src/ali_bailian_mcp/server.
 
 ### Creating and using voices
 
-Model Studio retired `qwen-voice-design`, `qwen3-tts-vc-*`, `qwen3-tts-vd-*` and `qwen3-tts-instruct-flash` on 2026-10-10; the official cloning / design docs now only cover `voice-enrollment` + Qwen-Audio-TTS / CosyVoice. This MCP does not implement their synthesis protocol yet, so `clone_voice` and `design_voice` return an error without sending a create request or incurring charges, and `text_to_speech` no longer accepts `instructions`. Use doubao-speech for cloning, design or tone control. `list_voices(kind="cosyvoice")` still queries voice-enrollment voices.
+Model Studio retired `qwen-voice-design`, `qwen3-tts-vc-*`, `qwen3-tts-vd-*` and `qwen3-tts-instruct-flash` on 2026-10-10. `clone_voice` and `design_voice` now use the current official `voice-enrollment` (`action=create_voice`); creating voices is free:
 
-Qwen has no separate detail endpoint, so `get_voice` searches the paged list; reaching `max_pages` only means the search is incomplete, not that the voice does not exist.
+1. Create: `clone_voice(audio="https://…/sample.wav", prefix="me")` or `design_voice(voice_prompt=…, preview_text=…, prefix="me")`. The default `target_model` is `qwen-audio-3.0-tts-flash`; other Qwen-Audio-TTS / CosyVoice models can be chosen. A voice only works with the model it was created for.
+2. Wait for review: the voice is usable once `get_voice(voice=…)` reports `status` `OK` (`DEPLOYING` = in review, `UNDEPLOYED` = rejected).
+3. Synthesize: `text_to_speech(text=…, voice=voice_id, instructions="speak gently")`. Without `model`, the target model is inferred from the voice ID prefix and the SpeechSynthesizer protocol is used.
+
+Cloning only accepts a public http/https audio URL: the official API requires a publicly accessible URL and does not say voice-enrollment accepts Bailian temporary `oss://` uploads (private and bound to the calling model), so local files, data URLs and `oss://` are rejected locally and never uploaded. If a response lacks a voice ID the voice is never re-created automatically; check with `list_voices(prefix=…)`.
+
+`list_voices` / `get_voice` both use voice-enrollment `list_voice` / `query_voice`; cloned and designed voices share one list. The legacy `kind` values `clone` / `design` / `cosyvoice` are still accepted and all mean `enrollment`. Retired Qwen cloned / designed voices can no longer be used for synthesis. Qwen-Audio-TTS / CosyVoice and voice-enrollment are fully available only in the Beijing region.
 
 ### Video editing and digital humans
 
@@ -123,7 +129,7 @@ The shared connection pool, overall timeout, tool groups, error semantics and mi
 
 ## Official contracts and latest docs
 
-All tools and default models were checked against the official documentation on 2026-10-10; see the [Bailian audit](https://github.com/hoobnn/hoobnn-mcps/blob/main/docs/audits/ali-bailian.md). `list_models` now queries the native `/api/v1/models` all-modality paged catalog and returns `complete` plus official metadata; presence in the catalog does not mean the account is authorized. In Beijing, setting `DASHSCOPE_BASE_URL` to your real workspace root domain is recommended. Wan3 supports `link` web page references, which cannot be combined with `file` or with first and last frames. The ASR tool only integrates the Qwen3-ASR-Flash HTTP series; Fun-ASR, filetrans and realtime need separate protocols.
+All tools and default models were checked against the official documentation on 2026-10-10; see the [Bailian audit](https://github.com/hoobnn/hoobnn-mcps/blob/main/docs/audits/ali-bailian.md). `list_models` now queries the native `/api/v1/models` all-modality paged catalog and returns `complete` plus official metadata; presence in the catalog does not mean the account is authorized. In Beijing, setting `DASHSCOPE_BASE_URL` to your real workspace root domain is recommended. Wan3 supports `link` web page references, which cannot be combined with `file` or with first and last frames. The ASR tool only accepts `qwen3-asr-flash` (dated snapshots were retired on 2026-10-10 and are rejected locally); Fun-ASR, filetrans and realtime need separate protocols. The 2026-10-13 speech migration is described in the audit section "2026-10-13 语音迁移".
 
 ## License
 

@@ -18,8 +18,8 @@
 |---|---|---|
 | `generate_image` | 生图和图片编辑 | `qwen-image-3.0-pro` |
 | `chat` | 调用百炼上的语言模型（千问，以及托管的 DeepSeek、Kimi、GLM、MiniMax 等） | `qwen3.8-max` |
-| `text_to_speech` | 语音合成，20 个系统音色，长文本自动分段拼接 | `qwen3-tts-flash` |
-| `speech_to_text` | 语音识别（5 分钟 / 10MB 以内），返回文本、语种、情绪 | `qwen3-asr-flash` |
+| `text_to_speech` | 语音合成，长文本自动分段拼接；按模型名路由：`qwen3-tts-flash` 系统音色，Qwen-Audio-TTS / CosyVoice 支持自定义音色和 `instructions` 语气控制 | `qwen3-tts-flash` |
+| `speech_to_text` | 语音识别（5 分钟 / 10MB 以内），返回文本、语种、情绪；已下线的日期快照本地拒绝 | `qwen3-asr-flash` |
 | `generate_video` | 视频生成：文生、首帧、首尾帧、多主体参考、续写，最长 30 秒，带音频 | `wan3.0-video` |
 | `list_models` | 列出百炼官方模型目录里的模型 ID，可按名称过滤 | — |
 | `list_jobs` / `get_job` / `recover_job` | 查任务进度（视频生成中会查询百炼并在完成时下载）、补交付、TTS 续做 | 本地任务记录 |
@@ -40,7 +40,7 @@
 
 模型不支持的明显参数组合在本地直接报错，其余交给服务端校验。
 
-`parameters` 放工具没单独列出的官方字段，深度合并：原生接口（生图、视频、TTS）合并进官方请求的 `parameters` 对象，OpenAI 兼容接口（`chat`、`speech_to_text`）合并进请求体顶层。
+`parameters` 放工具没单独列出的官方字段，深度合并：原生接口（生图、视频、`qwen3-tts-flash`）合并进官方请求的 `parameters` 对象，Qwen-Audio-TTS / CosyVoice 合并进官方 `input` 对象，OpenAI 兼容接口（`chat`、`speech_to_text`）合并进请求体顶层。
 
 ## 安装
 
@@ -60,15 +60,15 @@ uv tool install ali-bailian-mcp
 | `BAILIAN_JOB_DIR` | 任务记录目录，默认 `~/.local/share/ali-bailian-mcp/jobs` |
 | `DASHSCOPE_BASE_URL` | 默认 `https://dashscope.aliyuncs.com`；新加坡地域用 `https://dashscope-intl.aliyuncs.com`，key 不能跨地域混用 |
 
-参数说明见工具描述（`src/ali_bailian_mcp/server.py`），接口细节以百炼的[文生图](https://help.aliyun.com/zh/model-studio/text-to-image)、[OpenAI 兼容接口](https://help.aliyun.com/zh/model-studio/compatibility-of-openai-with-dashscope)、[千问 TTS](https://help.aliyun.com/zh/model-studio/qwen-tts-api)、[千问 ASR](https://help.aliyun.com/zh/model-studio/qwen-asr-api-reference) 和[万相 3.0 视频](https://help.aliyun.com/zh/model-studio/wan3-video-generation-api-reference)文档为准。
+参数说明见工具描述（`src/ali_bailian_mcp/server.py`），接口细节以百炼的[文生图](https://help.aliyun.com/zh/model-studio/text-to-image)、[OpenAI 兼容接口](https://help.aliyun.com/zh/model-studio/compatibility-of-openai-with-dashscope)、[千问 TTS](https://help.aliyun.com/zh/model-studio/qwen-tts-api)、[Qwen-Audio-TTS](https://help.aliyun.com/zh/model-studio/qwen-audio-tts-http-api)、[CosyVoice](https://help.aliyun.com/zh/model-studio/cosyvoice-tts-http-api)、[千问 ASR](https://help.aliyun.com/zh/model-studio/qwen-asr-api-reference) 和[万相 3.0 视频](https://help.aliyun.com/zh/model-studio/wan3-video-generation-api-reference)文档为准。
 
 ## 0.3 新增接入（待云端验证）
 
 | 工具 | 能力 | 官方契约 |
 |---|---|---|
-| `clone_voice` | 暂不可用（目标模型已下线，见下文） | [复刻 HTTP API](https://help.aliyun.com/en/model-studio/voice-clone-design-http-api) |
-| `design_voice` | 暂不可用（模型已下线，见下文） | [设计 API](https://help.aliyun.com/zh/model-studio/voice-design-api-references) |
-| `list_voices` / `get_voice` | 分页查询和查找自定义音色 | 同上；Qwen 详情从分页列表中查找 |
+| `clone_voice` | 从公网录音 URL 复刻音色（voice-enrollment） | [复刻 HTTP API](https://help.aliyun.com/zh/model-studio/voice-clone-design-http-api) |
+| `design_voice` | 按文字描述设计音色并保存试听（voice-enrollment） | [设计 API](https://help.aliyun.com/zh/model-studio/voice-design-api-references) |
+| `list_voices` / `get_voice` | 分页列出 / 查询 voice-enrollment 自定义音色及审核状态 | 同上 |
 | `edit_video` | HappyHorse 指令编辑、风格和元素替换 | [视频编辑 API](https://help.aliyun.com/en/model-studio/happyhorse-video-edit-api-reference) |
 | `animate_portrait` | 人物图片 + 人声 → 数字人对口型 | [wan2.2-s2v](https://help.aliyun.com/zh/model-studio/wan-s2v-api) |
 | `embed` | 文本、图像、视频向量化 | [向量化](https://help.aliyun.com/zh/model-studio/embedding)、[多模态 API](https://help.aliyun.com/en/model-studio/multimodal-embedding-api-reference) |
@@ -78,9 +78,15 @@ uv tool install ali-bailian-mcp
 
 ### 音色创建与使用
 
-百炼已于 2026-10-10 下线 `qwen-voice-design`、`qwen3-tts-vc-*`、`qwen3-tts-vd-*` 和 `qwen3-tts-instruct-flash`，官方复刻 / 设计文档只保留 `voice-enrollment` + Qwen-Audio-TTS / CosyVoice。本 MCP 尚未接入它们的合成协议，所以 `clone_voice`、`design_voice` 直接返回错误，不发送创建请求，也不计费；`text_to_speech` 不再接受 `instructions`。需要复刻、设计或语气控制时用 doubao-speech。`list_voices(kind="cosyvoice")` 仍可查询 voice-enrollment 音色。
+百炼已于 2026-10-10 下线 `qwen-voice-design`、`qwen3-tts-vc-*`、`qwen3-tts-vd-*` 和 `qwen3-tts-instruct-flash`。现在 `clone_voice`、`design_voice` 改走官方现行的 `voice-enrollment`（`action=create_voice`），创建音色免费：
 
-Qwen 没有独立的详情接口，`get_voice` 会从列表分页查找；达到 `max_pages` 只表示查找未完成，不表示音色不存在。
+1. 创建：`clone_voice(audio="https://…/sample.wav", prefix="me")` 或 `design_voice(voice_prompt=…, preview_text=…, prefix="me")`。默认 `target_model=qwen-audio-3.0-tts-flash`，也可选其他 Qwen-Audio-TTS / CosyVoice 模型；音色只能用于创建时的模型。
+2. 等审核：`get_voice(voice=…)` 的 `status` 为 `OK` 后可用（`DEPLOYING` 审核中，`UNDEPLOYED` 未通过）。
+3. 合成：`text_to_speech(text=…, voice=音色ID, instructions="用温柔的语气")`。不传 `model` 时按音色 ID 前缀自动选回 target_model，走 SpeechSynthesizer 协议。
+
+复刻只接受公网 http/https 音频 URL：官方要求「公网可访问」，且未说明 voice-enrollment 接受百炼临时上传的 `oss://` 地址（临时文件私有、与调用模型绑定），所以本地文件、data URL、`oss://` 一律本地拒绝，不自动上传。响应缺少音色 ID 时不会自动重建，用 `list_voices(prefix=…)` 核对。
+
+`list_voices` / `get_voice` 统一走 voice-enrollment 的 `list_voice` / `query_voice`；复刻和设计音色在同一列表，`kind` 旧值 `clone` / `design` / `cosyvoice` 仍可传，均等价于 `enrollment`。已下线的 Qwen 复刻 / 设计音色不能再用于合成。Qwen-Audio-TTS / CosyVoice 与 voice-enrollment 的完整能力仅在北京地域。
 
 ### 视频编辑和数字人
 
@@ -123,7 +129,7 @@ HappyHorse 编辑输入视频 3–60 秒，输出最多 15 秒。数字人音频
 
 ## 官方契约与最新文档
 
-2026-10-10 完成全部工具和默认模型的官方对照；详见 [百炼审计](https://github.com/hoobnn/hoobnn-mcps/blob/main/docs/audits/ali-bailian.md)。`list_models` 现在查询原生 `/api/v1/models` 全模态分页目录，返回 `complete` 与官方元数据；目录存在不等于账号授权。北京建议将 `DASHSCOPE_BASE_URL` 设置为真实 workspace 根域名。Wan3 支持 `link` 网页参考，不能与 `file` 同用，也不能与首尾帧混用。ASR 工具仅接入 Qwen3-ASR-Flash HTTP 系列，Fun-ASR、filetrans 和 realtime 需要独立协议。
+2026-10-10 完成全部工具和默认模型的官方对照；详见 [百炼审计](https://github.com/hoobnn/hoobnn-mcps/blob/main/docs/audits/ali-bailian.md)。`list_models` 现在查询原生 `/api/v1/models` 全模态分页目录，返回 `complete` 与官方元数据；目录存在不等于账号授权。北京建议将 `DASHSCOPE_BASE_URL` 设置为真实 workspace 根域名。Wan3 支持 `link` 网页参考，不能与 `file` 同用，也不能与首尾帧混用。ASR 工具只放行 `qwen3-asr-flash`（日期快照已于 2026-10-10 下线，本地拒绝），Fun-ASR、filetrans 和 realtime 需要独立协议。2026-10-13 完成语音迁移，见审计报告「2026-10-13 语音迁移」。
 
 ## 许可证
 

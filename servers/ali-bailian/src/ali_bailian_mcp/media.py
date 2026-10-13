@@ -15,7 +15,16 @@ from pathlib import Path
 from .dashscope import InputError, request
 from .jobs import download as atomic_download
 
-TTS_MODELS = {"flash": "qwen3-tts-flash"}  # qwen3-tts-instruct-flash/vc/vd 已于 2026-10-10 下线
+TTS_MODELS = {"flash": "qwen3-tts-flash", "audio": "qwen-audio-3.0-tts-flash",
+              "audio-plus": "qwen-audio-3.0-tts-plus", "cosyvoice": "cosyvoice-v3.5-plus"}
+# qwen3-tts-instruct-flash/vc/vd 已于 2026-10-10 下线；Qwen-Audio-TTS / CosyVoice 走 SpeechSynthesizer（HTTP 非实时）。
+QWEN_AUDIO_TTS = ("qwen-audio-3.0-tts-plus", "qwen-audio-3.1-tts-flash", "qwen-audio-3.0-tts-flash")
+COSYVOICE_TTS = ("cosyvoice-v3.5-plus", "cosyvoice-v3.5-flash", "cosyvoice-v3-plus", "cosyvoice-v3-flash", "cosyvoice-v2")
+SYNTH_MODELS = QWEN_AUDIO_TTS + COSYVOICE_TTS
+INSTRUCTION_MODELS = QWEN_AUDIO_TTS + ("cosyvoice-v3.5-plus", "cosyvoice-v3.5-flash", "cosyvoice-v3-plus", "cosyvoice-v3-flash")
+SYNTH_PATH = "/api/v1/services/audio/tts/SpeechSynthesizer"
+QWEN_TTS_PATH = "/api/v1/services/aigc/multimodal-generation/generation"
+ASR_MODEL = "qwen3-asr-flash"
 VIDEO_MODELS = {"wan": "wan3.0-video", "wan-fast": "wan3.0-video-prime"}
 AUDIO_MIME = {"mp3": "mpeg", "wav": "wav", "m4a": "mp4", "aac": "aac", "flac": "flac", "ogg": "ogg",
               "opus": "opus", "amr": "amr", "webm": "webm"}
@@ -101,16 +110,78 @@ def concat_wav(files, out):
                 w.writeframes(frames)
 
 
+def instruction_length(text):
+    """官方计数：汉字（含日韩汉字）按 2 个字符，其他按 1 个。"""
+    return sum(2 if re.match(r"[\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff]", ch) else 1 for ch in text)
+
+
+def resolve_tts_model(model, voice):
+    """显式模型优先；未指定时按自定义音色 ID 前缀（{target_model}-…）推断，否则用 qwen3-tts-flash。"""
+    if model:
+        return TTS_MODELS.get(model, model)
+    for name in sorted(SYNTH_MODELS, key=len, reverse=True):
+        if voice and voice.startswith(name + "-"):
+            return name
+    return TTS_MODELS["flash"]
+
+
+def tts_request(model, opts, text):
+    """Return (path, body) for one chunk, routed by model family."""
+    if model in SYNTH_MODELS:
+        inp = {"text": text, "voice": opts["voice"], "format": "wav", "sample_rate": 24000}
+        if opts.get("instructions"):
+            inp["instruction"] = opts["instructions"]
+        if opts.get("language"):
+            inp["language_hints"] = [opts["language"]]
+        merge_parameters(inp, opts.get("parameters"))
+        return SYNTH_PATH, {"model": model, "input": inp}
+    inp = {"text": text, "voice": opts["voice"]}
+    if opts.get("language"):
+        inp["language_type"] = opts["language"]
+    body = {"model": model, "input": inp}
+    if opts.get("parameters"):
+        body["parameters"] = dict(opts["parameters"])
+    return QWEN_TTS_PATH, body
+
+
+def check_tts(model, o, mode):
+    if model in SYNTH_MODELS:
+        if not o["voice"]:
+            return "Qwen-Audio-TTS/CosyVoice需指定voice：该模型的系统音色，或target_model与之一致的自定义音色ID"
+        if o["instructions"]:
+            if model not in INSTRUCTION_MODELS:
+                return f"{model}不支持instruction（指令控制）"
+            if instruction_length(o["instructions"]) > 100:
+                return "instruction不超过100字符（汉字按2个字符计）"
+        if o["language"] and not re.fullmatch(r"[a-z]{2,3}", o["language"]):
+            return "Qwen-Audio-TTS/CosyVoice的language为语种代码，如zh、en、ja"
+        extra = o.get("parameters") or {}
+        if set(extra) & {"text", "voice", "model"}:
+            return "parameters不能覆盖text/voice/model"
+        if mode == "local" and extra.get("format", "wav") != "wav":
+            return "local交付会把分段拼接为wav，format只能为wav；其他格式请用url交付方式"
+        return None
+    if not model.startswith("qwen3-tts-") or "realtime" in model:
+        return ("此工具支持非实时qwen3-tts-flash，以及Qwen-Audio-TTS（" + "、".join(QWEN_AUDIO_TTS)
+                + "）和CosyVoice（" + "、".join(COSYVOICE_TTS) + "）；实时模型使用不同协议")
+    if o["instructions"]:
+        return ("qwen3-tts-instruct-flash已于2026-10-10下线，qwen3-tts-flash不支持instructions；"
+                "语气控制请改用Qwen-Audio-TTS/CosyVoice模型（如model=\"audio\"）")
+    return None
+
+
 def text_to_speech(o, out_dir, mode="local"):
     from .products import STORE
-    model = TTS_MODELS.get(o["model"] or "flash", o["model"])
+    o = dict(o)
+    model = resolve_tts_model(o["model"], o["voice"])
+    if not o["voice"] and model not in SYNTH_MODELS:
+        o["voice"] = "Cherry"
     text = (o["text"] or "").strip()
     if not text:
         return {"ok": False, "error": "缺少text"}
-    if not model or not model.startswith("qwen3-tts-") or "realtime" in model:
-        return {"ok": False, "error": "此工具仅支持非实时qwen3-tts模型，其他模型使用不同接口"}
-    if o["instructions"]:
-        return {"ok": False, "error": "qwen3-tts-instruct-flash已于2026-10-10下线，qwen3-tts-flash不支持instructions"}
+    error = check_tts(model, o, mode)
+    if error:
+        return {"ok": False, "model": model, "error": error}
     chunks = split_text(text)
     if mode == "url" and len(chunks) > 1:
         return {"ok": False, "error": "url交付方式请分段调用，每段250字符以内"}
@@ -141,15 +212,10 @@ def resume_tts(job):
             STORE.save(job)
             return STORE.result(job)
         if chunk["state"] == "unsubmitted":
-            inp = {"text": chunk["text"], "voice": opts["voice"]}
-            if opts["language"]:
-                inp["language_type"] = opts["language"]
-            body = {"model": job["model"], "input": inp}
-            if opts.get("parameters"):
-                body["parameters"] = dict(opts["parameters"])
+            path, body = tts_request(job["model"], opts, chunk["text"])
             chunk["state"] = "unknown"
             STORE.save(job)  # Crash during request is ambiguous, not safe to resubmit.
-            response, error = request("/api/v1/services/aigc/multimodal-generation/generation", body, 120)
+            response, error = request(path, body, 120)
             if not error and response.get("code"):
                 error = f"{response['code']}: {response.get('message')}"
             if error:
@@ -164,7 +230,8 @@ def resume_tts(job):
                 job.update(state="unknown", error="合成响应缺少audio.url，不能自动重新合成")
                 STORE.save(job)
                 return STORE.result(job)
-            chunk.update(state="generated", url=url, usage=(response.get("usage") or {}).get("characters", 0))
+            usage = response.get("usage") or {}
+            chunk.update(state="generated", url=url, usage=usage.get("characters") or usage.get("total_tokens") or 0)
             job["request_id"] = response.get("request_id")
             chunk["request_id"] = response.get("request_id")
             STORE.save(job)
@@ -216,8 +283,12 @@ def resume_tts(job):
 def speech_to_text(o):
     model = o["model"]
     result = {"ok": False, "model": model, "text": "", "language": None, "emotion": None, "usage": None, "error": None}
-    if not model.startswith("qwen3-asr-flash") or "realtime" in model or "filetrans" in model:
-        result["error"] = "此工具仅支持qwen3-asr-flash（HTTP非实时）；其他ASR模型采用不同协议"
+    if re.fullmatch(r"qwen3-asr-flash-\d{4}-\d{2}-\d{2}(-[a-z]+)?", model or ""):
+        result["error"] = f"{model}是qwen3-asr-flash的日期快照，已于2026-10-10下线（官方公告118434）；请用qwen3-asr-flash"
+        return result
+    if model != ASR_MODEL:
+        result["error"] = ("此工具仅支持qwen3-asr-flash（HTTP非实时，官方现行正文唯一列出的此协议ID）；"
+                           "filetrans/realtime、Qwen-Audio-ASR、Fun-ASR采用不同协议")
         return result
     src = o["audio"]
     try:

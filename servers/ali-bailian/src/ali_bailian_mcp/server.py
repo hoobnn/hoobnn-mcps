@@ -132,31 +132,37 @@ def chat(
 @mcp.tool()
 def text_to_speech(
     text: str,
-    voice: str = "Cherry",
+    voice: str | None = None,
     instructions: str | None = None,
     language: str | None = None,
     model: str | None = None,
     out_dir: str | None = None,
     parameters: dict | None = None,
 ) -> dict:
-    """用千问 TTS 把文字合成语音，保存为 wav（24kHz 单声道），返回文件路径。中文音色、方言、SRT 字幕、超长文本优先用 doubao-speech 的 text_to_speech。
+    """用百炼非实时 TTS 把文字合成语音，保存为 wav（24kHz 单声道），返回文件路径。按模型名自动选择协议。
+    中文系统音色、方言、SRT 字幕、超长文本也可用 doubao-speech 的 text_to_speech。
 
-    - text：要朗读的文字。长文本会自动按句切段合成再拼接成一个文件（url 交付方式下不拼接，需自己分段，
-      每段 250 字以内）。
-    - voice：系统音色，默认 Cherry。女声：Cherry 芊悦（阳光亲切）、Serena 苏瑶（温柔）、Chelsie 千雪（二次元）、
-      Momo 茉兔（撒娇搞怪）、Vivian 十三（可爱小暴躁）、Mia 乖小妹（乖巧）、Bellona 燕铮莺（洪亮清晰）、
-      Bunny 萌小姬（萝莉）、Elias 墨讲师（讲课）、Nini 邻家妹妹（软糯）、Seren 小婉（助眠）、Stella 少女阿月（甜）；
-      男声：Ethan 晨煦（标准普通话、阳光）、Moon 月白（率性帅气）、Eldric Sage 沧明子（沉稳老者）、
-      Mochi 沙小弥（小大人）、Vincent 田叔（烟嗓）、Neil 阿闻（新闻主持）、Arthur 徐大爷（讲故事）、Pip 顽屁小孩。
-    - instructions：已不可用。qwen3-tts-instruct-flash 已于 2026-10-10 下线，qwen3-tts-flash 不支持指令控制；
-      需要语气控制用 doubao-speech 的 text_to_speech。
-    - language：Chinese、English、Japanese、Korean、French、German、Russian、Italian、Spanish、Portuguese，
-      不传自动识别。中英混读不用设。
-    - model：默认 qwen3-tts-flash（官方现存唯一的非实时 Qwen3-TTS 模型）。
+    - model（别名或完整 ID）：
+      - 不传：voice 是 clone_voice/design_voice 生成的自定义音色 ID（以 {target_model}- 开头）时自动用该 target_model，
+        否则用 "flash" → qwen3-tts-flash（multimodal-generation 协议，系统音色，不支持指令）。
+      - "audio" → qwen-audio-3.0-tts-flash，"audio-plus" → qwen-audio-3.0-tts-plus，也可传 qwen-audio-3.1-tts-flash；
+        "cosyvoice" → cosyvoice-v3.5-plus，也可传 cosyvoice-v3.5-flash / v3-plus / v3-flash / v2。
+        这些走 SpeechSynthesizer 协议，支持系统音色、自定义音色（须与创建时的 target_model 一致）和 instructions。
+    - text：要朗读的文字。长文本自动按句切成 250 字以内的段合成再拼接（url 交付方式下不拼接，需自己分段）。
+    - voice：qwen3-tts-flash 默认 Cherry，可选 Serena、Ethan、Chelsie、Momo、Vivian、Moon、Neil、Arthur 等系统音色。
+      Qwen-Audio-TTS/CosyVoice 必须指定：对应模型的系统音色（如 longanhuan_v3.6，见官方音色列表，不能跨模型混用；
+      cosyvoice-v3.5 系列没有系统音色）或自定义音色 ID。
+    - instructions：语气/情感/方言指令（官方字段 instruction），如「用温柔的语气，语速稍慢」「请用河南话表达」。
+      不超过 100 字符（汉字按 2 计）。仅 Qwen-Audio-TTS 与 cosyvoice-v3.5/v3 系列支持；cosyvoice-v3-plus/v3-flash 的
+      系统音色须用官方音色列表规定的固定指令，cosyvoice-v3-plus 的自定义音色不支持；qwen3-tts-flash 不支持。
+    - language：qwen3-tts-flash 写 Chinese、English、Japanese 等；Qwen-Audio-TTS/CosyVoice 写语种代码（zh、en、ja…，
+      对应 language_hints）。不传自动识别。
     - out_dir：输出目录，默认 BAILIAN_OUT_DIR 下按时间戳新建。
-    - parameters：官方请求 parameters 对象里本工具没单独列出的字段，深度合并，同名时以这里为准。
+    - parameters：qwen3-tts-flash 合并进官方 parameters 对象；Qwen-Audio-TTS/CosyVoice 合并进官方 input 对象
+      （如 rate、pitch、volume、seed、hot_fix），不能覆盖 text/voice/model，local 交付时 format 只能是 wav。
 
-    按字符计费。返回 job_id、job_state、artifacts、request_id、ok、model、files、chunks（分了几段）、usage、error。url 交付方式下 files 是 24 小时内有效的链接。
+    按字符（qwen-audio-3.1-tts-flash 按 token）计费。返回 job_id、job_state、artifacts、request_id、ok、model、files、
+    chunks（分了几段）、usage、error。url 交付方式下 files 是 24 小时内有效的链接。
     """
     opts = dict(text=text, voice=voice, instructions=instructions, language=language, model=model,
                 parameters=parameters)
@@ -179,7 +185,8 @@ def speech_to_text(
     - context：背景文字，提高专有名词、人名、术语的识别准确率，如「这是一段关于 Kubernetes 和 Istio 的技术分享」。
     - language：已知语种时指定（zh、en、ja、ko、yue 等），能提高准确率；不传自动识别。
     - itn：是否把口语数字转成阿拉伯数字（如「二零二六年」→「2026年」），默认不转。
-    - model：默认 qwen3-asr-flash（其日期快照已于 2026-10-10 下线）；filetrans/realtime、Qwen-Audio-ASR 及 Fun-ASR 使用不同协议。
+    - model：只支持 qwen3-asr-flash。其日期快照（如 qwen3-asr-flash-2026-02-10）已于 2026-10-10 下线，本地直接拒绝；
+      filetrans/realtime、Qwen-Audio-ASR 及 Fun-ASR 使用不同协议。
     - parameters：官方请求体里本工具没单独列出的字段（OpenAI 兼容接口顶层），深度合并，不能覆盖 model/messages/stream。
 
     按音频时长计费。返回 ok、model、text、language、emotion、usage、error。
@@ -255,39 +262,56 @@ def list_models(keyword: str | None = None, max_pages: int = 20) -> dict:
 
 
 @mcp.tool()
-def clone_voice(audio: str, target_model: str = "qwen3-tts-vc-2026-01-22", preferred_name: str = "custom_voice",
-                text: str | None = None, language: str | None = None) -> dict:
-    """暂不可用：Qwen声音复刻的目标模型qwen3-tts-vc已于2026-10-10下线，调用会直接返回错误，不发送创建请求，也不计费。
-    官方替代方案voice-enrollment + Qwen-Audio-TTS/CosyVoice尚未接入本MCP。需要复刻请用 doubao-speech 的 clone_voice。
+def clone_voice(audio: str, target_model: str = "qwen-audio-3.0-tts-flash", prefix: str = "custom",
+                language: str | None = None, enable_preprocess: bool | None = None,
+                max_prompt_audio_length: float | None = None) -> dict:
+    """声音复刻：用 voice-enrollment（action=create_voice）从一段录音创建自定义音色，返回 voice（音色 ID）。创建免费。
+    - audio：公网可访问的 http/https 音频 URL（WAV 16bit/MP3/M4A，≤10MB，推荐 10–20 秒、最长 60 秒，含至少 5 秒连续清晰朗读）。
+      不接受本地文件、data URL 或 oss://：官方要求公网 URL，且未说明支持百炼临时上传地址。
+    - target_model：后续合成用的模型，默认 qwen-audio-3.0-tts-flash；可选 qwen-audio-3.0-tts-plus、qwen-audio-3.1-tts-flash、
+      cosyvoice-v3.5-plus/v3.5-flash/v3-plus/v3-flash/v2。音色只能用于该模型。
+    - prefix：音色名前缀，1–10 位字母或数字；音色 ID 形如 {target_model}-{prefix}-{唯一标识}。
+    - language：样本语种代码（zh、en…，language_hints），cosyvoice-v2 不支持。
+    - enable_preprocess（降噪增强）、max_prompt_audio_length（3–30 秒）：cosyvoice-v3-plus/v2 不支持。
+    音色需审核：用 get_voice 确认 status=OK 后，再 text_to_speech(voice=音色ID) 合成。响应缺少音色 ID 时不自动重建。
+    每个账号最多 1000 个音色。仅北京地域完整支持，需要复刻也可用 doubao-speech 的 clone_voice。
     """
-    return products.clone_voice(audio, target_model, preferred_name, text, language)
+    return products.clone_voice(audio, target_model, prefix, language, enable_preprocess, max_prompt_audio_length)
 
 
 @mcp.tool()
-def design_voice(voice_prompt: str, preview_text: str, target_model: str = "qwen3-tts-vd-2026-01-26",
-                 preferred_name: str = "custom_voice", out_dir: str | None = None) -> dict:
-    """暂不可用：qwen-voice-design及目标模型qwen3-tts-vd已于2026-10-10下线，调用会直接返回错误，不发送创建请求，也不计费。
-    官方替代方案voice-enrollment + Qwen-Audio-TTS/CosyVoice尚未接入本MCP。需要设计音色请用 doubao-speech 的 design_voice。
-    已有试听任务仍可用recover_job补交付。
+def design_voice(voice_prompt: str, preview_text: str, target_model: str = "qwen-audio-3.0-tts-flash",
+                 prefix: str = "custom", language: str | None = None, sample_rate: int = 24000,
+                 response_format: str = "wav", out_dir: str | None = None) -> dict:
+    """声音设计：用 voice-enrollment（action=create_voice）按文字描述创建音色，返回 voice（音色 ID）并保存试听音频。创建免费。
+    - voice_prompt：声音描述，仅中英文，≤500 字符，如「沉稳的中年男性，语速缓慢，音色低沉有磁性」。描述声音特质，不要求模仿真人。
+    - preview_text：试听文本，15–200 字符，中英文。
+    - target_model：默认 qwen-audio-3.0-tts-flash；可选 qwen-audio-3.0-tts-plus、qwen-audio-3.1-tts-flash、
+      cosyvoice-v3.5-plus/v3.5-flash/v3-plus/v3-flash。音色只能用于该模型。
+    - prefix：1–10 位字母或数字；音色 ID 形如 {target_model}-vd-{prefix}-{唯一标识}。
+    - language：zh 或 en，须与 preview_text 语种一致。sample_rate=16000/24000/48000，response_format=wav/mp3/pcm。
+    音色 ID 先于试听文件记入本地任务；试听下载失败可用 recover_job 补交付，不会重新创建。设计带随机性，可多次生成择优。
+    返回 job_id、job_state、artifacts、files、voice、target_model、error。北京地域能力。
     """
-    return products.design_voice(voice_prompt, preview_text, target_model, preferred_name, target_dir(out_dir), MODE)
+    return products.design_voice(voice_prompt, preview_text, target_model, prefix, target_dir(out_dir), MODE,
+                                 language, sample_rate, response_format)
 
 
 @mcp.tool()
-def list_voices(kind: str = "clone", page_index: int = 0, page_size: int = 20, prefix: str | None = None) -> dict:
-    """分页查询自定义音色。kind=cosyvoice（CosyVoice与Qwen-Audio共享的voice-enrollment，官方现行接口）；
-    clone/design为已下线的Qwen复刻/设计，仅用于查历史音色，云端可能直接拒绝。
-    page_index从0起，page_size=1–100；prefix仅cosyvoice支持。保留目标模型等官方字段。不会创建或删除音色。
+def list_voices(kind: str = "enrollment", page_index: int = 0, page_size: int = 20, prefix: str | None = None) -> dict:
+    """分页查询 voice-enrollment（Qwen-Audio-TTS/CosyVoice）下的全部自定义音色，复刻和设计音色在同一列表。
+    kind 旧值 clone/design/cosyvoice 仍可传，均等价于 enrollment（已下线的 Qwen 复刻/设计音色无法再用于合成）。
+    page_index 从 0 起，page_size=1–100，prefix 按音色名前缀过滤。返回 voice_id、status、创建时间等官方字段。不会创建或删除音色。
     """
     return products.list_voices(kind, page_index, page_size, prefix)
 
 
 @mcp.tool()
-def get_voice(voice: str, kind: str = "clone", max_pages: int = 10) -> dict:
-    """查找音色。Qwen没有单独的详情接口，clone/design从分页列表查找，最多max_pages页；cosyvoice走query_voice。
-    达到页数上限会明确返回尚不能判断，不能视为音色不存在。
+def get_voice(voice: str, kind: str = "enrollment", max_pages: int | None = None) -> dict:
+    """查询自定义音色详情（voice-enrollment query_voice）：status（DEPLOYING 审核中 / OK 可用 / UNDEPLOYED 未通过）、
+    target_model（合成时必须用的模型）、创建时间等。kind 旧值 clone/design/cosyvoice 等价；max_pages 仅为兼容旧调用保留，不再使用。
     """
-    return products.get_voice(voice, kind, max_pages)
+    return products.get_voice(voice, kind)
 
 
 @mcp.tool()
@@ -354,7 +378,7 @@ def get_job(job_id: str | None = None, task_id: str | None = None, wait: int = 0
 
 @mcp.tool()
 def recover_job(job_id: str, wait: int = 0) -> dict:
-    """修复交付或续做（正常查进度用 get_job）：视频查原task_id；图片/试听只补下载；TTS跳过已合成分段并继续尚未提交的分段（这些分段仍会计费）。
+    """修复交付或续做（正常查进度用 get_job）：视频查原task_id；图片/设计音色试听只补下载、不重建音色；TTS跳过已合成分段并继续尚未提交的分段（这些分段仍会计费）。
     状态未知的同步请求不自动重试。校验完整文件后跳过；wait=0视频查一次，最多90秒。临时结果过期可能无法恢复。
     """
     if not 0 <= wait <= 90:
@@ -372,9 +396,10 @@ def list_capabilities() -> dict:
                       "video": ["generate_video", "edit_video", "animate_portrait"],
                       "retrieval": ["embed", "rerank"], "jobs": ["list_jobs", "get_job", "recover_job"]},
             "docs": products.DOCS,
-            "limits": ["Qwen声音复刻/设计及qwen3-tts-instruct/vc/vd已于2026-10-10下线，clone_voice/design_voice暂不可用",
-                       "voice-enrollment音色可查询，但Qwen-Audio-TTS/CosyVoice合成尚未接入",
-                       "TTS仅支持非实时qwen3-tts-flash，实时模型尚未接入", "恢复锁使用POSIX flock，面向macOS/Linux",
+            "limits": ["clone_voice/design_voice走voice-enrollment，默认target_model为qwen-audio-3.0-tts-flash；复刻只接受公网http(s)音频URL",
+                       "TTS支持非实时qwen3-tts-flash（multimodal-generation）及Qwen-Audio-TTS/CosyVoice（SpeechSynthesizer，支持instruction）；实时/WebSocket模型尚未接入",
+                       "Qwen-Audio-TTS/CosyVoice与voice-enrollment官方仅北京地域完整支持；本地按250字分段，官方未写单次文本上限",
+                       "speech_to_text只放行qwen3-asr-flash，已下线日期快照本地拒绝", "恢复锁使用POSIX flock，面向macOS/Linux",
                        "地域、服务开通及实际输出规格尚需后续测试"]}
 
 
