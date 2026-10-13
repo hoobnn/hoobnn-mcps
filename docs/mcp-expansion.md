@@ -9,7 +9,7 @@
 | Seedance生成、任务查询、编辑/延长提示词与高级参数 | 已阅读官方文档 | 已写入volcengine-ark包 | 待用户开启测试阶段 |
 | 方舟Chat / Responses、多模态、深度思考、搜索、JSON | 已阅读官方文档 | 已写入volcengine-ark包 | 同上 |
 | 方舟文本/多模态向量 | 已阅读官方文档 | 已写入volcengine-ark包 | 同上 |
-| 百炼Qwen复刻、设计、分页列表和音色查找 | 已阅读官方文档 | 已写入ali-bailian包 | 同上 |
+| 百炼voice-enrollment复刻、设计、分页列表和音色详情（2026-10-13迁移） | 已阅读官方文档 | 已写入ali-bailian包 | 同上 |
 | 百炼HappyHorse视频编辑、wan2.2-s2v数字人 | 已阅读官方文档 | 已写入ali-bailian包 | 同上 |
 | 百炼文本/多模态向量、文本重排序 | 已阅读官方文档 | 已写入ali-bailian包 | 同上 |
 | 图片、视频、百炼分段TTS、音色设计试听恢复 | 本地设计审阅 | 已写入两个包 | 同上 |
@@ -30,8 +30,8 @@
 - `ok`保留为布尔字段，但生成工具只有全交付才返回true；部分成功保留files并返回partial/error。读取工具的ok只表示读取成功。
 - 产物metadata优先读取PNG头；其他媒体可选调用已安装ffprobe，返回实际规格或available=false，不用请求参数冒充实际尺寸。
 - 静态 `list_capabilities` 返回not_tested/account_verified=false，不把官方存在的能力等同于当前账号可用。
-- Qwen音色没有单独详情查询，get_voice使用分页列表查找；达到上限明确报告未完成查找。
-- 自定义音色仅创建Qwen非实时VC/VD并接入对应TTS；不把CosyVoice/Qwen-Audio的不同合成端点混用。
+- 音色统一走voice-enrollment：get_voice用query_voice，list_voices用list_voice；kind旧值clone/design/cosyvoice映射到同一接口。
+- 自定义音色绑定Qwen-Audio-TTS/CosyVoice的target_model，text_to_speech按模型名路由SpeechSynthesizer；qwen3-tts-flash仍走multimodal-generation，两种端点不混用。
 - 本地视频/音频自动上传目前只在百炼实现；方舟使用公网URL/asset ID。模型细节限制继续由服务端校验。
 - 不自动调用模型返回的Function Calling，不自动创建知识库，不自动购买或开通服务。
 
@@ -39,7 +39,7 @@
 
 | 能力 | 路径与关键字段 | 来源 |
 |---|---|---|
-| 百炼音色 | `/api/v1/services/audio/tts/customization`；model=qwen-voice-enrollment/qwen-voice-design，input.action=create/list（2026-10-10 下线，创建已停用）；CosyVoice=query_voice | [复刻](https://help.aliyun.com/en/model-studio/voice-clone-design-http-api)、[设计](https://help.aliyun.com/zh/model-studio/voice-design-api-references) |
+| 百炼音色 | `/api/v1/services/audio/tts/customization`；model=voice-enrollment，input.action=create_voice/list_voice/query_voice（复刻传公网url+prefix，设计传voice_prompt+preview_text+prefix）；合成走`/api/v1/services/audio/tts/SpeechSynthesizer` | [复刻](https://help.aliyun.com/zh/model-studio/voice-clone-design-http-api)、[设计](https://help.aliyun.com/zh/model-studio/voice-design-api-references)、[Qwen-Audio-TTS](https://help.aliyun.com/zh/model-studio/qwen-audio-tts-http-api)、[CosyVoice](https://help.aliyun.com/zh/model-studio/cosyvoice-tts-http-api) |
 | 百炼编辑 | `/api/v1/services/aigc/video-generation/video-synthesis`；happyhorse-1.0-video-edit，input.media的video/reference_image | [编辑](https://help.aliyun.com/en/model-studio/happyhorse-video-edit-api-reference) |
 | 百炼数字人 | `/api/v1/services/aigc/image2video/video-synthesis`；input.image_url/audio_url | [数字人](https://help.aliyun.com/zh/model-studio/wan-s2v-api) |
 | 百炼多模态向量 | `/api/v1/services/embeddings/multimodal-embedding/multimodal-embedding`；input.contents | [API](https://help.aliyun.com/en/model-studio/multimodal-embedding-api-reference) |
@@ -54,7 +54,7 @@
 以下仅是后续验收清单，本轮没有执行，也没有新增测试文件。
 
 1. 工具schema、模块导入、独立安装包和原有工具兼容。
-2. API请求体、模型地域、Qwen音色分页、两种rerank接口及Responses多模态内容转换。
+2. API请求体、模型地域、voice-enrollment音色查询、两种rerank接口及Responses多模态内容转换。
 3. 图片4项中1项下载失败，重启补下载：生成API只调用一次，完整文件不重复下载。
 4. 视频提交后工具超时，从list_jobs找回task_id并接续；未知提交不得自动重投。
 5. TTS成功分段保留、未知段不重投、明确拒绝段可显式接续、采样参数不一致时拒绝拼接。

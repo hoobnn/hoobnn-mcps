@@ -2,6 +2,7 @@
 import base64
 import copy
 import json
+import re
 from pathlib import Path
 
 from .dashscope import encode_image, request
@@ -19,18 +20,38 @@ DOCS = {
     "video": "https://help.aliyun.com/zh/model-studio/wan3-video-generation-api-reference",
     "models": "https://help.aliyun.com/zh/model-studio/list-models",
     "upload": "https://help.aliyun.com/zh/model-studio/get-temporary-file-url",
-    "voice_clone": "https://help.aliyun.com/en/model-studio/voice-clone-design-http-api",
+    "tts_models": "https://help.aliyun.com/zh/model-studio/tts-model",
+    "tts_qwen_audio": "https://help.aliyun.com/zh/model-studio/qwen-audio-tts-http-api",
+    "tts_cosyvoice": "https://help.aliyun.com/zh/model-studio/cosyvoice-tts-http-api",
+    "tts_instruction": "https://help.aliyun.com/zh/model-studio/non-realtime-tts-user-guide",
+    "voice_clone": "https://help.aliyun.com/zh/model-studio/voice-clone-design-http-api",
+    "voice_clone_guide": "https://help.aliyun.com/zh/model-studio/voice-cloning-user-guide",
     "voice_design": "https://help.aliyun.com/zh/model-studio/voice-design-api-references",
+    "voice_design_guide": "https://help.aliyun.com/zh/model-studio/voice-design-user-guide",
     "video_edit": "https://help.aliyun.com/en/model-studio/happyhorse-video-edit-api-reference",
     "portrait": "https://help.aliyun.com/zh/model-studio/wan-s2v-api",
     "embedding": "https://help.aliyun.com/zh/model-studio/embedding",
     "multimodal_embedding": "https://help.aliyun.com/en/model-studio/multimodal-embedding-api-reference",
     "rerank": "https://help.aliyun.com/zh/model-studio/text-rerank-api",
 }
-VOICE_MODELS = {"clone": "qwen-voice-enrollment", "design": "qwen-voice-design", "cosyvoice": "voice-enrollment"}
-# 官方公告 118331/118434：2026-10-10 下线 qwen-voice-design 及全部 qwen3-tts-vc/vd；复刻/设计文档只保留 voice-enrollment。
-QWEN_VOICE_RETIRED = ("qwen-voice-design及qwen3-tts-vc/vd已于2026-10-10下线，qwen-voice-enrollment已从官方文档移除；"
-                      "官方替代为voice-enrollment + Qwen-Audio-TTS/CosyVoice，本MCP尚未接入其合成协议，未发送创建请求")
+ENROLLMENT = "voice-enrollment"
+DEFAULT_VOICE_TARGET = "qwen-audio-3.0-tts-flash"
+# 声音复刻/设计支持的 HTTP 非实时合成模型（voice-cloning-user-guide / voice-design-user-guide「支持的模型与地域」）。
+CLONE_TARGETS = ("qwen-audio-3.0-tts-plus", "qwen-audio-3.1-tts-flash", "qwen-audio-3.0-tts-flash",
+                 "cosyvoice-v3.5-plus", "cosyvoice-v3.5-flash", "cosyvoice-v3-plus", "cosyvoice-v3-flash", "cosyvoice-v2")
+DESIGN_TARGETS = CLONE_TARGETS[:-1]
+# language_hints 仅以下复刻模型支持，取值见复刻API正文。
+CLONE_LANGUAGES = {
+    "qwen-audio-3.0-tts-plus": {"zh", "en", "fr", "de", "ja", "ko", "ru", "pt", "th", "id", "vi", "it", "es", "ms", "fil", "ar"},
+    "qwen-audio-3.0-tts-flash": {"zh", "en", "fr", "de", "ja", "ko", "ru", "pt", "th", "id", "vi", "it", "es", "ms", "fil", "ar"},
+    "qwen-audio-3.1-tts-flash": None,  # 支持该参数，正文未列取值，交由服务端校验
+    "cosyvoice-v3-plus": {"zh", "en", "fr", "de", "ja", "ko", "ru"},
+    **{m: {"zh", "en", "fr", "de", "ja", "ko", "ru", "pt", "th", "id", "vi"}
+       for m in ("cosyvoice-v3.5-plus", "cosyvoice-v3.5-flash", "cosyvoice-v3-flash")},
+}
+VOICE_KINDS = ("enrollment", "cosyvoice", "clone", "design")  # 后三个为旧值，统一映射到 voice-enrollment
+LOCAL_AUDIO_REJECTED = ("voice-enrollment复刻要求公网可访问的音频URL（http/https）；官方未说明该接口接受百炼临时上传的oss://地址"
+                        "（临时文件私有、与模型绑定），本MCP不自动上传本地文件或data URL。请先把音频放到可公网访问的位置")
 
 
 def api(path, body, timeout=120):
@@ -42,27 +63,101 @@ def api(path, body, timeout=120):
 
 def voice_result(response, error):
     output = (response or {}).get("output") or {}
-    return {"ok": not error, "voice": output.get("voice") or output.get("voice_id"),
+    return {"ok": not error, "voice": output.get("voice_id") or output.get("voice"),
             "target_model": output.get("target_model"), "output": output,
             "usage": (response or {}).get("usage"), "request_id": (response or {}).get("request_id"), "error": error}
 
 
-def clone_voice(audio, target_model, preferred_name, text=None, language=None):
-    return {"ok": False, "target_model": target_model, "error": QWEN_VOICE_RETIRED}
+def check_prefix(prefix):
+    if not re.fullmatch(r"[A-Za-z0-9]{1,10}", prefix or ""):
+        return "prefix仅允许英文字母和数字，1–10个字符"
+    return None
 
 
-def design_voice(voice_prompt, preview_text, target_model, preferred_name, out_dir, mode):
-    return {"ok": False, "target_model": target_model, "error": QWEN_VOICE_RETIRED}
+def clone_voice(audio, target_model=DEFAULT_VOICE_TARGET, prefix="custom", language=None,
+                enable_preprocess=None, max_prompt_audio_length=None):
+    """voice-enrollment create_voice（复刻）：只接受公网 http(s) 音频 URL。"""
+    if target_model not in CLONE_TARGETS:
+        return {"ok": False, "error": "target_model须为支持声音复刻的HTTP合成模型：" + "、".join(CLONE_TARGETS)}
+    error = check_prefix(prefix)
+    if not error and not (audio or "").startswith(("http://", "https://")):
+        error = LOCAL_AUDIO_REJECTED
+    advanced = target_model in CLONE_LANGUAGES  # language_hints/预处理/时长参数的支持范围一致
+    if not error and language is not None:
+        allowed = CLONE_LANGUAGES.get(target_model, set())
+        if not advanced or (allowed is not None and language not in allowed):
+            error = f"{target_model}不支持language={language}"
+    if not error and (enable_preprocess is not None or max_prompt_audio_length is not None):
+        if not advanced or target_model == "cosyvoice-v3-plus":
+            error = f"{target_model}不支持enable_preprocess/max_prompt_audio_length"
+        elif max_prompt_audio_length is not None and not 3.0 <= max_prompt_audio_length <= 30.0:
+            error = "max_prompt_audio_length范围3.0–30.0秒"
+    if error:
+        return {"ok": False, "target_model": target_model, "error": error}
+    inp = {"action": "create_voice", "target_model": target_model, "prefix": prefix, "url": audio}
+    if language:
+        inp["language_hints"] = [language]
+    if enable_preprocess is not None:
+        inp["enable_preprocess"] = enable_preprocess
+    if max_prompt_audio_length is not None:
+        inp["max_prompt_audio_length"] = max_prompt_audio_length
+    response, error = api(CUSTOMIZATION, {"model": ENROLLMENT, "input": inp})
+    result = voice_result(response, error)
+    if result["ok"] and not result["voice"]:
+        result.update(ok=False, error="响应没有音色ID，不自动重新创建；请用list_voices按prefix核对")
+    result["target_model"] = result.get("target_model") or target_model
+    if result["ok"]:
+        result["next"] = "音色需审核，get_voice的status为OK后再用text_to_speech（model须与target_model一致）"
+    return result
+
+
+def design_voice(voice_prompt, preview_text, target_model, prefix, out_dir, mode, language=None,
+                 sample_rate=24000, response_format="wav"):
+    """voice-enrollment create_voice（设计）：创建音色并交付试听音频。"""
+    if not (voice_prompt or "").strip() or len(voice_prompt) > 500 or not 15 <= len((preview_text or "").strip()) <= 200:
+        return {"ok": False, "error": "voice_prompt须为1–500字符，preview_text须为15–200字符（仅中英文）"}
+    if target_model not in DESIGN_TARGETS:
+        return {"ok": False, "error": "target_model须为支持声音设计的HTTP合成模型：" + "、".join(DESIGN_TARGETS)}
+    error = check_prefix(prefix)
+    if not error and language not in (None, "zh", "en"):
+        error = "声音设计language只支持zh或en，且须与preview_text语种一致"
+    if not error and (sample_rate not in (16000, 24000, 48000) or response_format not in ("pcm", "wav", "mp3")):
+        error = "sample_rate=16000/24000/48000，response_format=pcm/wav/mp3"
+    if error:
+        return {"ok": False, "error": error}
+    inp = {"action": "create_voice", "target_model": target_model, "voice_prompt": voice_prompt,
+           "preview_text": preview_text, "prefix": prefix}
+    if language:
+        inp["language_hints"] = [language]
+    body = {"model": ENROLLMENT, "input": inp,
+            "parameters": {"sample_rate": sample_rate, "response_format": response_format}}
+    job = STORE.create("voice_preview", target_model, out_dir, mode, summary={"prefix": prefix})
+    with STORE.processing(job):
+        response, error = api(CUSTOMIZATION, body)
+        result = voice_result(response, error)
+        result["target_model"] = result.get("target_model") or target_model
+        # Store the voice ID before delivering preview audio; download errors must not create another voice.
+        job.update(request_id=result["request_id"], usage=result["usage"], result={k: v for k, v in result.items() if k != "output"})
+        STORE.save(job)
+        if error or not result["voice"]:
+            definitive = bool(error) and (error.startswith(("HTTP 4", "未设置")) or bool(response and response.get("code")))
+            job.update(error=error or "响应缺少音色ID，不自动重新创建；请用list_voices按prefix核对",
+                       state="failed" if definitive else "unknown")
+            STORE.save(job)
+            return STORE.result(job)
+        STORE.record_response(job, response)
+        return deliver_preview(job, response)
 
 
 def deliver_preview(job, response):
     output = response.get("output") or {}
     preview = output.get("preview_audio") or {}
+    ext = {"mp3": "mp3", "pcm": "pcm"}.get(preview.get("response_format"), "wav")
     try:
         if preview.get("data"):
-            STORE.add(job, "preview.wav", data=base64.b64decode(preview["data"], validate=True))
+            STORE.add(job, f"preview.{ext}", data=base64.b64decode(preview["data"], validate=True))
         elif preview.get("url"):
-            STORE.add(job, "preview.wav", url=preview["url"])
+            STORE.add(job, f"preview.{ext}", url=preview["url"])
     except (OSError, ValueError) as exc:
         job.update(state="unknown", error=f"音色已创建，试听音频留档失败：{exc}")
         STORE.save(job)
@@ -74,38 +169,27 @@ def deliver_preview(job, response):
     return STORE.result(job)
 
 
-def list_voices(kind, page_index=0, page_size=20, prefix=None):
-    if kind not in VOICE_MODELS or page_index < 0 or not 1 <= page_size <= 100:
-        return {"ok": False, "error": "kind=clone/design/cosyvoice，page_index>=0，page_size=1–100"}
-    inp = {"action": "list_voice" if kind == "cosyvoice" else "list", "page_index": page_index, "page_size": page_size}
+def list_voices(kind="enrollment", page_index=0, page_size=20, prefix=None):
+    """clone/design/cosyvoice 旧值统一映射到 voice-enrollment list_voice（复刻与设计共用同一列表）。"""
+    if kind not in VOICE_KINDS or page_index < 0 or not 1 <= page_size <= 100:
+        return {"ok": False, "error": "kind=enrollment（旧值clone/design/cosyvoice等价），page_index>=0，page_size=1–100"}
+    inp = {"action": "list_voice", "page_index": page_index, "page_size": page_size}
     if prefix:
-        if kind != "cosyvoice":
-            return {"ok": False, "error": "prefix过滤只支持cosyvoice"}
         inp["prefix"] = prefix
-    response, error = api(CUSTOMIZATION, {"model": VOICE_MODELS[kind], "input": inp})
+    response, error = api(CUSTOMIZATION, {"model": ENROLLMENT, "input": inp})
     output = (response or {}).get("output") or {}
-    return {"ok": not error, "voices": output.get("voice_list") or [], "output": output,
+    return {"ok": not error, "voices": output.get("voice_list") or [], "output": output, "kind": "enrollment",
             "request_id": (response or {}).get("request_id"), "usage": (response or {}).get("usage"), "error": error}
 
 
-def get_voice(voice, kind, max_pages=10):
-    if kind == "cosyvoice":
-        response, error = api(CUSTOMIZATION, {"model": "voice-enrollment", "input": {"action": "query_voice", "voice_id": voice}})
-        return voice_result(response, error)
-    if kind not in ("clone", "design") or not 1 <= max_pages <= 100:
-        return {"ok": False, "error": "kind=clone/design/cosyvoice，max_pages=1–100"}
-    # Qwen has no query-details operation. Search the paginated list honestly.
-    for page in range(max_pages):
-        result = list_voices(kind, page, 100)
-        if not result["ok"]:
-            return result
-        for item in result["voices"]:
-            if (item.get("voice") or item.get("voice_id")) == voice:
-                return {"ok": True, "voice": voice, "output": item, "source": "voice_list", "error": None}
-        total = result["output"].get("total_count")
-        if len(result["voices"]) < 100 or (total is not None and (page + 1) * 100 >= total):
-            return {"ok": False, "error": "完整列表中未找到此音色", "voice": voice}
-    return {"ok": False, "error": "达到max_pages，尚不能判断音色是否存在", "voice": voice}
+def get_voice(voice, kind="enrollment"):
+    if kind not in VOICE_KINDS or not voice:
+        return {"ok": False, "error": "需voice；kind=enrollment（旧值clone/design/cosyvoice等价）"}
+    response, error = api(CUSTOMIZATION, {"model": ENROLLMENT, "input": {"action": "query_voice", "voice_id": voice}})
+    result = voice_result(response, error)
+    result["voice"] = voice
+    result["status"] = result["output"].get("status")
+    return result
 
 
 def submit_video(body, out_dir, wait, mode, path="/api/v1/services/aigc/video-generation/video-synthesis", oss=False):

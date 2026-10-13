@@ -1552,6 +1552,90 @@
       }
     },
     {
+      "key": "ali-bailian/bailian-tts-cosyvoice",
+      "server": "ali-bailian",
+      "id": "bailian-tts-cosyvoice",
+      "url": "https://help.aliyun.com/zh/model-studio/cosyvoice-tts-http-api",
+      "fetch_url": "https://help.aliyun.com/zh/model-studio/cosyvoice-tts-http-api.md",
+      "kind": "api",
+      "tools": [
+        "text_to_speech"
+      ],
+      "sha256": "ff56159fd16ffc7de30005f9438d435e977caa3fd8417121a1a7dfa54f755756",
+      "bytes": 18798,
+      "models": [
+        "CosyVoice",
+        "cosyvoice-v2",
+        "cosyvoice-v3-flash",
+        "cosyvoice-v3-plus",
+        "cosyvoice-v3.5-flash",
+        "cosyvoice-v3.5-plus",
+        "cosyvoice-voice-list"
+      ],
+      "endpoints": [
+        "https://{WorkspaceId}.cn-beijing.maas.aliyuncs.com/api/v1/services/audio/tts/SpeechSynthesizer"
+      ],
+      "doc_links": [],
+      "title": "非实时语音合成CosyVoice HTTP API参考",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "text/markdown;charset=UTF-8"
+      }
+    },
+    {
+      "key": "ali-bailian/bailian-tts-guide",
+      "server": "ali-bailian",
+      "id": "bailian-tts-guide",
+      "url": "https://help.aliyun.com/zh/model-studio/non-realtime-tts-user-guide",
+      "fetch_url": "https://help.aliyun.com/zh/model-studio/non-realtime-tts-user-guide.md",
+      "kind": "guide",
+      "tools": [
+        "text_to_speech"
+      ],
+      "sha256": "fb7b0e6c3574798aa32dbde13fa1eb8a5de6aab83c637baf91f28bf2a1b0b9ff",
+      "bytes": 27682,
+      "models": [
+        "CosyVoice",
+        "Qwen-Audio-TTS",
+        "Qwen-TTS",
+        "Qwen3-TTS",
+        "Qwen3-TTS-Flash",
+        "cosyvoice-api",
+        "cosyvoice-v2",
+        "cosyvoice-v3-flash",
+        "cosyvoice-v3-plus",
+        "cosyvoice-v3.5-flash",
+        "cosyvoice-v3.5-plus",
+        "cosyvoice-voice-list",
+        "minimax-speech-synthesis",
+        "qwen-audio-3.0-tts-flash",
+        "qwen-audio-3.0-tts-plus",
+        "qwen-audio-3.1-tts-flash",
+        "qwen-audio-tts-api",
+        "qwen-audio-tts-voice-list",
+        "qwen-tts-api",
+        "qwen-tts-voice-list",
+        "qwen3-tts-flash",
+        "speech-2.8-hd",
+        "speech-2.8-turbo"
+      ],
+      "endpoints": [
+        "https://dashscope.aliyuncs.com/api/v1/services/aigc/multimodal-generation/generation",
+        "https://{WorkspaceId}.cn-beijing.maas.aliyuncs.com/api/v1/services/aigc/multimodal-generation/generation",
+        "https://{WorkspaceId}.cn-beijing.maas.aliyuncs.com/api/v1/services/audio/tts/SpeechSynthesizer"
+      ],
+      "doc_links": [
+        "https://help.aliyun.com/zh/model-studio/get-api-key"
+      ],
+      "title": "非实时语音合成",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "text/markdown;charset=UTF-8"
+      }
+    },
+    {
       "key": "ali-bailian/bailian-tts-models",
       "server": "ali-bailian",
       "id": "bailian-tts-models",
@@ -1588,6 +1672,36 @@
       "endpoints": [],
       "doc_links": [],
       "title": "语音合成概述",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "text/markdown;charset=UTF-8"
+      }
+    },
+    {
+      "key": "ali-bailian/bailian-tts-qwen-audio",
+      "server": "ali-bailian",
+      "id": "bailian-tts-qwen-audio",
+      "url": "https://help.aliyun.com/zh/model-studio/qwen-audio-tts-http-api",
+      "fetch_url": "https://help.aliyun.com/zh/model-studio/qwen-audio-tts-http-api.md",
+      "kind": "api",
+      "tools": [
+        "text_to_speech"
+      ],
+      "sha256": "74e0fff8989d9577285425f7ea23d6f00380aced9442702ee275da5b244548ee",
+      "bytes": 18253,
+      "models": [
+        "Qwen-Audio-TTS",
+        "qwen-audio-3.0-tts-flash",
+        "qwen-audio-3.0-tts-plus",
+        "qwen-audio-3.1-tts-flash",
+        "qwen-audio-tts-voice-list"
+      ],
+      "endpoints": [
+        "https://{WorkspaceId}.cn-beijing.maas.aliyuncs.com/api/v1/services/audio/tts/SpeechSynthesizer"
+      ],
+      "doc_links": [],
+      "title": "非实时语音合成Qwen-Audio-TTS HTTP API参考",
       "headers": {
         "ETag": null,
         "Last-Modified": null,
@@ -1797,6 +1911,53 @@
       }
     },
     {
+      "key": "ali-bailian/bailian-voice-clone-guide",
+      "server": "ali-bailian",
+      "id": "bailian-voice-clone-guide",
+      "url": "https://help.aliyun.com/zh/model-studio/voice-cloning-user-guide",
+      "fetch_url": "https://help.aliyun.com/zh/model-studio/voice-cloning-user-guide.md",
+      "kind": "guide",
+      "tools": [
+        "clone_voice"
+      ],
+      "sha256": "4bee990917ecfab43b9f0db414b415626af3b24c59026cab74da8644357c3d40",
+      "bytes": 25453,
+      "models": [
+        "CosyVoice",
+        "Qwen-Audio-Realtime",
+        "Qwen-Audio-TTS",
+        "cosyvoice-v2",
+        "cosyvoice-v3-flash",
+        "cosyvoice-v3-plus",
+        "cosyvoice-v3.5-flash",
+        "cosyvoice-v3.5-plus",
+        "qwen-audio-3.0-realtime-flash",
+        "qwen-audio-3.0-realtime-plus",
+        "qwen-audio-3.0-tts-flash",
+        "qwen-audio-3.0-tts-plus",
+        "qwen-audio-3.1-realtime-plus",
+        "qwen-audio-3.1-realtime-plus-myvoice-xxxxxx",
+        "qwen-audio-3.1-tts-flash",
+        "speech-2.8-hd",
+        "speech-2.8-turbo"
+      ],
+      "endpoints": [
+        "https://dashscope.aliyuncs.com/api/v1/services/aigc/multimodal-generation/generation",
+        "https://{WorkspaceId}.ap-southeast-1.maas.aliyuncs.com/api/v1/services/audio/tts/customization",
+        "https://{WorkspaceId}.cn-beijing.maas.aliyuncs.com/api/v1/services/audio/tts/customization"
+      ],
+      "doc_links": [
+        "https://help.aliyun.com/zh/model-studio/fun-audiochat-realtime#fc60h311",
+        "https://help.aliyun.com/zh/model-studio/get-api-key"
+      ],
+      "title": "声音复刻",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "text/markdown;charset=UTF-8"
+      }
+    },
+    {
       "key": "ali-bailian/bailian-voice-design",
       "server": "ali-bailian",
       "id": "bailian-voice-design",
@@ -1821,6 +1982,41 @@
       ],
       "doc_links": [],
       "title": "声音设计API参考",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "text/markdown;charset=UTF-8"
+      }
+    },
+    {
+      "key": "ali-bailian/bailian-voice-design-guide",
+      "server": "ali-bailian",
+      "id": "bailian-voice-design-guide",
+      "url": "https://help.aliyun.com/zh/model-studio/voice-design-user-guide",
+      "fetch_url": "https://help.aliyun.com/zh/model-studio/voice-design-user-guide.md",
+      "kind": "guide",
+      "tools": [
+        "design_voice"
+      ],
+      "sha256": "b1964b0ee0c61142d66c9b56aefa02d637ecd8238a9334966d8a7e765a9876f6",
+      "bytes": 9379,
+      "models": [
+        "CosyVoice",
+        "Qwen-Audio-TTS",
+        "cosyvoice-v3-flash",
+        "cosyvoice-v3-plus",
+        "cosyvoice-v3.5-flash",
+        "cosyvoice-v3.5-plus",
+        "qwen-audio-3.0-tts-flash",
+        "qwen-audio-3.0-tts-plus",
+        "qwen-audio-3.1-tts-flash",
+        "qwen-audio-tts-client-events"
+      ],
+      "endpoints": [
+        "https://{workspace_id}.cn-beijing.maas.aliyuncs.com/api/v1/services/audio/tts/customization"
+      ],
+      "doc_links": [],
+      "title": "声音设计",
       "headers": {
         "ETag": null,
         "Last-Modified": null,

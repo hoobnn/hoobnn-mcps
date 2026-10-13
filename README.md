@@ -30,7 +30,7 @@ hoobnn 的个人 MCP server 集合。每个 server 是 `servers/<name>/` 下的�
 | 视频：本地参考视频 / 音频、文档或网页参考 | `ali-bailian` 万相（自动上传） | `volcengine-ark` Seedance（参考素材需公网 URL） |
 | 对话：豆包 Seed | `volcengine-ark` `chat` | — |
 | 对话：千问、DeepSeek、Kimi、GLM 等 | `ali-bailian` `chat` | — |
-| 语音合成、识别、复刻 | `doubao-speech`（中文音色、方言、字幕、长文本、说话人分离） | `ali-bailian`（千问音色；ASR 返回情绪和语种） |
+| 语音合成、识别、复刻 | `doubao-speech`（中文音色、方言、字幕、长文本、说话人分离） | `ali-bailian`（Qwen-Audio-TTS / CosyVoice 复刻、设计与语气指令；ASR 返回情绪和语种） |
 
 各家复刻 / 设计的音色只能在同一家的合成工具里使用。异步任务统一用 `get_job` 查进度，完成后自动下载结果；`recover_job` 只用来修复交付。
 

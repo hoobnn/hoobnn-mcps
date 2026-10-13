@@ -123,6 +123,51 @@
     "fetch_url": "https://help.aliyun.com/zh/model-studio/voice-design-api-references.md"
   },
   {
+    "id": "bailian-tts-qwen-audio",
+    "url": "https://help.aliyun.com/zh/model-studio/qwen-audio-tts-http-api",
+    "tools": [
+      "text_to_speech"
+    ],
+    "kind": "api",
+    "fetch_url": "https://help.aliyun.com/zh/model-studio/qwen-audio-tts-http-api.md"
+  },
+  {
+    "id": "bailian-tts-cosyvoice",
+    "url": "https://help.aliyun.com/zh/model-studio/cosyvoice-tts-http-api",
+    "tools": [
+      "text_to_speech"
+    ],
+    "kind": "api",
+    "fetch_url": "https://help.aliyun.com/zh/model-studio/cosyvoice-tts-http-api.md"
+  },
+  {
+    "id": "bailian-tts-guide",
+    "url": "https://help.aliyun.com/zh/model-studio/non-realtime-tts-user-guide",
+    "tools": [
+      "text_to_speech"
+    ],
+    "kind": "guide",
+    "fetch_url": "https://help.aliyun.com/zh/model-studio/non-realtime-tts-user-guide.md"
+  },
+  {
+    "id": "bailian-voice-clone-guide",
+    "url": "https://help.aliyun.com/zh/model-studio/voice-cloning-user-guide",
+    "tools": [
+      "clone_voice"
+    ],
+    "kind": "guide",
+    "fetch_url": "https://help.aliyun.com/zh/model-studio/voice-cloning-user-guide.md"
+  },
+  {
+    "id": "bailian-voice-design-guide",
+    "url": "https://help.aliyun.com/zh/model-studio/voice-design-user-guide",
+    "tools": [
+      "design_voice"
+    ],
+    "kind": "guide",
+    "fetch_url": "https://help.aliyun.com/zh/model-studio/voice-design-user-guide.md"
+  },
+  {
     "id": "bailian-wan-video",
     "url": "https://help.aliyun.com/zh/model-studio/wan3-video-generation-api-reference",
     "tools": [
