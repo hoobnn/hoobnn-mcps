@@ -1,6 +1,6 @@
 # 官方接口、模型与文档更新核实
 
-日期：2026-10-10。范围为本仓库三个 MCP 暴露的工具、实际调用的 HTTP/WebSocket 接口、管理/旧版分支及固定模型/资源 ID。用户任意传入的模型、提供商全部产品和当前账号授权不能一概标为已验证。
+日期：2026-10-10；MiniMax 于 2026-10-11 补入。范围为本仓库四个 MCP 暴露的工具、实际调用的 HTTP/WebSocket 接口、管理/旧版分支及固定模型/资源 ID。用户任意传入的模型、提供商全部产品和当前账号授权不能一概标为已验证。
 
 ## 逐项审计
 
@@ -9,6 +9,7 @@
 | 火山方舟 | [volcengine-ark.md](audits/volcengine-ark.md) | [sources](audits/volcengine-ark-sources.json) |
 | 阿里百炼 | [ali-bailian.md](audits/ali-bailian.md) | [sources](audits/ali-bailian-sources.json) |
 | 豆包语音 | [doubao-speech.md](audits/doubao-speech.md) | [sources](audits/doubao-speech-sources.json) |
+| MiniMax | [minimax-contracts.md](minimax-contracts.md) | [sources](audits/minimax-sources.json) |
 
 每份报告记录工具到 endpoint、认证、模型/资源、关键字段、限制与完成协议的映射，区分官方确认、差异修正、未接入协议和无法核实项。目录存在不等于账号可调用；HTTP、实时、文件转写等名称相似也不能互换。
 
@@ -42,6 +43,16 @@ GET https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&Doc
 目录由 `getDocList?LibraryCode=ark`、`getDocList?LibraryCode=DoubaoVoice` 获取，用于发现新增/移除页面。旧数字地址可用 `getDocumentCode?LibraryID=...&DocumentID=...` 映射 slug。目录排序和请求元数据不进入正文指纹。
 
 本次火山 `.md/llms.txt/llms-full.txt` 返回 HTTP 200 HTML 壳，不能作为正文成功。上述读取路径是官方前端自用接口，未查到对外稳定性承诺，格式变化应显式修适配器，不能当作正式云产品 OpenAPI。
+
+### MiniMax
+
+中国站接口文档地址追加 `.md` 返回 Mintlify 导出的 Markdown，内含 OpenAPI 3.1 正文：
+
+```bash
+curl --fail --location https://platform.minimax.cn/docs/api-reference/video-generation-v2-create.md
+```
+
+`fetch_kind=minimax_markdown` 要求开头的 `> ## Documentation Index` 索引前言、一级标题、`openapi: 3.1.0` 与 `paths:` 同时存在，缺一即判失败；指纹只计算一级标题起的正文，不含索引前言。范围以 [minimax-sources.json](audits/minimax-sources.json) 登记的 14 个接口页为准，暂无目录发现。
 
 ## 更新检查已落地
 
@@ -103,5 +114,7 @@ python3 scripts/upstream_docs.py --server minimax --accept-baseline
 全部 59 个工具已盘点（Ark 10、Bailian 20、Speech 29，含共享帮助工具），所有远程工具通过 source 覆盖检查。实际抓取 **118/118 成功、0 错误**：Ark 16 篇正文 + 目录，Bailian 27 篇正文，Speech 73 篇正文 + 目录。建立已核实基线后，逐份解压并核验 SHA-256，正文到基线 roundtrip 为零差异。
 
 **220 项测试通过**：Ark 29、Bailian 32、Speech 125、跨包及文档链路 34。包括三个实际 stdio 入口、官方契约回归、HTML 壳/合法表格、文档身份、目录顺序、参数正文 diff、缺失/截断快照及抓取失败不误判删除。共享源码同步与 diff 检查通过。
+
+2026-10-11 补入 MiniMax：17 个工具，14 个中国站 OpenAPI 正文来源纳入覆盖检查、基线和 gzip 快照，其他供应商基线未变；登记来源合计 132 个。验证回执见 [minimax-contracts.md](minimax-contracts.md)。
 
 没有执行真实云端生成、识别、训练或管理操作；模型权限、旧文本向量型号、文本向量 dimensions 等未确认项保留在逐项报告中。远端 CI 状态见 [Actions](https://github.com/hoobnn/hoobnn-mcps/actions/workflows/test.yml)。
