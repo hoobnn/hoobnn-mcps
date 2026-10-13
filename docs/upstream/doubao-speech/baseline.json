@@ -1,6 +1,6 @@
 {
   "format_version": 1,
-  "reviewed_at": "2026-10-13T09:35:03.567039+00:00",
+  "reviewed_at": "2026-10-13T14:35:17.347380+00:00",
   "sources": [
     {
       "key": "doubao-speech/doubao-access-mustread",
@@ -1241,6 +1241,66 @@
       "title": "暂停服务",
       "updated_at": "2026-09-28T13:19:44Z",
       "document_id": "1801942",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-podcast",
+      "server": "doubao-speech",
+      "id": "doubao-podcast",
+      "url": "https://docs.volcengine.com/docs/DoubaoVoice/podcast?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=podcast",
+      "kind": "api",
+      "tools": [
+        "generate_podcast"
+      ],
+      "sha256": "b171698ff7a428e22d04cec21412479461895a98558e8cb964b6a89ecc6ea737",
+      "bytes": 8493,
+      "models": [
+        "seed-tts-2.0-standard"
+      ],
+      "endpoints": [
+        "https://openspeech.bytedance.com/api/v3/podcast/sse"
+      ],
+      "doc_links": [
+        "https://docs.volcengine.com/docs/DoubaoVoice/Tonelist-1?lang=zh",
+        "https://docs.volcengine.com/docs/DoubaoVoice/Tonelist-1?lang=zh)、声音复刻音色。请参考[语音合成接口](https://docs.volcengine.com/docs/DoubaoVoice/unidirectional-streaming-text-to-speech-http?lang=zh)配置自定义附加参数（req_params.additions）",
+        "https://docs.volcengine.com/docs/DoubaoVoice/podcast_mustread?lang=zh",
+        "https://docs.volcengine.com/docs/DoubaoVoice/tone-training-http?lang=zh)生成的音色"
+      ],
+      "title": "语音播客",
+      "updated_at": "2026-10-12T07:34:57Z",
+      "document_id": "2708572",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-podcast-mustread",
+      "server": "doubao-speech",
+      "id": "doubao-podcast-mustread",
+      "url": "https://docs.volcengine.com/docs/DoubaoVoice/podcast_mustread?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=podcast_mustread",
+      "kind": "guide",
+      "tools": [
+        "generate_podcast"
+      ],
+      "sha256": "e8ddce704d0c96556ca82f99e6b2665271adf42154824fb4b4d5954ef190ac21",
+      "bytes": 10614,
+      "models": [],
+      "endpoints": [],
+      "doc_links": [
+        "https://docs.volcengine.com/docs/DoubaoVoice/Tonelist",
+        "https://docs.volcengine.com/docs/DoubaoVoice/tone-training-http?lang=zh"
+      ],
+      "title": "语音播客",
+      "updated_at": "2026-10-12T07:32:54Z",
+      "document_id": "2709746",
       "headers": {
         "ETag": null,
         "Last-Modified": null,

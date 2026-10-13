@@ -219,6 +219,7 @@ async def synthesize(request, out_dir, mode="bidirectional", text_chunks=None, r
 async def podcast(request, out_dir):
     result = {"ok": False, "files": [], "rounds": [], "usage": [], "error": None}
     audio = bytearray()
+    complete = 0  # Bytes through the last round ended by 362 without is_error.
     try:
         body = copy.deepcopy(request)
         if not isinstance(body, dict):
@@ -273,6 +274,7 @@ async def podcast(request, out_dir):
                 elif event == 362:
                     if data.get("is_error"):
                         raise speech.InputError(data.get("error_msg", "播客轮次失败"))
+                    complete = len(audio)
                     if result["rounds"]:
                         result["rounds"][-1]["timing"] = data
                         result["last_finished_round_id"] = result["rounds"][-1].get("round_id")
@@ -291,7 +293,11 @@ async def podcast(request, out_dir):
         result["ok"] = True
     except (OSError, ValueError, KeyError, TypeError, asyncio.TimeoutError, websockets.exceptions.WebSocketException) as exc:
         result["error"] = str(exc) or "WebSocket 超时"
-    # Preserve received audio on a disconnect for diagnosis and explicit resume.
+    # Official resume keeps only fully received rounds and replays the unfinished
+    # one, so a partial file must stop at the last successful 362.
+    if not result["ok"] and len(audio) > complete:
+        result["discarded_bytes"] = len(audio) - complete
+        del audio[complete:]
     if audio:
         try:
             out_dir = Path(out_dir)

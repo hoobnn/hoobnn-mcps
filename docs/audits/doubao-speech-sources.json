@@ -288,6 +288,24 @@
     "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=PauseService-SuspendService"
   },
   {
+    "id": "doubao-podcast",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/podcast?lang=zh",
+    "tools": [
+      "generate_podcast"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=podcast"
+  },
+  {
+    "id": "doubao-podcast-mustread",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/podcast_mustread?lang=zh",
+    "tools": [
+      "generate_podcast"
+    ],
+    "kind": "guide",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=podcast_mustread"
+  },
+  {
     "id": "doubao-podcastapi-websocket-v3protocol",
     "url": "https://docs.volcengine.com/docs/DoubaoVoice/PodcastAPI-websocket-v3protocol?lang=zh",
     "tools": [

@@ -128,6 +128,11 @@ class FakeWebSocket:
                     await self.queue.put(server_frame(153, {"message": "disconnected"}))
                 elif self.failure == "round":
                     await self.queue.put(server_frame(362, {"is_error": True, "error_msg": "round failed"}))
+                elif self.failure == "second_round":
+                    await self.queue.put(server_frame(362, {"audio_duration": 1.2, "start_time": 0, "end_time": 1.2}))
+                    await self.queue.put(server_frame(360, {"round_id": 1, "speaker": "voice", "text": "again"}))
+                    await self.queue.put(server_frame(361, b" unfinished", kind=11))
+                    await self.queue.put(server_frame(153, {"message": "disconnected"}))
                 else:
                     await self.queue.put(server_frame(362, {"audio_duration": 1.2, "start_time": 0, "end_time": 1.2}))
                     await self.queue.put(server_frame(154, {"usage": {"output_audio_tokens": 10}}))
@@ -215,16 +220,26 @@ class SessionTests(unittest.IsolatedAsyncioTestCase):
         self.assertTrue(result["ok"], result["error"])
         self.assertEqual(result["files"], [])
 
-    async def test_podcast_failure_preserves_explicit_partial_audio(self):
+    async def test_podcast_failure_keeps_only_completed_rounds_for_resume(self):
+        # podcast_mustread: discard chunks of the unfinished round before retry_info resume.
         for failure in ("disconnect", "round"):
             with self.subTest(failure=failure):
                 fake = FakeWebSocket("podcast", failure=failure)
                 with patch.object(ws.websockets, "connect", return_value=fake):
                     result = await ws.podcast({"input_text": "科技"}, self.output)
                 self.assertFalse(result["ok"])
-                self.assertIn(".partial.", result["files"][0])
-                self.assertEqual(Path(result["files"][0]).read_bytes(), b"podcast audio")
+                self.assertEqual(result["files"], [])
+                self.assertEqual(result["discarded_bytes"], len(b"podcast audio"))
+                self.assertIsNone(result["last_finished_round_id"])
                 self.assertTrue(fake.closed)
+        fake = FakeWebSocket("podcast", failure="second_round")
+        with patch.object(ws.websockets, "connect", return_value=fake):
+            result = await ws.podcast({"input_text": "科技"}, self.output)
+        self.assertFalse(result["ok"])
+        self.assertIn(".partial.", result["files"][0])
+        self.assertEqual(Path(result["files"][0]).read_bytes(), b"podcast audio")
+        self.assertEqual(result["discarded_bytes"], len(b" unfinished"))
+        self.assertEqual(result["last_finished_round_id"], 0)
 
     async def test_podcast_save_failure_is_structured_error(self):
         fake = FakeWebSocket("podcast")

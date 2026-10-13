@@ -14,6 +14,16 @@
 
 新增回归测试覆盖上述官方契约，含独立手工编码 protobuf wire fixture。0.4.0 后豆包语音共 **132 项离线测试通过**。这证明本地实现与已取得文档/协议样本相符，不证明账号开通、生产可用、实际模型效果或每个音色授权。
 
+## 2026-10-13 上游文档复核
+
+每日检查（PR #4，review `faea4e3c…`）报告 74/74 抓取成功、3 项正文变化。逐条对照 diff、全文快照与实现后结论：
+
+- **实时 3.0（endtoend-realtime-voice-full-duplex-version）：无实质契约变化。** 事件表删去 `response.output_audio.done` 的示例值 `status_code="20000002"`；`enable_user_query_exit` 字段说明仍写明退出意图信号随该事件下发。实现原样透传 session 字段和全部事件，从不依据该值判断，无需修改。具体信号取值以服务实际返回为准，不再在本地写死 20000002。
+- **音色列表（Tonelist-1）：新增音色，无需改代码。** 2.0 外语音色新增 21 个印尼语、越南语、西班牙语、马来语、泰语、美式英语、日语、菲律宾语、墨西哥西语、意大利语、巴西葡萄牙语音色，ID 均为 `*_uranus_bigtts`，`text_to_speech` 的命名启发式会自动选 `seed-tts-2.0`。其中 12 个有声阅读音色「仅限单向流，双向流调用直接报错」，原文「16 个」改为「个别」。`speech_raw_request(product='tts_websocket', mode='bidirectional')` 不在本地维护单向流音色黑名单，这类错误由服务端返回。
+- **目录（DoubaoVoice 索引）：新增 `podcast`、`podcast_mustread`，有实质内容，已登记为 `generate_podcast` 的来源。** 两篇文档描述新的 HTTP SSE 接口 `POST /api/v3/podcast/sse`，资源同为 `volc.service_type.10050`。请求体（action 0/3/4、input_text/prompt_text/nlp_texts 限制、input_info、speaker_info 两位发音人、audio_config 的格式和采样率、retry_info）和事件 150/360/361/362/363/154/152 与现有 WebSocket 实现一致。原 [WebSocket 播客](https://docs.volcengine.com/docs/DoubaoVoice/PodcastAPI-websocket-v3protocol?lang=zh) 仍在目录中（索引 Status=2，新文档 Status=5），本次不切换传输。新文档在断点续传上写得更明确：只保留收到 362 且未标记 `is_error` 的完整轮次，未完成轮次的音频分片必须丢弃。原实现会把未完成轮次的分片也写进 `.partial.*`，续传后拼接会出现重复片段，**已修正**：失败时 partial 文件截到最后一个成功的 362，丢弃的字节数写入 `discarded_bytes`。已补回归测试。`return_audio_url` 链接有效期：WebSocket 文档写 1 小时，SSE 文档写 24 小时，按 1 小时保守提示。SSE 专属的 151 SessionCanceled / 153 SessionFailed、`:keep-alive` 注释行等不适用于当前 WebSocket 路径。
+
+其余 71 个来源正文指纹未变，沿用 2026-10-10 的结论。新登记的两个来源已写入本 PR 的待审基线。
+
 ## 本轮实际获取方式
 
 普通文档网页在 HTTP 抓取及 web.open 中是 JavaScript 空壳；追加 `.md` 和 `https://docs.volcengine.com/llms.txt` 同样返回 HTTP 200 HTML，不能算正文获取成功。
@@ -50,7 +60,7 @@
 | `manage_word_table` | 热词API Key proxy `/api/proxy/invoke?Action=...`；或OpenAPI AK/SK | 热词version=2022-08-30；替换词version=2023-10-30；region=cn-north-1 | [热词](https://docs.volcengine.com/docs/DoubaoVoice/HotWordManagementAPIv10?lang=zh)、[替换词](https://docs.volcengine.com/docs/DoubaoVoice/ReplacementWordAPIv11?lang=zh)。13个Action逐项在正文确认；替换词未假定支持API Key proxy |
 | `speech_console` | `https://open.volcengineapi.com/?Action=...&Version=...` | IAM AK/SK、HMAC-SHA256、service=`speech_saas_prod`；默认region=cn-beijing | 默认25个Action逐文档确认，见后表；旧监控版本及ListApplications用cn-north-1/GET |
 | `speech_raw_request`（product=tts_websocket） | WSS `/api/v3/tts/bidirection` 或 `/api/v3/tts/unidirectional/stream` | API Key + TTS/ICL resource | [双向](https://docs.volcengine.com/docs/DoubaoVoice/bidirectional-streaming-text-to-speech-websocket?lang=zh)、[单向](https://docs.volcengine.com/docs/DoubaoVoice/unidirectional-streaming-text-to-speech-websocket?lang=zh)。两路已确认；具体二进制框架依据同endpoint的历史V3协议 |
-| `generate_podcast` | WSS `/api/v3/sami/podcasttts` | API Key；`volc.service_type.10050` | [播客](https://docs.volcengine.com/docs/DoubaoVoice/PodcastAPI-websocket-v3protocol?lang=zh)。已确认；action=0/3/4，轮次和失败信息保留 |
+| `generate_podcast` | WSS `/api/v3/sami/podcasttts` | API Key；`volc.service_type.10050` | [播客](https://docs.volcengine.com/docs/DoubaoVoice/PodcastAPI-websocket-v3protocol?lang=zh)。已确认；action=0/3/4，轮次和失败信息保留。2026-10-13 新增 [SSE 播客](https://docs.volcengine.com/docs/DoubaoVoice/podcast?lang=zh) / [接入必读](https://docs.volcengine.com/docs/DoubaoVoice/podcast_mustread?lang=zh)，请求体同构，续传语义已对齐 |
 | `speech_raw_request`（product=asr_stream） | realtime WSS `/api/v3/sauc/bigmodel_async`；sentence `/api/v3/sauc/bigmodel_nostream` | API Key；2.0小时版=`volc.seedasr.sauc.duration`；可显式选择concurrent或1.0资源 | [实时识别](https://docs.volcengine.com/docs/DoubaoVoice/bidirectional-streaming-automatic-speech-recognition-websocket?lang=zh)、[一句话](https://docs.volcengine.com/docs/DoubaoVoice/unidirectional-streaming-automatic-speech-recognition-websocket?lang=zh)。两路已确认；本地只封装PCM/WAV，官方还支持更多格式 |
 | `interpret_audio` | WSS `/api/v4/ast/v2/translate` | API Key；`volc.service_type.10053`；官方protobuf | [同传](https://docs.volcengine.com/docs/DoubaoVoice/SimultaneousInterpretation20APIAccessDocumentation?lang=zh)。已确认；源16k/16bit/mono；目标pcm16k/pcm24k float32/ogg_opus48k；proto漂移已修复 |
 | `open_realtime_session` | WSS `/api/v3/duplex/realtime/dialogue`，`session.create` | API Key；session.model=`1.2.6.1`，Seeduplex 3.0 | [实时3.0](https://docs.volcengine.com/docs/DoubaoVoice/endtoend-realtime-voice-full-duplex-version?lang=zh)。已确认；JSON协议，与旧二进制实时语音不同 |
@@ -68,7 +78,7 @@
 - HTTP TTS：最新精简正文说code=0成功；同endpoint的[详细Chunked协议](https://docs.volcengine.com/docs/DoubaoVoice/HTTPChunkedSSEUnidirectionalStreaming-V3?lang=zh)明确音频过程包code=0、结束包code=20000000。保留完成标记验证，依据详细wire契约，而非本地样例自行假设。
 - WS TTS：旧V3明确二进制header、带event/session_id，ConnectionStarted=50、SessionStarted=150、TTSResponse=352、SessionFinished=152、ConnectionFinished=52。双向生命周期为1→50、100→150、200文本、102结束session、152确认、2→52；单向入口一次发完整请求。新精简文档以EventType字符串描述语义，不足以单独证明wire已切换为JSON；实际同endpoint的详细V3协议仍需保留来源。
 - ASR：固定request.model_name=`bigmodel`不表示模型1.0/2.0，真正版本/计费由X-Api-Resource-Id区分。标准2.0=`volc.seedasr.auc`，极速=`volc.bigasr.auc_turbo`，闲时=`volc.bigasr.auc_idle`；流式2.0=`volc.seedasr.sauc.duration`/`concurrent`，旧1.0为`volc.bigasr.sauc.*`。负序号音频包表示上行结束，下行最后包flag/负sequence之后才算完成。
-- 播客：固定资源10050，事件100开始→150、360/361/362轮次、363终局meta、154usage、152session结束，再2→52。收到轮次失败或disconnect时保存partial，不将部分音频等同完整成功。
+- 播客：固定资源10050，事件100开始→150、360/361/362轮次、363终局meta、154usage、152session结束，再2→52。收到轮次失败或disconnect时保存partial，只含最后一个成功362之前的完整轮次（[接入必读](https://docs.volcengine.com/docs/DoubaoVoice/podcast_mustread?lang=zh)续传要求），不将部分音频等同完整成功。
 - 同传：AST的model不是请求中可随意更换的LLM ID，而是专属资源10053。100→150、200携PCM、102→152；服务器失败立即取消sender。官方 source_audio.format 字段为 wav；Python demo 按原始文件字节分块直接发送。正文 TaskRequest 与使用步骤明确要求 16kHz/16bit/单声道 wav/pcm，本地按 PCM 路径剥离 WAV 容器符合其中 PCM 描述；未做实际账号验证，不能声称与 demo 字节交付完全一致。protobuf source精确字段编号优先于旧demo生成文件。
 - 实时：Seeduplex 3.0明确model=1.2.6.1；输入pcm/speech_opus16k，输出pcm/pcm_s16le/ogg_opus24k。JSON type为官方契约；不能复用旧端到端V2二进制协议。`response.done`含一轮usage；`session.closed`是关闭ack。
 - Seed Audio：当前[接口](https://docs.volcengine.com/docs/DoubaoVoice/audio-generation-http?lang=zh)仍只列 `seed-audio-1.0`。官网已有[1.5营销合作计划](https://docs.volcengine.com/docs/DoubaoVoice/audio1-5marketingplan?lang=zh)，但它不提供API model ID或账号开放契约，**无法据此核实1.5可调用**，本次不擅自改默认模型。

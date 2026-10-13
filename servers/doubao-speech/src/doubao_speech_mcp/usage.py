@@ -82,7 +82,7 @@ GUIDES = {
     "podcast": {
         "title": "播客：文章、链接、逐轮脚本与联网话题",
         "sources": [DOC + "PodcastAPI-websocket-v3protocol?lang=zh", CONSOLE + "podcast?projectName=default"],
-        "tips": ["text/url改写文章或链接；dialogue直接演绎逐轮脚本；topic根据话题联网生成。topic只是话题，不具备格式指令能力。", "url支持网页及PDF/doc/txt链接，不把控制台上传格式直接视为API格式。", "script_only=true先生成脚本；dialogue每轮<=300字、总量<=10000字。", "speakers必须是两个音色，建议同系列配对，按给出的顺序发言。", "文章推荐<=12000字（parameters.input_text_max_length可调），超过会截断；音频URL有效1小时。", "收到partial后保留task_id和last_finished_round_id，通过retry_info显式续传，不能把局部音频当完整成品。"],
+        "tips": ["text/url改写文章或链接；dialogue直接演绎逐轮脚本；topic根据话题联网生成。topic只是话题，不具备格式指令能力。", "url支持网页及PDF/doc/txt链接，不把控制台上传格式直接视为API格式。", "script_only=true先生成脚本；dialogue每轮<=300字、总量<=10000字。", "speakers必须是两个音色，建议同系列配对，按给出的顺序发言。", "文章推荐<=12000字（parameters.input_text_max_length可调），超过会截断；return_audio_url的链接WebSocket文档写1小时、SSE文档写24小时，按1小时内下载处理。", "收到partial后保留task_id和last_finished_round_id，通过retry_info显式续传；partial只含完整轮次，续传结果按序追加，不能把局部音频当完整成品。"],
         "examples": [
             example("文章先生成脚本", "generate_podcast", {"text": "这里替换为完整文章。", "script_only": True}),
             example("链接转播客", "generate_podcast", {"url": "https://example.com/article"}),
