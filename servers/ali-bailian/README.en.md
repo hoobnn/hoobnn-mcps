@@ -64,7 +64,7 @@ The command is installed at `~/.local/bin/ali-bailian-mcp`. For client configura
 
 Parameters are documented in the tool descriptions (`src/ali_bailian_mcp/server.py`). For endpoint details, Bailian's [text-to-image](https://help.aliyun.com/zh/model-studio/text-to-image), [OpenAI-compatible API](https://help.aliyun.com/zh/model-studio/compatibility-of-openai-with-dashscope), [Qwen TTS](https://help.aliyun.com/zh/model-studio/qwen-tts-api), [Qwen-Audio-TTS](https://help.aliyun.com/zh/model-studio/qwen-audio-tts-http-api), [CosyVoice](https://help.aliyun.com/zh/model-studio/cosyvoice-tts-http-api), [Qwen ASR](https://help.aliyun.com/zh/model-studio/qwen-asr-api-reference) and [Wan 3.0 video](https://help.aliyun.com/zh/model-studio/wan3-video-generation-api-reference) documentation is authoritative.
 
-## Added in 0.3 (pending cloud verification)
+## Added in 0.3
 
 | Tool | Capability | Official contract |
 |---|---|---|
@@ -121,7 +121,7 @@ Downloads are written to a temporary file, checked for non-empty content and HTT
 
 Job records keep signed URLs, generation responses and TTS text; the API Key is never stored. `url` mode also writes job records, and a voice preview that only exists as inline data is saved locally. Segment files and response caches are assets needed for recovery and are not cleaned up automatically. The recovery lock uses POSIX `flock` and targets macOS / Linux.
 
-Offline failure tests and real stdio checks pass; no paid cloud generation has been made, and the newly added products still await cloud verification. Historical integration scope is in the [integration record](https://github.com/hoobnn/hoobnn-mcps/blob/main/docs/mcp-expansion.md), and this round's verification is in the [reliability record](https://github.com/hoobnn/hoobnn-mcps/blob/main/docs/mcp-reliability.md).
+Offline failure tests and real stdio checks pass; on 2026-10-13 every tool was verified with small cloud samples on a Beijing-region account (results in the reliability record). Historical integration scope is in the [integration record](https://github.com/hoobnn/hoobnn-mcps/blob/main/docs/mcp-expansion.md), and this round's verification is in the [reliability record](https://github.com/hoobnn/hoobnn-mcps/blob/main/docs/mcp-reliability.md).
 
 The `media_info` of each output reads the actual width and height from the PNG header; if `ffprobe` is installed, it also reads the actual dimensions, duration and audio track details of other media. When it cannot read them, it explicitly returns `available=false` and never treats request parameters as the actual output spec. No extra Python dependency is needed.
 
