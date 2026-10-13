@@ -1,0 +1,11 @@
+--- reviewed/ali-bailian/bailian-wan-video
++++ current/ali-bailian/bailian-wan-video
+@@ -1,6 +1,8 @@
+ # 万相3.0-视频生成API参考
+ 
+ > 万相3.0是全能参考视频生成模型（All-in-One），统一支持 文生视频 、 图生视频 （首帧/首尾帧）和 参考生视频 等多种用法。最长可生成30秒视频，输出帧率为30fps。
++
++<meta property="og:title" content="万相3.0-视频生成API参考" />
+ 
+ 使用指南请参见[万相3.0-视频生成](/zh/model-studio/wan3-video-generation-guide)。
+ 

@@ -1,0 +1,11 @@
+--- reviewed/ali-bailian/bailian-model-lifecycle
++++ current/ali-bailian/bailian-model-lifecycle
+@@ -1,6 +1,8 @@
+ # 模型上下架与更新
+ 
+ > 模型上架 详见下表， 模型下线 规则及清单请参考 模型下线机制说明 。
++
++<meta property="og:title" content="模型上下架与更新" />
+ 
+ <Tabs>
+   <Tab title="华北2（北京）">

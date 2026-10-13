@@ -1,0 +1,11 @@
+--- reviewed/ali-bailian/bailian-video-models
++++ current/ali-bailian/bailian-video-models
+@@ -1,6 +1,8 @@
+ # 视频生成与编辑
+ 
+ > 选择适合文生视频、图生视频、视频编辑等场景的模型。
++
++<meta property="og:title" content="视频生成与编辑" />
+ 
+ ## 从闭源模型迁移到百炼? <span id="mg1a2b3c4d5e02" />
+ 

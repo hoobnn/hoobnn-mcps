@@ -1,0 +1,11 @@
+--- reviewed/ali-bailian/bailian-wan-image
++++ current/ali-bailian/bailian-wan-image
+@@ -1,6 +1,8 @@
+ # 万相-图像生成与编辑2.7 API参考
+ 
+ > 万相2.7图像生成与编辑模型支持文生图、文生组图、图生组图、图像编辑和多图参考生成。
++
++<meta property="og:title" content="万相-图像生成与编辑2.7 API参考" />
+ 
+ ## 模型概览 <span id="753cf1c4316ie" />
+ 

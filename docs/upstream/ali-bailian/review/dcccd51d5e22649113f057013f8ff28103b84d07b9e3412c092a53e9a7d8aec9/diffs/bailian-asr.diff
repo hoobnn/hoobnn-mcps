@@ -1,0 +1,11 @@
+--- reviewed/ali-bailian/bailian-asr
++++ current/ali-bailian/bailian-asr
+@@ -1,6 +1,8 @@
+ # 非实时语音识别（Qwen-ASR）API参考
+ 
+ > 本文介绍 Qwen-ASR 模型的输入与输出参数。可通过OpenAI 兼容或DashScope协议调用 API。
++
++<meta property="og:title" content="非实时语音识别（Qwen-ASR）API参考" />
+ 
+ ## 模型接入方式 <span id="6560a479ca3lm" />
+ 

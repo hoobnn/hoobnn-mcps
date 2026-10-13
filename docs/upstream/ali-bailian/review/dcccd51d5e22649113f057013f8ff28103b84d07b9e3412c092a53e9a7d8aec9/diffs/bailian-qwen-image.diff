@@ -1,0 +1,11 @@
+--- reviewed/ali-bailian/bailian-qwen-image
++++ current/ali-bailian/bailian-qwen-image
+@@ -1,6 +1,8 @@
+ # 千问-图像生成与编辑 API参考
+ 
+ > 千问-图像生成与编辑模型同时支持文生图（T2I）和图生图/图像编辑（I2I），可根据文本提示词直接生成图像，也可基于参考图结合编辑指令进行精确编辑。支持通过OpenAI 兼容或DashScope协议调用。
++
++<meta property="og:title" content="千问-图像生成与编辑 API参考" />
+ 
+ ## 模型概览 <span id="6740266-model-title" />
+ 

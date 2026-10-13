@@ -1,0 +1,11 @@
+--- reviewed/ali-bailian/bailian-happyhorse-edit
++++ current/ali-bailian/bailian-happyhorse-edit
+@@ -1,6 +1,8 @@
+ # HappyHorse-视频编辑API参考
+ 
+ > HappyHorse 视频编辑模型支持输入视频与参考图，结合文本指令完成风格变换、局部替换等编辑任务。
++
++<meta property="og:title" content="HappyHorse-视频编辑API参考" />
+ 
+ ## 适用范围 <span id="hve021a0h2scp" />
+ 

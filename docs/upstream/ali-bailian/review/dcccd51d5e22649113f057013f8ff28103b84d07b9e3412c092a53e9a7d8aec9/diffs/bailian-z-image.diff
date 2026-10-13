@@ -1,0 +1,11 @@
+--- reviewed/ali-bailian/bailian-z-image
++++ current/ali-bailian/bailian-z-image
+@@ -1,6 +1,8 @@
+ # Z-Image API参考
+ 
+ > Z-Image 是一款轻量级文生图模型，可快速生成图像，支持中英文字渲染，并灵活适配多种分辨率与宽高比例。
++
++<meta property="og:title" content="Z-Image API参考" />
+ 
+ <strong>快速入口</strong>：在线体验（[北京](https://bailian.console.aliyun.com/cn-beijing/model/experience/vision/imageGenerate?modelId=z-image-turbo) | [新加坡](https://bailian.console.aliyun.com/ap-southeast-1/model/experience/vision/imageGenerate?modelId=z-image-turbo)） | [技术博客](https://tongyi-mai.github.io/Z-Image-blog/)
+ 
