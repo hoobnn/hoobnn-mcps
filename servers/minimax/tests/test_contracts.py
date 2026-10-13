@@ -138,7 +138,7 @@ class Contracts(unittest.TestCase):
 
     def test_ir_returns_prompt_and_persists_text(self):
         with patch.object(client, "request", return_value={"task_id": "ir123"}):
-            answer = server.enhance_video_prompt(prompt="cat")
+            answer = server.create_h3_context_ir_task(prompt="cat")
         with patch.object(client, "request", return_value={"task": {"id": "ir123", "status": "succeeded",
                   "task_type": "h3_context_ir", "content": {"prompt": "enhanced prompt"}}}):
             answer = server.get_job(job_id=answer["job_id"])

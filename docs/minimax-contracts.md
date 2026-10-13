@@ -27,7 +27,7 @@
 
 文档对尾帧存在表述差异：输入组合和模型介绍明确支持仅尾帧，role 字段注释却说需与首帧成对。本实现按明确列出的尾帧输入模式支持单独 last_frame，尚未以付费云端请求验证。
 
-[H3-Context-IR](https://platform.minimax.cn/docs/api-reference/video-generation-v2-h3-context-ir) 使用 /v2/h3_context_ir，只返回增强提示词；请求不带 resolution。[再生成](https://platform.minimax.cn/docs/api-reference/video-generation-v2-regeneration) 使用 /v2/video_regeneration，不带 duration/ratio。允许 source_task_id 或含一个 base_video 的原始生成输入，二者互斥；前者需要白名单。接口概览只提 base_video，本实现以具体接口新增的两种输入规范为准。
+[H3-Context-IR](https://platform.minimax.cn/docs/api-reference/video-generation-v2-h3-context-ir)（工具 `create_h3_context_ir_task`，原名 `enhance_video_prompt`）使用 /v2/h3_context_ir，只返回增强提示词；请求不带 resolution。[再生成](https://platform.minimax.cn/docs/api-reference/video-generation-v2-regeneration)（工具 `regenerate_video`）使用 /v2/video_regeneration，不带 duration/ratio。允许 source_task_id 或含一个 base_video 的原始生成输入，二者互斥；前者需要白名单。接口概览只提 base_video，本实现以具体接口新增的两种输入规范为准。
 
 ## 故障与恢复
 

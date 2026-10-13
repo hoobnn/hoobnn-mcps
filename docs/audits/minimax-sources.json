@@ -47,7 +47,7 @@
     "fetch_url": "https://platform.minimax.cn/docs/api-reference/video-generation-v2-h3-context-ir.md",
     "fetch_kind": "minimax_markdown",
     "tools": [
-      "enhance_video_prompt"
+      "create_h3_context_ir_task"
     ],
     "kind": "api"
   },
@@ -70,7 +70,7 @@
       "upload_file",
       "generate_video",
       "voice_clone",
-      "enhance_video_prompt",
+      "create_h3_context_ir_task",
       "regenerate_video"
     ],
     "kind": "api"
