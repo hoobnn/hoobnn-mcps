@@ -18,7 +18,7 @@ An MCP server for Alibaba Cloud Model Studio (Bailian, DashScope) that saves res
 |---|---|---|
 | `generate_image` | Image generation and editing | `qwen-image-3.0-pro` |
 | `chat` | Calls language models on Bailian (Qwen, plus hosted DeepSeek, Kimi, GLM, MiniMax and others) | `qwen3.8-max` |
-| `text_to_speech` | Speech synthesis with 20 system voices, tone control in natural language, and automatic splitting and joining of long text | `qwen3-tts-flash` / `qwen3-tts-instruct-flash` |
+| `text_to_speech` | Speech synthesis with 20 system voices and automatic splitting and joining of long text | `qwen3-tts-flash` |
 | `speech_to_text` | Speech recognition (up to 5 minutes / 10MB), returning text, language and emotion | `qwen3-asr-flash` |
 | `generate_video` | Video generation: text-to-video, first frame, first and last frames, multi-subject reference, continuation, up to 30 seconds, with audio | `wan3.0-video` |
 | `list_models` | Lists model IDs in the official Bailian model catalog, filterable by name | — |
@@ -32,7 +32,7 @@ Image models (set `model` to an alias or a full ID):
 | `wan` | `wan2.7-image-pro` | 0–9 reference images, 1K / 2K / 4K, image sets, thinking |
 | `z` | `z-image-turbo` | Fastest and cheapest, realistic portraits and product shots, text-to-image only |
 
-You can also pass other IDs directly, such as `qwen-image-2.0-pro`, `qwen-image-max`, `qwen-image-edit-max` or `wan2.7-image`.
+You can also pass other IDs directly, such as `qwen-image-2.1`, `qwen-image-2.0-pro` or `wan2.7-image`. The `qwen-image`, `qwen-image-max`, `qwen-image-plus` and `qwen-image-edit` series were retired on 2026-10-10.
 
 Language model aliases: `max` → `qwen3.8-max` (default, supports images), `plus` → `qwen3.7-plus`, `flash` → `qwen3.8-flash`; pass other models by ID, such as `deepseek-v4-pro`, `kimi-k3` or `glm-5.3`. `chat` always uses the streaming endpoint and supports multi-turn history, image input, a deep-thinking switch, JSON output and web search.
 
@@ -66,8 +66,8 @@ Parameters are documented in the tool descriptions (`src/ali_bailian_mcp/server.
 
 | Tool | Capability | Official contract |
 |---|---|---|
-| `clone_voice` | Qwen voice cloning, local audio / URL → fixed voice | [Cloning HTTP API](https://help.aliyun.com/en/model-studio/voice-clone-design-http-api) |
-| `design_voice` | Designs a voice from a natural-language description, returning the voice and a preview WAV | [Design API](https://help.aliyun.com/zh/model-studio/voice-design-api-references) |
+| `clone_voice` | Currently unavailable (target models retired, see below) | [Cloning HTTP API](https://help.aliyun.com/en/model-studio/voice-clone-design-http-api) |
+| `design_voice` | Currently unavailable (models retired, see below) | [Design API](https://help.aliyun.com/zh/model-studio/voice-design-api-references) |
 | `list_voices` / `get_voice` | Paged listing and lookup of custom voices | Same as above; Qwen details are found by scanning the paged list |
 | `edit_video` | HappyHorse instruction-based editing, style and element replacement | [Video editing API](https://help.aliyun.com/en/model-studio/happyhorse-video-edit-api-reference) |
 | `animate_portrait` | Portrait image + voice → lip-synced digital human | [wan2.2-s2v](https://help.aliyun.com/zh/model-studio/wan-s2v-api) |
@@ -78,9 +78,7 @@ Parameters are documented in the tool descriptions (`src/ali_bailian_mcp/server.
 
 ### Creating and using voices
 
-`clone_voice` targets `qwen3-tts-vc-2026-01-22` by default; `design_voice` targets `qwen3-tts-vd-2026-01-26`.
-
-Creation returns `voice` and `target_model`; afterwards you must call `text_to_speech(text=..., voice=<returned voice>, model=<returned target model>)`. The default flash system-voice models cannot use these custom voices. The creation tools currently support Qwen non-realtime VC / VD; the voice list can also query CosyVoice / Qwen-Audio, but synthesis for those two is out of scope for this round.
+Model Studio retired `qwen-voice-design`, `qwen3-tts-vc-*`, `qwen3-tts-vd-*` and `qwen3-tts-instruct-flash` on 2026-10-10; the official cloning / design docs now only cover `voice-enrollment` + Qwen-Audio-TTS / CosyVoice. This MCP does not implement their synthesis protocol yet, so `clone_voice` and `design_voice` return an error without sending a create request or incurring charges, and `text_to_speech` no longer accepts `instructions`. Use doubao-speech for cloning, design or tone control. `list_voices(kind="cosyvoice")` still queries voice-enrollment voices.
 
 Qwen has no separate detail endpoint, so `get_voice` searches the paged list; reaching `max_pages` only means the search is incomplete, not that the voice does not exist.
 
@@ -95,7 +93,7 @@ HappyHorse editing takes input video of 3–60 seconds and outputs at most 15 se
 - Text embeddings: `embed(texts=[...], model="text-embedding-v4")`.
 - Multimodal embeddings: `embed(contents=[{"text":"cat"},{"image":"/absolute/cat.png"}], model="qwen3-vl-embedding")`.
 - Embeddings do not automatically create an index, database or knowledge base.
-- `rerank` defaults to `qwen3.7-text-rerank` through the native endpoint; `qwen3-rerank` goes through `/compatible-api/v1/reranks`. Full requests and responses keep the endpoint differences.
+- `rerank` defaults to `qwen3.7-text-rerank`; every model, including `qwen3-rerank`, uses the native `/api/v1/services/rerank/text-rerank/text-rerank` endpoint.
 
 ### Job recovery
 

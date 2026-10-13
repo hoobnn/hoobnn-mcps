@@ -1,0 +1,11 @@
+--- reviewed/ali-bailian/bailian-multimodal-embedding
++++ current/ali-bailian/bailian-multimodal-embedding
+@@ -1,6 +1,8 @@
+ # Multimodal-Embedding API详情
+ 
+ > 多模态向量模型将文本、图像和视频转换为同一语义空间中的向量表示，支持跨模态检索、内容分类和语义相似度计算。
++
++<meta property="og:title" content="Multimodal-Embedding API详情" />
+ 
+ ## 核心能力 <span id="a6c4aedaf8fee" />
+ 

@@ -55,9 +55,9 @@ def generate_image(
     - "wan" → wan2.7-image-pro：万相旗舰，0–9 张参考图（多图融合、换装、风格迁移），支持 1K / 2K / 4K 档位、
       group 组图（1–12 张连贯的图）和 thinking。wan2.7-image 是更便宜的标准版（最高 2K）。
     - "z" → z-image-turbo：最快最便宜，写实人像和产品图好，只支持文生图，每次 1 张。
-    其他可用 ID：qwen-image-2.0-pro / qwen-image-2.0（文生图 + 编辑，n 最多 6）、qwen-image-max（写实）/
-    qwen-image-plus-2026-01-09（艺术风格），这两个只支持文生图和固定尺寸 1664*928、1328*1328、928*1664 等；
-    qwen-image-edit-max / qwen-image-edit-plus（专用图片编辑）。完整列表用 list_models("image")。
+    其他可用 ID：qwen-image-2.1 系列（最多 10 张参考图）、qwen-image-2.0-pro / qwen-image-2.0（文生图 + 编辑，
+    n 最多 6）。qwen-image / qwen-image-max / qwen-image-plus / qwen-image-edit 系列已于 2026-10-10 下线。
+    完整列表用 list_models("image")。
 
     参数：
     - prompt：千问和万相都能理解长提示词（万相最多 5000 字）。要画的文字用引号括起来。多图时用「图1」「图2」指明
@@ -148,11 +148,11 @@ def text_to_speech(
       Bunny 萌小姬（萝莉）、Elias 墨讲师（讲课）、Nini 邻家妹妹（软糯）、Seren 小婉（助眠）、Stella 少女阿月（甜）；
       男声：Ethan 晨煦（标准普通话、阳光）、Moon 月白（率性帅气）、Eldric Sage 沧明子（沉稳老者）、
       Mochi 沙小弥（小大人）、Vincent 田叔（烟嗓）、Neil 阿闻（新闻主持）、Arthur 徐大爷（讲故事）、Pip 顽屁小孩。
-    - instructions：用自然语言控制语速、情绪、语气、角色，如「语速稍快，语气兴奋」「像深夜电台主持人一样低沉
-      缓慢」。传了会自动改用 qwen3-tts-instruct-flash。
+    - instructions：已不可用。qwen3-tts-instruct-flash 已于 2026-10-10 下线，qwen3-tts-flash 不支持指令控制；
+      需要语气控制用 doubao-speech 的 text_to_speech。
     - language：Chinese、English、Japanese、Korean、French、German、Russian、Italian、Spanish、Portuguese，
       不传自动识别。中英混读不用设。
-    - model：不传时自动选 flash/instruct。自定义音色必须传创建返回的target_model（非实时VC/VD），不能用默认模型。
+    - model：默认 qwen3-tts-flash（官方现存唯一的非实时 Qwen3-TTS 模型）。
     - out_dir：输出目录，默认 BAILIAN_OUT_DIR 下按时间戳新建。
     - parameters：官方请求 parameters 对象里本工具没单独列出的字段，深度合并，同名时以这里为准。
 
@@ -179,7 +179,7 @@ def speech_to_text(
     - context：背景文字，提高专有名词、人名、术语的识别准确率，如「这是一段关于 Kubernetes 和 Istio 的技术分享」。
     - language：已知语种时指定（zh、en、ja、ko、yue 等），能提高准确率；不传自动识别。
     - itn：是否把口语数字转成阿拉伯数字（如「二零二六年」→「2026年」），默认不转。
-    - model：默认 qwen3-asr-flash，也可写其非实时快照 ID；filetrans/realtime及Fun-ASR使用不同协议。
+    - model：默认 qwen3-asr-flash（其日期快照已于 2026-10-10 下线）；filetrans/realtime、Qwen-Audio-ASR 及 Fun-ASR 使用不同协议。
     - parameters：官方请求体里本工具没单独列出的字段（OpenAI 兼容接口顶层），深度合并，不能覆盖 model/messages/stream。
 
     按音频时长计费。返回 ok、model、text、language、emotion、usage、error。
@@ -257,10 +257,8 @@ def list_models(keyword: str | None = None, max_pages: int = 20) -> dict:
 @mcp.tool()
 def clone_voice(audio: str, target_model: str = "qwen3-tts-vc-2026-01-22", preferred_name: str = "custom_voice",
                 text: str | None = None, language: str | None = None) -> dict:
-    """用Qwen声音复刻创建固定音色。audio为本地wav/mp3/m4a（10MB以内）、公开URL或data URL，建议清晰单人录音。复刻的音色只能用于百炼 TTS；用于豆包合成请用 doubao-speech 的 clone_voice。
-    target_model默认非实时VC模型；preferred_name为1–16位字母/数字/下划线；text可提供准确录音文本。
-    返回voice和target_model，合成时必须把两者传给text_to_speech，不能沿用默认flash模型。
-    会产生音色创建费用，不自动重试创建；模型支持与录音时长由服务端校验。新增功能尚未完成云端验证。
+    """暂不可用：Qwen声音复刻的目标模型qwen3-tts-vc已于2026-10-10下线，调用会直接返回错误，不发送创建请求，也不计费。
+    官方替代方案voice-enrollment + Qwen-Audio-TTS/CosyVoice尚未接入本MCP。需要复刻请用 doubao-speech 的 clone_voice。
     """
     return products.clone_voice(audio, target_model, preferred_name, text, language)
 
@@ -268,16 +266,17 @@ def clone_voice(audio: str, target_model: str = "qwen3-tts-vc-2026-01-22", prefe
 @mcp.tool()
 def design_voice(voice_prompt: str, preview_text: str, target_model: str = "qwen3-tts-vd-2026-01-26",
                  preferred_name: str = "custom_voice", out_dir: str | None = None) -> dict:
-    """通过中文/英文描述创建Qwen音色并保存试听wav。voice_prompt最多2048字符，preview_text为试听台词，最多1024字符。设计的音色只能用于百炼 TTS。
-    返回voice、target_model和试听files/job_id；后续text_to_speech必须指定这两个字段。
-    会产生音色创建费用；试听保存失败用recover_job补交付，不能再次调用design_voice代替恢复。尚未完成云端验证。
+    """暂不可用：qwen-voice-design及目标模型qwen3-tts-vd已于2026-10-10下线，调用会直接返回错误，不发送创建请求，也不计费。
+    官方替代方案voice-enrollment + Qwen-Audio-TTS/CosyVoice尚未接入本MCP。需要设计音色请用 doubao-speech 的 design_voice。
+    已有试听任务仍可用recover_job补交付。
     """
     return products.design_voice(voice_prompt, preview_text, target_model, preferred_name, target_dir(out_dir), MODE)
 
 
 @mcp.tool()
 def list_voices(kind: str = "clone", page_index: int = 0, page_size: int = 20, prefix: str | None = None) -> dict:
-    """分页查询自定义音色。kind=clone（Qwen复刻）/design（Qwen设计）/cosyvoice（CosyVoice与Qwen-Audio共享音色接口）。
+    """分页查询自定义音色。kind=cosyvoice（CosyVoice与Qwen-Audio共享的voice-enrollment，官方现行接口）；
+    clone/design为已下线的Qwen复刻/设计，仅用于查历史音色，云端可能直接拒绝。
     page_index从0起，page_size=1–100；prefix仅cosyvoice支持。保留目标模型等官方字段。不会创建或删除音色。
     """
     return products.list_voices(kind, page_index, page_size, prefix)
@@ -331,7 +330,7 @@ def embed(model: str = "text-embedding-v4", texts: list[str] | None = None, cont
 def rerank(query: str, documents: list[str], model: str = "qwen3.7-text-rerank",
            top_n: int | None = None, return_documents: bool = False) -> dict:
     """对候选文档按与query的相关性排序，返回原索引和relevance_score；top_n控制数量，return_documents返回原文。
-    qwen3.7-text-rerank走原生接口，qwen3-rerank走compatible-api/v1/reranks，两者请求体不同。
+    所有模型（含qwen3-rerank）统一走原生text-rerank接口。
     分数用于本次请求内比较。按输入计费，模型及地域权限以服务端为准；尚未完成云端验证。
     """
     return products.rerank(query, documents, model, top_n, return_documents)
@@ -373,8 +372,9 @@ def list_capabilities() -> dict:
                       "video": ["generate_video", "edit_video", "animate_portrait"],
                       "retrieval": ["embed", "rerank"], "jobs": ["list_jobs", "get_job", "recover_job"]},
             "docs": products.DOCS,
-            "limits": ["自定义音色创建和合成必须使用相同target_model", "Qwen音色详情从列表查找",
-                       "TTS仅支持非实时Qwen3系列，实时模型尚未接入", "恢复锁使用POSIX flock，面向macOS/Linux",
+            "limits": ["Qwen声音复刻/设计及qwen3-tts-instruct/vc/vd已于2026-10-10下线，clone_voice/design_voice暂不可用",
+                       "voice-enrollment音色可查询，但Qwen-Audio-TTS/CosyVoice合成尚未接入",
+                       "TTS仅支持非实时qwen3-tts-flash，实时模型尚未接入", "恢复锁使用POSIX flock，面向macOS/Linux",
                        "地域、服务开通及实际输出规格尚需后续测试"]}
 
 

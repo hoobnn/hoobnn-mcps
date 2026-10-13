@@ -1,0 +1,11 @@
+--- reviewed/ali-bailian/bailian-embedding
++++ current/ali-bailian/bailian-embedding
+@@ -1,6 +1,8 @@
+ # 向量化（Embedding）
+ 
+ > 向量化模型可将文本、图像、视频等数据转换为数值向量，用于语义搜索、推荐、聚类、分类、异常检测等下游任务。
++
++<meta property="og:title" content="向量化（Embedding）" />
+ 
+ ## 准备工作 <span id="5a258c65c3ixb" />
+ 

@@ -1,0 +1,1748 @@
+--- reviewed/ali-bailian/bailian-asr-models
++++ current/ali-bailian/bailian-asr-models
+@@ -2,11 +2,67 @@
+ 
+ > 选择适合实时语音识别、录音文件识别等场景的模型。
+ 
++<meta property="og:title" content="语音识别概述" />
++
+ ## 从闭源模型迁移到百炼? <span id="mg1a2b3c4d5e02" /> <span id="mg1a2b3c4d5e01" />
+ 
+ 如果你正在使用 Whisper、Deepgram 或 Google 的语音识别服务，可参考下表选择对应的百炼模型。
+ 
+-<table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}><colgroup><col style={{ width: "18.125%" }} /><col style={{ width: "45%" }} /><col style={{ width: "36.875%" }} /></colgroup><thead><tr><th style={{ verticalAlign: "top" }}><p><strong>使用场景</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>闭源模型代表</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>百炼推荐</strong></p></th></tr></thead><tbody><tr><td style={{ verticalAlign: "top" }}><p>实时识别</p></td><td style={{ verticalAlign: "top" }}><p>Deepgram Nova-3、Google Chirp 3</p></td><td style={{ verticalAlign: "top" }}><p><code>qwen-audio-3.1-asr-flash-streaming</code></p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>非实时 / 文件转写</p></td><td style={{ verticalAlign: "top" }}><p>OpenAI gpt-4o-transcribe、Whisper</p></td><td style={{ verticalAlign: "top" }}><p><code>qwen-audio-3.1-asr-flash-filetrans</code>、<code>qwen-audio-3.1-asr-flash</code></p></td></tr></tbody></table>
++<table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
++  <colgroup>
++    <col style={{ width: "18.125%" }} />
++
++    <col style={{ width: "45%" }} />
++
++    <col style={{ width: "36.875%" }} />
++  </colgroup>
++
++  <thead>
++    <tr>
++      <th style={{ verticalAlign: "top" }}>
++        <p><strong>使用场景</strong></p>
++      </th>
++
++      <th style={{ verticalAlign: "top" }}>
++        <p><strong>闭源模型代表</strong></p>
++      </th>
++
++      <th style={{ verticalAlign: "top" }}>
++        <p><strong>百炼推荐</strong></p>
++      </th>
++    </tr>
++  </thead>
++
++  <tbody>
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        实时识别
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        Deepgram Nova-3、Google Chirp 3
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        输入法、语音消息：`qwen-audio-3.1-asr-flash-message`<br />持续转写：`qwen-audio-3.1-asr-flash-streaming`
++      </td>
++    </tr>
++
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        非实时 / 文件转写
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        OpenAI gpt-4o-transcribe、Whisper
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        `qwen-audio-3.1-asr-flash-filetrans`、`qwen-audio-3.1-asr-flash`
++      </td>
++    </tr>
++  </tbody>
++</table>
+ 
+ 本文按“先选维度、再看模型”的顺序帮助您完成选型：先从“[选型决策维度](/zh/model-studio/asr-model#asr_decide02)”（实时/非实时、专业术语、说话人分离、情感识别）确认场景；再到“[推荐模型](/zh/model-studio/asr-model#asr_rec02)”查看针对各场景的首选；如需更多版本可在“[所有模型](/zh/model-studio/asr-model#asr_all02)”按系列展开；最后到“[音频规格](/zh/model-studio/asr-model#asr_audio_spec02)”核对输入文件约束。各模型支持的语言（含方言）随附在“[所有模型](/zh/model-studio/asr-model#asr_all02)”的各系列子节内。
+ 
+@@ -18,7 +74,10 @@
+ 
+ 实时是指在用户说话的同时输出识别结果，非实时是指录音结束后再进行转写。
+ 
+-- <strong>实时（实时语音识别）</strong>：基于WebSocket协议，音频流式输入，文本流式输出。适用于实时字幕、语音助手和会议转写。推荐使用 `qwen-audio-3.1-asr-flash-streaming`（热词、Prompt上下文、多语种及方言）。
++- 实时语音识别通过 WebSocket 流式输入音频。按使用场景选择：
++
++  - 输入法、语音消息等短段语音输入：推荐 `qwen-audio-3.1-asr-flash-message`，首字和整体延迟较低，支持文本润色，并在一段语音结束后整理最终结果。
++  - 会议、课堂记录等持续转写场景：推荐 `qwen-audio-3.1-asr-flash-streaming`，适合边转写边阅读、对中间结果准确性要求较高的应用。
+ - <strong>非实时（录音文件识别）</strong>：基于HTTP协议，提交音频文件获取识别结果。适用于呼叫中心录音、播客和访谈等场景。推荐使用 `qwen-audio-3.1-asr-flash-filetrans`（热词、Prompt上下文、说话人分离）。
+ 
+ 客户端接入如需稳定的延迟、弱网适应能力，以及实时双工的降噪与回声消除，可参考 [Realtime API 概述](/zh/model-studio/realtime-api-overview#rtov-s02h2)中的 AOQ 协议选型及支持范围。
+@@ -31,12 +90,14 @@
+ 
+ 两种方式，按灵活性排序：
+ 
+-1. <strong>Prompt上下文注入</strong>：在系统提示词中描述您的领域背景，无需预配置。模型在每次请求时自适应。推荐使用 Qwen-Audio-3.1-ASR-Flash-Streaming、Qwen-Audio-3.1-ASR-Flash-Filetrans 和 Qwen-Audio-3.1-ASR-Flash 系列模型。
+-2. <strong>热词</strong>：提供带权重的词汇表。推荐使用 Qwen-Audio-3.1-ASR-Flash-Streaming、Qwen-Audio-3.1-ASR-Flash-Filetrans 和 Qwen-Audio-3.1-ASR-Flash 系列模型。
++1. <strong>Prompt上下文注入</strong>：在系统提示词中描述您的领域背景，无需预配置。模型在每次请求时自适应。推荐使用 `qwen-audio-3.1-asr-flash-streaming`、`qwen-audio-3.1-asr-flash-filetrans` 和 `qwen-audio-3.1-asr-flash` 模型。
++2. <strong>热词</strong>：提供带权重的词汇表。推荐使用 `qwen-audio-3.1-asr-flash-streaming`、`qwen-audio-3.1-asr-flash-filetrans` 和 `qwen-audio-3.1-asr-flash` 模型。
++
++`qwen-audio-3.1-asr-flash-message` 支持即时热词、预编译热词以及对话上下文增强。通过 `vocabulary` 或 `vocabulary_id` 配置热词；通过 `input.context` 传入前几轮用户转写与助手回复。参数定义请参见 [客户端事件](/zh/model-studio/qwen-asr-message-client-events)。
+ 
+ ### 说话人分离 <span id="b1a2c3d4e5f5b" /> <span id="b1a2c3d4e5f5a" />
+ 
+-`qwen-audio-3.1-asr-flash`、`qwen-audio-3.1-asr-flash-filetrans`、`qwen-audio-3.0-asr-flash-filetrans` 以及 Fun-ASR 系列的非实时模型（`fun-asr`、`fun-asr-mtl`）支持说话人分离。如果您需要区分“谁说了什么”，推荐使用 `qwen-audio-3.1-asr-flash-filetrans`。
++`qwen-audio-3.1-asr-flash`、`qwen-audio-3.1-asr-flash-filetrans`、`qwen-audio-3.0-asr-flash-filetrans` 以及 Fun-ASR 系列的非实时模型（`fun-asr`）支持说话人分离。如果您需要区分“谁说了什么”，推荐使用 `qwen-audio-3.1-asr-flash-filetrans`。
+ 
+ ### 情感识别 <span id="b1a2c3d4e5f5e" /> <span id="b1a2c3d4e5f5d" />
+ 
+@@ -46,76 +107,1190 @@
+ 
+ 以下为各场景下最推荐的模型，可前往模型广场查看详情。
+ 
+-<table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}><colgroup><col style={{ width: "18.34%" }} /><col style={{ width: "7.65%" }} /><col style={{ width: "15.19%" }} /><col style={{ width: "10.8%" }} /><col style={{ width: "9.34%" }} /><col style={{ width: "10.8%" }} /><col style={{ width: "12.71%" }} /><col style={{ width: "15.17%" }} /></colgroup><thead><tr><th style={{ verticalAlign: "top" }}><p><strong>模型ID</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>模式</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>API</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>精度增强</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>情感识别</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>说话人分离</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>支持语言</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>音频最大时长/大小</strong></p></th></tr></thead><tbody><tr><td style={{ verticalAlign: "top" }}><p><code>qwen-audio-3.1-asr-flash-streaming</code></p></td><td style={{ verticalAlign: "top" }}><p>实时</p></td><td style={{ verticalAlign: "top" }}><p>WebSocket</p></td><td style={{ verticalAlign: "top" }}><p>热词、Prompt上下文</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td><td style={{ verticalAlign: "top" }}><p>多语种及方言</p></td><td style={{ verticalAlign: "top" }}><p>无限制</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><code>qwen-audio-3.1-asr-flash-filetrans</code></p></td><td style={{ verticalAlign: "top" }}><p>非实时</p></td><td style={{ verticalAlign: "top" }}><p>HTTP</p></td><td style={{ verticalAlign: "top" }}><p>热词、Prompt上下文</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td><td style={{ verticalAlign: "top" }}><p>支持</p></td><td style={{ verticalAlign: "top" }}><p>多语种及方言</p></td><td style={{ verticalAlign: "top" }}><p>12小时 / 2GB</p></td></tr></tbody></table>
++<table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
++  <colgroup>
++    <col style={{ width: "18.34%" }} />
++
++    <col style={{ width: "7.65%" }} />
++
++    <col style={{ width: "15.19%" }} />
++
++    <col style={{ width: "10.8%" }} />
++
++    <col style={{ width: "9.34%" }} />
++
++    <col style={{ width: "10.8%" }} />
++
++    <col style={{ width: "12.71%" }} />
++
++    <col style={{ width: "15.17%" }} />
++  </colgroup>
++
++  <thead>
++    <tr>
++      <th style={{ verticalAlign: "top" }}>
++        <p><strong>模型ID</strong></p>
++      </th>
++
++      <th style={{ verticalAlign: "top" }}>
++        <p><strong>模式</strong></p>
++      </th>
++
++      <th style={{ verticalAlign: "top" }}>
++        <p><strong>API</strong></p>
++      </th>
++
++      <th style={{ verticalAlign: "top" }}>
++        <p><strong>精度增强</strong></p>
++      </th>
++
++      <th style={{ verticalAlign: "top" }}>
++        <p><strong>情感识别</strong></p>
++      </th>
++
++      <th style={{ verticalAlign: "top" }}>
++        <p><strong>说话人分离</strong></p>
++      </th>
++
++      <th style={{ verticalAlign: "top" }}>
++        <p><strong>支持语言</strong></p>
++      </th>
++
++      <th style={{ verticalAlign: "top" }}>
++        <p><strong>音频最大时长/大小</strong></p>
++      </th>
++    </tr>
++  </thead>
++
++  <tbody>
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        `qwen-audio-3.1-asr-flash-message`
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        实时
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        WebSocket
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        热词、上下文
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        不支持
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        不支持
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        多语种及方言
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        —
++      </td>
++    </tr>
++
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        `qwen-audio-3.1-asr-flash-streaming`
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        实时
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        WebSocket
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        热词、Prompt上下文
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        不支持
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        不支持
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        多语种及方言
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        无限制
++      </td>
++    </tr>
++
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        `qwen-audio-3.1-asr-flash-filetrans`
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        非实时
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        HTTP
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        热词、Prompt上下文
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        不支持
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        支持
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        多语种及方言
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        12小时 / 2GB
++      </td>
++    </tr>
++  </tbody>
++</table>
+ 
+ ## 所有模型 <span id="asr_all02" /> <span id="asr_all01" />
+ 
+-### Qwen-Audio-3.x-ASR-Flash-Streaming <span id="qa30st_sec02" /> <span id="qa30st_sec01" />
+-
+-<table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}><colgroup><col style={{ width: "16.96%" }} /><col style={{ width: "8.07%" }} /><col style={{ width: "15.92%" }} /><col style={{ width: "10.84%" }} /><col style={{ width: "9.46%" }} /><col style={{ width: "11.07%" }} /><col style={{ width: "13.49%" }} /><col style={{ width: "14.19%" }} /></colgroup><thead><tr><th style={{ verticalAlign: "top" }}><p><strong>模型ID</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>模式</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>API</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>精度增强</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>情感识别</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>说话人分离</strong></p></th><th style={{ verticalAlign: "top" }}><p><a href="/zh/model-studio/asr-model"><strong>支持语言</strong></a></p></th><th style={{ verticalAlign: "top" }}><p><strong>音频最大时长/大小</strong></p></th></tr></thead><tbody><tr><td style={{ verticalAlign: "top" }}><p><code>qwen-audio-3.1-asr-flash-streaming</code></p></td><td style={{ verticalAlign: "top" }}><p>实时</p></td><td style={{ verticalAlign: "top" }}><p>WebSocket</p></td><td style={{ verticalAlign: "top" }}><p>热词、Prompt上下文</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td><td style={{ verticalAlign: "top" }}><p>多语种及方言</p></td><td style={{ verticalAlign: "top" }}><p>无限制</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><code>qwen-audio-3.0-asr-flash-streaming</code></p></td><td style={{ verticalAlign: "top" }}><p>实时</p></td><td style={{ verticalAlign: "top" }}><p>WebSocket</p></td><td style={{ verticalAlign: "top" }}><p>热词、Prompt上下文</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td><td style={{ verticalAlign: "top" }}><p>多语种及方言</p></td><td style={{ verticalAlign: "top" }}><p>无限制</p></td></tr></tbody></table>
++### Qwen-Audio-ASR-Message <span id="asr_message_h3" />
++
++<table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
++  <colgroup>
++    <col style={{ width: "16.96%" }} />
++
++    <col style={{ width: "8.07%" }} />
++
++    <col style={{ width: "15.92%" }} />
++
++    <col style={{ width: "10.84%" }} />
++
++    <col style={{ width: "9.46%" }} />
++
++    <col style={{ width: "11.07%" }} />
++
++    <col style={{ width: "13.49%" }} />
++
++    <col style={{ width: "14.19%" }} />
++  </colgroup>
++
++  <thead>
++    <tr>
++      <th style={{ verticalAlign: "top" }}>
++        <strong>模型ID</strong>
++      </th>
++
++      <th style={{ verticalAlign: "top" }}>
++        <strong>模式</strong>
++      </th>
++
++      <th style={{ verticalAlign: "top" }}>
++        <strong>API</strong>
++      </th>
++
++      <th style={{ verticalAlign: "top" }}>
++        <strong>精度增强</strong>
++      </th>
++
++      <th style={{ verticalAlign: "top" }}>
++        <strong>情感识别</strong>
++      </th>
++
++      <th style={{ verticalAlign: "top" }}>
++        <strong>说话人分离</strong>
++      </th>
++
++      <th style={{ verticalAlign: "top" }}>
++        <strong>支持语言</strong>
++      </th>
++
++      <th style={{ verticalAlign: "top" }}>
++        <strong>音频最大时长/大小</strong>
++      </th>
++    </tr>
++  </thead>
++
++  <tbody>
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        `qwen-audio-3.1-asr-flash-message`
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        实时
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        WebSocket
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        热词、上下文
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        不支持
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        不支持
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        多语种及方言
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        —
++      </td>
++    </tr>
++  </tbody>
++</table>
++
++<strong>支持的语言</strong>：
++
++- `qwen-audio-3.1-asr-flash-message`：中文（普通话、粤语、吴语、闽南语、客家话、赣语、湘语、晋语；并支持中原、西南、冀鲁、江淮、兰银、胶辽、东北、北京、港台等，包括河南、陕西、湖北、四川、重庆、云南、贵州、广东、广西、河北、天津、山东、安徽、南京、江苏、杭州、甘肃、宁夏等地区官话口音）、英语、日语、韩语、越南语、泰语、印尼语、马来语、菲律宾语、印地语、阿拉伯语、法语、德语、西班牙语、葡萄牙语、俄语、意大利语、荷兰语、瑞典语、丹麦语、芬兰语、挪威语、希腊语、波兰语、捷克语、匈牙利语、罗马尼亚语、保加利亚语、克罗地亚语、斯洛伐克语
++
++### Qwen-Audio-ASR-Streaming <span id="qa30st_sec02" /> <span id="qa30st_sec01" />
++
++<table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
++  <colgroup>
++    <col style={{ width: "16.96%" }} />
++
++    <col style={{ width: "8.07%" }} />
++
++    <col style={{ width: "15.92%" }} />
++
++    <col style={{ width: "10.84%" }} />
++
++    <col style={{ width: "9.46%" }} />
++
++    <col style={{ width: "11.07%" }} />
++
++    <col style={{ width: "13.49%" }} />
++
++    <col style={{ width: "14.19%" }} />
++  </colgroup>
++
++  <thead>
++    <tr>
++      <th style={{ verticalAlign: "top" }}>
++        <p><strong>模型ID</strong></p>
++      </th>
++
++      <th style={{ verticalAlign: "top" }}>
++        <p><strong>模式</strong></p>
++      </th>
++
++      <th style={{ verticalAlign: "top" }}>
++        <p><strong>API</strong></p>
++      </th>
++
++      <th style={{ verticalAlign: "top" }}>
++        <p><strong>精度增强</strong></p>
++      </th>
++
++      <th style={{ verticalAlign: "top" }}>
++        <p><strong>情感识别</strong></p>
++      </th>
++
++      <th style={{ verticalAlign: "top" }}>
++        <p><strong>说话人分离</strong></p>
++      </th>
++
++      <th style={{ verticalAlign: "top" }}>
++        <p><strong>支持语言</strong></p>
++      </th>
++
++      <th style={{ verticalAlign: "top" }}>
++        <p><strong>音频最大时长/大小</strong></p>
++      </th>
++    </tr>
++  </thead>
++
++  <tbody>
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        `qwen-audio-3.1-asr-flash-streaming`
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        实时
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        WebSocket
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        热词、Prompt上下文
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        不支持
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        不支持
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        多语种及方言
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        无限制
++      </td>
++    </tr>
++
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        `qwen-audio-3.0-asr-flash-streaming`
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        实时
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        WebSocket
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        热词、Prompt上下文
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        不支持
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        不支持
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        多语种及方言
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        无限制
++      </td>
++    </tr>
++  </tbody>
++</table>
+ 
+ <strong>支持的语言（按版本）</strong>：
+ 
+-- `qwen-audio-3.1-asr-flash-streaming`：中文、英语、日语、韩语、越南语、泰语、印尼语、马来语、菲律宾语、印地语、阿拉伯语、法语、德语、西班牙语、葡萄牙语、俄语、意大利语、荷兰语、瑞典语、丹麦语、芬兰语、希腊语、波兰语、捷克语、匈牙利语、罗马尼亚语、保加利亚语、克罗地亚语、斯洛伐克语、挪威语。支持上海、南昌、宁波、客家、杭州、温州、湖南、福建、粤语、苏州方言。
+-- `qwen-audio-3.0-asr-flash-streaming`：中文（普通话、粤语、吴语、闽南语、客家话、赣语、湘语、晋语；并支持中原、西南、冀鲁、江淮、兰银、胶辽、东北、北京、港台等，包括河南、陕西、湖北、四川、重庆、云南、贵州、广东、广西、河北、天津、山东、安徽、南京、江苏、杭州、甘肃、宁夏等地区官话口音）、英语、日语、韩语、越南语、泰语、印尼语、马来语、菲律宾语、印地语、阿拉伯语、法语、德语、西班牙语、葡萄牙语、俄语、意大利语、荷兰语、瑞典语、丹麦语、芬兰语、挪威语、希腊语、波兰语、捷克语、匈牙利语、罗马尼亚语、保加利亚语、克罗地亚语、斯洛伐克语
+-
+-### Qwen-Audio-3.x-ASR-Flash-Filetrans <span id="qa30ft_sec02" /> <span id="qa30ft_sec01" />
+-
+-<table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}><colgroup><col style={{ width: "16.96%" }} /><col style={{ width: "8.07%" }} /><col style={{ width: "15.92%" }} /><col style={{ width: "10.84%" }} /><col style={{ width: "9.46%" }} /><col style={{ width: "11.07%" }} /><col style={{ width: "13.49%" }} /><col style={{ width: "14.19%" }} /></colgroup><thead><tr><th style={{ verticalAlign: "top" }}><p><strong>模型ID</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>模式</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>API</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>精度增强</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>情感识别</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>说话人分离</strong></p></th><th style={{ verticalAlign: "top" }}><p><a href="/zh/model-studio/asr-model"><strong>支持语言</strong></a></p></th><th style={{ verticalAlign: "top" }}><p><strong>音频最大时长/大小</strong></p></th></tr></thead><tbody><tr><td style={{ verticalAlign: "top" }}><p><code>qwen-audio-3.1-asr-flash-filetrans</code></p></td><td style={{ verticalAlign: "top" }}><p>非实时</p></td><td style={{ verticalAlign: "top" }}><p>HTTP</p></td><td style={{ verticalAlign: "top" }}><p>热词、Prompt上下文</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td><td style={{ verticalAlign: "top" }}><p>支持</p></td><td style={{ verticalAlign: "top" }}><p>多语种及方言</p></td><td style={{ verticalAlign: "top" }}><p>12小时 / 2GB</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><code>qwen-audio-3.0-asr-flash-filetrans</code></p></td><td style={{ verticalAlign: "top" }}><p>非实时</p></td><td style={{ verticalAlign: "top" }}><p>HTTP</p></td><td style={{ verticalAlign: "top" }}><p>热词、Prompt上下文</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td><td style={{ verticalAlign: "top" }}><p>支持</p></td><td style={{ verticalAlign: "top" }}><p>多语种及方言</p></td><td style={{ verticalAlign: "top" }}><p>12小时 / 2GB</p></td></tr></tbody></table>
++- `qwen-audio-3.1-asr-flash-streaming`、`qwen-audio-3.0-asr-flash-streaming`：中文（普通话、粤语、吴语、闽南语、客家话、赣语、湘语、晋语；并支持中原、西南、冀鲁、江淮、兰银、胶辽、东北、北京、港台等，包括河南、陕西、湖北、四川、重庆、云南、贵州、广东、广西、河北、天津、山东、安徽、南京、江苏、杭州、甘肃、宁夏等地区官话口音）、英语、日语、韩语、越南语、泰语、印尼语、马来语、菲律宾语、印地语、阿拉伯语、法语、德语、西班牙语、葡萄牙语、俄语、意大利语、荷兰语、瑞典语、丹麦语、芬兰语、挪威语、希腊语、波兰语、捷克语、匈牙利语、罗马尼亚语、保加利亚语、克罗地亚语、斯洛伐克语
++
++### Qwen-Audio-ASR-Filetrans <span id="qa30ft_sec02" /> <span id="qa30ft_sec01" />
++
++<table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
++  <colgroup>
++    <col style={{ width: "16.96%" }} />
++
++    <col style={{ width: "8.07%" }} />
++
++    <col style={{ width: "15.92%" }} />
++
++    <col style={{ width: "10.84%" }} />
++
++    <col style={{ width: "9.46%" }} />
++
++    <col style={{ width: "11.07%" }} />
++
++    <col style={{ width: "13.49%" }} />
++
++    <col style={{ width: "14.19%" }} />
++  </colgroup>
++
++  <thead>
++    <tr>
++      <th style={{ verticalAlign: "top" }}>
++        <p><strong>模型ID</strong></p>
++      </th>
++
++      <th style={{ verticalAlign: "top" }}>
++        <p><strong>模式</strong></p>
++      </th>
++
++      <th style={{ verticalAlign: "top" }}>
++        <p><strong>API</strong></p>
++      </th>
++
++      <th style={{ verticalAlign: "top" }}>
++        <p><strong>精度增强</strong></p>
++      </th>
++
++      <th style={{ verticalAlign: "top" }}>
++        <p><strong>情感识别</strong></p>
++      </th>
++
++      <th style={{ verticalAlign: "top" }}>
++        <p><strong>说话人分离</strong></p>
++      </th>
++
++      <th style={{ verticalAlign: "top" }}>
++        <p><strong>支持语言</strong></p>
++      </th>
++
++      <th style={{ verticalAlign: "top" }}>
++        <p><strong>音频最大时长/大小</strong></p>
++      </th>
++    </tr>
++  </thead>
++
++  <tbody>
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        `qwen-audio-3.1-asr-flash-filetrans`
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        非实时
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        HTTP
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        热词、Prompt上下文
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        不支持
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        支持
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        多语种及方言
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        12小时 / 2GB
++      </td>
++    </tr>
++
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        `qwen-audio-3.0-asr-flash-filetrans`
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        非实时
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        HTTP
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        热词、Prompt上下文
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        不支持
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        支持
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        多语种及方言
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        12小时 / 2GB
++      </td>
++    </tr>
++  </tbody>
++</table>
+ 
+ <strong>支持的语言（按版本）</strong>：
+ 
+-- `qwen-audio-3.1-asr-flash-filetrans`：中文、英语、日语、韩语、越南语、泰语、印尼语、马来语、菲律宾语、印地语、阿拉伯语、法语、德语、西班牙语、葡萄牙语、俄语、意大利语、荷兰语、瑞典语、丹麦语、芬兰语、希腊语、波兰语、捷克语、匈牙利语、罗马尼亚语、保加利亚语、克罗地亚语、斯洛伐克语、挪威语。支持上海、南昌、宁波、客家、杭州、温州、湖南、福建、粤语、苏州方言。
+-- `qwen-audio-3.0-asr-flash-filetrans`：中文（普通话、粤语、吴语、闽南语、客家话、赣语、湘语、晋语；并支持中原、西南、冀鲁、江淮、兰银、胶辽、东北、北京、港台等，包括河南、陕西、湖北、四川、重庆、云南、贵州、广东、广西、河北、天津、山东、安徽、南京、江苏、杭州、甘肃、宁夏等地区官话口音）、英语、日语、韩语、越南语、泰语、印尼语、马来语、菲律宾语、印地语、阿拉伯语、法语、德语、西班牙语、葡萄牙语、俄语、意大利语、荷兰语、瑞典语、丹麦语、芬兰语、挪威语、希腊语、波兰语、捷克语、匈牙利语、罗马尼亚语、保加利亚语、克罗地亚语、斯洛伐克语
+-
+-### Qwen-Audio-3.x-ASR-Flash <span id="qa30fl_sec02" /> <span id="qa30fl_sec01" />
+-
+-<table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}><colgroup><col style={{ width: "16.96%" }} /><col style={{ width: "8.07%" }} /><col style={{ width: "15.92%" }} /><col style={{ width: "10.84%" }} /><col style={{ width: "9.46%" }} /><col style={{ width: "11.07%" }} /><col style={{ width: "13.49%" }} /><col style={{ width: "14.19%" }} /></colgroup><thead><tr><th style={{ verticalAlign: "top" }}><p><strong>模型ID</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>模式</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>API</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>精度增强</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>情感识别</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>说话人分离</strong></p></th><th style={{ verticalAlign: "top" }}><p><a href="/zh/model-studio/asr-model"><strong>支持语言</strong></a></p></th><th style={{ verticalAlign: "top" }}><p><strong>音频最大时长/大小</strong></p></th></tr></thead><tbody><tr><td style={{ verticalAlign: "top" }}><p><code>qwen-audio-3.1-asr-flash</code></p></td><td style={{ verticalAlign: "top" }}><p>非实时</p></td><td style={{ verticalAlign: "top" }}><p>HTTP</p></td><td style={{ verticalAlign: "top" }}><p>热词、Prompt上下文</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td><td style={{ verticalAlign: "top" }}><p>支持</p></td><td style={{ verticalAlign: "top" }}><p>多语种及方言</p></td><td style={{ verticalAlign: "top" }}><p>5分钟 / 2GB</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><code>qwen-audio-3.0-asr-flash</code></p></td><td style={{ verticalAlign: "top" }}><p>非实时</p></td><td style={{ verticalAlign: "top" }}><p>HTTP</p></td><td style={{ verticalAlign: "top" }}><p>热词、Prompt上下文</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td><td style={{ verticalAlign: "top" }}><p>多语种及方言</p></td><td style={{ verticalAlign: "top" }}><p>5分钟 / 2GB</p></td></tr></tbody></table>
++- `qwen-audio-3.1-asr-flash-filetrans`、`qwen-audio-3.0-asr-flash-filetrans`：中文（普通话、粤语、吴语、闽南语、客家话、赣语、湘语、晋语；并支持中原、西南、冀鲁、江淮、兰银、胶辽、东北、北京、港台等，包括河南、陕西、湖北、四川、重庆、云南、贵州、广东、广西、河北、天津、山东、安徽、南京、江苏、杭州、甘肃、宁夏等地区官话口音）、英语、日语、韩语、越南语、泰语、印尼语、马来语、菲律宾语、印地语、阿拉伯语、法语、德语、西班牙语、葡萄牙语、俄语、意大利语、荷兰语、瑞典语、丹麦语、芬兰语、挪威语、希腊语、波兰语、捷克语、匈牙利语、罗马尼亚语、保加利亚语、克罗地亚语、斯洛伐克语
++
++### Qwen-Audio-ASR <span id="qa30fl_sec02" /> <span id="qa30fl_sec01" />
++
++<table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
++  <colgroup>
++    <col style={{ width: "16.96%" }} />
++
++    <col style={{ width: "8.07%" }} />
++
++    <col style={{ width: "15.92%" }} />
++
++    <col style={{ width: "10.84%" }} />
++
++    <col style={{ width: "9.46%" }} />
++
++    <col style={{ width: "11.07%" }} />
++
++    <col style={{ width: "13.49%" }} />
++
++    <col style={{ width: "14.19%" }} />
++  </colgroup>
++
++  <thead>
++    <tr>
++      <th style={{ verticalAlign: "top" }}>
++        <p><strong>模型ID</strong></p>
++      </th>
++
++      <th style={{ verticalAlign: "top" }}>
++        <p><strong>模式</strong></p>
++      </th>
++
++      <th style={{ verticalAlign: "top" }}>
++        <p><strong>API</strong></p>
++      </th>
++
++      <th style={{ verticalAlign: "top" }}>
++        <p><strong>精度增强</strong></p>
++      </th>
++
++      <th style={{ verticalAlign: "top" }}>
++        <p><strong>情感识别</strong></p>
++      </th>
++
++      <th style={{ verticalAlign: "top" }}>
++        <p><strong>说话人分离</strong></p>
++      </th>
++
++      <th style={{ verticalAlign: "top" }}>
++        <p><strong>支持语言</strong></p>
++      </th>
++
++      <th style={{ verticalAlign: "top" }}>
++        <p><strong>音频最大时长/大小</strong></p>
++      </th>
++    </tr>
++  </thead>
++
++  <tbody>
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        `qwen-audio-3.1-asr-flash`
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        非实时
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        HTTP
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        热词、Prompt上下文
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        不支持
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        支持
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        多语种及方言
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        5分钟 / 2GB
++      </td>
++    </tr>
++
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        `qwen-audio-3.0-asr-flash`
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        非实时
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        HTTP
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        热词、Prompt上下文
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        不支持
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        不支持
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        多语种及方言
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        5分钟 / 2GB
++      </td>
++    </tr>
++  </tbody>
++</table>
+ 
+ <strong>支持的语言（按版本）</strong>：
+ 
+-- `qwen-audio-3.1-asr-flash`：中文、英语、日语、韩语、越南语、泰语、印尼语、马来语、菲律宾语、印地语、阿拉伯语、法语、德语、西班牙语、葡萄牙语、俄语、意大利语、荷兰语、瑞典语、丹麦语、芬兰语、希腊语、波兰语、捷克语、匈牙利语、罗马尼亚语、保加利亚语、克罗地亚语、斯洛伐克语、挪威语。支持上海、南昌、宁波、客家、杭州、温州、湖南、福建、粤语、苏州方言。
+-- `qwen-audio-3.0-asr-flash`：中文（普通话、粤语、吴语、闽南语、客家话、赣语、湘语、晋语；并支持中原、西南、冀鲁、江淮、兰银、胶辽、东北、北京、港台等，包括河南、陕西、湖北、四川、重庆、云南、贵州、广东、广西、河北、天津、山东、安徽、南京、江苏、杭州、甘肃、宁夏等地区官话口音）、英语、日语、韩语、越南语、泰语、印尼语、马来语、菲律宾语、印地语、阿拉伯语、法语、德语、西班牙语、葡萄牙语、俄语、意大利语、荷兰语、瑞典语、丹麦语、芬兰语、挪威语、希腊语、波兰语、捷克语、匈牙利语、罗马尼亚语、保加利亚语、克罗地亚语、斯洛伐克语
++- `qwen-audio-3.1-asr-flash`、`qwen-audio-3.0-asr-flash`：中文（普通话、粤语、吴语、闽南语、客家话、赣语、湘语、晋语；并支持中原、西南、冀鲁、江淮、兰银、胶辽、东北、北京、港台等，包括河南、陕西、湖北、四川、重庆、云南、贵州、广东、广西、河北、天津、山东、安徽、南京、江苏、杭州、甘肃、宁夏等地区官话口音）、英语、日语、韩语、越南语、泰语、印尼语、马来语、菲律宾语、印地语、阿拉伯语、法语、德语、西班牙语、葡萄牙语、俄语、意大利语、荷兰语、瑞典语、丹麦语、芬兰语、挪威语、希腊语、波兰语、捷克语、匈牙利语、罗马尼亚语、保加利亚语、克罗地亚语、斯洛伐克语
+ 
+ ### Fun-ASR <span id="asr_fa02" /> <span id="asr_fa01" />
+ 
+-<table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}><colgroup><col style={{ width: "16.96%" }} /><col style={{ width: "8.07%" }} /><col style={{ width: "15.92%" }} /><col style={{ width: "10.84%" }} /><col style={{ width: "9.46%" }} /><col style={{ width: "11.07%" }} /><col style={{ width: "13.49%" }} /><col style={{ width: "14.19%" }} /></colgroup><thead><tr><th style={{ verticalAlign: "top" }}><p><strong>模型ID</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>模式</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>API</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>精度增强</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>情感识别</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>说话人分离</strong></p></th><th style={{ verticalAlign: "top" }}><p><a href="/zh/model-studio/asr-model"><strong>支持语言</strong></a></p></th><th style={{ verticalAlign: "top" }}><p><strong>音频最大时长/大小</strong></p></th></tr></thead><tbody><tr><td style={{ verticalAlign: "top" }}><p><code>fun-asr-realtime</code></p></td><td style={{ verticalAlign: "top" }}><p>实时</p></td><td style={{ verticalAlign: "top" }}><p>WebSocket</p></td><td style={{ verticalAlign: "top" }}><p>热词</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td><td style={{ verticalAlign: "top" }}><p>多语种及方言</p></td><td style={{ verticalAlign: "top" }}><p>无限制</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><code>fun-asr-realtime-2026-02-28</code></p></td><td style={{ verticalAlign: "top" }}><p>实时</p></td><td style={{ verticalAlign: "top" }}><p>WebSocket</p></td><td style={{ verticalAlign: "top" }}><p>热词</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td><td style={{ verticalAlign: "top" }}><p>中、英、日及方言</p></td><td style={{ verticalAlign: "top" }}><p>无限制</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><code>fun-asr-realtime-2025-11-07</code></p></td><td style={{ verticalAlign: "top" }}><p>实时</p></td><td style={{ verticalAlign: "top" }}><p>WebSocket</p></td><td style={{ verticalAlign: "top" }}><p>热词</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td><td style={{ verticalAlign: "top" }}><p>多语种及方言</p></td><td style={{ verticalAlign: "top" }}><p>无限制</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><code>fun-asr-realtime-2025-09-15</code></p></td><td style={{ verticalAlign: "top" }}><p>实时</p></td><td style={{ verticalAlign: "top" }}><p>WebSocket</p></td><td style={{ verticalAlign: "top" }}><p>热词</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td><td style={{ verticalAlign: "top" }}><p>中、英</p></td><td style={{ verticalAlign: "top" }}><p>无限制</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><code>fun-asr-flash-8k-realtime</code></p></td><td style={{ verticalAlign: "top" }}><p>实时</p></td><td style={{ verticalAlign: "top" }}><p>WebSocket</p></td><td style={{ verticalAlign: "top" }}><p>热词</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td><td style={{ verticalAlign: "top" }}><p>中文</p></td><td style={{ verticalAlign: "top" }}><p>无限制</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><code>fun-asr-flash-8k-realtime-2026-01-28</code></p></td><td style={{ verticalAlign: "top" }}><p>实时</p></td><td style={{ verticalAlign: "top" }}><p>WebSocket</p></td><td style={{ verticalAlign: "top" }}><p>热词</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td><td style={{ verticalAlign: "top" }}><p>中文</p></td><td style={{ verticalAlign: "top" }}><p>无限制</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><code>fun-asr</code></p></td><td style={{ verticalAlign: "top" }}><p>非实时</p></td><td style={{ verticalAlign: "top" }}><p>HTTP</p></td><td style={{ verticalAlign: "top" }}><p>热词</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td><td style={{ verticalAlign: "top" }}><p>支持</p></td><td style={{ verticalAlign: "top" }}><p>多语种及方言</p></td><td style={{ verticalAlign: "top" }}><p>12小时 / 2GB</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><code>fun-asr-flash-2026-06-15</code></p></td><td style={{ verticalAlign: "top" }}><p>非实时</p></td><td style={{ verticalAlign: "top" }}><p>HTTP</p></td><td style={{ verticalAlign: "top" }}><p>Prompt上下文</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td><td style={{ verticalAlign: "top" }}><p>多语种及方言</p></td><td style={{ verticalAlign: "top" }}><p>5分钟 / 2GB</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><code>fun-asr-2025-11-07</code></p></td><td style={{ verticalAlign: "top" }}><p>非实时</p></td><td style={{ verticalAlign: "top" }}><p>HTTP</p></td><td style={{ verticalAlign: "top" }}><p>热词</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td><td style={{ verticalAlign: "top" }}><p>支持</p></td><td style={{ verticalAlign: "top" }}><p>多语种及方言</p></td><td style={{ verticalAlign: "top" }}><p>12小时 / 2GB</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><code>fun-asr-2025-08-25</code></p></td><td style={{ verticalAlign: "top" }}><p>非实时</p></td><td style={{ verticalAlign: "top" }}><p>HTTP</p></td><td style={{ verticalAlign: "top" }}><p>热词</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td><td style={{ verticalAlign: "top" }}><p>支持</p></td><td style={{ verticalAlign: "top" }}><p>中、英</p></td><td style={{ verticalAlign: "top" }}><p>12小时 / 2GB</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><code>fun-asr-mtl</code></p></td><td style={{ verticalAlign: "top" }}><p>非实时</p></td><td style={{ verticalAlign: "top" }}><p>HTTP</p></td><td style={{ verticalAlign: "top" }}><p>热词</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td><td style={{ verticalAlign: "top" }}><p>支持</p></td><td style={{ verticalAlign: "top" }}><p>多语种及方言</p></td><td style={{ verticalAlign: "top" }}><p>12小时 / 2GB</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><code>fun-asr-mtl-2025-08-25</code></p></td><td style={{ verticalAlign: "top" }}><p>非实时</p></td><td style={{ verticalAlign: "top" }}><p>HTTP</p></td><td style={{ verticalAlign: "top" }}><p>热词</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td><td style={{ verticalAlign: "top" }}><p>支持</p></td><td style={{ verticalAlign: "top" }}><p>多语种及方言</p></td><td style={{ verticalAlign: "top" }}><p>12小时 / 2GB</p></td></tr></tbody></table>
++<table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
++  <colgroup>
++    <col style={{ width: "16.96%" }} />
++
++    <col style={{ width: "8.07%" }} />
++
++    <col style={{ width: "15.92%" }} />
++
++    <col style={{ width: "10.84%" }} />
++
++    <col style={{ width: "9.46%" }} />
++
++    <col style={{ width: "11.07%" }} />
++
++    <col style={{ width: "13.49%" }} />
++
++    <col style={{ width: "14.19%" }} />
++  </colgroup>
++
++  <thead>
++    <tr>
++      <th style={{ verticalAlign: "top" }}>
++        <p><strong>模型ID</strong></p>
++      </th>
++
++      <th style={{ verticalAlign: "top" }}>
++        <p><strong>模式</strong></p>
++      </th>
++
++      <th style={{ verticalAlign: "top" }}>
++        <p><strong>API</strong></p>
++      </th>
++
++      <th style={{ verticalAlign: "top" }}>
++        <p><strong>精度增强</strong></p>
++      </th>
++
++      <th style={{ verticalAlign: "top" }}>
++        <p><strong>情感识别</strong></p>
++      </th>
++
++      <th style={{ verticalAlign: "top" }}>
++        <p><strong>说话人分离</strong></p>
++      </th>
++
++      <th style={{ verticalAlign: "top" }}>
++        <p><a href="/zh/model-studio/asr-model"><strong>支持语言</strong></a></p>
++      </th>
++
++      <th style={{ verticalAlign: "top" }}>
++        <p><strong>音频最大时长/大小</strong></p>
++      </th>
++    </tr>
++  </thead>
++
++  <tbody>
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        `fun-asr-realtime`
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        实时
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        WebSocket
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        热词
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        不支持
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        不支持
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        多语种及方言
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        无限制
++      </td>
++    </tr>
++
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        `fun-asr-realtime-2026-02-28`
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        实时
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        WebSocket
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        热词
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        不支持
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        不支持
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        中、英、日及方言
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        无限制
++      </td>
++    </tr>
++
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        `fun-asr-flash-8k-realtime`
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        实时
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        WebSocket
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        热词
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        不支持
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        不支持
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        中文
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        无限制
++      </td>
++    </tr>
++
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        `fun-asr-flash-8k-realtime-2026-01-28`
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        实时
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        WebSocket
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        热词
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        不支持
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        不支持
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        中文
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        无限制
++      </td>
++    </tr>
++
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        `fun-asr`
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        非实时
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        HTTP
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        热词
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        不支持
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        支持
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        多语种及方言
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        12小时 / 2GB
++      </td>
++    </tr>
++
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        `fun-asr-flash-2026-06-15`
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        非实时
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        HTTP
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        Prompt上下文
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        不支持
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        不支持
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        多语种及方言
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        5分钟 / 2GB
++      </td>
++    </tr>
++  </tbody>
++</table>
+ 
+ <strong>支持的语言（按版本）</strong>：
+ 
+-- <strong>Fun-ASR-Realtime 主版本</strong>（`fun-asr-realtime`、`fun-asr-realtime-2025-11-07`）：中文（普通话、粤语、吴语、闽南语、客家话、赣语、湘语、晋语；并支持中原、西南、冀鲁、江淮、兰银、胶辽、东北、北京、港台等，包括河南、陕西、湖北、四川、重庆、云南、贵州、广东、广西、河北、天津、山东、安徽、南京、江苏、杭州、甘肃、宁夏等地区官话口音）、英语、日语、韩语、越南语、泰语、印尼语、马来语、菲律宾语、印地语、阿拉伯语、法语、德语、西班牙语、葡萄牙语、俄语、意大利语、荷兰语、瑞典语、丹麦语、芬兰语、挪威语、希腊语、波兰语、捷克语、匈牙利语、罗马尼亚语、保加利亚语、克罗地亚语、斯洛伐克语
++- <strong>Fun-ASR-Realtime 主版本</strong>（`fun-asr-realtime`）：中文（普通话、粤语、吴语、闽南语、客家话、赣语、湘语、晋语；并支持中原、西南、冀鲁、江淮、兰银、胶辽、东北、北京、港台等，包括河南、陕西、湖北、四川、重庆、云南、贵州、广东、广西、河北、天津、山东、安徽、南京、江苏、杭州、甘肃、宁夏等地区官话口音）、英语、日语、韩语、越南语、泰语、印尼语、马来语、菲律宾语、印地语、阿拉伯语、法语、德语、西班牙语、葡萄牙语、俄语、意大利语、荷兰语、瑞典语、丹麦语、芬兰语、挪威语、希腊语、波兰语、捷克语、匈牙利语、罗马尼亚语、保加利亚语、克罗地亚语、斯洛伐克语
+ - `fun-asr-realtime-2026-02-28`：中文（普通话、粤语、吴语、闽南语、客家话、赣语、湘语、晋语；并支持中原、西南、冀鲁、江淮、兰银、胶辽、东北、北京、港台等，包括河南、陕西、湖北、四川、重庆、云南、贵州、广东、广西、河北、天津、山东、安徽、南京、江苏、杭州、甘肃、宁夏等地区官话口音）、英语、日语
+-- `fun-asr-realtime-2025-09-15`：中文（普通话）、英文
+ - <strong>Fun-ASR-Flash-Realtime（8K）</strong>（`fun-asr-flash-8k-realtime`、`fun-asr-flash-8k-realtime-2026-01-28`）：中文
+-- <strong>Fun-ASR 主版本</strong>（`fun-asr`、`fun-asr-2025-11-07`）：中文（普通话、粤语、吴语、闽南语、客家话、赣语、湘语、晋语；并支持中原、西南、冀鲁、江淮、兰银、胶辽、东北、北京、港台等，包括河南、陕西、湖北、四川、重庆、云南、贵州、广东、广西、河北、天津、山东、安徽、南京、江苏、杭州、甘肃、宁夏等地区官话口音）、英语、日语、韩语、越南语、泰语、印尼语、马来语、菲律宾语、印地语、阿拉伯语、法语、德语、西班牙语、葡萄牙语、俄语、意大利语、荷兰语、瑞典语、丹麦语、芬兰语、挪威语、希腊语、波兰语、捷克语、匈牙利语、罗马尼亚语、保加利亚语、克罗地亚语、斯洛伐克语
++- <strong>Fun-ASR 主版本</strong>（`fun-asr`）：中文（普通话、粤语、吴语、闽南语、客家话、赣语、湘语、晋语；并支持中原、西南、冀鲁、江淮、兰银、胶辽、东北、北京、港台等，包括河南、陕西、湖北、四川、重庆、云南、贵州、广东、广西、河北、天津、山东、安徽、南京、江苏、杭州、甘肃、宁夏等地区官话口音）、英语、日语、韩语、越南语、泰语、印尼语、马来语、菲律宾语、印地语、阿拉伯语、法语、德语、西班牙语、葡萄牙语、俄语、意大利语、荷兰语、瑞典语、丹麦语、芬兰语、挪威语、希腊语、波兰语、捷克语、匈牙利语、罗马尼亚语、保加利亚语、克罗地亚语、斯洛伐克语
+ - <strong>Fun-ASR-Flash</strong>（`fun-asr-flash-2026-06-15`）：中文（普通话、粤语、吴语、闽南语、客家话、赣语、湘语、晋语；并支持中原、西南、冀鲁、江淮、兰银、胶辽、东北、北京、港台等，包括河南、陕西、湖北、四川、重庆、云南、贵州、广东、广西、河北、天津、山东、安徽、南京、江苏、杭州、甘肃、宁夏等地区官话口音）、英语、日语、韩语、越南语、泰语、印尼语、马来语、菲律宾语、印地语、阿拉伯语、法语、德语、西班牙语、葡萄牙语、俄语、意大利语、荷兰语、瑞典语、丹麦语、芬兰语、挪威语、希腊语、波兰语、捷克语、匈牙利语、罗马尼亚语、保加利亚语、克罗地亚语、斯洛伐克语
+-- `fun-asr-2025-08-25`：中文（普通话）、英文
+-- <strong>Fun-ASR（MTL）</strong>（`fun-asr-mtl`、`fun-asr-mtl-2025-08-25`）：中文（普通话、粤语）、英语、日语、韩语、越南语、泰语、印尼语、马来语、菲律宾语、印地语、阿拉伯语、法语、德语、西班牙语、葡萄牙语、俄语、意大利语、荷兰语、瑞典语、丹麦语、芬兰语、挪威语、希腊语、波兰语、捷克语、匈牙利语、罗马尼亚语、保加利亚语、克罗地亚语、斯洛伐克语
+ 
+ ### Qwen-ASR <span id="asr_qa02" /> <span id="asr_qa01" />
+ 
+-<table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}><colgroup><col style={{ width: "16.72%" }} /><col style={{ width: "7.96%" }} /><col style={{ width: "15.92%" }} /><col style={{ width: "10.96%" }} /><col style={{ width: "9.8%" }} /><col style={{ width: "11.07%" }} /><col style={{ width: "13.26%" }} /><col style={{ width: "14.31%" }} /></colgroup><thead><tr><th style={{ verticalAlign: "top" }}><p><strong>模型ID</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>模式</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>API</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>精度增强</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>情感识别</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>说话人分离</strong></p></th><th style={{ verticalAlign: "top" }}><p><a href="/zh/model-studio/asr-model"><strong>支持语言</strong></a></p></th><th style={{ verticalAlign: "top" }}><p><strong>音频最大时长/大小</strong></p></th></tr></thead><tbody><tr><td style={{ verticalAlign: "top" }}><p><code>qwen3-asr-flash-realtime</code></p></td><td style={{ verticalAlign: "top" }}><p>实时</p></td><td style={{ verticalAlign: "top" }}><p>WebSocket</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td><td style={{ verticalAlign: "top" }}><p>支持</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td><td style={{ verticalAlign: "top" }}><p>多语种及方言</p></td><td style={{ verticalAlign: "top" }}><p>无限制</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><code>qwen3-asr-flash-realtime-2026-02-10</code></p></td><td style={{ verticalAlign: "top" }}><p>实时</p></td><td style={{ verticalAlign: "top" }}><p>WebSocket</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td><td style={{ verticalAlign: "top" }}><p>支持</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td><td style={{ verticalAlign: "top" }}><p>多语种及方言</p></td><td style={{ verticalAlign: "top" }}><p>无限制</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><code>qwen3-asr-flash-realtime-2025-10-27</code></p></td><td style={{ verticalAlign: "top" }}><p>实时</p></td><td style={{ verticalAlign: "top" }}><p>WebSocket</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td><td style={{ verticalAlign: "top" }}><p>支持</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td><td style={{ verticalAlign: "top" }}><p>多语种及方言</p></td><td style={{ verticalAlign: "top" }}><p>无限制</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><code>qwen3-asr-flash-filetrans</code></p></td><td style={{ verticalAlign: "top" }}><p>非实时</p></td><td style={{ verticalAlign: "top" }}><p>HTTP</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td><td style={{ verticalAlign: "top" }}><p>支持</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td><td style={{ verticalAlign: "top" }}><p>多语种及方言</p></td><td style={{ verticalAlign: "top" }}><p>12小时 / 2GB</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><code>qwen3-asr-flash-filetrans-2025-11-17</code></p></td><td style={{ verticalAlign: "top" }}><p>非实时</p></td><td style={{ verticalAlign: "top" }}><p>HTTP</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td><td style={{ verticalAlign: "top" }}><p>支持</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td><td style={{ verticalAlign: "top" }}><p>多语种及方言</p></td><td style={{ verticalAlign: "top" }}><p>12小时 / 2GB</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><code>qwen3-asr-flash</code></p></td><td style={{ verticalAlign: "top" }}><p>非实时</p></td><td style={{ verticalAlign: "top" }}><p>HTTP（OpenAI兼容）</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td><td style={{ verticalAlign: "top" }}><p>支持</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td><td style={{ verticalAlign: "top" }}><p>多语种及方言</p></td><td style={{ verticalAlign: "top" }}><p>5分钟 / 10MB</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><code>qwen3-asr-flash-2026-02-10</code></p></td><td style={{ verticalAlign: "top" }}><p>非实时</p></td><td style={{ verticalAlign: "top" }}><p>HTTP（OpenAI兼容）</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td><td style={{ verticalAlign: "top" }}><p>支持</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td><td style={{ verticalAlign: "top" }}><p>多语种及方言</p></td><td style={{ verticalAlign: "top" }}><p>5分钟 / 10MB</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><code>qwen3-asr-flash-2025-09-08</code></p></td><td style={{ verticalAlign: "top" }}><p>非实时</p></td><td style={{ verticalAlign: "top" }}><p>HTTP（OpenAI兼容）</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td><td style={{ verticalAlign: "top" }}><p>支持</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td><td style={{ verticalAlign: "top" }}><p>多语种及方言</p></td><td style={{ verticalAlign: "top" }}><p>5分钟 / 10MB</p></td></tr></tbody></table>
+-
+-<strong>支持的语言</strong>：所有 Qwen-ASR 系列模型（`qwen3-asr-flash-realtime`、`qwen3-asr-flash-filetrans`、`qwen3-asr-flash` 及其快照版）均支持相同的语言列表：中文（普通话、四川话、闽南语、吴语、粤语）、英语、日语、德语、韩语、俄语、法语、葡萄牙语、阿拉伯语、意大利语、西班牙语、印地语、印尼语、泰语、土耳其语、乌克兰语、越南语、捷克语、丹麦语、菲律宾语、芬兰语、冰岛语、马来语、挪威语、波兰语、瑞典语。
++<table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
++  <colgroup>
++    <col style={{ width: "16.72%" }} />
++
++    <col style={{ width: "7.96%" }} />
++
++    <col style={{ width: "15.92%" }} />
++
++    <col style={{ width: "10.96%" }} />
++
++    <col style={{ width: "9.8%" }} />
++
++    <col style={{ width: "11.07%" }} />
++
++    <col style={{ width: "13.26%" }} />
++
++    <col style={{ width: "14.31%" }} />
++  </colgroup>
++
++  <thead>
++    <tr>
++      <th style={{ verticalAlign: "top" }}>
++        <p><strong>模型ID</strong></p>
++      </th>
++
++      <th style={{ verticalAlign: "top" }}>
++        <p><strong>模式</strong></p>
++      </th>
++
++      <th style={{ verticalAlign: "top" }}>
++        <p><strong>API</strong></p>
++      </th>
++
++      <th style={{ verticalAlign: "top" }}>
++        <p><strong>精度增强</strong></p>
++      </th>
++
++      <th style={{ verticalAlign: "top" }}>
++        <p><strong>情感识别</strong></p>
++      </th>
++
++      <th style={{ verticalAlign: "top" }}>
++        <p><strong>说话人分离</strong></p>
++      </th>
++
++      <th style={{ verticalAlign: "top" }}>
++        <p><a href="/zh/model-studio/asr-model"><strong>支持语言</strong></a></p>
++      </th>
++
++      <th style={{ verticalAlign: "top" }}>
++        <p><strong>音频最大时长/大小</strong></p>
++      </th>
++    </tr>
++  </thead>
++
++  <tbody>
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        `qwen3-asr-flash-realtime`
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        实时
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        WebSocket
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        不支持
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        支持
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        不支持
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        多语种及方言
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        无限制
++      </td>
++    </tr>
++
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        `qwen3-asr-flash-filetrans`
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        非实时
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        HTTP
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        不支持
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        支持
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        不支持
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        多语种及方言
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        12小时 / 2GB
++      </td>
++    </tr>
++
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        `qwen3-asr-flash`
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        非实时
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        HTTP（OpenAI兼容）
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        不支持
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        支持
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        不支持
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        多语种及方言
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        5分钟 / 10MB
++      </td>
++    </tr>
++  </tbody>
++</table>
++
++<strong>支持的语言</strong>：所有 Qwen-ASR 系列模型（`qwen3-asr-flash-realtime`、`qwen3-asr-flash-filetrans`、`qwen3-asr-flash`）均支持相同的语言列表：中文（普通话、四川话、闽南语、吴语、粤语）、英语、日语、德语、韩语、俄语、法语、葡萄牙语、阿拉伯语、意大利语、西班牙语、印地语、印尼语、泰语、土耳其语、乌克兰语、越南语、捷克语、丹麦语、菲律宾语、芬兰语、冰岛语、马来语、挪威语、波兰语、瑞典语。
+ 
+ ### Paraformer <span id="asr_pf02" /> <span id="asr_pf01" />
+ 
+ Paraformer 是较早一代的 ASR 模型，包括实时与非实时两类。若您的业务允许，建议迁移到前文推荐的 Fun-ASR 或 Qwen-ASR。
+ 
+-<table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}><colgroup><col style={{ width: "48.717949%" }} /><col style={{ width: "15.384615%" }} /><col style={{ width: "35.897436%" }} /></colgroup><thead><tr><th style={{ verticalAlign: "top" }}><p><strong>模型ID</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>API</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>说明</strong></p></th></tr></thead><tbody><tr><td style={{ verticalAlign: "top" }}><p><code>paraformer-realtime-v2</code></p></td><td style={{ verticalAlign: "top" }}><p>WebSocket</p></td><td style={{ verticalAlign: "top" }}><p>实时识别，中、英、日、韩、德、法、俄</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><code>paraformer-realtime-v1</code></p></td><td style={{ verticalAlign: "top" }}><p>WebSocket</p></td><td style={{ verticalAlign: "top" }}><p>实时识别，中、英、日、韩、德、法、俄</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><code>paraformer-realtime-8k-v2</code></p></td><td style={{ verticalAlign: "top" }}><p>WebSocket</p></td><td style={{ verticalAlign: "top" }}><p>实时识别，8kHz电话场景，中文</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><code>paraformer-realtime-8k-v1</code></p></td><td style={{ verticalAlign: "top" }}><p>WebSocket</p></td><td style={{ verticalAlign: "top" }}><p>实时识别，8kHz电话场景，中文</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><code>paraformer-v2</code></p></td><td style={{ verticalAlign: "top" }}><p>HTTP</p></td><td style={{ verticalAlign: "top" }}><p>录音文件识别，支持说话人分离，中、英、日、韩、德、法、俄</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><code>paraformer-8k-v2</code></p></td><td style={{ verticalAlign: "top" }}><p>HTTP</p></td><td style={{ verticalAlign: "top" }}><p>录音文件识别，8kHz电话场景，中文</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><code>paraformer-v1</code></p></td><td style={{ verticalAlign: "top" }}><p>HTTP</p></td><td style={{ verticalAlign: "top" }}><p>录音文件识别，支持说话人分离，中、英、日、韩、德、法、俄</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><code>paraformer-8k-v1</code></p></td><td style={{ verticalAlign: "top" }}><p>HTTP</p></td><td style={{ verticalAlign: "top" }}><p>录音文件识别，8kHz电话场景，中文</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><code>paraformer-mtl-v1</code></p></td><td style={{ verticalAlign: "top" }}><p>HTTP</p></td><td style={{ verticalAlign: "top" }}><p>录音文件识别，支持说话人分离，多语种</p></td></tr></tbody></table>
++<table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
++  <colgroup>
++    <col style={{ width: "48.717949%" }} />
++
++    <col style={{ width: "15.384615%" }} />
++
++    <col style={{ width: "35.897436%" }} />
++  </colgroup>
++
++  <thead>
++    <tr>
++      <th style={{ verticalAlign: "top" }}>
++        <p><strong>模型ID</strong></p>
++      </th>
++
++      <th style={{ verticalAlign: "top" }}>
++        <p><strong>API</strong></p>
++      </th>
++
++      <th style={{ verticalAlign: "top" }}>
++        <p><strong>说明</strong></p>
++      </th>
++    </tr>
++  </thead>
++
++  <tbody>
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        `paraformer-realtime-v2`
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        WebSocket
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        实时识别，中、英、日、韩、德、法、俄
++      </td>
++    </tr>
++
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        `paraformer-realtime-8k-v2`
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        WebSocket
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        实时识别，8kHz电话场景，中文
++      </td>
++    </tr>
++
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        `paraformer-v2`
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        HTTP
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        录音文件识别，支持说话人分离，中、英、日、韩、德、法、俄
++      </td>
++    </tr>
++
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        `paraformer-8k-v2`
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        HTTP
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        录音文件识别，8kHz电话场景，中文
++      </td>
++    </tr>
++  </tbody>
++</table>
+ 
+ <strong>支持的语言（按版本）</strong>：
+ 
+ - `paraformer-realtime-v2`、`paraformer-v2`：中文（普通话、粤语、吴语、闽南语、东北话、甘肃话、贵州话、河南话、湖北话、湖南话、宁夏话、山西话、陕西话、山东话、四川话、天津话、江西话、云南话、上海话）、英文、日语、韩语、德语、法语、俄语
+-- `paraformer-realtime-v1`、`paraformer-realtime-8k-v2`、`paraformer-realtime-8k-v1`、`paraformer-8k-v2`、`paraformer-8k-v1`：中文普通话
+-- `paraformer-v1`：中文普通话、英文
+-- `paraformer-mtl-v1`：中文（普通话、粤语、吴语、闽南语、东北话、甘肃话、贵州话、河南话、湖北话、湖南话、宁夏话、山西话、陕西话、山东话、四川话、天津话）、英文、日语、韩语、西班牙语、印尼语、法语、德语、意大利语、马来语
+-
+-### 其他（即将下线） <span id="asr_lg02" /> <span id="asr_lg01" />
+-
+-以下模型已计划下线，仅供存量业务参考，请尽快迁移到推荐模型。
+-
+-<table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}><colgroup><col style={{ width: "48.717949%" }} /><col style={{ width: "15.384615%" }} /><col style={{ width: "35.897436%" }} /></colgroup><thead><tr><th style={{ verticalAlign: "top" }}><p><strong>模型ID</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>API</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>说明</strong></p></th></tr></thead><tbody><tr><td style={{ verticalAlign: "top" }}><p><code>gummy-realtime-v1</code></p></td><td style={{ verticalAlign: "top" }}><p>WebSocket</p></td><td style={{ verticalAlign: "top" }}><p>实时识别，中、英及方言</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><code>gummy-chat-v1</code></p></td><td style={{ verticalAlign: "top" }}><p>WebSocket</p></td><td style={{ verticalAlign: "top" }}><p>短音频实时识别（1分钟限制），多语种</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><code>sensevoice-v1</code></p></td><td style={{ verticalAlign: "top" }}><p>HTTP</p></td><td style={{ verticalAlign: "top" }}><p>录音文件识别，多语种</p></td></tr></tbody></table>
++- `paraformer-realtime-8k-v2`、`paraformer-8k-v2`：中文普通话
+ 
+ ## 音频规格 <span id="asr_audio_spec02" /> <span id="asr_audio_spec01" />
+ 
+@@ -123,10 +1298,416 @@
+ 
+ ### 实时 <span id="asr_rt_spec02" /> <span id="asr_rt_spec01" />
+ 
+-<table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}><colgroup><col style={{ width: "22%" }} /><col style={{ width: "18%" }} /><col style={{ width: "30%" }} /><col style={{ width: "18%" }} /><col style={{ width: "12%" }} /></colgroup><thead><tr><th style={{ verticalAlign: "top" }}><p><strong>模型ID</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>输入方式</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>音频格式</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>采样率</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>大小/时长</strong></p></th></tr></thead><tbody><tr><td style={{ verticalAlign: "top" }}><p><strong>Qwen-Audio-3.x-ASR-Flash-Streaming</strong>（<code>qwen-audio-3.1-asr-flash-streaming</code>、<code>qwen-audio-3.0-asr-flash-streaming</code> 系列）</p></td><td style={{ verticalAlign: "top" }}><p>二进制（Binary）流</p></td><td style={{ verticalAlign: "top" }}><p><code>pcm</code>、<code>wav</code>、<code>mp3</code>、<code>opus</code>、<code>speex</code>、<code>aac</code>、<code>amr</code></p></td><td style={{ verticalAlign: "top" }}><p>任意</p></td><td style={{ verticalAlign: "top" }}><p>不限</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><strong>Fun-ASR-Realtime</strong>（<code>fun-asr-realtime</code> 系列）</p></td><td style={{ verticalAlign: "top" }}><p>二进制（Binary）流</p></td><td style={{ verticalAlign: "top" }}><p><code>pcm</code>、<code>wav</code>、<code>mp3</code>、<code>opus</code>、<code>speex</code>、<code>aac</code>、<code>amr</code></p></td><td style={{ verticalAlign: "top" }}><p>任意</p></td><td style={{ verticalAlign: "top" }}><p>不限</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><strong>Fun-ASR-Flash-8K-Realtime</strong>（<code>fun-asr-flash-8k-realtime</code> 系列）</p></td><td style={{ verticalAlign: "top" }}><p>二进制（Binary）流</p></td><td style={{ verticalAlign: "top" }}><p>同 Fun-ASR-Realtime</p></td><td style={{ verticalAlign: "top" }}><p>8 kHz</p></td><td style={{ verticalAlign: "top" }}><p>不限</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><strong>Qwen-ASR-Realtime</strong>（<code>qwen3-asr-flash-realtime</code> 系列）</p></td><td style={{ verticalAlign: "top" }}><p>二进制（Binary）流</p></td><td style={{ verticalAlign: "top" }}><p><code>pcm</code>、<code>opus</code></p></td><td style={{ verticalAlign: "top" }}><p>8 kHz、16 kHz</p></td><td style={{ verticalAlign: "top" }}><p>不限</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><strong>Paraformer-Realtime</strong>（<code>paraformer-realtime-v2/v1</code>、<code>paraformer-realtime-8k-v2/v1</code>）</p></td><td style={{ verticalAlign: "top" }}><p>二进制（Binary）流</p></td><td style={{ verticalAlign: "top" }}><p>同 Fun-ASR-Realtime</p></td><td style={{ verticalAlign: "top" }}><p><code>paraformer-realtime-v2</code> 任意；<code>paraformer-realtime-v1</code> 16 kHz；<code>paraformer-realtime-8k-\*</code> 8 kHz</p></td><td style={{ verticalAlign: "top" }}><p>不限</p></td></tr></tbody></table>
++<table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
++  <colgroup>
++    <col style={{ width: "22%" }} />
++
++    <col style={{ width: "18%" }} />
++
++    <col style={{ width: "30%" }} />
++
++    <col style={{ width: "18%" }} />
++
++    <col style={{ width: "12%" }} />
++  </colgroup>
++
++  <thead>
++    <tr>
++      <th style={{ verticalAlign: "top" }}>
++        <p><strong>模型ID</strong></p>
++      </th>
++
++      <th style={{ verticalAlign: "top" }}>
++        <p><strong>输入方式</strong></p>
++      </th>
++
++      <th style={{ verticalAlign: "top" }}>
++        <p><strong>音频格式</strong></p>
++      </th>
++
++      <th style={{ verticalAlign: "top" }}>
++        <p><strong>采样率</strong></p>
++      </th>
++
++      <th style={{ verticalAlign: "top" }}>
++        <p><strong>大小/时长</strong></p>
++      </th>
++    </tr>
++  </thead>
++
++  <tbody>
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        `qwen-audio-3.1-asr-flash-message`
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        二进制（Binary）流
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        `pcm`、`wav`、`mp3`、`opus`、`speex`、`aac`、`amr`
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        16 kHz
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        —
++      </td>
++    </tr>
++
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        `qwen-audio-3.1-asr-flash-streaming`、`qwen-audio-3.0-asr-flash-streaming`
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        二进制（Binary）流
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        `pcm`、`wav`、`mp3`、`opus`、`speex`、`aac`、`amr`
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        任意
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        不限
++      </td>
++    </tr>
++
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        **Fun-ASR-Realtime系列**（`fun-asr-realtime`等）
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        二进制（Binary）流
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        `pcm`、`wav`、`mp3`、`opus`、`speex`、`aac`、`amr`
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        任意
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        不限
++      </td>
++    </tr>
++
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        **Fun-ASR-Flash-8K-Realtime系列**（`fun-asr-flash-8k-realtime`等）
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        二进制（Binary）流
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        同 Fun-ASR-Realtime
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        8 kHz
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        不限
++      </td>
++    </tr>
++
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        `qwen3-asr-flash-realtime`
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        二进制（Binary）流
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        `pcm`、`opus`
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        8 kHz、16 kHz
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        不限
++      </td>
++    </tr>
++
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        `paraformer-realtime-v2`、`paraformer-realtime-8k-v2`
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        二进制（Binary）流
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        同 Fun-ASR-Realtime
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        `paraformer-realtime-v2` 任意；`paraformer-realtime-8k-v2` 8 kHz
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        不限
++      </td>
++    </tr>
++  </tbody>
++</table>
+ 
+ 所有实时模型均为<strong>单声道</strong>输入。
+ 
+ ### 非实时 <span id="asr_nrt_spec02" /> <span id="asr_nrt_spec01" />
+ 
+-<table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}><colgroup><col style={{ width: "20%" }} /><col style={{ width: "18%" }} /><col style={{ width: "30%" }} /><col style={{ width: "18%" }} /><col style={{ width: "14%" }} /></colgroup><thead><tr><th style={{ verticalAlign: "top" }}><p><strong>模型ID</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>输入方式</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>音频格式</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>采样率</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>文件大小/时长</strong></p></th></tr></thead><tbody><tr><td style={{ verticalAlign: "top" }}><p><strong>Qwen-Audio-3.x-ASR-Flash-Filetrans</strong>（<code>qwen-audio-3.1-asr-flash-filetrans</code>、<code>qwen-audio-3.0-asr-flash-filetrans</code> 系列）</p></td><td style={{ verticalAlign: "top" }}><p>公网可访问的文件 URL，单次 1 个</p></td><td style={{ verticalAlign: "top" }}><p><code>aac</code>、<code>amr</code>、<code>avi</code>、<code>flac</code>、<code>flv</code>、<code>m4a</code>、<code>mkv</code>、<code>mov</code>、<code>mp3</code>、<code>mp4</code>、<code>mpeg</code>、<code>ogg</code>、<code>opus</code>、<code>wav</code>、<code>webm</code>、<code>wma</code>、<code>wmv</code></p></td><td style={{ verticalAlign: "top" }}><p>任意</p></td><td style={{ verticalAlign: "top" }}><p>≤2 GB；≤12 小时（启用说话人分离建议 ≤2 小时）</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><strong>Qwen-Audio-3.1-ASR-Flash</strong>（<code>qwen-audio-3.1-asr-flash</code>）</p></td><td style={{ verticalAlign: "top" }}><p>URL / Base64，单次 1 个</p></td><td style={{ verticalAlign: "top" }}><p><code>aac</code>、<code>amr</code>、<code>avi</code>、<code>flac</code>、<code>flv</code>、<code>m4a</code>、<code>mkv</code>、<code>mov</code>、<code>mp3</code>、<code>mp4</code>、<code>mpeg</code>、<code>ogg</code>、<code>opus</code>、<code>wav</code>、<code>webm</code>、<code>wma</code>、<code>wmv</code></p></td><td style={{ verticalAlign: "top" }}><p>任意</p></td><td style={{ verticalAlign: "top" }}><p>≤2 GB；≤5 分钟</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><strong>Qwen-Audio-3.0-ASR-Flash</strong>（<code>qwen-audio-3.0-asr-flash</code>）</p></td><td style={{ verticalAlign: "top" }}><p>URL / Base64，单次 1 个</p></td><td style={{ verticalAlign: "top" }}><p><code>aac</code>、<code>amr</code>、<code>avi</code>、<code>flac</code>、<code>flv</code>、<code>m4a</code>、<code>mkv</code>、<code>mov</code>、<code>mp3</code>、<code>mp4</code>、<code>mpeg</code>、<code>ogg</code>、<code>opus</code>、<code>wav</code>、<code>webm</code>、<code>wma</code>、<code>wmv</code></p></td><td style={{ verticalAlign: "top" }}><p>任意</p></td><td style={{ verticalAlign: "top" }}><p>≤10 MB；≤5 分钟</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><strong>Fun-ASR</strong>（<code>fun-asr</code>、<code>fun-asr-mtl</code> 系列）</p></td><td style={{ verticalAlign: "top" }}><p>公网可访问的文件 URL，单次 1 个</p></td><td style={{ verticalAlign: "top" }}><p><code>aac</code>、<code>amr</code>、<code>avi</code>、<code>flac</code>、<code>flv</code>、<code>m4a</code>、<code>mkv</code>、<code>mov</code>、<code>mp3</code>、<code>mp4</code>、<code>mpeg</code>、<code>ogg</code>、<code>opus</code>、<code>wav</code>、<code>webm</code>、<code>wma</code>、<code>wmv</code></p></td><td style={{ verticalAlign: "top" }}><p>任意</p></td><td style={{ verticalAlign: "top" }}><p>≤2 GB；≤12 小时（启用说话人分离建议 ≤2 小时）</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><strong>Fun-ASR-Flash</strong>（<code>fun-asr-flash-2026-06-15</code>）</p></td><td style={{ verticalAlign: "top" }}><p>URL / Base64，单次 1 个</p></td><td style={{ verticalAlign: "top" }}><p><code>aac</code>、<code>amr</code>、<code>avi</code>、<code>flac</code>、<code>flv</code>、<code>m4a</code>、<code>mkv</code>、<code>mov</code>、<code>mp3</code>、<code>mp4</code>、<code>mpeg</code>、<code>ogg</code>、<code>opus</code>、<code>wav</code>、<code>webm</code>、<code>wma</code>、<code>wmv</code></p></td><td style={{ verticalAlign: "top" }}><p>任意</p></td><td style={{ verticalAlign: "top" }}><p>≤2 GB；≤5 分钟</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><strong>Fun-ASR-Realtime</strong>（<code>fun-asr-realtime</code>、<code>fun-asr-realtime-2026-02-28</code>）</p></td><td style={{ verticalAlign: "top" }}><p>URL / Base64，单次 1 个</p></td><td style={{ verticalAlign: "top" }}><p><code>aac</code>、<code>amr</code>、<code>avi</code>、<code>flac</code>、<code>flv</code>、<code>m4a</code>、<code>mkv</code>、<code>mov</code>、<code>mp3</code>、<code>mp4</code>、<code>mpeg</code>、<code>ogg</code>、<code>opus</code>、<code>wav</code>、<code>webm</code>、<code>wma</code>、<code>wmv</code></p></td><td style={{ verticalAlign: "top" }}><p>任意</p></td><td style={{ verticalAlign: "top" }}><p>≤2 GB；≤5 分钟</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><strong>Paraformer</strong>（<code>paraformer-v2/v1</code>、<code>paraformer-mtl-v1</code>、<code>paraformer-8k-v2/v1</code>）</p></td><td style={{ verticalAlign: "top" }}><p>同 Fun-ASR</p></td><td style={{ verticalAlign: "top" }}><p>同 Fun-ASR</p></td><td style={{ verticalAlign: "top" }}><p><code>paraformer-v2/v1</code> 任意；<code>paraformer-8k-\*</code> 仅 8 kHz<span>；<code>paraformer-mtl-v1</code> 16 kHz 及以上</span></p></td><td style={{ verticalAlign: "top" }}><p>同 Fun-ASR</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><strong>Qwen3-ASR-Flash-Filetrans</strong>（<code>qwen3-asr-flash-filetrans</code> 系列）</p></td><td style={{ verticalAlign: "top" }}><p>公网可访问的文件 URL，单次 1 个</p></td><td style={{ verticalAlign: "top" }}><p><code>aac</code>、<code>amr</code>、<code>avi</code>、<code>flac</code>、<code>flv</code>、<code>m4a</code>、<code>mkv</code>、<code>mov</code>、<code>mp3</code>、<code>mp4</code>、<code>mpeg</code>、<code>ogg</code>、<code>opus</code>、<code>wav</code>、<code>webm</code>、<code>wma</code>、<code>wmv</code></p></td><td style={{ verticalAlign: "top" }}><p><code>pcm</code> 必须 16 kHz；其他格式任意（服务端会重采样为 16 kHz 再识别）</p></td><td style={{ verticalAlign: "top" }}><p>≤2 GB；≤12 小时</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><strong>Qwen3-ASR-Flash</strong>（<code>qwen3-asr-flash</code> 系列）</p></td><td style={{ verticalAlign: "top" }}><p>URL / Base64 / 本地文件绝对路径，单次 1 个</p></td><td style={{ verticalAlign: "top" }}><p><code>aac</code>、<code>amr</code>、<code>avi</code>、<code>aiff</code>、<code>flac</code>、<code>flv</code>、<code>mkv</code>、<code>mp3</code>、<code>mpeg</code>、<code>ogg</code>、<code>opus</code>、<code>wav</code>、<code>webm</code>、<code>wma</code>、<code>wmv</code></p></td><td style={{ verticalAlign: "top" }}><p><code>pcm</code> 必须 16 kHz；其他格式任意（服务端会重采样为 16 kHz 再识别）</p></td><td style={{ verticalAlign: "top" }}><p>≤10 MB；≤5 分钟</p></td></tr></tbody></table>
++<table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
++  <colgroup>
++    <col style={{ width: "20%" }} />
++
++    <col style={{ width: "18%" }} />
++
++    <col style={{ width: "30%" }} />
++
++    <col style={{ width: "18%" }} />
++
++    <col style={{ width: "14%" }} />
++  </colgroup>
++
++  <thead>
++    <tr>
++      <th style={{ verticalAlign: "top" }}>
++        <p><strong>模型ID</strong></p>
++      </th>
++
++      <th style={{ verticalAlign: "top" }}>
++        <p><strong>输入方式</strong></p>
++      </th>
++
++      <th style={{ verticalAlign: "top" }}>
++        <p><strong>音频格式</strong></p>
++      </th>
++
++      <th style={{ verticalAlign: "top" }}>
++        <p><strong>采样率</strong></p>
++      </th>
++
++      <th style={{ verticalAlign: "top" }}>
++        <p><strong>文件大小/时长</strong></p>
++      </th>
++    </tr>
++  </thead>
++
++  <tbody>
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        `qwen-audio-3.1-asr-flash-filetrans`、`qwen-audio-3.0-asr-flash-filetrans`
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        公网可访问的文件 URL，单次 1 个
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        `aac`、`amr`、`avi`、`flac`、`flv`、`m4a`、`mkv`、`mov`、`mp3`、`mp4`、`mpeg`、`ogg`、`opus`、`wav`、`webm`、`wma`、`wmv`
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        任意
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        ≤2 GB；≤12 小时（启用说话人分离建议 ≤2 小时）
++      </td>
++    </tr>
++
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        `qwen-audio-3.1-asr-flash`
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        URL / Base64，单次 1 个
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        `aac`、`amr`、`avi`、`flac`、`flv`、`m4a`、`mkv`、`mov`、`mp3`、`mp4`、`mpeg`、`ogg`、`opus`、`wav`、`webm`、`wma`、`wmv`
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        任意
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        ≤2 GB；≤5 分钟
++      </td>
++    </tr>
++
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        `qwen-audio-3.0-asr-flash`
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        URL / Base64，单次 1 个
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        `aac`、`amr`、`avi`、`flac`、`flv`、`m4a`、`mkv`、`mov`、`mp3`、`mp4`、`mpeg`、`ogg`、`opus`、`wav`、`webm`、`wma`、`wmv`
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        任意
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        ≤10 MB；≤5 分钟
++      </td>
++    </tr>
++
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        `fun-asr`
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        公网可访问的文件 URL，单次 1 个
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        `aac`、`amr`、`avi`、`flac`、`flv`、`m4a`、`mkv`、`mov`、`mp3`、`mp4`、`mpeg`、`ogg`、`opus`、`wav`、`webm`、`wma`、`wmv`
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        任意
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        ≤2 GB；≤12 小时（启用说话人分离建议 ≤2 小时）
++      </td>
++    </tr>
++
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        `fun-asr-flash-2026-06-15`
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        URL / Base64，单次 1 个
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        `aac`、`amr`、`avi`、`flac`、`flv`、`m4a`、`mkv`、`mov`、`mp3`、`mp4`、`mpeg`、`ogg`、`opus`、`wav`、`webm`、`wma`、`wmv`
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        任意
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        ≤2 GB；≤5 分钟
++      </td>
++    </tr>
++
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        `fun-asr-realtime`、`fun-asr-realtime-2026-02-28`
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        URL / Base64，单次 1 个
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        `aac`、`amr`、`avi`、`flac`、`flv`、`m4a`、`mkv`、`mov`、`mp3`、`mp4`、`mpeg`、`ogg`、`opus`、`wav`、`webm`、`wma`、`wmv`
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        任意
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        ≤2 GB；≤5 分钟
++      </td>
++    </tr>
++
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        `paraformer-v2`、`paraformer-8k-v2`
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        同 Fun-ASR
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        同 Fun-ASR
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        `paraformer-v2` 任意；`paraformer-8k-v2` 仅 8 kHz
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        同 Fun-ASR
++      </td>
++    </tr>
++
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        `qwen3-asr-flash-filetrans`
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        公网可访问的文件 URL，单次 1 个
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        `aac`、`amr`、`avi`、`flac`、`flv`、`m4a`、`mkv`、`mov`、`mp3`、`mp4`、`mpeg`、`ogg`、`opus`、`wav`、`webm`、`wma`、`wmv`
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        `pcm` 必须 16 kHz；其他格式任意（服务端会重采样为 16 kHz 再识别）
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        ≤2 GB；≤12 小时
++      </td>
++    </tr>
++
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        `qwen3-asr-flash`
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        URL / Base64 / 本地文件绝对路径，单次 1 个
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        `aac`、`amr`、`avi`、`aiff`、`flac`、`flv`、`mkv`、`mp3`、`mpeg`、`ogg`、`opus`、`wav`、`webm`、`wma`、`wmv`
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        `pcm` 必须 16 kHz；其他格式任意（服务端会重采样为 16 kHz 再识别）
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        ≤10 MB；≤5 分钟
++      </td>
++    </tr>
++  </tbody>
++</table>

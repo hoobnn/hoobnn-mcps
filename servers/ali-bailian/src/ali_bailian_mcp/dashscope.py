@@ -88,8 +88,6 @@ def image_family(model):
         return "wan"
     if model.startswith("z-image"):
         return "z"
-    if model.startswith(("qwen-image-max", "qwen-image-plus")):
-        return "qwen-t2i"  # 只支持文生图、固定尺寸
     if model.startswith("qwen-image"):
         return "qwen"
     return None
@@ -100,8 +98,8 @@ def check_image(o, model, fam):
     n = len(o["images"])
     if not o["prompt"]:
         return "缺少提示词"
-    if fam in ("z", "qwen-t2i") and n:
-        return f"{model} 只支持文生图，不能传参考图；编辑图片用 qwen-image-3.0-pro / qwen-image-edit-max 或 wan"
+    if fam == "z" and n:
+        return f"{model} 只支持文生图，不能传参考图；编辑图片用 qwen-image-3.0-pro 或 wan"
     if fam == "wan" and n > 9:
         return f"wan 最多 9 张参考图，当前 {n} 张"
     if model.startswith(("qwen-image-3.0", "qwen-image-2.1", "qwen-image-2.0")) and o["n"] is not None and not 1 <= o["n"] <= 6:
@@ -110,7 +108,7 @@ def check_image(o, model, fam):
         return "qwen-image-3.0系列最多3张参考图"
     if model.startswith("qwen-image-2.1") and n > 10:
         return "qwen-image-2.1系列最多10张参考图"
-    if fam in ("z", "qwen-t2i") and o["n"] not in (None, 1):
+    if fam == "z" and o["n"] not in (None, 1):
         return f"{model}固定输出1张图片"
     if model.startswith("wan2.7"):
         if not o["group"] and o["n"] is not None and not 1 <= o["n"] <= 4:

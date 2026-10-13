@@ -18,7 +18,7 @@
 |---|---|---|
 | `generate_image` | 生图和图片编辑 | `qwen-image-3.0-pro` |
 | `chat` | 调用百炼上的语言模型（千问，以及托管的 DeepSeek、Kimi、GLM、MiniMax 等） | `qwen3.8-max` |
-| `text_to_speech` | 语音合成，20 个系统音色，可用自然语言控制语气，长文本自动分段拼接 | `qwen3-tts-flash` / `qwen3-tts-instruct-flash` |
+| `text_to_speech` | 语音合成，20 个系统音色，长文本自动分段拼接 | `qwen3-tts-flash` |
 | `speech_to_text` | 语音识别（5 分钟 / 10MB 以内），返回文本、语种、情绪 | `qwen3-asr-flash` |
 | `generate_video` | 视频生成：文生、首帧、首尾帧、多主体参考、续写，最长 30 秒，带音频 | `wan3.0-video` |
 | `list_models` | 列出百炼官方模型目录里的模型 ID，可按名称过滤 | — |
@@ -32,7 +32,7 @@
 | `wan` | `wan2.7-image-pro` | 0–9 张参考图、1K / 2K / 4K、组图、thinking |
 | `z` | `z-image-turbo` | 最快最便宜，写实人像和产品图，只支持文生图 |
 
-也可以直接写 `qwen-image-2.0-pro`、`qwen-image-max`、`qwen-image-edit-max`、`wan2.7-image` 等其他 ID。
+也可以直接写 `qwen-image-2.1`、`qwen-image-2.0-pro`、`wan2.7-image` 等其他 ID。`qwen-image`、`qwen-image-max`、`qwen-image-plus`、`qwen-image-edit` 系列已于 2026-10-10 下线。
 
 语言模型别名：`max` → `qwen3.8-max`（默认，能看图）、`plus` → `qwen3.7-plus`、`flash` → `qwen3.8-flash`；其他模型直接写 ID，如 `deepseek-v4-pro`、`kimi-k3`、`glm-5.3`。`chat` 统一走流式接口，支持多轮历史、看图、深度思考开关、JSON 输出和联网搜索。
 
@@ -66,8 +66,8 @@ uv tool install ali-bailian-mcp
 
 | 工具 | 能力 | 官方契约 |
 |---|---|---|
-| `clone_voice` | Qwen 声音复刻，本地音频 / URL → 固定音色 | [复刻 HTTP API](https://help.aliyun.com/en/model-studio/voice-clone-design-http-api) |
-| `design_voice` | 自然语言设计音色，返回音色和试听 WAV | [设计 API](https://help.aliyun.com/zh/model-studio/voice-design-api-references) |
+| `clone_voice` | 暂不可用（目标模型已下线，见下文） | [复刻 HTTP API](https://help.aliyun.com/en/model-studio/voice-clone-design-http-api) |
+| `design_voice` | 暂不可用（模型已下线，见下文） | [设计 API](https://help.aliyun.com/zh/model-studio/voice-design-api-references) |
 | `list_voices` / `get_voice` | 分页查询和查找自定义音色 | 同上；Qwen 详情从分页列表中查找 |
 | `edit_video` | HappyHorse 指令编辑、风格和元素替换 | [视频编辑 API](https://help.aliyun.com/en/model-studio/happyhorse-video-edit-api-reference) |
 | `animate_portrait` | 人物图片 + 人声 → 数字人对口型 | [wan2.2-s2v](https://help.aliyun.com/zh/model-studio/wan-s2v-api) |
@@ -78,9 +78,7 @@ uv tool install ali-bailian-mcp
 
 ### 音色创建与使用
 
-`clone_voice` 默认目标模型 `qwen3-tts-vc-2026-01-22`；`design_voice` 默认 `qwen3-tts-vd-2026-01-26`。
-
-创建返回 `voice` 和 `target_model`，后续必须调用 `text_to_speech(text=..., voice=返回音色, model=返回目标模型)`。默认 flash 系统音色模型不能用于这些定制音色。当前创建工具支持 Qwen 非实时 VC / VD，音色列表也可查询 CosyVoice / Qwen-Audio；后两者的合成接口不在此轮范围内。
+百炼已于 2026-10-10 下线 `qwen-voice-design`、`qwen3-tts-vc-*`、`qwen3-tts-vd-*` 和 `qwen3-tts-instruct-flash`，官方复刻 / 设计文档只保留 `voice-enrollment` + Qwen-Audio-TTS / CosyVoice。本 MCP 尚未接入它们的合成协议，所以 `clone_voice`、`design_voice` 直接返回错误，不发送创建请求，也不计费；`text_to_speech` 不再接受 `instructions`。需要复刻、设计或语气控制时用 doubao-speech。`list_voices(kind="cosyvoice")` 仍可查询 voice-enrollment 音色。
 
 Qwen 没有独立的详情接口，`get_voice` 会从列表分页查找；达到 `max_pages` 只表示查找未完成，不表示音色不存在。
 
@@ -95,7 +93,7 @@ HappyHorse 编辑输入视频 3–60 秒，输出最多 15 秒。数字人音频
 - 文本向量化：`embed(texts=[...], model="text-embedding-v4")`。
 - 多模态向量化：`embed(contents=[{"text":"猫"},{"image":"/absolute/cat.png"}], model="qwen3-vl-embedding")`。
 - 向量不自动创建索引、数据库或知识库。
-- `rerank` 默认 `qwen3.7-text-rerank`，走原生接口；`qwen3-rerank` 走 `/compatible-api/v1/reranks`。完整请求与响应保留接口差异。
+- `rerank` 默认 `qwen3.7-text-rerank`；所有模型（含 `qwen3-rerank`）统一走原生 `/api/v1/services/rerank/text-rerank/text-rerank`。
 
 ### 任务恢复
 

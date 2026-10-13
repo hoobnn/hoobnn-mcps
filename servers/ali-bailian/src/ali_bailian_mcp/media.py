@@ -15,7 +15,7 @@ from pathlib import Path
 from .dashscope import InputError, request
 from .jobs import download as atomic_download
 
-TTS_MODELS = {"flash": "qwen3-tts-flash", "instruct": "qwen3-tts-instruct-flash"}
+TTS_MODELS = {"flash": "qwen3-tts-flash"}  # qwen3-tts-instruct-flash/vc/vd 已于 2026-10-10 下线
 VIDEO_MODELS = {"wan": "wan3.0-video", "wan-fast": "wan3.0-video-prime"}
 AUDIO_MIME = {"mp3": "mpeg", "wav": "wav", "m4a": "mp4", "aac": "aac", "flac": "flac", "ogg": "ogg",
               "opus": "opus", "amr": "amr", "webm": "webm"}
@@ -103,14 +103,14 @@ def concat_wav(files, out):
 
 def text_to_speech(o, out_dir, mode="local"):
     from .products import STORE
-    model = TTS_MODELS.get(o["model"] or ("instruct" if o["instructions"] else "flash"), o["model"])
+    model = TTS_MODELS.get(o["model"] or "flash", o["model"])
     text = (o["text"] or "").strip()
     if not text:
         return {"ok": False, "error": "缺少text"}
     if not model or not model.startswith("qwen3-tts-") or "realtime" in model:
         return {"ok": False, "error": "此工具仅支持非实时qwen3-tts模型，其他模型使用不同接口"}
-    if o["instructions"] and "instruct" not in model:
-        return {"ok": False, "error": "instructions需qwen3-tts-instruct-flash"}
+    if o["instructions"]:
+        return {"ok": False, "error": "qwen3-tts-instruct-flash已于2026-10-10下线，qwen3-tts-flash不支持instructions"}
     chunks = split_text(text)
     if mode == "url" and len(chunks) > 1:
         return {"ok": False, "error": "url交付方式请分段调用，每段250字符以内"}
@@ -144,8 +144,6 @@ def resume_tts(job):
             inp = {"text": chunk["text"], "voice": opts["voice"]}
             if opts["language"]:
                 inp["language_type"] = opts["language"]
-            if opts["instructions"]:
-                inp.update(instructions=opts["instructions"], optimize_instructions=True)
             body = {"model": job["model"], "input": inp}
             if opts.get("parameters"):
                 body["parameters"] = dict(opts["parameters"])
@@ -219,7 +217,7 @@ def speech_to_text(o):
     model = o["model"]
     result = {"ok": False, "model": model, "text": "", "language": None, "emotion": None, "usage": None, "error": None}
     if not model.startswith("qwen3-asr-flash") or "realtime" in model or "filetrans" in model:
-        result["error"] = "此工具仅支持qwen3-asr-flash及非实时快照；其他ASR模型采用不同协议"
+        result["error"] = "此工具仅支持qwen3-asr-flash（HTTP非实时）；其他ASR模型采用不同协议"
         return result
     src = o["audio"]
     try:

@@ -1,0 +1,44 @@
+--- reviewed/ali-bailian/bailian-permissions
++++ current/ali-bailian/bailian-permissions
+@@ -1,6 +1,8 @@
+ # 查询模型授权
+ 
+ > 调用 GET /api/v1/models/permissions 接口查询当前业务空间下可授权或已授权的模型列表及其权限明细。
++
++<meta property="og:title" content="查询模型授权" />
+ 
+ ## 前提条件 <span id="lmp0000a010" /> <span id="prerequisite-section-lmp" />
+ 
+@@ -44,31 +46,13 @@
+     "message": null,
+     "success": true,
+     "output": {
+-        "total": 3,
++        "total": 1,
+         "page_no": 1,
+         "page_size": 20,
+         "permissions": [
+             {
+                 "model": "qwen-plus",
+                 "name": "通义千问-Plus",
+-                "permissions": {
+-                    "inference": true,
+-                    "fine_tune": false,
+-                    "deploy": false
+-                }
+-            },
+-            {
+-                "model": "qwen3-max",
+-                "name": "通义千问3-Max",
+-                "permissions": {
+-                    "inference": true,
+-                    "fine_tune": true,
+-                    "deploy": false
+-                }
+-            },
+-            {
+-                "model": "qwen-turbo",
+-                "name": "通义千问-Turbo",
+                 "permissions": {
+                     "inference": true,
+                     "fine_tune": false,

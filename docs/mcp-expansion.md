@@ -39,11 +39,11 @@
 
 | 能力 | 路径与关键字段 | 来源 |
 |---|---|---|
-| 百炼音色 | `/api/v1/services/audio/tts/customization`；model=qwen-voice-enrollment/qwen-voice-design，input.action=create/list；CosyVoice=query_voice | [复刻](https://help.aliyun.com/en/model-studio/voice-clone-design-http-api)、[设计](https://help.aliyun.com/zh/model-studio/voice-design-api-references) |
+| 百炼音色 | `/api/v1/services/audio/tts/customization`；model=qwen-voice-enrollment/qwen-voice-design，input.action=create/list（2026-10-10 下线，创建已停用）；CosyVoice=query_voice | [复刻](https://help.aliyun.com/en/model-studio/voice-clone-design-http-api)、[设计](https://help.aliyun.com/zh/model-studio/voice-design-api-references) |
 | 百炼编辑 | `/api/v1/services/aigc/video-generation/video-synthesis`；happyhorse-1.0-video-edit，input.media的video/reference_image | [编辑](https://help.aliyun.com/en/model-studio/happyhorse-video-edit-api-reference) |
 | 百炼数字人 | `/api/v1/services/aigc/image2video/video-synthesis`；input.image_url/audio_url | [数字人](https://help.aliyun.com/zh/model-studio/wan-s2v-api) |
 | 百炼多模态向量 | `/api/v1/services/embeddings/multimodal-embedding/multimodal-embedding`；input.contents | [API](https://help.aliyun.com/en/model-studio/multimodal-embedding-api-reference) |
-| 百炼重排序 | 新模型原生rerank/text-rerank；qwen3-rerank使用compatible-api/v1/reranks | [API](https://help.aliyun.com/zh/model-studio/text-rerank-api) |
+| 百炼重排序 | 全部模型（含qwen3-rerank）原生rerank/text-rerank（2026-10-13 起官方不再列 compatible-api/v1/reranks） | [API](https://help.aliyun.com/zh/model-studio/text-rerank-api) |
 | 方舟视频 | `/contents/generations/tasks`及`/{id}`；content角色素材、status、content.video_url | [创建](https://docs.volcengine.com/docs/ark/create-video-generation-task-api?lang=zh)、[查询](https://docs.volcengine.com/docs/ark/get-video-generation-task-api?lang=zh) |
 | 方舟对话 | `/chat/completions`；messages/response_format/thinking | [API](https://docs.volcengine.com/docs/ark/chat-api?lang=zh) |
 | 方舟搜索 | `/responses`；input/tools/previous_response_id；输出注解来源 | [Responses](https://docs.volcengine.com/docs/ark/create-model-responses-api?lang=zh)、[搜索](https://docs.volcengine.com/docs/ark/web-search?lang=zh) |

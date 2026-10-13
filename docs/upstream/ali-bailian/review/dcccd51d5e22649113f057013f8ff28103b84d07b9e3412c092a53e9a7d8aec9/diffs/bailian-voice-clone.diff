@@ -1,0 +1,471 @@
+--- reviewed/ali-bailian/bailian-voice-clone
++++ current/ali-bailian/bailian-voice-clone
+@@ -2,9 +2,11 @@
+ 
+ > 本文介绍声音复刻的HTTP API接口详情，包括创建音色、查询音色列表、查询音色详情、更新音色和删除音色等操作。
+ 
++<meta property="og:title" content="声音复刻HTTP API参考" />
++
+ <strong>用户指南：</strong>[声音复刻](/zh/model-studio/voice-cloning-user-guide)。
+ 
+-## 接口地址（Qwen-Audio-TTS/CosyVoice/Qwen-TTS） <span id="h2-url" />
++## 接口地址（Qwen-Audio-TTS/CosyVoice） <span id="h2-url" />
+ 
+ <Tabs>
+   <Tab title="华北2（北京）">
+@@ -39,9 +41,9 @@
+ 
+ ## 请求头 <span id="h2-headers" />
+ 
+-<table style={{ display: "table", tableLayout: "fixed", width: "100%" }}><colgroup><col style={{ width: "24.99%" }} /><col style={{ width: "8.54%" }} /><col style={{ width: "10.32%" }} /><col style={{ width: "56.15%" }} /></colgroup><thead><tr><th><p><strong>参数</strong></p></th><th><p><strong>类型</strong></p></th><th><p><strong>是否必选</strong></p></th><th><p><strong>说明</strong></p></th></tr></thead><tbody><tr><td><p>Authorization</p></td><td><p>string</p></td><td><p>是</p></td><td><p>鉴权令牌，格式为<code>Bearer \<your\_api\_key></code>，使用时，将"<code>\<your\_api\_key></code>"替换为实际的API Key。</p></td></tr><tr><td><p>Content-Type</p></td><td><p>string</p></td><td><p>是</p></td><td><p>请求体的媒体类型。Qwen-Audio-TTS/CosyVoice/Qwen-TTS固定为<code>application/json</code>，MiniMax固定为<code>application/json; charset=utf-8</code>。</p></td></tr></tbody></table>
+-
+-## 创建音色（Qwen-Audio-TTS/CosyVoice/Qwen-TTS） <span id="h2-create" />
++<table style={{ display: "table", tableLayout: "fixed", width: "100%" }}><colgroup><col style={{ width: "24.99%" }} /><col style={{ width: "8.54%" }} /><col style={{ width: "10.32%" }} /><col style={{ width: "56.15%" }} /></colgroup><thead><tr><th><p><strong>参数</strong></p></th><th><p><strong>类型</strong></p></th><th><p><strong>是否必选</strong></p></th><th><p><strong>说明</strong></p></th></tr></thead><tbody><tr><td><p>Authorization</p></td><td><p>string</p></td><td><p>是</p></td><td><p>鉴权令牌，格式为<code>Bearer \<your\_api\_key></code>，使用时，将"<code>\<your\_api\_key></code>"替换为实际的API Key。</p></td></tr><tr><td><p>Content-Type</p></td><td><p>string</p></td><td><p>是</p></td><td><p>请求体的媒体类型。Qwen-Audio-TTS/CosyVoice固定为<code>application/json</code>，MiniMax固定为<code>application/json; charset=utf-8</code>。</p></td></tr></tbody></table>
++
++## 创建音色（Qwen-Audio-TTS/CosyVoice） <span id="h2-create" />
+ 
+ <table bordertype="no-border" style={{ display: "table", tableLayout: "fixed", width: "100%" }}>
+   <colgroup>
+@@ -60,7 +62,6 @@
+         声音复刻模型。取值：
+ 
+         - `voice-enrollment`：Qwen-Audio-TTS/CosyVoice声音复刻。
+-        - `qwen-voice-enrollment`：Qwen-TTS声音复刻。
+ 
+         <strong>input</strong>`object`<strong>（必选）</strong>
+ 
+@@ -72,13 +73,12 @@
+           操作类型。
+ 
+           - Qwen-Audio-TTS/CosyVoice（`voice-enrollment`）：固定为`create_voice`。
+-          - Qwen（`qwen-voice-enrollment`）：固定为`create`。
+ 
+           <strong>target\_model</strong> `string`<strong>（必选）</strong>
+ 
+           驱动音色的语音合成模型。必须与后续调用语音合成接口时使用的模型一致，否则合成会失败。
+ 
+-          <strong>url</strong> `string`<strong>（条件必选）</strong>
++          <strong>url</strong> `string`<strong>（必选）</strong>
+ 
+           <Tip>
+             仅适用于Qwen-Audio-TTS/CosyVoice声音复刻（model为`voice-enrollment`时）。
+@@ -86,40 +86,13 @@
+ 
+           用于复刻音色的音频文件URL，要求公网可访问。
+ 
+-          <strong>audio</strong> `object`<strong>（条件必选）</strong>
+-
+-          <Tip>
+-            仅适用于Qwen-TTS声音复刻（model为`qwen-voice-enrollment`时）。
+-          </Tip>
+-
+-          音频数据，支持两种提交方式：
+-
+-          - Data URL（Base64编码）：格式为`{"data": "data:{mime_type};base64,{base64_encoded_data}"}`，支持的MIME类型：`audio/wav`、`audio/mpeg`、`audio/mp4`。
+-          - 音频URL：格式为`{"data": "https://your-audio-url.wav"}`，URL必须公网可访问且无需鉴权。
+-
+-          <strong>text</strong> `string`（可选）
+-
+-          <Tip>
+-            仅适用于Qwen-TTS声音复刻（model为`qwen-voice-enrollment`时）。
+-          </Tip>
+-
+-          音频对应的文本内容，用于辅助提升复刻效果。
+-
+-          <strong>prefix</strong> `string`<strong>（条件必选）</strong>
++          <strong>prefix</strong> `string`<strong>（必选）</strong>
+ 
+           <Tip>
+             仅适用于Qwen-Audio-TTS/CosyVoice（model为`voice-enrollment`时）。
+           </Tip>
+ 
+           音色名称前缀，仅允许数字和英文字母，不超过10个字符。生成的音色名格式：`{target_model}-{prefix}-{唯一标识}`。
+-
+-          <strong>preferred\_name</strong> `string`<strong>（条件必选）</strong>
+-
+-          <Tip>
+-            仅适用于Qwen-TTS声音复刻（model为`qwen-voice-enrollment`时）。
+-          </Tip>
+-
+-          音色名称前缀，仅允许数字、英文字母和下划线，不超过16个字符。
+ 
+           <strong>language\_hints</strong> `array[string]`（可选）
+ 
+@@ -176,29 +149,6 @@
+ 
+           默认值：\["zh"]。
+ 
+-          <strong>language</strong> `string`（可选）
+-
+-          <Tip>
+-            仅适用于Qwen-TTS声音复刻（model为`qwen-voice-enrollment`时）。
+-          </Tip>
+-
+-          指定 `audio.data` 音频对应的语种。若使用该参数，设置的语种须与实际用于复刻的音频语种一致。
+-
+-          取值范围：
+-
+-          - zh：中文
+-          - en：英文
+-          - de：德语
+-          - it：意大利语
+-          - pt：葡萄牙语
+-          - es：西班牙语
+-          - ja：日语
+-          - ko：韩语
+-          - fr：法语
+-          - ru：俄语
+-
+-          默认值：zh。
+-
+           <strong>max\_prompt\_audio\_length</strong> `float`（可选）
+ 
+           <Tip>
+@@ -256,21 +206,6 @@
+               }
+           }'
+           ```
+-
+-          ```bash Qwen-TTS声音复刻
+-          curl -X POST https://{WorkspaceId}.cn-beijing.maas.aliyuncs.com/api/v1/services/audio/tts/customization \
+-          -H "Authorization: Bearer $DASHSCOPE_API_KEY" \
+-          -H "Content-Type: application/json" \
+-          -d '{
+-              "model": "qwen-voice-enrollment",
+-              "input": {
+-                  "action": "create",
+-                  "target_model": "qwen3-tts-vc-realtime-2026-01-15",
+-                  "preferred_name": "myvoice",
+-                  "audio": {"data": "data:audio/mpeg;base64,{base64_encoded_audio}"}
+-              }
+-          }'
+-          ```
+         </CodeGroup>
+       </td>
+     </tr>
+@@ -298,33 +233,9 @@
+         模型返回的数据。
+ 
+         <Accordion title="属性" defaultOpen>
+-          <strong>voice\_id / voice</strong>`string`
+-
+-          音色ID。Qwen-Audio-TTS/CosyVoice返回`voice_id`，Qwen返回`voice`。可直接用于语音合成接口的voice参数。
+-
+-          <strong>target\_model</strong>`string`
+-
+-          <Tip>
+-            仅Qwen返回。
+-          </Tip>
+-
+-          驱动音色的语音合成模型。
+-
+-          <strong>fallback\_mode</strong>`boolean`
+-
+-          <Tip>
+-            仅适用于Qwen-TTS声音复刻（model为`qwen-voice-enrollment`时）。
+-          </Tip>
+-
+-          是否以降级模式创建音色。当音频质量不佳或与文本不匹配时，该值为`true`，表示复刻效果可能不理想。
+-
+-          <strong>fallback\_reason</strong>`string`
+-
+-          <Tip>
+-            仅当`fallback_mode`为`true`时返回。
+-          </Tip>
+-
+-          降级原因。可能的值包括`no_merged_segments`（无法合并音频片段）、`no_valid_asr_segments`（音频与文本严重不匹配）等。
++          <strong>voice\_id</strong>`string`
++
++          音色 ID，可用于语音合成接口的 `voice` 参数。
+         </Accordion>
+ 
+         <strong>usage</strong>`object`
+@@ -351,24 +262,7 @@
+               "request_id": "xxxx-xxxx-xxxx"
+           }
+           ```
+-
+-          ```json Qwen-TTS声音复刻
+-          {
+-              "output": {
+-                  "voice": "yourVoice",
+-                  "target_model": "qwen3-tts-vc-realtime-2026-01-15"
+-              },
+-              "usage": {
+-                  "count": 1
+-              },
+-              "request_id": "xxxx-xxxx-xxxx"
+-          }
+-          ```
+         </CodeGroup>
+-
+-        <Tip>
+-          Qwen-Audio-TTS/CosyVoice返回`voice_id`字段，Qwen返回`voice`字段。Qwen-TTS声音复刻还可能返回`fallback_mode`和`fallback_reason`字段。
+-        </Tip>
+       </td>
+     </tr>
+   </tbody>
+@@ -616,7 +510,6 @@
+         声音复刻模型。取值：
+ 
+         - `voice-enrollment`：Qwen-Audio-TTS/CosyVoice声音复刻。
+-        - `qwen-voice-enrollment`：Qwen-TTS声音复刻。
+ 
+         <strong>input</strong>`object`<strong>（必选）</strong>
+ 
+@@ -625,7 +518,7 @@
+         <Accordion title="属性" defaultOpen>
+           <strong>action</strong> `string`<strong>（必选）</strong>
+ 
+-          操作类型。Qwen-Audio-TTS/CosyVoice：`list_voice`。Qwen：`list`。
++          固定为 `list_voice`。
+ 
+           <strong>prefix</strong> `string`（可选）
+ 
+@@ -663,20 +556,6 @@
+               }
+           }'
+           ```
+-
+-          ```bash Qwen-TTS声音复刻
+-          curl -X POST https://{WorkspaceId}.cn-beijing.maas.aliyuncs.com/api/v1/services/audio/tts/customization \
+-          -H "Authorization: Bearer $DASHSCOPE_API_KEY" \
+-          -H "Content-Type: application/json" \
+-          -d '{
+-              "model": "qwen-voice-enrollment",
+-              "input": {
+-                  "action": "list",
+-                  "page_size": 10,
+-                  "page_index": 0
+-              }
+-          }'
+-          ```
+         </CodeGroup>
+       </td>
+     </tr>
+@@ -704,38 +583,14 @@
+         模型返回的数据。
+ 
+         <Accordion title="属性" defaultOpen>
+-          <strong>page\_index</strong>`integer`
+-
+-          <Tip>
+-            仅Qwen返回。
+-          </Tip>
+-
+-          当前页码索引。
+-
+-          <strong>page\_size</strong>`integer`
+-
+-          <Tip>
+-            仅Qwen返回。
+-          </Tip>
+-
+-          每页数据条数。
+-
+-          <strong>total\_count</strong>`integer`
+-
+-          <Tip>
+-            仅Qwen返回。
+-          </Tip>
+-
+-          音色总数。
+-
+           <strong>voice\_list</strong>`array[object]`
+ 
+-          查询到的音色列表。Qwen-Audio-TTS/CosyVoice和Qwen均使用`voice_list`字段名。
++          查询到的音色列表。
+ 
+           <Accordion title="属性" defaultOpen>
+-            <strong>voice\_id / voice</strong>`string`
+-
+-            音色ID。Qwen-Audio-TTS/CosyVoice为`voice_id`，Qwen为`voice`。
++            <strong>voice\_id</strong>`string`
++
++            音色 ID，可用于语音合成接口的 `voice` 参数。
+ 
+             <strong>gmt\_create</strong>`string`
+ 
+@@ -752,14 +607,6 @@
+             </Tip>
+ 
+             音色状态，取值参见"音色状态说明"。
+-
+-            <strong>target\_model</strong>`string`
+-
+-            <Tip>
+-              仅Qwen返回。
+-            </Tip>
+-
+-            驱动音色的语音合成模型。
+           </Accordion>
+         </Accordion>
+ 
+@@ -770,7 +617,7 @@
+         <Accordion title="属性" defaultOpen>
+           <strong>count</strong> `integer`
+ 
+-          Qwen-Audio-TTS/CosyVoice固定为1。Qwen固定为0。
++          固定为 1。
+         </Accordion>
+       </td>
+ 
+@@ -794,34 +641,7 @@
+               "request_id": "xxxx-xxxx-xxxx"
+           }
+           ```
+-
+-          ```json Qwen
+-          {
+-              "output": {
+-                  "page_index": 0,
+-                  "page_size": 10,
+-                  "total_count": 2,
+-                  "voice_list": [
+-                      {
+-                          "voice": "yourVoice1",
+-                          "gmt_create": "2025-08-11 17:59:32",
+-                          "gmt_modified": "2025-08-11 17:59:32",
+-                          "language": "zh",
+-                          "target_model": "qwen3-tts-vc-realtime-2026-01-15"
+-                      }
+-                  ]
+-              },
+-              "usage": {
+-                  "count": 0
+-              },
+-              "request_id": "xxxx-xxxx-xxxx"
+-          }
+-          ```
+         </CodeGroup>
+-
+-        <Tip>
+-          Qwen-Audio-TTS/CosyVoice返回`voice_list`数组，每项包含`voice_id`字段；Qwen同样返回`voice_list`数组，每项包含`voice`字段。Qwen的output中还包含`page_index`、`page_size`和`total_count`分页信息字段。
+-        </Tip>
+       </td>
+     </tr>
+   </tbody>
+@@ -830,7 +650,7 @@
+ ## 查询音色详情 <span id="h2-query" />
+ 
+ <Tip>
+-  仅适用于Qwen-Audio-TTS/CosyVoice（model为`voice-enrollment`时）。Qwen和MiniMax模型不支持查询音色详情操作。
++  仅适用于Qwen-Audio-TTS/CosyVoice（model为`voice-enrollment`时）。MiniMax模型不支持查询音色详情操作。
+ </Tip>
+ 
+ <table bordertype="no-border" style={{ display: "table", tableLayout: "fixed", width: "100%" }}>
+@@ -965,7 +785,7 @@
+ ## 更新音色 <span id="h2-update" />
+ 
+ <Tip>
+-  仅适用于Qwen-Audio-TTS/CosyVoice声音复刻（model为`voice-enrollment`时）。Qwen和MiniMax模型不支持更新操作。
++  仅适用于Qwen-Audio-TTS/CosyVoice声音复刻（model为`voice-enrollment`时）。MiniMax模型不支持更新操作。
+ </Tip>
+ 
+ <table bordertype="no-border" style={{ display: "table", tableLayout: "fixed", width: "100%" }}>
+@@ -1093,7 +913,6 @@
+         声音复刻模型。取值：
+ 
+         - `voice-enrollment`：Qwen-Audio-TTS/CosyVoice声音复刻。
+-        - `qwen-voice-enrollment`：Qwen-TTS声音复刻。
+ 
+         <strong>input</strong>`object`<strong>（必选）</strong>
+ 
+@@ -1102,23 +921,15 @@
+         <Accordion title="属性" defaultOpen>
+           <strong>action</strong> `string`<strong>（必选）</strong>
+ 
+-          操作类型。Qwen-Audio-TTS/CosyVoice：`delete_voice`。Qwen：`delete`。
+-
+-          <strong>voice\_id</strong> `string`<strong>（条件必选）</strong>
++          固定为 `delete_voice`。
++
++          <strong>voice\_id</strong> `string`<strong>（必选）</strong>
+ 
+           <Tip>
+             仅适用于Qwen-Audio-TTS/CosyVoice。
+           </Tip>
+ 
+           要删除的音色ID。
+-
+-          <strong>voice</strong> `string`<strong>（条件必选）</strong>
+-
+-          <Tip>
+-            仅适用于Qwen。
+-          </Tip>
+-
+-          要删除的音色名称。
+         </Accordion>
+       </td>
+ 
+@@ -1138,19 +949,6 @@
+               }
+           }'
+           ```
+-
+-          ```bash Qwen-TTS声音复刻
+-          curl -X POST https://{WorkspaceId}.cn-beijing.maas.aliyuncs.com/api/v1/services/audio/tts/customization \
+-          -H "Authorization: Bearer $DASHSCOPE_API_KEY" \
+-          -H "Content-Type: application/json" \
+-          -d '{
+-              "model": "qwen-voice-enrollment",
+-              "input": {
+-                  "action": "delete",
+-                  "voice": "yourVoice"
+-              }
+-          }'
+-          ```
+         </CodeGroup>
+       </td>
+     </tr>
+@@ -1175,17 +973,7 @@
+ 
+         <strong>output</strong>`object`
+ 
+-        模型返回的数据。Qwen-Audio-TTS/CosyVoice返回空对象，Qwen返回已删除的音色名称。
+-
+-        <Accordion title="属性" defaultOpen>
+-          <strong>voice</strong>`string`
+-
+-          <Tip>
+-            仅Qwen返回。
+-          </Tip>
+-
+-          已删除的音色名称。
+-        </Accordion>
++        模型返回的数据，为空对象。
+ 
+         <strong>usage</strong>`object`
+ 
+@@ -1209,23 +997,7 @@
+               "request_id": "xxxx-xxxx-xxxx"
+           }
+           ```
+-
+-          ```json Qwen
+-          {
+-              "output": {
+-                  "voice": "yourVoice"
+-              },
+-              "usage": {
+-                  "count": 0
+-              },
+-              "request_id": "xxxx-xxxx-xxxx"
+-          }
+-          ```
+         </CodeGroup>
+-
+-        <Tip>
+-          Qwen-Audio-TTS/CosyVoice的output为空对象，Qwen返回`voice`字段。
+-        </Tip>
+       </td>
+     </tr>
+   </tbody>
+@@ -1233,6 +1005,6 @@
+ 
+ ## 音色状态说明 <span id="h2-status" />
+ 
+-音色创建后会经过审核流程，以下是各状态的含义。此状态体系仅适用于Qwen-Audio-TTS/CosyVoice（model为`voice-enrollment`时），Qwen的查询和列表返回中不包含status字段。
++音色创建后会经过审核流程。以下状态适用于 Qwen-Audio-TTS/CosyVoice（`model` 为 `voice-enrollment`）。
+ 
+ <table style={{ display: "table", tableLayout: "fixed", width: "100%" }}><colgroup><col style={{ width: "25%" }} /><col style={{ width: "75%" }} /></colgroup><thead><tr><th><p><strong>状态</strong></p></th><th><p><strong>说明</strong></p></th></tr></thead><tbody><tr><td><p>DEPLOYING</p></td><td><p>审核中/处理中。</p></td></tr><tr><td><p>OK</p></td><td><p>审核通过，可正常使用。</p></td></tr><tr><td><p>UNDEPLOYED</p></td><td><p>审核未通过，不可使用。</p></td></tr></tbody></table>
