@@ -89,6 +89,15 @@
 
 登记文件：[volcengine-ark-sources.json](volcengine-ark-sources.json)。fetch_url指向上面的官方文档JSON读取接口，正文提取需优先Result.MDContent；它是官方站点自用路径，尚未查到对外稳定性SLA，不应等同正式云产品OpenAPI。没有用登录Cookie、API Key或付费接口获取资料，核实阶段未保存整篇正文；汇总更新检查在 docs/upstream/snapshots 保存已核实正文的压缩快照，以生成后续diff。
 
+## 2026-10-13 上游正文复核（review/bcc83def…）
+
+每日检查报告 17/17 抓取成功、5 项正文变化，逐项对照 diff 后结论为**无实质契约变化**，实现、默认模型和 README 不改，仅接受新基线：
+
+- `ark-document-index`：新增 Dreams（托管 Agent 长期记忆）、visual-creation-agent 教程、Canvas 简介及 Status=5 的内部测试页；移除体验中心下的 experience-center-mcp、image-generation-models、language-models，PromptPilot 计费移入历史文档。均不涉及本 MCP 的接口或模型目录（model-list 仍为来源）；sources.json、代码和 README 未引用被移除的编码。
+- `ark-image-generation-api`：仅响应字段分组标题改为「公共字段 / 特殊字段（…场景）」，TOS 数据订阅链接换新地址；字段、取值和 24 小时链接期限不变。
+- `ark-seedance-2-5`：示例素材迁移到 arkdocs 域名、体验中心链接更新、所有示例新增 `watermark: true`；Draft 转正式视频的 `resolution` 由「默认且仅支持 1080p」改为「必须传入，仅支持 1080p」。示例取值不改变 API 默认值，本工具始终显式发送 watermark；本工具不支持 `content.draft_task`（parameters 不能覆盖 content），且每次都发送 resolution，因此不受影响。
+- `ark-seedream-4-0-5-0`、`ark-seedream-5-0-pro`：示例改为 `watermark: true`、Python SDK 包名改为 `arkruntime`、Java 示例改用 FAST 提示词优化并注明 ark-runtime ≥0.6.0、素材迁移域名、提示块缩进调整；参考数量、尺寸档位、像素范围和 1.5K/1K 同价说明均未变。
+
 ## 验证与未确认边界
 
 本次新增 `test_official_contracts.py`，验证官方限制映射、flash能力、参数覆盖后的预检、图片格式识别、JPEG尾帧名称；与既有jobs故障测试一起执行。离线测试不证明本账号权限、线上输出规格、搜索实际调用、云端费用或媒体质量。
