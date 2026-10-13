@@ -57,7 +57,7 @@ GUIDES = {
         "title": "合成2.0：语音指令、方言、读音修正与引用上文",
         "sources": [DOC + "DoubaoTextToSpeech20CapabilityIntroduction?lang=zh", DOC + "unidirectional-streaming-text-to-speech-http?lang=zh"],
         "official_examples": ["吵架", "暧昧悄悄话", "四川话", "北京话", "承接问询语境", "承接老友相见语境"],
-        "tips": ["text只放需要朗读的正文；instructions放情绪、语气和速度，先明确主情绪，再补局部变化。", "支持能力取决于音色；方言用dialect，读音纠正用pronunciations。", "引用上文让模型理解上一轮问答但不朗读：parameters.req_params.additions.context_texts，additions可直接写对象。", "instructions也映射context_texts；多个上下文、SSML或其他高级选项都放parameters。", "超过5000字自动走异步长文本（long_text可强制），返回job_id后用get_job查询并下载。"],
+        "tips": ["text只放需要朗读的正文；instructions放情绪、语气和速度，先明确主情绪，再补局部变化。", "支持能力取决于音色；方言用dialect，读音纠正用pronunciations。", "引用上文让模型理解上一轮问答但不朗读：parameters.req_params.additions.context_texts，additions可直接写对象。", "instructions也映射context_texts；多个上下文、SSML或其他高级选项都放parameters。", "超过5000字自动走异步长文本（long_text可强制），返回job_id后用get_job查询并下载。", "音色列表备注「仅限单向流」的外语音色（如en_male_ryan_uranus_bigtts）不能走tts_websocket双向流，用text_to_speech或mode=unidirectional。"],
         "examples": [
             example("安静近耳表演", "text_to_speech", {"text": "今天辛苦了，先好好休息。", "instructions": "像安静的深夜聊天，轻柔、亲切、略慢，避免夸张。"}),
             example("方言与读音", "text_to_speech", {"text": "我们明天去重庆看看。", "dialect": "sichuan", "pronunciations": ["重庆/(chong2)(qing4)"]}),
@@ -82,7 +82,7 @@ GUIDES = {
     "podcast": {
         "title": "播客：文章、链接、逐轮脚本与联网话题",
         "sources": [DOC + "PodcastAPI-websocket-v3protocol?lang=zh", CONSOLE + "podcast?projectName=default"],
-        "tips": ["text/url改写文章或链接；dialogue直接演绎逐轮脚本；topic根据话题联网生成。topic只是话题，不具备格式指令能力。", "url支持网页及PDF/doc/txt链接，不把控制台上传格式直接视为API格式。", "script_only=true先生成脚本；dialogue每轮<=300字、总量<=10000字。", "speakers必须是两个音色，建议同系列配对，按给出的顺序发言。", "文章推荐<=12000字（parameters.input_text_max_length可调），超过会截断；return_audio_url的链接WebSocket文档写1小时、SSE文档写24小时，按1小时内下载处理。", "收到partial后保留task_id和last_finished_round_id，通过retry_info显式续传；partial只含完整轮次，续传结果按序追加，不能把局部音频当完整成品。"],
+        "tips": ["text/url改写文章或链接；dialogue直接演绎逐轮脚本；topic根据话题联网生成。topic只是话题，不具备格式指令能力。", "url支持网页及PDF/doc/txt链接，不把控制台上传格式直接视为API格式。", "script_only=true先生成脚本；dialogue每轮<=300字、总量<=10000字。", "speakers必须是两个音色，建议同系列配对，按给出的顺序发言。", "文章推荐<=12000字（parameters.input_text_max_length可调），超过会截断；return_audio_url的链接WebSocket文档写1小时、SSE文档写24小时，按1小时内下载处理。", "收到partial后保留task_id和last_finished_round_id，通过retry_info显式续传；partial只含完整轮次，续传结果按序追加，不能把局部音频当完整成品。", "diagnostic_file是被截掉的未完成轮次音频，只用于排查，不参与续传拼接；服务端取消（151）同样按失败处理。"],
         "examples": [
             example("文章先生成脚本", "generate_podcast", {"text": "这里替换为完整文章。", "script_only": True}),
             example("链接转播客", "generate_podcast", {"url": "https://example.com/article"}),

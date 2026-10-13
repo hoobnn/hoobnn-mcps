@@ -177,7 +177,9 @@ MCP 客户端本地启动命令可指定本项目 `.venv/bin/doubao-speech-mcp` 
 
 实时上传 20ms 一包。MCP 不直接采集麦克风、播放声音或驱动声卡，客户端负责设备输入输出。同传需 16kHz / mono / 16bit WAV 或 PCM；WAV 自动去容器。目标 PCM16k 保存有效 WAV，PCM24k 保留 float32 原始 PCM 并返回格式信息。
 
-播客断线保留 `.partial.*`、`task_id` 和 `last_finished_round_id`；按官方续传要求，`.partial.*` 只含已完整结束的轮次，未完成轮次的分片丢弃（`discarded_bytes`）。可通过 `parameters.retry_info` 显式续传；返回的是续传片段，不自动和旧文件合并。
+播客断线、轮次失败或服务端取消（事件 151，返回 `canceled: true`）时保留 `.partial.*`、`task_id` 和 `last_finished_round_id`；按官方续传要求，`.partial.*` 只含已完整结束的轮次。未完成轮次的分片另存为 `podcast-<task_id>.unfinished-round.diagnostic-not-for-resume.<fmt>`（路径见 `diagnostic_file`，字节数见 `discarded_bytes`），仅供排查，不能拼进续传结果。可通过 `parameters.retry_info` 显式续传；返回的是续传片段，不自动和旧文件合并。
+
+音色列表中备注「仅限单向流」的 27 个外语音色，`speech_raw_request(product='tts_websocket')` 默认的双向流会在本地直接拒绝，需传 `mode='unidirectional'`；`text_to_speech` 走单向流 HTTP，不受影响。
 
 ### 从 0.3.x 迁移
 

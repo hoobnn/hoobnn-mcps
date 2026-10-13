@@ -173,6 +173,7 @@ MCP 查询：`{"product": "tts"}`。
 - 引用上文让模型理解上一轮问答但不朗读：parameters.req_params.additions.context_texts，additions可直接写对象。
 - instructions也映射context_texts；多个上下文、SSML或其他高级选项都放parameters。
 - 超过5000字自动走异步长文本（long_text可强制），返回job_id后用get_job查询并下载。
+- 音色列表备注「仅限单向流」的外语音色（如en_male_ryan_uranus_bigtts）不能走tts_websocket双向流，用text_to_speech或mode=unidirectional。
 
 ### 安静近耳表演
 
@@ -336,8 +337,9 @@ MCP 查询：`{"product": "podcast"}`。
 - url支持网页及PDF/doc/txt链接，不把控制台上传格式直接视为API格式。
 - script_only=true先生成脚本；dialogue每轮<=300字、总量<=10000字。
 - speakers必须是两个音色，建议同系列配对，按给出的顺序发言。
-- 文章推荐<=12000字（parameters.input_text_max_length可调），超过会截断；音频URL有效1小时。
-- 收到partial后保留task_id和last_finished_round_id，通过retry_info显式续传，不能把局部音频当完整成品。
+- 文章推荐<=12000字（parameters.input_text_max_length可调），超过会截断；return_audio_url的链接WebSocket文档写1小时、SSE文档写24小时，按1小时内下载处理。
+- 收到partial后保留task_id和last_finished_round_id，通过retry_info显式续传；partial只含完整轮次，续传结果按序追加，不能把局部音频当完整成品。
+- diagnostic_file是被截掉的未完成轮次音频，只用于排查，不参与续传拼接；服务端取消（151）同样按失败处理。
 
 ### 文章先生成脚本
 

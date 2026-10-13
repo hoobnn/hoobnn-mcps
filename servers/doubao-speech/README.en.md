@@ -177,7 +177,9 @@ Minimal configuration:
 
 Realtime upload sends one packet per 20ms. The MCP does not capture the microphone, play sound or drive the sound card; the client handles device input and output. Simultaneous interpretation needs 16kHz / mono / 16bit WAV or PCM; WAV containers are stripped automatically. Target PCM16k is saved as valid WAV; PCM24k keeps raw float32 PCM and returns format information.
 
-If a podcast disconnects, `.partial.*`, `task_id` and `last_finished_round_id` are kept, and you can resume explicitly through `parameters.retry_info`; the result is the resumed segment and is not merged with the old file automatically.
+If a podcast disconnects, a round fails or the server cancels the session (event 151, returned as `canceled: true`), `.partial.*`, `task_id` and `last_finished_round_id` are kept. Following the official resume rules, `.partial.*` contains only fully finished rounds. Chunks of the unfinished round are saved separately as `podcast-<task_id>.unfinished-round.diagnostic-not-for-resume.<fmt>` (path in `diagnostic_file`, size in `discarded_bytes`) for troubleshooting only; never append it to resumed audio. You can resume explicitly through `parameters.retry_info`; the result is the resumed segment and is not merged with the old file automatically.
+
+The 27 foreign-language voices marked "unidirectional streaming only" in the voice list are rejected locally on the default bidirectional mode of `speech_raw_request(product='tts_websocket')`; pass `mode='unidirectional'`. `text_to_speech` uses unidirectional HTTP and is unaffected.
 
 ### Migrating from 0.3.x
 
