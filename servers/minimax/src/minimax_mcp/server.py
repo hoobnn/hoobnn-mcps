@@ -16,7 +16,7 @@ if MODE not in {"local", "url"}:
     raise ValueError("MINIMAX_RESOURCE_MODE / MINIMAX_API_RESOURCE_MODE 须为 local 或 url")
 
 mcp = ReliableMCPServer("minimax", groups={
-    "video": {"generate_video", "query_video_generation", "list_video_tasks", "enhance_video_prompt", "regenerate_video"},
+    "video": {"generate_video", "query_video_generation", "list_video_tasks", "create_h3_context_ir_task", "regenerate_video"},
     "image": {"text_to_image"}, "speech": {"text_to_audio", "list_voices", "voice_clone", "voice_design"},
     "music": {"music_generation"}, "files": {"upload_file"},
     "jobs": {"list_jobs", "get_job", "recover_job"},
@@ -69,12 +69,12 @@ def generate_video(prompt: str = "", model: str = "MiniMax-H3", content: list[di
 
 @mcp.tool()
 @guarded
-def enhance_video_prompt(prompt: str = "", content: list[dict] | None = None, duration: int = 5,
+def create_h3_context_ir_task(prompt: str = "", content: list[dict] | None = None, duration: int = 5,
                          ratio: str | None = None, wait: int = 0, output_directory: str | None = None,
                          parameters: dict | None = None) -> dict:
-    """H3-Context-IR 深度理解多模态输入，异步返回结构化增强提示词，不直接生成视频；按Token计费。
+    """创建 H3-Context-IR 任务（官方 POST /v2/h3_context_ir）：深度理解多模态输入，异步返回结构化增强提示词，不直接生成视频；按Token计费。
     纯文本传prompt，多模态传官方content数组（二选一）；素材/组合限制同generate_video。duration为4–15秒。
-    parameters仅支持callback_url。wait=0只提交，后续get_job返回prompt及prompt.txt；需要生成视频时另行调用generate_video。
+    parameters仅支持callback_url。wait=0只提交，后续get_job返回prompt及prompt.txt；需要生成视频时把返回的prompt交给generate_video。
     """
     body = video.build_request("h3_context_ir", prompt=prompt, content=content, duration=duration,
                                ratio=ratio, parameters=parameters)
@@ -85,7 +85,7 @@ def enhance_video_prompt(prompt: str = "", content: list[dict] | None = None, du
 @guarded
 def regenerate_video(source_task_id: str | None = None, content: list[dict] | None = None,
                      wait: int = 0, output_directory: str | None = None, parameters: dict | None = None) -> dict:
-    """将符合MiniMax-H3 768P输出规格的视频再生成为2K，单独计费；不是任意视频放大。
+    """创建视频再生成任务（官方 POST /v2/video_regeneration）：将符合MiniMax-H3 768P输出规格的视频再生成为2K，单独计费；不是任意视频放大。
     source_task_id与content二选一。按ID需要白名单、属于本账号且7天内成功生成的源任务。
     content须原样包含源视频生成时最终prompt和全部参考素材，加且只加1个type=video_url/role=base_video项。
     源视频须带音轨、24fps、宽高均可被32整除，像素面积589824–1032192，总帧数107–362且每档递增17帧。

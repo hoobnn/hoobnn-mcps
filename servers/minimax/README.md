@@ -30,8 +30,8 @@ uv tool install hoobnn-minimax-mcp
 | 工具 | 行为 |
 |---|---|
 | `generate_video` | 文生、首帧、尾帧、首尾帧、多模态参考，支持 H3 / H3-Max |
-| `enhance_video_prompt` | H3-Context-IR，异步生成增强提示词；不自动再提交视频 |
-| `regenerate_video` | 合规的 H3 768P 产物再生成 2K；不是通用超分 |
+| `create_h3_context_ir_task` | 创建 H3-Context-IR 任务（`/v2/h3_context_ir`），异步生成增强提示词；不自动再提交视频 |
+| `regenerate_video` | 创建视频再生成任务（`/v2/video_regeneration`），合规的 H3 768P 产物再生成 2K；不是通用超分 |
 | `query_video_generation` / `get_job` | 查询 V2 任务并交付结果 |
 | `list_video_tasks` | 分页列出云端最近 7 天任务 |
 | `delete_video_task` | 取消排队任务或删除已结束任务记录，默认隐藏 |
