@@ -18,6 +18,25 @@ import websockets
 from . import speech
 
 
+# Voices whose remark in the official voice list reads「仅限单向流使用，不支持双向流，双向流调用会直接报错」.
+# Source: https://docs.volcengine.com/docs/DoubaoVoice/Tonelist-1?lang=zh (UpdatedTime 2026-10-13T08:17:11Z),
+# section「豆包语音合成模型2.0」外语音色列表, extracted 2026-10-13; 27 voices. Re-check when the page changes.
+UNIDIRECTIONAL_ONLY_SPEAKERS = frozenset({
+    "th_female_cake_uranus_bigtts", "th_male_paran_uranus_bigtts",
+    "id_female_prisma_uranus_bigtts", "en_male_ryan_uranus_bigtts", "ja_male_yusuke_uranus_bigtts",
+    "tl_male_jonathan-palad_uranus_bigtts", "mx_male_migu_uranus_bigtts",
+    "it_male_luca_uranus_bigtts", "it_male_enzo2_uranus_bigtts", "pt_male_eduardo-s_uranus_bigtts",
+    "es_male_angel_uranus_bigtts", "es_male_francisc_uranus_bigtts", "de_male_sven_uranus_bigtts",
+    "en_male_bill_jones_corey_uranus_bigtts", "en_female_brittney_pimintel_uranus_bigtts",
+    "en_male_cowboy_john_b_uranus_bigtts", "en_male_josh_coery_uranus_bigtts",
+    "en_male_michael_kevin_uranus_bigtts", "en_female_myra_cmb_uranus_bigtts",
+    "en_female_natasha_uranus_bigtts", "en_male_valentino_corey_uranus_bigtts",
+    "fr_male_usseau_uranus_bigtts", "ja_female_minimi_uranus_bigtts",
+    "ko_male_shane_uranus_bigtts", "mx_male_felipe_uranus_bigtts", "pt_male_martins_uranus_bigtts",
+    "it_male_enzo_uranus_bigtts",
+})
+
+
 def headers(resource):
     key = os.environ.get("VOLC_SPEECH_API_KEY")
     if not key:
@@ -100,6 +119,13 @@ def parse_frame(packet):
     return result
 
 
+def _reason(msg):
+    data = msg.get("data")
+    if data:
+        return json.dumps(data, ensure_ascii=False)
+    return msg.get("payload", b"").decode(errors="replace") or "服务端未给出原因"
+
+
 async def receive(ws, timeout=60):
     async def decode():
         return await asyncio.to_thread(parse_frame, await ws.recv())
@@ -152,6 +178,9 @@ async def synthesize(request, out_dir, mode="bidirectional", text_chunks=None, r
             raise speech.InputError("format 只能是 mp3/pcm/wav/ogg_opus")
         if mode not in {"bidirectional", "unidirectional"}:
             raise speech.InputError("mode 只能是 bidirectional/unidirectional")
+        if mode == "bidirectional" and speaker.strip() in UNIDIRECTIONAL_ONLY_SPEAKERS:
+            raise speech.InputError(f"音色 {speaker} 官方仅限单向流，双向流会直接报错；请改用 mode='unidirectional'"
+                                    "（不支持 text_chunks，正文放 req_params.text），或用 text_to_speech")
         chunks = text_chunks if text_chunks is not None else [params.get("text", "")]
         if not isinstance(chunks, list) or not chunks or any(not isinstance(c, str) or not c.strip() for c in chunks):
             raise speech.InputError("需要非空 text 或 text_chunks")
@@ -190,6 +219,8 @@ async def synthesize(request, out_dir, mode="bidirectional", text_chunks=None, r
                     audio.extend(msg["payload"])
                 else:
                     result["events"].append({k: v for k, v in msg.items() if k != "payload"})
+                if msg["event"] == 151:
+                    raise speech.InputError(f"会话被服务端取消（151 SessionCanceled）：{_reason(msg)}")
                 if msg["event"] == 152:
                     data = msg.get("data", {})
                     if not isinstance(data, dict) or data.get("status_code", 20000000) != 20000000:
@@ -265,6 +296,11 @@ async def podcast(request, out_dir):
             while True:
                 msg = await receive(ws, 300)
                 event, data = msg["event"], msg.get("data", {})
+                if event == 151:
+                    # Only the SSE podcast docs list 151 SessionCanceled; on WebSocket it would
+                    # otherwise wait for the 300 s receive timeout.
+                    result["canceled"] = True
+                    raise speech.InputError(f"播客会话被服务端取消（151 SessionCanceled）：{_reason(msg)}")
                 if event != 361 and not isinstance(data, dict):
                     raise speech.InputError("播客事件 payload 必须是 JSON object")
                 if event == 361:
@@ -294,18 +330,27 @@ async def podcast(request, out_dir):
     except (OSError, ValueError, KeyError, TypeError, asyncio.TimeoutError, websockets.exceptions.WebSocketException) as exc:
         result["error"] = str(exc) or "WebSocket 超时"
     # Official resume keeps only fully received rounds and replays the unfinished
-    # one, so a partial file must stop at the last successful 362.
+    # one, so the resumable .partial file stops at the last successful 362. The cut
+    # bytes go to a separate diagnostic file that must never be used as resume input.
+    unfinished = b""
     if not result["ok"] and len(audio) > complete:
-        result["discarded_bytes"] = len(audio) - complete
+        unfinished = bytes(audio[complete:])
+        result["discarded_bytes"] = len(unfinished)
         del audio[complete:]
+    name = f"podcast-{result.get('task_id')}"
+    outputs = []
     if audio:
+        outputs.append(("files", f"{name}.{'partial.' if not result['ok'] else ''}{fmt}", audio))
+    if unfinished:
+        outputs.append(("diagnostic_file", f"{name}.unfinished-round.diagnostic-not-for-resume.{fmt}", unfinished))
+    for key, filename, data in outputs:
         try:
-            out_dir = Path(out_dir)
-            path = out_dir / f"podcast-{result['task_id']}.{'partial.' if not result['ok'] else ''}{fmt}"
-            await asyncio.to_thread(speech._atomic_bytes, path, audio)
-            result["files"] = [str(path)]
+            path = Path(out_dir) / filename
+            await asyncio.to_thread(speech._atomic_bytes, path, data)
+            result[key] = [str(path)] if key == "files" else str(path)
             result["audio_config"] = config
         except (OSError, TypeError) as exc:
             result["ok"] = False
-            result["error"] = f"{result['error'] + '; ' if result['error'] else ''}音频保存失败：{exc}"
+            label = "音频" if key == "files" else "未完成轮次诊断音频"
+            result["error"] = f"{result['error'] + '; ' if result['error'] else ''}{label}保存失败：{exc}"
     return result

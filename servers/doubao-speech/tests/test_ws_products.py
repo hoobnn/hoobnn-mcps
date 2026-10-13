@@ -128,6 +128,11 @@ class FakeWebSocket:
                     await self.queue.put(server_frame(153, {"message": "disconnected"}))
                 elif self.failure == "round":
                     await self.queue.put(server_frame(362, {"is_error": True, "error_msg": "round failed"}))
+                elif self.failure == "canceled":
+                    await self.queue.put(server_frame(362, {"audio_duration": 1.2, "start_time": 0, "end_time": 1.2}))
+                    await self.queue.put(server_frame(360, {"round_id": 1, "speaker": "voice", "text": "again"}))
+                    await self.queue.put(server_frame(361, b" unfinished", kind=11))
+                    await self.queue.put(server_frame(151, {"message": "canceled by server"}))
                 elif self.failure == "second_round":
                     await self.queue.put(server_frame(362, {"audio_duration": 1.2, "start_time": 0, "end_time": 1.2}))
                     await self.queue.put(server_frame(360, {"round_id": 1, "speaker": "voice", "text": "again"}))
@@ -145,6 +150,9 @@ class FakeWebSocket:
         elif event == 102 or event is None:
             if event is None:
                 await self.queue.put(server_frame(352, b"tts audio", kind=11))
+            if self.failure == "canceled":
+                await self.queue.put(server_frame(151, {"message": "canceled by server"}))
+                return
             await self.queue.put(server_frame(152, {"status_code": 55000000 if self.failure == "finished" else 20000000}))
 
     async def recv(self):
@@ -211,6 +219,10 @@ class SessionTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(result["rounds"][0]["timing"]["audio_duration"], 1.2)
         self.assertEqual(result["usage"][0]["usage"]["output_audio_tokens"], 10)
         self.assertEqual(connect.call_args.kwargs["additional_headers"]["X-Api-Resource-Id"], "volc.service_type.10050")
+        # Transport stays on the WebSocket podcast endpoint; see the 2026-10-13 audit for why not SSE.
+        self.assertTrue(connect.call_args.args[0].endswith("/api/v3/sami/podcasttts"))
+        self.assertTrue(connect.call_args.args[0].startswith("wss://"))
+        self.assertNotIn("diagnostic_file", result)
         self.assertTrue(fake.closed)
 
     async def test_podcast_text_only(self):
@@ -232,6 +244,11 @@ class SessionTests(unittest.IsolatedAsyncioTestCase):
                 self.assertEqual(result["discarded_bytes"], len(b"podcast audio"))
                 self.assertIsNone(result["last_finished_round_id"])
                 self.assertTrue(fake.closed)
+                # Even with no finished round, the cut audio is kept for troubleshooting only.
+                diagnostic = Path(result["diagnostic_file"])
+                self.assertEqual(diagnostic.read_bytes(), b"podcast audio")
+                self.assertIn("diagnostic-not-for-resume", diagnostic.name)
+                self.assertNotIn(".partial.", diagnostic.name)
         fake = FakeWebSocket("podcast", failure="second_round")
         with patch.object(ws.websockets, "connect", return_value=fake):
             result = await ws.podcast({"input_text": "科技"}, self.output)
@@ -240,6 +257,62 @@ class SessionTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(Path(result["files"][0]).read_bytes(), b"podcast audio")
         self.assertEqual(result["discarded_bytes"], len(b" unfinished"))
         self.assertEqual(result["last_finished_round_id"], 0)
+        self.assertEqual(Path(result["diagnostic_file"]).read_bytes(), b" unfinished")
+        self.assertNotIn(result["diagnostic_file"], result["files"])
+
+    async def test_podcast_session_canceled_fails_fast_with_reason(self):
+        # 151 SessionCanceled comes from the SSE podcast docs (podcast_mustread).
+        fake = FakeWebSocket("podcast", failure="canceled")
+        with patch.object(ws.websockets, "connect", return_value=fake):
+            result = await asyncio.wait_for(ws.podcast({"input_text": "科技"}, self.output), .5)
+        self.assertFalse(result["ok"])
+        self.assertTrue(result["canceled"])
+        self.assertIn("151", result["error"])
+        self.assertIn("canceled by server", result["error"])
+        self.assertEqual(Path(result["files"][0]).read_bytes(), b"podcast audio")
+        self.assertIn(".partial.", result["files"][0])
+        self.assertEqual(Path(result["diagnostic_file"]).read_bytes(), b" unfinished")
+        self.assertEqual(result["discarded_bytes"], len(b" unfinished"))
+        self.assertEqual(result["last_finished_round_id"], 0)
+        self.assertTrue(fake.closed)
+
+    async def test_tts_session_canceled_fails_fast(self):
+        fake = FakeWebSocket(failure="canceled")
+        with patch.object(ws.websockets, "connect", return_value=fake):
+            result = await asyncio.wait_for(ws.synthesize(self.tts_body, self.output), .5)
+        self.assertFalse(result["ok"])
+        self.assertIn("canceled by server", result["error"])
+        self.assertEqual(result["files"], [])
+
+    async def test_unidirectional_only_voice_rejected_on_bidirectional(self):
+        body = {"req_params": {"text": "hi", "speaker": "en_male_ryan_uranus_bigtts",
+                               "audio_params": {"format": "mp3"}}}
+        with patch.object(ws.websockets, "connect") as connect:
+            result = await ws.synthesize(body, self.output)
+        self.assertFalse(result["ok"])
+        self.assertIn("mode='unidirectional'", result["error"])
+        connect.assert_not_called()
+        fake = FakeWebSocket()
+        with patch.object(ws.websockets, "connect", return_value=fake) as connect:
+            result = await ws.synthesize(body, self.output, mode="unidirectional")
+        self.assertTrue(result["ok"], result["error"])
+        self.assertTrue(connect.call_args.args[0].endswith("/api/v3/tts/unidirectional/stream"))
+        self.assertEqual(len(ws.UNIDIRECTIONAL_ONLY_SPEAKERS), 27)
+
+    async def test_podcast_diagnostic_save_failure_keeps_resume_file(self):
+        writer = ws.speech._atomic_bytes
+        def fail_diagnostic(path, data):
+            if "diagnostic" in path.name:
+                raise OSError("disk full")
+            return writer(path, data)
+        fake = FakeWebSocket("podcast", failure="second_round")
+        with patch.object(ws.websockets, "connect", return_value=fake), \
+                patch.object(ws.speech, "_atomic_bytes", side_effect=fail_diagnostic):
+            result = await ws.podcast({"input_text": "科技"}, self.output)
+        self.assertFalse(result["ok"])
+        self.assertEqual(Path(result["files"][0]).read_bytes(), b"podcast audio")
+        self.assertNotIn("diagnostic_file", result)
+        self.assertIn("诊断", result["error"])
 
     async def test_podcast_save_failure_is_structured_error(self):
         fake = FakeWebSocket("podcast")
