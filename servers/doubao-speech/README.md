@@ -177,7 +177,7 @@ MCP 客户端本地启动命令可指定本项目 `.venv/bin/doubao-speech-mcp` 
 
 实时上传 20ms 一包。MCP 不直接采集麦克风、播放声音或驱动声卡，客户端负责设备输入输出。同传需 16kHz / mono / 16bit WAV 或 PCM；WAV 自动去容器。目标 PCM16k 保存有效 WAV，PCM24k 保留 float32 原始 PCM 并返回格式信息。
 
-播客断线保留 `.partial.*`、`task_id` 和 `last_finished_round_id`，可通过 `parameters.retry_info` 显式续传；返回的是续传片段，不自动和旧文件合并。
+播客断线保留 `.partial.*`、`task_id` 和 `last_finished_round_id`；按官方续传要求，`.partial.*` 只含已完整结束的轮次，未完成轮次的分片丢弃（`discarded_bytes`）。可通过 `parameters.retry_info` 显式续传；返回的是续传片段，不自动和旧文件合并。
 
 ### 从 0.3.x 迁移
 

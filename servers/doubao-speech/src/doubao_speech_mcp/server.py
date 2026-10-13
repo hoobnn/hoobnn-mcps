@@ -211,8 +211,8 @@ async def generate_podcast(
     - dialogue：逐轮脚本直接演绎，如 [{"speaker":"音色ID","text":"本轮台词"}]，每轮最多 300 字、总共 1 万字。
     speakers：两个播客音色 ID（按给出的顺序），不传用官方默认。script_only=true 只生成脚本不合成音频（text/url 适用）。
     format：mp3（默认）、pcm、aac、ogg_opus。parameters：官方请求里其余字段（如 retry_info 续传、input_text_max_length），深度合并。
-    返回音频路径、rounds（各轮文本与时间）、usage、task_id、last_finished_round_id；断线时音频标 partial，可用
-    parameters.retry_info 显式续传。按官方播客计费，可能超过 300 秒。技巧见 get_speech_usage_examples(product='podcast')。
+    返回音频路径、rounds（各轮文本与时间）、usage、task_id、last_finished_round_id；断线时 partial 音频只保留已完整
+    结束的轮次（未完成轮次的分片丢弃，字节数见 discarded_bytes），可用 parameters.retry_info 显式续传后按序拼接。按官方播客计费，可能超过 300 秒。技巧见 get_speech_usage_examples(product='podcast')。
     """
     sources = [name for name, value in (("text", text), ("url", url), ("topic", topic), ("dialogue", dialogue)) if value]
     if len(sources) != 1:

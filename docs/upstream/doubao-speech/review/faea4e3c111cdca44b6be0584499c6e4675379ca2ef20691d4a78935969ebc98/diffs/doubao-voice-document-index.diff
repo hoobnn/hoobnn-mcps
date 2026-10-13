@@ -1,0 +1,23 @@
+--- reviewed/doubao-speech/doubao-voice-document-index
++++ current/doubao-speech/doubao-voice-document-index
+@@ -1582,6 +1582,20 @@
+     "Status": 5
+   },
+   {
++    "DocumentCode": "podcast",
++    "DocumentID": 2708572,
++    "Title": "语音播客",
++    "ParentCode": "Voicepodcastlargemodel",
++    "Status": 5
++  },
++  {
++    "DocumentCode": "podcast_mustread",
++    "DocumentID": 2709746,
++    "Title": "语音播客",
++    "ParentCode": "apiguide",
++    "Status": 5
++  },
++  {
+     "DocumentCode": "recording-file-recognition-lite-http",
+     "DocumentID": 2608628,
+     "Title": "录音文件识别极速版",

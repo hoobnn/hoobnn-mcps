@@ -1,0 +1,37 @@
+--- reviewed/doubao-speech/doubao-tonelist-1
++++ current/doubao-speech/doubao-tonelist-1
+@@ -324,12 +324,33 @@
+ <span id="7833abf9"></span>
+ ##  **"豆包语音合成模型2.0" 外语音色列表**
+ 
+-> 注意：有16个音色仅限单向流使用，不支持双向流，具体可见表格备注部分；
++> 注意：个别音色仅限单向流使用，不支持双向流，具体可见表格备注部分；
+ 
+ 
+ 
+ |**场景** |**音色名称** |**voice_type** |**语种/方言** |**推荐推理模式** |**支持能力** |**备注** |
+ |---|---|---|---|---|---|---|
++|通用场景,客服场景,外语音色,印尼语 |Cesna |id_female_cesna_uranus_bigtts |印尼语 |QA |情感变化、指令遵循 | |
++|通用场景,客服场景,外语音色,印尼语 |Ikbal |id_male_ikbal_uranus_bigtts |印尼语 |QA |情感变化、指令遵循 | |
++|通用场景,客服场景,外语音色,越南语 |Hannah |vi_female_f01507b_uranus_bigtts |越南语 |QA |情感变化、指令遵循 | |
++|通用场景,外语音色,西班牙语 |Mariano |es_male_mariano_uranus_bigtts |西班牙语 |QA |情感变化、指令遵循 | |
++|通用场景,外语音色,西班牙语 |Romina |es_female_romina_uranus_bigtts |西班牙语 |QA |情感变化、指令遵循 | |
++|通用场景,外语音色,马来语 |Hazeem |ms_male_hazeem_uranus_bigtts |马来语 |QA |情感变化、指令遵循 | |
++|通用场景,外语音色,马来语 |Qis |ms_female_qis_uranus_bigtts |马来语 |QA |情感变化、指令遵循 | |
++|通用场景,外语音色,泰语 |Angpao |th_male_angpao_uranus_bigtts |泰语 |QA |情感变化、指令遵循 | |
++|通用场景,外语音色,泰语 |Elle |th_female_elle_uranus_bigtts |泰语 |QA |情感变化、指令遵循 | |
++|有声阅读,外语音色,泰语 |Cake |th_female_cake_uranus_bigtts |泰语 |Context |情感变化、上下文遵循 |仅限单向流使用，不支持双向流，双向流调用会直接报错； |
++|有声阅读,外语音色,泰语 |Paran |th_male_paran_uranus_bigtts |泰语 |Context |情感变化、上下文遵循 |仅限单向流使用，不支持双向流，双向流调用会直接报错； |
++|有声阅读,外语音色,印尼语 |Prisma |id_female_prisma_uranus_bigtts |印尼语 |Context |情感变化、上下文遵循 |仅限单向流使用，不支持双向流，双向流调用会直接报错； |
++|有声阅读,外语音色,美式英语 |Ryan |en_male_ryan_uranus_bigtts |美式英语 |Context |情感变化、上下文遵循 |仅限单向流使用，不支持双向流，双向流调用会直接报错； |
++|有声阅读,外语音色,日语 |Yusuke |ja_male_yusuke_uranus_bigtts |日语 |Context |情感变化、上下文遵循 |仅限单向流使用，不支持双向流，双向流调用会直接报错； |
++|有声阅读,外语音色,菲律宾语 |Jonathan\-Palad |tl_male_jonathan\-palad_uranus_bigtts |菲律宾语 |Context |情感变化、上下文遵循 |仅限单向流使用，不支持双向流，双向流调用会直接报错； |
++|有声阅读,外语音色,墨西哥西语 |Migu |mx_male_migu_uranus_bigtts |墨西哥西语 |Context |情感变化、上下文遵循 |仅限单向流使用，不支持双向流，双向流调用会直接报错； |
++|有声阅读,外语音色,意大利语 |Luca |it_male_luca_uranus_bigtts |意大利语 |Context |情感变化、上下文遵循 |仅限单向流使用，不支持双向流，双向流调用会直接报错； |
++|有声阅读,外语音色,意大利语 |Enzo2 |it_male_enzo2_uranus_bigtts |意大利语 |Context |情感变化、上下文遵循 |仅限单向流使用，不支持双向流，双向流调用会直接报错； |
++|有声阅读,外语音色,巴西葡萄牙语 |Eduardo\-S |pt_male_eduardo\-s_uranus_bigtts |巴西葡萄牙语 |Context |情感变化、上下文遵循 |仅限单向流使用，不支持双向流，双向流调用会直接报错； |
++|有声阅读,外语音色,西班牙语 |Angel |es_male_angel_uranus_bigtts |西班牙语 |Context |情感变化、上下文遵循 |仅限单向流使用，不支持双向流，双向流调用会直接报错； |
++|有声阅读,外语音色,西班牙语 |Francisc |es_male_francisc_uranus_bigtts |西班牙语 |Context |情感变化、上下文遵循 |仅限单向流使用，不支持双向流，双向流调用会直接报错； |
+ |通用场景, 视频配音,外语音色,阿拉伯语 |Dina |ar_female_dina_uranus_bigtts |阿拉伯语（埃及口音） |QA |情感变化、指令遵循 | |
+ |趣味口音,外语音色,阿拉伯语 |Fatma |ar_female_fatma_uranus_bigtts |阿拉伯语 |QA |情感变化、指令遵循 | |
+ |通用场景,有声阅读,外语音色,阿拉伯语 |Youssef |ar_male_youssef_uranus_bigtts |阿拉伯语 |QA |情感变化、指令遵循 | |
