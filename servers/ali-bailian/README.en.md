@@ -12,6 +12,8 @@ An MCP server for Alibaba Cloud Model Studio (Bailian, DashScope) that saves res
 
 </div>
 
+`0.6.0` follows the official 2026-10-10 model retirements: `clone_voice` / `design_voice` now use `voice-enrollment` with default target `qwen-audio-3.0-tts-flash`, and cloning accepts public URLs only; `text_to_speech` adds Qwen-Audio-TTS / CosyVoice with `instructions` style control; `rerank` always uses the native endpoint; `speech_to_text` rejects retired dated snapshots. Voices created for the retired qwen3-tts-vc/vd models no longer work.
+
 `0.5.0` removes `query_video`: video progress is now checked with `get_job`, which downloads the result on completion; the generation tools plus `chat`, `text_to_speech` and `speech_to_text` gain `parameters`. This is a breaking change.
 
 | Tool | What it does | Default model |

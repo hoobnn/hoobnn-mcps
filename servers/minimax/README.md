@@ -2,6 +2,8 @@
 
 独立重写的 MiniMax stdio MCP，重点支持 H3 V2。包名 `hoobnn-minimax-mcp`，不是官方 `minimax-mcp`，不依赖后者。沿用本仓库的连接池、超时取消、任务持久化与交付恢复机制。
 
+`0.2.0` 将 `enhance_video_prompt` 更名为 `create_h3_context_ir_task`，与官方「创建 H3-Context-IR 任务」对应；旧名不保留别名，这是不兼容变更。
+
 ## 安装与迁移
 
 从 PyPI 安装：
