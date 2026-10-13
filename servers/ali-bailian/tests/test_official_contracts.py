@@ -53,11 +53,24 @@ class OfficialContracts(unittest.TestCase):
                 self.assertFalse(media.speech_to_text({"model": model})["ok"])
             request.assert_not_called()
 
-    def test_oversized_voice_preview_is_rejected_before_paid_create(self):
-        with patch.object(products, "api") as api:
-            result = products.design_voice("speaker", "x" * 1025, "qwen3-tts-vd-2026-01-26", "test", "/tmp/unused", "local")
-            self.assertFalse(result["ok"])
+    def test_retired_qwen_voice_and_instruct_tts_never_send_paid_requests(self):
+        with patch.object(products, "api") as api, patch.object(media, "request") as request:
+            self.assertFalse(products.clone_voice("https://example.test/a.wav", "qwen3-tts-vc-2026-01-22", "test")["ok"])
+            self.assertFalse(products.design_voice("speaker", "hello", "qwen3-tts-vd-2026-01-26", "test", "/tmp/unused", "local")["ok"])
+            result = media.text_to_speech({"text": "hi", "voice": "Cherry", "instructions": "slow", "language": None,
+                                           "model": None}, "/tmp/unused")
+            self.assertIn("下线", result["error"])
             api.assert_not_called()
+            request.assert_not_called()
+
+    def test_every_rerank_model_uses_native_nested_body(self):
+        with patch.object(products, "api", return_value=({"output": {"results": [{"index": 0}]}}, None)) as api:
+            result = products.rerank("q", ["a", "b"], "qwen3-rerank", top_n=1)
+        path, body = api.call_args.args
+        self.assertEqual(path, "/api/v1/services/rerank/text-rerank/text-rerank")
+        self.assertEqual(body["input"], {"query": "q", "documents": ["a", "b"]})
+        self.assertEqual(body["parameters"]["top_n"], 1)
+        self.assertEqual(result["results"], [{"index": 0}])
 
     def test_image_limits_match_specific_model_family(self):
         base = dict(prompt="cat", images=[], group=None, thinking=None, size=None, n=1)

@@ -2,7 +2,6 @@
 import base64
 import copy
 import json
-import re
 from pathlib import Path
 
 from .dashscope import encode_image, request
@@ -29,6 +28,9 @@ DOCS = {
     "rerank": "https://help.aliyun.com/zh/model-studio/text-rerank-api",
 }
 VOICE_MODELS = {"clone": "qwen-voice-enrollment", "design": "qwen-voice-design", "cosyvoice": "voice-enrollment"}
+# 官方公告 118331/118434：2026-10-10 下线 qwen-voice-design 及全部 qwen3-tts-vc/vd；复刻/设计文档只保留 voice-enrollment。
+QWEN_VOICE_RETIRED = ("qwen-voice-design及qwen3-tts-vc/vd已于2026-10-10下线，qwen-voice-enrollment已从官方文档移除；"
+                      "官方替代为voice-enrollment + Qwen-Audio-TTS/CosyVoice，本MCP尚未接入其合成协议，未发送创建请求")
 
 
 def api(path, body, timeout=120):
@@ -46,61 +48,11 @@ def voice_result(response, error):
 
 
 def clone_voice(audio, target_model, preferred_name, text=None, language=None):
-    try:
-        if not target_model.startswith("qwen3-tts-vc-") or "realtime" in target_model:
-            raise ValueError("请选择非实时 qwen3-tts-vc 模型，以便用本MCP的text_to_speech合成")
-        if not re.fullmatch(r"[A-Za-z0-9_]{1,16}", preferred_name):
-            raise ValueError("preferred_name 用1–16位英文字母、数字或下划线")
-        src = audio
-        if not src.startswith(("http://", "https://", "data:")):
-            path = Path(src).expanduser()
-            if not path.is_file() or path.stat().st_size > 10 * 1024 * 1024:
-                raise ValueError("参考音频不存在或超过10MB")
-            mime = {".wav": "audio/wav", ".mp3": "audio/mpeg", ".m4a": "audio/mp4"}.get(path.suffix.lower())
-            if not mime:
-                raise ValueError("参考音频支持wav/mp3/m4a")
-            src = f"data:{mime};base64," + base64.b64encode(path.read_bytes()).decode()
-        inp = {"action": "create", "target_model": target_model,
-               "preferred_name": preferred_name, "audio": {"data": src}}
-        if text:
-            inp["text"] = text
-        if language:
-            inp["language"] = language
-    except (OSError, ValueError) as exc:
-        return {"ok": False, "error": str(exc)}
-    response, error = api(CUSTOMIZATION, {"model": "qwen-voice-enrollment", "input": inp})
-    result = voice_result(response, error)
-    if result["ok"] and not result["voice"]:
-        result.update(ok=False, error="响应没有音色ID，不自动重新创建")
-    result["target_model"] = result.get("target_model") or target_model
-    return result
+    return {"ok": False, "target_model": target_model, "error": QWEN_VOICE_RETIRED}
 
 
 def design_voice(voice_prompt, preview_text, target_model, preferred_name, out_dir, mode):
-    if not voice_prompt.strip() or len(voice_prompt) > 2048 or not preview_text.strip() or len(preview_text) > 1024:
-        return {"ok": False, "error": "声音描述须为1–2048字符，preview_text须为1–1024字符"}
-    if not target_model.startswith("qwen3-tts-vd-") or "realtime" in target_model:
-        return {"ok": False, "error": "请选择非实时qwen3-tts-vd模型"}
-    if not re.fullmatch(r"[A-Za-z0-9_]{1,16}", preferred_name):
-        return {"ok": False, "error": "preferred_name 用1–16位英文字母、数字或下划线"}
-    body = {"model": "qwen-voice-design", "input": {"action": "create", "target_model": target_model,
-            "preferred_name": preferred_name, "voice_prompt": voice_prompt, "preview_text": preview_text},
-            "parameters": {"sample_rate": 24000, "response_format": "wav"}}
-    job = STORE.create("voice_preview", target_model, out_dir, mode,
-                       summary={"preferred_name": preferred_name})
-    with STORE.processing(job):
-        response, error = api(CUSTOMIZATION, body)
-        result = voice_result(response, error)
-        result["target_model"] = result.get("target_model") or target_model
-        # Store the voice ID before delivering preview audio; download errors must not create another voice.
-        job.update(request_id=result["request_id"], usage=result["usage"], result={k: v for k, v in result.items() if k != "output"})
-        STORE.save(job)
-        if error or not result["voice"]:
-            job.update(error=error or "响应缺少音色ID，不自动重新创建", state="unknown")
-            STORE.save(job)
-            return STORE.result(job)
-        STORE.record_response(job, response)
-        return deliver_preview(job, response)
+    return {"ok": False, "target_model": target_model, "error": QWEN_VOICE_RETIRED}
 
 
 def deliver_preview(job, response):
@@ -267,13 +219,9 @@ def rerank(query, documents, model, top_n=None, return_documents=False):
     params = {"return_documents": return_documents}
     if top_n is not None:
         params["top_n"] = top_n
-    if model == "qwen3-rerank":
-        body = {"model": model, "query": query, "documents": documents, **params}
-        path = "/compatible-api/v1/reranks"
-    else:
-        body = {"model": model, "input": {"query": query, "documents": documents}, "parameters": params}
-        path = "/api/v1/services/rerank/text-rerank/text-rerank"
-    response, error = api(path, body)
+    # 官方文档现所有rerank模型（含qwen3-rerank）统一走原生接口，input/parameters嵌套。
+    body = {"model": model, "input": {"query": query, "documents": documents}, "parameters": params}
+    response, error = api("/api/v1/services/rerank/text-rerank/text-rerank", body)
     result = response or {}
     return {"ok": not error, "model": model, "results": result.get("results") or (result.get("output") or {}).get("results"),
             "usage": result.get("usage"), "request_id": result.get("request_id"), "response": response, "error": error}
