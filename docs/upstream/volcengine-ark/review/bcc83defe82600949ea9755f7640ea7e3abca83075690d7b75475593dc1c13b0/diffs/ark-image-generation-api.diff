@@ -1,0 +1,39 @@
+--- reviewed/volcengine-ark/ark-image-generation-api
++++ current/volcengine-ark/ark-image-generation-api
+@@ -785,13 +785,16 @@
+ 
+ 
+ 
++**公共字段**
++
++
+ **url** `string`  |  图片 URL
+ 
+ `data.url`
+ 
+ 图片 URL，当 `response_format` 指定为 `url` 时返回。该链接将在生成后 **24 小时内失效**，请务必及时保存图像。
+ 
+-推荐配置火山引擎 TOS 提供的数据订阅功能，将您的模型推理产物自动转存到自己的 TOS 桶中，便于长期备份或二次加工。详细介绍请参见 [TOS 数据订阅](https://docs.volcengine.com/docs/6349/1366744)。
++推荐配置火山引擎 TOS 提供的数据订阅功能，将您的模型推理产物自动转存到自己的 TOS 桶中，便于长期备份或二次加工。详细介绍请参见 [TOS 数据订阅](https://docs.volcengine.com/docs/TorchObjectStorage/Datasubscription-5?lang=zh)。
+ 
+ 
+ 
+@@ -834,7 +837,8 @@
+ 
+ 
+ 
+-**图层拆分场景**
++
++**特殊字段（图层拆分场景）**
+ 
+ 
+ **z_index<mark><sup>new</sup></mark>** `integer`  |  图层叠放顺序
+@@ -997,7 +1001,7 @@
+ 
+ 
+ 
+-**组图生成场景**
++**特殊字段（组图生成场景）**
+ 
+ 
+ **error** `object`  |  单图错误信息

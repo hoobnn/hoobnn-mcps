@@ -1,0 +1,462 @@
+--- reviewed/volcengine-ark/ark-seedream-5-0-pro
++++ current/volcengine-ark/ark-seedream-5-0-pro
+@@ -11,7 +11,7 @@
+ |---|---|---|
+ |[交互编辑](https://ark.volcengine.com/region:cn-beijing/docs/ark/seedream-5-0-pro#interactive_edit) |支持通过坐标、框选、箭头等多种方式指定编辑位置，精准编辑图片，实现局部元素替换、物品定位、区域生成等精细化操作。 |<video src="https://arkdocs.tos-cn-beijing.volces.com/videos/image-generation/edite-model.mov" controls></video><br> |
+ |[图层拆分](https://ark.volcengine.com/region:cn-beijing/docs/ark/seedream-5-0-pro#layer_decomposition) |支持将单张图片的主体、背景、文字、装饰元素等内容自动拆解为 1 张底图和最多 16 个独立且带透明通道的图层，便于移动、缩放、替换、调色等二次编辑。 |<span>![图片](https://arkdocs.tos-cn-beijing.volces.com/images/image-generation/seedream_50_pro_layer_output2.gif) </span> |
+-|原生多语种生成 |新增支持俄语、阿拉伯语、菲律宾语、泰语、土耳其语、韩语、马来语、西班牙语、葡萄牙语、印尼语、法语、德语、越南语、日语等 14 种语言的原生文字生成能力。 |<span>![图片](https://ark-project.tos-cn-beijing.volces.com/doc_image/seedream_50_pro-part2-tab3-group1-input1.png) </span> |
++|原生多语种生成 |新增支持俄语、阿拉伯语、菲律宾语、泰语、土耳其语、韩语、马来语、西班牙语、葡萄牙语、印尼语、法语、德语、越南语、日语等 14 种语言的原生文字生成能力。 |<span>![图片](https://arkdocs.tos-cn-beijing.volces.com/images/image-generation/seedream_50_pro-part2-tab3-group1-input1.png) </span> |
+ 
+ 
+ <span id="pro_overview"></span>
+@@ -68,6 +68,12 @@
+ 
+ Seedream 5.0 pro 与 Seedream 5.0 flash 支持通过**框选、点位、箭头、标注框、坐标**等方式指定编辑位置，实现对局部区域的精准生成或修改。详细操作说明请参考 [Seedream 5.0 pro / flash 交互编辑指南](https://ark.volcengine.com/region:cn-beijing/docs/ark/seedream-5-0-pro-editing-guide)。
+ 
++<div data-tips="true" data-tips-type="tip" data-tips-is-title="true">说明</div>
++
++
++<div data-tips="true" data-tips-type="tip">Java 示例中的 <code>CreateImageGenerationRequestImage</code> 需要 <code>com.volcengine:ark-runtime</code> 0.6.0 或更高版本。如果 IDE 提示找不到该类型或 <code>image</code> 参数类型不匹配，请升级到 <a href="https://central.sonatype.com/artifact/com.volcengine/ark-runtime">Maven Central</a> 提供的最新稳定版本，并重新加载项目依赖。</div>
++
++
+ <span id=".5L2_55So56S65L6LLeS7u-aEj-agh-iusA=="></span>
+ ## 使用示例\-任意标记
+ 
+@@ -77,12 +83,12 @@
+ <span aceTableMode="list" aceTableWidth="1,1,1"></span>
+ |提示词 |输入图 |输出 |
+ |---|---|---|
+-|根据手绘草图对图像进行编辑。在左下角标记区域添加一叠真实的杂志或艺术画册，并在右侧标记区域添加一个带杯碟的陶瓷杯咖啡。移除所有草图线条。保持构图不变。让新添加的物体自然融入原有场景中。 |<span>![图片](https://ark-project.tos-cn-beijing.volces.com/doc_image/seedream_50_pro_input2.png) </span> |<span>![图片](https://ark-project.tos-cn-beijing.volces.com/doc_image/seedream_50_pro_output2.png) </span> |
++|根据手绘草图对图像进行编辑。在左下角标记区域添加一叠真实的杂志或艺术画册，并在右侧标记区域添加一个带杯碟的陶瓷杯咖啡。移除所有草图线条。保持构图不变。让新添加的物体自然融入原有场景中。 |<span>![图片](https://arkdocs.tos-cn-beijing.volces.com/images/image-generation/seedream_50_pro_input2.png) </span> |<span>![图片](https://arkdocs.tos-cn-beijing.volces.com/images/image-generation/seedream_50_pro_output2.png) </span> |
+ 
+ 
+ 
+ <Tabs>
+-<Tab zoneid="jqtmwXDEcr" title="Curl">
++<Tab zoneid="vQUqf0uGMb" title="Curl">
+ <TabTitle>Curl</TabTitle>
+ 
+ ```Bash
+@@ -92,10 +98,10 @@
+   -d '{
+     "model": "doubao-seedream-5-0-pro-260628",
+     "prompt": "根据手绘草图对图像进行编辑。在左下角标记区域添加一叠真实的杂志或艺术画册，并在右侧标记区域添加一个带杯碟的陶瓷杯咖啡。移除所有草图线条。保持构图不变。让新添加的物体自然融入原有场景中。",
+-    "image": "https://ark-project.tos-cn-beijing.volces.com/doc_image/seedream_50_pro_input2.png",
++    "image": "https://arkdocs.tos-cn-beijing.volces.com/images/image-generation/seedream_50_pro_input2.png",
+     "size": "2K",
+     "output_format": "png",
+-    "watermark": false
++    "watermark": true
+ }'
+ ```
+ 
+@@ -105,13 +111,13 @@
+ 
+ 
+ </Tab>
+-<Tab zoneid="eplG4UJIfG" title="Python">
++<Tab zoneid="UStniSrpoc" title="Python">
+ <TabTitle>Python</TabTitle>
+ 
+ ```Python
+ import os
+ 
+-# Install SDK:  pip install arkruntime
++# Install SDK:  python -m pip install --upgrade arkruntime
+ from arkruntime import Ark
+ 
+ client = Ark(
+@@ -125,11 +131,11 @@
+     # Replace with Model ID
+     model="doubao-seedream-5-0-pro-260628",
+     prompt="根据手绘草图对图像进行编辑。在左下角标记区域添加一叠真实的杂志或艺术画册，并在右侧标记区域添加一个带杯碟的陶瓷杯咖啡。移除所有草图线条。保持构图不变。让新添加的物体自然融入原有场景中。",
+-    image="https://ark-project.tos-cn-beijing.volces.com/doc_image/seedream_50_pro_input2.png",
++    image="https://arkdocs.tos-cn-beijing.volces.com/images/image-generation/seedream_50_pro_input2.png",
+     size="2K",
+     output_format="png",
+     response_format="url",
+-    watermark=False,
++    watermark=True,
+ )
+ 
+ print(imagesResponse.data[0].url)
+@@ -138,7 +144,7 @@
+ 
+ 
+ </Tab>
+-<Tab zoneid="IAXvoGFpAS" title="Java">
++<Tab zoneid="zS5JuvYlGj" title="Java">
+ <TabTitle>Java</TabTitle>
+ 
+ ```Java
+@@ -164,14 +170,15 @@
+                 .apiKey(apiKey)
+                 .build();
+ 
++        // CreateImageGenerationRequestImage requires ark-runtime 0.6.0 or later.
+         CreateImageGenerationRequest generateRequest = CreateImageGenerationRequest.builder()
+                 .model("doubao-seedream-5-0-pro-260628") // Replace with Model ID
+                 .prompt("根据手绘草图对图像进行编辑。在左下角标记区域添加一叠真实的杂志或艺术画册，并在右侧标记区域添加一个带杯碟的陶瓷杯咖啡。移除所有草图线条。保持构图不变。让新添加的物体自然融入原有场景中。")
+-                .image(CreateImageGenerationRequestImage.ofString("https://ark-project.tos-cn-beijing.volces.com/doc_image/seedream_50_pro_input2.png"))
++                .image(CreateImageGenerationRequestImage.ofString("https://arkdocs.tos-cn-beijing.volces.com/images/image-generation/seedream_50_pro_input2.png"))
+                 .size("2K")
+                 .outputFormat(OutputFormat.PNG)
+                 .responseFormat(ResponseFormat.URL)
+-                .watermark(false)
++                .watermark(true)
+                 .build();
+ 
+         ImageGenerationResponse imagesResponse = service.generateImages(generateRequest);
+@@ -185,7 +192,7 @@
+ 
+ 
+ </Tab>
+-<Tab zoneid="C2Jwwoww6y" title="Go">
++<Tab zoneid="SdUOrwRPCv" title="Go">
+ <TabTitle>Go</TabTitle>
+ 
+ ```Go
+@@ -212,11 +219,11 @@
+     generateReq := &model.CreateImageGenerationRequest{
+         Model:          "doubao-seedream-5-0-pro-260628",
+         Prompt:         model.NewOptString("根据手绘草图对图像进行编辑。在左下角标记区域添加一叠真实的杂志或艺术画册，并在右侧标记区域添加一个带杯碟的陶瓷杯咖啡。移除所有草图线条。保持构图不变。让新添加的物体自然融入原有场景中。"),
+-        Image: model.NewOptCreateImageGenerationRequestImage(model.NewStringArrayCreateImageGenerationRequestImage([]string{"https://ark-project.tos-cn-beijing.volces.com/doc_image/seedream_50_pro_input2.png"})),
++        Image: model.NewOptCreateImageGenerationRequestImage(model.NewStringArrayCreateImageGenerationRequestImage([]string{"https://arkdocs.tos-cn-beijing.volces.com/images/image-generation/seedream_50_pro_input2.png"})),
+         Size:           model.NewOptString("2K"),
+         OutputFormat: model.NewOptOutputFormat(outputFormat),
+         ResponseFormat: model.NewOptResponseFormat(model.ResponseFormatURL),
+-        Watermark:      model.NewOptBool(false),
++        Watermark:      model.NewOptBool(true),
+     }
+ 
+     imagesResponse, err := client.GenerateImages(ctx, generateReq)
+@@ -232,7 +239,7 @@
+ 
+ 
+ </Tab>
+-<Tab zoneid="AKJIFPPfaO" title="OpenAI">
++<Tab zoneid="GGXEJ5UcYt" title="OpenAI">
+ <TabTitle>OpenAI</TabTitle>
+ 
+ ```Python
+@@ -253,8 +260,8 @@
+     output_format="png",
+     response_format="url",
+     extra_body={
+-        "image": "https://ark-project.tos-cn-beijing.volces.com/doc_image/seedream_50_pro_input2.png",
+-        "watermark": False,
++        "image": "https://arkdocs.tos-cn-beijing.volces.com/images/image-generation/seedream_50_pro_input2.png",
++        "watermark": True,
+     },
+ )
+ 
+@@ -341,7 +348,7 @@
+ 
+ 
+ <Tabs>
+-<Tab zoneid="nQT0jrHzGT" title="Curl">
++<Tab zoneid="qBdSUM25pS" title="Curl">
+ <TabTitle>Curl</TabTitle>
+ 
+ ```Bash
+@@ -353,7 +360,7 @@
+     "image": "https://arkdocs.tos-cn-beijing.volces.com/images/image-generation/layer_auto.png",
+     "size": "2K",
+     "layer_decomposition": true,
+-    "watermark": false
++    "watermark": true
+ }'
+ ```
+ 
+@@ -363,7 +370,7 @@
+ 
+ 
+ </Tab>
+-<Tab zoneid="jAQZMkvCFs" title="Python">
++<Tab zoneid="I8QgPqLhUV" title="Python">
+ <TabTitle>Python</TabTitle>
+ 
+ ```Python
+@@ -386,7 +393,7 @@
+     size="2K",
+     layer_decomposition=True,
+     response_format="url",
+-    watermark=False,
++    watermark=True,
+ )
+ 
+ for item in imagesResponse.data:
+@@ -396,7 +403,7 @@
+ 
+ 
+ </Tab>
+-<Tab zoneid="eleDkXCJfb" title="Java">
++<Tab zoneid="JubbTmkjDN" title="Java">
+ <TabTitle>Java</TabTitle>
+ 
+ ```Java
+@@ -422,13 +429,14 @@
+                 .apiKey(apiKey)
+                 .build();
+ 
++        // CreateImageGenerationRequestImage requires ark-runtime 0.6.0 or later.
+         CreateImageGenerationRequest generateRequest = CreateImageGenerationRequest.builder()
+                 .model("doubao-seedream-5-0-pro-260628") // Replace with Model ID
+                 .image(CreateImageGenerationRequestImage.ofString("https://arkdocs.tos-cn-beijing.volces.com/images/image-generation/layer_auto.png"))
+                 .size("2K")
+                 .layerDecomposition(true)
+                 .responseFormat(ResponseFormat.URL)
+-                .watermark(false)
++                .watermark(true)
+                 .build();
+ 
+         ImageGenerationResponse imagesResponse = service.generateImages(generateRequest);
+@@ -442,7 +450,7 @@
+ 
+ 
+ </Tab>
+-<Tab zoneid="tHgGU1Trbf" title="Go">
++<Tab zoneid="P7mVAWmgn0" title="Go">
+ <TabTitle>Go</TabTitle>
+ 
+ ```Go
+@@ -471,7 +479,7 @@
+         Size:               model.NewOptString("2K"),
+         LayerDecomposition: model.NewOptBool(true),
+         ResponseFormat: model.NewOptResponseFormat(model.ResponseFormatURL),
+-        Watermark:          model.NewOptBool(false),
++        Watermark:          model.NewOptBool(true),
+     }
+ 
+     imagesResponse, err := client.GenerateImages(ctx, generateReq)
+@@ -489,7 +497,7 @@
+ 
+ 
+ </Tab>
+-<Tab zoneid="ijXucjCZPw" title="OpenAI">
++<Tab zoneid="p6GpqDm62u" title="OpenAI">
+ <TabTitle>OpenAI</TabTitle>
+ 
+ ```Python
+@@ -510,7 +518,7 @@
+     extra_body={
+         "image": "https://arkdocs.tos-cn-beijing.volces.com/images/image-generation/layer_auto.png",
+         "layer_decomposition": True,
+-        "watermark": False,
++        "watermark": True,
+     },
+ )
+ 
+@@ -533,7 +541,7 @@
+ <span aceTableMode="list" aceTableWidth="2,2,1.5,1.5"></span>
+ |1 张输入图 + 提示词（归一化坐标指定拆分元素） |输出底图 |输出图层 ||
+ |---|---|---|---|
+-|<span>![图片](https://ark-project.tos-cn-beijing.volces.com/doc_image/seedream_50_pro_layer_input.png) </span><br><br>&nbsp;<br><br>> 将图片中的内容拆成 7 个图层，包括 6 组文字：<br><br>> `<bbox>180 64 812 198</bbox>`、`<bbox>757 210 939 280</bbox>`、`<bbox>63 212 320 282</bbox>`、`<bbox>178 714 826 810</bbox>`、`<bbox>814 819 949 894</bbox>`、`<bbox>326 824 669 930</bbox>`；<br><br>> 1 只鹦鹉：`<bbox>347 305 642 997</bbox>`。 |<span>![图片](https://arkdocs.tos-cn-beijing.volces.com/images/image-generation/Seedream50_layer_0.jpeg) </span> |<span>![图片](https://arkdocs.tos-cn-beijing.volces.com/images/image-generation/Seedream50_layer_1.png) </span> |<span>![图片](https://arkdocs.tos-cn-beijing.volces.com/images/image-generation/Seedream50_layer_4.png) </span> |
++|<span>![图片](https://arkdocs.tos-cn-beijing.volces.com/images/image-generation/seedream_50_pro_layer_input.png) </span><br><br>&nbsp;<br><br>> 将图片中的内容拆成 7 个图层，包括 6 组文字：<br><br>> `<bbox>180 64 812 198</bbox>`、`<bbox>757 210 939 280</bbox>`、`<bbox>63 212 320 282</bbox>`、`<bbox>178 714 826 810</bbox>`、`<bbox>814 819 949 894</bbox>`、`<bbox>326 824 669 930</bbox>`；<br><br>> 1 只鹦鹉：`<bbox>347 305 642 997</bbox>`。 |<span>![图片](https://arkdocs.tos-cn-beijing.volces.com/images/image-generation/Seedream50_layer_0.jpeg) </span> |<span>![图片](https://arkdocs.tos-cn-beijing.volces.com/images/image-generation/Seedream50_layer_1.png) </span> |<span>![图片](https://arkdocs.tos-cn-beijing.volces.com/images/image-generation/Seedream50_layer_4.png) </span> |
+ |||<span>![图片](https://arkdocs.tos-cn-beijing.volces.com/images/image-generation/Seedream50_layer_2.png) </span> ||
+ |||<span>![图片](https://arkdocs.tos-cn-beijing.volces.com/images/image-generation/Seedream50_layer_3.png) </span> ||
+ |||<span>![图片](https://arkdocs.tos-cn-beijing.volces.com/images/image-generation/Seedream50_layer_6.png) </span> ||
+@@ -543,7 +551,7 @@
+ 
+ 
+ <Tabs>
+-<Tab zoneid="M7qXPEPieY" title="Curl">
++<Tab zoneid="CFdIBGZS1s" title="Curl">
+ <TabTitle>Curl</TabTitle>
+ 
+ ```Bash
+@@ -553,7 +561,7 @@
+   -d '{
+     "model": "doubao-seedream-5-0-pro-260628",
+     "prompt": "将图片进行精确图层分离，需分离的文字坐标为<bbox>180 64 812 198</bbox>、<bbox>757 210 939 280</bbox>、<bbox>63 212 320 282</bbox>、<bbox>178 714 826 810</bbox>、<bbox>814 819 949 894</bbox>、<bbox>326 824 669 930</bbox>；鹦鹉的坐标为<bbox>347 305 642 997</bbox>。",
+-    "image": "https://ark-project.tos-cn-beijing.volces.com/doc_image/seedream_50_pro_layer_input.png",
++    "image": "https://arkdocs.tos-cn-beijing.volces.com/images/image-generation/seedream_50_pro_layer_input.png",
+     "layer_decomposition": true,
+     "size": "2K",
+     "output_format": "jpeg",
+@@ -568,7 +576,7 @@
+ 
+ 
+ </Tab>
+-<Tab zoneid="rbuCARJBxR" title="Python">
++<Tab zoneid="LEUoiJYDPQ" title="Python">
+ <TabTitle>Python</TabTitle>
+ 
+ ```Python
+@@ -588,7 +596,7 @@
+     # Replace with Model ID
+     model="doubao-seedream-5-0-pro-260628",
+     prompt="将图片进行精确图层分离，需分离的文字坐标为<bbox>180 64 812 198</bbox>、<bbox>757 210 939 280</bbox>、<bbox>63 212 320 282</bbox>、<bbox>178 714 826 810</bbox>、<bbox>814 819 949 894</bbox>、<bbox>326 824 669 930</bbox>；鹦鹉的坐标为<bbox>347 305 642 997</bbox>。",
+-    image="https://ark-project.tos-cn-beijing.volces.com/doc_image/seedream_50_pro_layer_input.png",
++    image="https://arkdocs.tos-cn-beijing.volces.com/images/image-generation/seedream_50_pro_layer_input.png",
+     layer_decomposition=True,
+     size="2K",
+     output_format="jpeg",
+@@ -603,7 +611,7 @@
+ 
+ 
+ </Tab>
+-<Tab zoneid="KUhufX2dep" title="Java">
++<Tab zoneid="ArcFrCUZK2" title="Java">
+ <TabTitle>Java</TabTitle>
+ 
+ ```Java
+@@ -629,10 +637,11 @@
+                 .apiKey(apiKey)
+                 .build();
+ 
++        // CreateImageGenerationRequestImage requires ark-runtime 0.6.0 or later.
+         CreateImageGenerationRequest generateRequest = CreateImageGenerationRequest.builder()
+                 .model("doubao-seedream-5-0-pro-260628") // Replace with Model ID
+                 .prompt("将图片进行精确图层分离，需分离的文字坐标为<bbox>180 64 812 198</bbox>、<bbox>757 210 939 280</bbox>、<bbox>63 212 320 282</bbox>、<bbox>178 714 826 810</bbox>、<bbox>814 819 949 894</bbox>、<bbox>326 824 669 930</bbox>；鹦鹉的坐标为<bbox>347 305 642 997</bbox>。")
+-                .image(CreateImageGenerationRequestImage.ofString("https://ark-project.tos-cn-beijing.volces.com/doc_image/seedream_50_pro_layer_input.png"))
++                .image(CreateImageGenerationRequestImage.ofString("https://arkdocs.tos-cn-beijing.volces.com/images/image-generation/seedream_50_pro_layer_input.png"))
+                 .layerDecomposition(true)
+                 .size("2K")
+                 .outputFormat(OutputFormat.JPEG)
+@@ -651,7 +660,7 @@
+ 
+ 
+ </Tab>
+-<Tab zoneid="m6BdzxHESJ" title="Go">
++<Tab zoneid="G3Im9nCRFs" title="Go">
+ <TabTitle>Go</TabTitle>
+ 
+ ```Go
+@@ -678,7 +687,7 @@
+     generateReq := &model.CreateImageGenerationRequest{
+         Model:              "doubao-seedream-5-0-pro-260628",
+         Prompt:             model.NewOptString("将图片进行精确图层分离，需分离的文字坐标为<bbox>180 64 812 198</bbox>、<bbox>757 210 939 280</bbox>、<bbox>63 212 320 282</bbox>、<bbox>178 714 826 810</bbox>、<bbox>814 819 949 894</bbox>、<bbox>326 824 669 930</bbox>；鹦鹉的坐标为<bbox>347 305 642 997</bbox>。"),
+-        Image: model.NewOptCreateImageGenerationRequestImage(model.NewStringArrayCreateImageGenerationRequestImage([]string{"https://ark-project.tos-cn-beijing.volces.com/doc_image/seedream_50_pro_layer_input.png"})),
++        Image: model.NewOptCreateImageGenerationRequestImage(model.NewStringArrayCreateImageGenerationRequestImage([]string{"https://arkdocs.tos-cn-beijing.volces.com/images/image-generation/seedream_50_pro_layer_input.png"})),
+         LayerDecomposition: model.NewOptBool(true),
+         Size:               model.NewOptString("2K"),
+         OutputFormat: model.NewOptOutputFormat(outputFormat),
+@@ -701,7 +710,7 @@
+ 
+ 
+ </Tab>
+-<Tab zoneid="b1kuKhPzvF" title="OpenAI">
++<Tab zoneid="yy1Fr10nHG" title="OpenAI">
+ <TabTitle>OpenAI</TabTitle>
+ 
+ ```Python
+@@ -722,7 +731,7 @@
+     output_format="jpeg",
+     response_format="url",
+     extra_body={
+-        "image": "https://ark-project.tos-cn-beijing.volces.com/doc_image/seedream_50_pro_layer_input.png",
++        "image": "https://arkdocs.tos-cn-beijing.volces.com/images/image-generation/seedream_50_pro_layer_input.png",
+         "layer_decomposition": True,
+         "watermark": True,
+     },
+@@ -888,7 +897,7 @@
+ 
+ 
+ <Tabs>
+-<Tab zoneid="jqylGDnMII" title="Curl">
++<Tab zoneid="M31igJAOXY" title="Curl">
+ <TabTitle>Curl</TabTitle>
+ 
+ ```Bash
+@@ -911,7 +920,7 @@
+ 
+ 
+ </Tab>
+-<Tab zoneid="UM4trDQhdE" title="Python">
++<Tab zoneid="nEcsl78Kwk" title="Python">
+ <TabTitle>Python</TabTitle>
+ 
+ ```Python
+@@ -944,7 +953,7 @@
+ 
+ 
+ </Tab>
+-<Tab zoneid="e7gzZ5qXc8" title="Go">
++<Tab zoneid="znYuYUenZf" title="Go">
+ <TabTitle>Go</TabTitle>
+ 
+ ```Go
+@@ -991,7 +1000,7 @@
+ 
+ 
+ </Tab>
+-<Tab zoneid="jUiuBjpriF" title="Java">
++<Tab zoneid="cKtUxB9iVD" title="Java">
+ <TabTitle>Java</TabTitle>
+ 
+ ```Java
+@@ -1016,6 +1025,7 @@
+                 .apiKey(apiKey)
+                 .build();
+ 
++        // CreateImageGenerationRequestImage requires ark-runtime 0.6.0 or later.
+         CreateImageGenerationRequest generateRequest = CreateImageGenerationRequest.builder()
+                 .model("doubao-seedream-5-0-pro-260628") // Replace with Model ID
+                 .prompt("将图片中的鹦鹉改为孔雀")
+@@ -1097,11 +1107,10 @@
+ 
+ * 可选值：`1K`、`1.5K`、`2K`
+ 
+-
+-<div data-tips="true" data-tips-type="tip" data-tips-is-title="true">说明</div>
+-
+-
+-<div data-tips="true" data-tips-type="tip"><code>1.5K</code> 与 <code>1K</code> 价格相同，且图片生成效果更优。</div>
++   <div data-tips="true" data-tips-type="tip" data-tips-is-title="true" data-wrapper-indent="1">说明   </div>
++
++
++   <div data-tips="true" data-tips-type="tip" data-wrapper-indent="1"><code>1.5K</code> 与 <code>1K</code> 价格相同，且图片生成效果更优。   </div>
+ 
+ 
+ 使用方式 1 并在 prompt 中描述特定宽高比时，模型实际映射的宽高像素参考值（不限于以下标准值，仅列常见）：
+@@ -1143,24 +1152,22 @@
+ 
+ * 宽高比取值范围：[1/16, 16]
+ 
+-
+-<div data-tips="true" data-tips-type="tip" data-tips-is-title="true">宽高像素值使用示例</div>
+-
+-
+-<div data-tips="true" data-tips-type="tip">采用方式 2 时，需同时满足总像素取值范围和宽高比取值范围。其中，总像素是对单张图宽度和高度的像素乘积限制，而不是对宽度或高度的单独值进行限制。</div>
+-
+-
+-
+-* <div data-tips="true" data-tips-type="tip"><strong>有效示例</strong>：<code>2048x1024</code></div>
+-
+-
+-   <div data-tips="true" data-tips-type="tip">总像素值 2048x1024=2097152，符合 [921600, 4624220] 的区间要求；宽高比 2048/1024=2，符合 [1/16, 16] 的区间要求，故该示例值有效。   </div>
+-
+-
+-* <div data-tips="true" data-tips-type="tip"><strong>无效示例</strong>：<code>512x512</code></div>
+-
+-
+-   <div data-tips="true" data-tips-type="tip">总像素值 512x512=262144，未达到 921600 的最低要求，故该示例值无效。   </div>
++   <div data-tips="true" data-tips-type="tip" data-tips-is-title="true" data-wrapper-indent="1">宽高像素值使用示例   </div>
++
++
++   <div data-tips="true" data-tips-type="tip" data-wrapper-indent="1">采用方式 2 时，需同时满足总像素取值范围和宽高比取值范围。其中，总像素是对单张图宽度和高度的像素乘积限制，而不是对宽度或高度的单独值进行限制。   </div>
++
++
++   * <div data-tips="true" data-tips-type="tip" data-wrapper-indent="1"><strong>有效示例</strong>：<code>2048x1024</code>   </div>
++
++
++   <div data-tips="true" data-tips-type="tip" data-wrapper-indent="1">总像素值 2048x1024=2097152，符合 [921600, 4624220] 的区间要求；宽高比 2048/1024=2，符合 [1/16, 16] 的区间要求，故该示例值有效。   </div>
++
++
++   * <div data-tips="true" data-tips-type="tip" data-wrapper-indent="1"><strong>无效示例</strong>：<code>512x512</code>   </div>
++
++
++   <div data-tips="true" data-tips-type="tip" data-wrapper-indent="1">总像素值 512x512=262144，未达到 921600 的最低要求，故该示例值无效。   </div>
+ 
+ 
+ 
+@@ -1321,7 +1328,7 @@
+ 
+ * 图片 URL：请确保图片 URL 可被访问。
+ 
+-   示例：`https://ark-project.tos-cn-beijing.volces.com/doc_image/seedream4_5_imageToimage.png`
++   示例：`https://arkdocs.tos-cn-beijing.volces.com/images/image-generation/seedream4_5_imageToimage.png`
+ 
+ * Base64 编码：请遵循格式`data:image/<图片格式>;base64,<Base64编码>`。注意：`<图片格式>` 必须采用小写字母，例如 `data:image/png;base64,<base64_image>`。
+ 

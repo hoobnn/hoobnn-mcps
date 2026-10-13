@@ -1,0 +1,192 @@
+--- reviewed/volcengine-ark/ark-document-index
++++ current/volcengine-ark/ark-document-index
+@@ -1183,6 +1183,13 @@
+     "Status": 2
+   },
+   {
++    "DocumentCode": "ark-md-test",
++    "DocumentID": 2715544,
++    "Title": "Ark Md测试",
++    "ParentCode": "tests",
++    "Status": 5
++  },
++  {
+     "DocumentCode": "ark-runtime-sdk-migration",
+     "DocumentID": 2663773,
+     "Title": "方舟官方 SDK 升级公告",
+@@ -1400,6 +1407,13 @@
+     "Status": 5
+   },
+   {
++    "DocumentCode": "cancel-dream-api",
++    "DocumentID": 2709559,
++    "Title": "取消 Dream",
++    "ParentCode": "dreams",
++    "Status": 2
++  },
++  {
+     "DocumentCode": "cancel-endpoint-rolling-api",
+     "DocumentID": 2582733,
+     "Title": "取消推理接入点滚动升级",
+@@ -1414,6 +1428,13 @@
+     "Status": 2
+   },
+   {
++    "DocumentCode": "canvas",
++    "DocumentID": 1581314,
++    "Title": "Canvas 简介",
++    "ParentCode": "experience-center",
++    "Status": 2
++  },
++  {
+     "DocumentCode": "case-platform-v1-badcase-query-api",
+     "DocumentID": 2551134,
+     "Title": "查询视频生成模型效果问题结果",
+@@ -2142,6 +2163,13 @@
+     "Status": 2
+   },
+   {
++    "DocumentCode": "create-dream-api",
++    "DocumentID": 2709556,
++    "Title": "创建 Dream",
++    "ParentCode": "dreams",
++    "Status": 2
++  },
++  {
+     "DocumentCode": "create-endpoint-api",
+     "DocumentID": 1262823,
+     "Title": "创建推理接入点",
+@@ -2590,6 +2618,20 @@
+     "Status": 2
+   },
+   {
++    "DocumentCode": "dream-overview",
++    "DocumentID": 2709555,
++    "Title": "使用 Dream 整理长期记忆",
++    "ParentCode": "managed-agents-context",
++    "Status": 2
++  },
++  {
++    "DocumentCode": "dreams",
++    "DocumentID": 2709554,
++    "Title": "Dreams",
++    "ParentCode": "managed-agents-api",
++    "Status": 1
++  },
++  {
+     "DocumentCode": "dsl",
+     "DocumentID": 1399499,
+     "Title": "评分DSL",
+@@ -2660,16 +2702,9 @@
+     "Status": 1
+   },
+   {
+-    "DocumentCode": "experience-center-mcp",
+-    "DocumentID": 1539085,
+-    "Title": "MCP 简介",
+-    "ParentCode": "experience-center",
+-    "Status": 2
+-  },
+-  {
+     "DocumentCode": "experience-center-overview",
+     "DocumentID": 1940244,
+-    "Title": "体验中心概览",
++    "Title": "快速体验模型能力",
+     "ParentCode": "experience-center",
+     "Status": 2
+   },
+@@ -2849,6 +2884,13 @@
+     "Status": 2
+   },
+   {
++    "DocumentCode": "get-dream-api",
++    "DocumentID": 2709558,
++    "Title": "查询 Dream",
++    "ParentCode": "dreams",
++    "Status": 2
++  },
++  {
+     "DocumentCode": "get-endpoint-api",
+     "DocumentID": 1262431,
+     "Title": "获取推理接入点",
+@@ -3227,13 +3269,6 @@
+     "Status": 1
+   },
+   {
+-    "DocumentCode": "image-generation-models",
+-    "DocumentID": 2105966,
+-    "Title": "图片生成模型",
+-    "ParentCode": "experience-center",
+-    "Status": 2
+-  },
+-  {
+     "DocumentCode": "image-generation-streaming-responses",
+     "DocumentID": 1824137,
+     "Title": "图片生成流式响应事件",
+@@ -3297,6 +3332,13 @@
+     "Status": 2
+   },
+   {
++    "DocumentCode": "json-document-md-content",
++    "DocumentID": 2715319,
++    "Title": "Ark json测试",
++    "ParentCode": "tests",
++    "Status": 5
++  },
++  {
+     "DocumentCode": "knowledge-base-index",
+     "DocumentID": 2673862,
+     "Title": "知识库",
+@@ -3367,13 +3409,6 @@
+     "Status": 5
+   },
+   {
+-    "DocumentCode": "language-models",
+-    "DocumentID": 1099504,
+-    "Title": "语言模型",
+-    "ParentCode": "experience-center",
+-    "Status": 2
+-  },
+-  {
+     "DocumentCode": "lanzhou-model-service-agreement",
+     "DocumentID": 1185570,
+     "Title": "澜舟模型服务协议",
+@@ -3479,6 +3514,13 @@
+     "Status": 2
+   },
+   {
++    "DocumentCode": "list-dreams-api",
++    "DocumentID": 2709557,
++    "Title": "查询 Dream 列表",
++    "ParentCode": "dreams",
++    "Status": 2
++  },
++  {
+     "DocumentCode": "list-endpoints-api",
+     "DocumentID": 1262430,
+     "Title": "获取推理接入点列表",
+@@ -4427,8 +4469,8 @@
+     "DocumentCode": "promptpilot-billing",
+     "DocumentID": 1807500,
+     "Title": "PromptPilot 计费",
+-    "ParentCode": "pricing-and-billing",
+-    "Status": 2
++    "ParentCode": "historical-documents",
++    "Status": 5
+   },
+   {
+     "DocumentCode": "promptpilot-overview",
+@@ -5628,6 +5670,13 @@
+     "Status": 2
+   },
+   {
++    "DocumentCode": "visual-creation-agent",
++    "DocumentID": 2709539,
++    "Title": "[基础] 使用视觉增强 Agent 生成图片和视频",
++    "ParentCode": "managed-agent-tutorials",
++    "Status": 2
++  },
++  {
+     "DocumentCode": "volcengine-ark-confidential-computing-whitepaper",
+     "DocumentID": 1099355,
+     "Title": "火山方舟互信计算架构白皮书",

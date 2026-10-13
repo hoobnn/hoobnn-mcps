@@ -1,0 +1,661 @@
+--- reviewed/volcengine-ark/ark-seedance-2-5
++++ current/volcengine-ark/ark-seedance-2-5
+@@ -167,7 +167,7 @@
+ 
+ 
+ 
+-* <div data-tips="true" data-tips-type="tip">若您是编程零基础用户，推荐使用 <a href="https://ark.volcengine.com/region:cn-beijing/experience/vision?modelId=doubao-seedance-2-5-260628&tab=GenVideo">控制台体验中心</a>，包含丰富的模板库，可一键生成同款视频，无需编写代码即可快速上手创作。</div>
++* <div data-tips="true" data-tips-type="tip">若您是编程零基础用户，推荐使用 <a href="https://ark.volcengine.com/region:cn-beijing/experience/gen_video?model=doubao-seedance-2-5-260628">控制台体验中心</a>，包含丰富的模板库，可一键生成同款视频，无需编写代码即可快速上手创作。</div>
+ 
+ 
+ * <div data-tips="true" data-tips-type="tip">若您想快速体验 API 调用，推荐使用<a href="https://api.volcengine.com/api-explorer/?action=CreateContentsGenerationsTasks&groupName=%E8%A7%86%E9%A2%91%E7%94%9F%E6%88%90API&serviceCode=ark&version=2024-01-01">API Explorer</a>，内置预设参数模板，可一键发起 API 调用；同时也支持灵活调整参数（例如设置视频水印等），满足多样化的测试和使用场景。</div>
+@@ -200,7 +200,7 @@
+ 
+ 
+ <Tabs>
+-<Tab zoneid="hpb1NVXuSK" title="Windows 用户">
++<Tab zoneid="yloKF2feiU" title="Windows 用户">
+ <TabTitle>Windows 用户</TabTitle>
+ 
+ 1. 进入 `scripts/init_dev_env` 目录。
+@@ -223,7 +223,7 @@
+ 
+ 
+ </Tab>
+-<Tab zoneid="RGBjBHm5fs" title="macOS 用户">
++<Tab zoneid="jKGLD7s6TW" title="macOS 用户">
+ <TabTitle>macOS 用户</TabTitle>
+ 
+ 1. 打开终端，进入 `scripts/init_dev_env` 目录。
+@@ -283,7 +283,7 @@
+ 
+ 
+ <columns>
+-<columnsItem zoneid="ukgWmswzBc">
++<columnsItem zoneid="lp3FVVFSjC">
+ 
+ 
+ <card mode="container" >
+@@ -298,7 +298,7 @@
+ 
+ 
+ </columnsItem>
+-<columnsItem zoneid="Izvji50hbe">
++<columnsItem zoneid="xGobjseG69">
+ 
+ 
+ <card mode="container" >
+@@ -317,7 +317,7 @@
+ 
+ 
+ </columnsItem>
+-<columnsItem zoneid="TNmQf8k0eG">
++<columnsItem zoneid="dvRbHhpGtN">
+ 
+ 
+ <card mode="container" >
+@@ -339,7 +339,7 @@
+ 
+ 
+ <columns>
+-<columnsItem zoneid="ZaUh4yCeYq">
++<columnsItem zoneid="v62LU14WbB">
+ 
+ 
+ <card mode="container" >
+@@ -354,7 +354,7 @@
+ 
+ 
+ </columnsItem>
+-<columnsItem zoneid="yhpDOGypTm">
++<columnsItem zoneid="GasmvyjqGB">
+ 
+ 
+ <card mode="container" >
+@@ -413,12 +413,12 @@
+ <span aceTableMode="list" aceTableWidth="5,5"></span>
+ |输入：文本 + 图片 |输出 |
+ |---|---|
+-|<span>![图片](https://ark-project.tos-cn-beijing.volces.com/doc_image/seedacne2.5_30s_input.png) </span><br><br>> 提示词：一段高级、极具电影感的30秒3D动态图形序列，采用精致的蒸汽朋克与复古微缩景观风格...（详见下方代码示例中的完整提示词） |<video src="https://ark-project.tos-cn-beijing.volces.com/doc_video/seedacne2.5_30s_output.mp4" controls></video><br> |
++|<span>![图片](https://arkdocs.tos-cn-beijing.volces.com/images/resources/seedacne2.5_30s_input.png) </span><br><br>> 提示词：一段高级、极具电影感的30秒3D动态图形序列，采用精致的蒸汽朋克与复古微缩景观风格...（详见下方代码示例中的完整提示词） |<video src="https://arkdocs.tos-cn-beijing.volces.com/videos/resources/seedacne2.5_30s_output.mp4" controls></video><br> |
+ 
+ 
+ 
+ <Tabs>
+-<Tab zoneid="sXxen0ynrB" title="Curl">
++<Tab zoneid="hnguWfzuAa" title="Curl">
+ <TabTitle>Curl</TabTitle>
+ 
+ ```Bash
+@@ -443,13 +443,14 @@
+     "generate_audio": true,
+     "ratio": "16:9",
+     "duration": 30,
++    "watermark": true
+ }'
+ ```
+ 
+ 
+ 
+ </Tab>
+-<Tab zoneid="jNkRusSuA5" title="Python">
++<Tab zoneid="x41M4E8tac" title="Python">
+ <TabTitle>Python</TabTitle>
+ 
+ ```Python
+@@ -485,6 +486,7 @@
+         generate_audio=True,
+         ratio="16:9",
+         duration=30,
++        watermark=True,
+     )
+     print(create_result)
+ 
+@@ -512,7 +514,7 @@
+ 
+ 
+ </Tab>
+-<Tab zoneid="D8QpqKgK0f" title="Java">
++<Tab zoneid="mRmGlpuXt5" title="Java">
+ <TabTitle>Java</TabTitle>
+ 
+ ```Java
+@@ -581,6 +583,7 @@
+                 .content(contents)
+                 .ratio(videoRatio)
+                 .duration(videoDuration)
++                .watermark(true)
+                 .build();
+ 
+         CreateContentGenerationTaskResponse createResult = service.createContentGenerationTask(createRequest);
+@@ -635,7 +638,7 @@
+ 
+ 
+ </Tab>
+-<Tab zoneid="vOb2M6qKJs" title="Go">
++<Tab zoneid="sayM0vMyns" title="Go">
+ <TabTitle>Go</TabTitle>
+ 
+ ```Go
+@@ -694,6 +697,7 @@
+                 Role: model.NewOptString("reference_image"),
+             },
+         },
++        Watermark:     model.NewOptBool(true),
+     }
+ 
+     createResp, err := client.CreateContentGenerationTask(ctx, createReq)
+@@ -755,12 +759,12 @@
+ <span aceTableMode="list" aceTableWidth="2,2,2,2"></span>
+ |输入：文本 + 1 张图片 + 6 段视频 |||输出 |
+ |---|---|---|---|
+-|<span>![图片](https://ark-project.tos-cn-beijing.volces.com/doc_image/seedacne2.5_reference1.png) </span><br><br>> 提示词：明亮多彩的广告片风格，果味饼干为主角...（详见下方代码示例中的完整提示词） |<video src="https://ark-project.tos-cn-beijing.volces.com/doc_video/seedacne2.5_reference2.mp4" controls></video><br><br><br>&nbsp;<br><br><video src="https://ark-project.tos-cn-beijing.volces.com/doc_video/seedacne2.5_reference4.mp4" controls></video><br><br><br>&nbsp;<br><br><video src="https://ark-project.tos-cn-beijing.volces.com/doc_video/seedacne2.5_reference6.mp4" controls></video><br> |<video src="https://ark-project.tos-cn-beijing.volces.com/doc_video/seedacne2.5_reference3.mp4" controls></video><br><br><br>&nbsp;<br><br><video src="https://ark-project.tos-cn-beijing.volces.com/doc_video/seedacne2.5_reference5.mp4" controls></video><br><br><br>&nbsp;<br><br><video src="https://ark-project.tos-cn-beijing.volces.com/doc_video/seedacne2.5_reference7.mp4" controls></video><br> |<video src="https://ark-project.tos-cn-beijing.volces.com/doc_video/eedacne2.5_reference_output.mp4" controls></video><br> |
++|<span>![图片](https://arkdocs.tos-cn-beijing.volces.com/images/resources/seedacne2.5_reference1.png) </span><br><br>> 提示词：明亮多彩的广告片风格，果味饼干为主角...（详见下方代码示例中的完整提示词） |<video src="https://arkdocs.tos-cn-beijing.volces.com/videos/resources/seedacne2.5_reference2.mp4" controls></video><br><br><br>&nbsp;<br><br><video src="https://arkdocs.tos-cn-beijing.volces.com/videos/resources/seedacne2.5_reference4.mp4" controls></video><br><br><br>&nbsp;<br><br><video src="https://arkdocs.tos-cn-beijing.volces.com/videos/resources/seedacne2.5_reference6.mp4" controls></video><br> |<video src="https://arkdocs.tos-cn-beijing.volces.com/videos/resources/seedacne2.5_reference3.mp4" controls></video><br><br><br>&nbsp;<br><br><video src="https://arkdocs.tos-cn-beijing.volces.com/videos/resources/seedacne2.5_reference5.mp4" controls></video><br><br><br>&nbsp;<br><br><video src="https://arkdocs.tos-cn-beijing.volces.com/videos/resources/seedacne2.5_reference7.mp4" controls></video><br> |<video src="https://arkdocs.tos-cn-beijing.volces.com/videos/resources/eedacne2.5_reference_output.mp4" controls></video><br> |
+ 
+ 
+ 
+ <Tabs>
+-<Tab zoneid="JwRqfuZdbl" title="Curl">
++<Tab zoneid="gtBbFjEMXA" title="Curl">
+ <TabTitle>Curl</TabTitle>
+ 
+ ```Bash
+@@ -828,14 +832,15 @@
+     "ratio": "16:9",
+     "duration": 15,
+     "omni_reference_task_type": "reference",
+-    "output_format": "mov"
++    "output_format": "mov",
++    "watermark": true
+ }'
+ ```
+ 
+ 
+ 
+ </Tab>
+-<Tab zoneid="Qi3iUNOjnJ" title="Python">
++<Tab zoneid="Shn8U7WktX" title="Python">
+ <TabTitle>Python</TabTitle>
+ 
+ ```Python
+@@ -917,6 +922,7 @@
+             "omni_reference_task_type": "reference",
+             "output_format": "mov",
+         },
++        watermark=True,
+     )
+     print(create_result)
+ 
+@@ -944,7 +950,7 @@
+ 
+ 
+ </Tab>
+-<Tab zoneid="IPai52zncL" title="Java">
++<Tab zoneid="zdOxtoNNTJ" title="Java">
+ <TabTitle>Java</TabTitle>
+ 
+ ```Java
+@@ -1094,6 +1100,7 @@
+         createRequest.put("duration", videoDuration);
+         createRequest.put("omni_reference_task_type", "reference");
+         createRequest.put("output_format", "mov");
++        createRequest.put("watermark", true);
+ 
+         retrofit2.Response<CreateContentGenerationTaskResponse> response =
+                 contentGenerationApi.create(createRequest).execute();
+@@ -1152,7 +1159,7 @@
+ 
+ 
+ </Tab>
+-<Tab zoneid="EZgo49XduR" title="Go">
++<Tab zoneid="wsjXg4KKNu" title="Go">
+ <TabTitle>Go</TabTitle>
+ 
+ ```Go
+@@ -1261,6 +1268,7 @@
+                 Role: model.NewOptString("reference_video"),
+             },
+         },
++        Watermark:     model.NewOptBool(true),
+     }
+ 
+     createResp, err := client.CreateContentGenerationTask(
+@@ -1340,12 +1348,12 @@
+ <span aceTableMode="list" aceTableWidth="5,5"></span>
+ |输入：文本 + 视频（宽高比 5:4，时长 16 秒） |输出（宽高比 5:4，时长 16 秒） |
+ |---|---|
+-|<video src="https://ark-project.tos-cn-beijing.volces.com/doc_video/seedance2.5_edit_input.mov" controls></video><br><br><br>> 提示词：视频编辑：删除 @视频1中的所有人，除了主角。 |<video src="https://ark-project.tos-cn-beijing.volces.com/doc_video/seedance2.5_edit_output.mov" controls></video><br><br><br>> **输出视频宽高比自动和待编辑视频的 5:4 保持一致；输出视频时长和待编辑视频的 16 秒基本一致** |
++|<video src="https://arkdocs.tos-cn-beijing.volces.com/videos/video-generation/seedance2.5_edit_input.mov" controls></video><br><br><br>> 提示词：视频编辑：删除 @视频1中的所有人，除了主角。 |<video src="https://arkdocs.tos-cn-beijing.volces.com/videos/video-generation/seedance2.5_edit_output.mov" controls></video><br><br><br>> **输出视频宽高比自动和待编辑视频的 5:4 保持一致；输出视频时长和待编辑视频的 16 秒基本一致** |
+ 
+ 
+ 
+ <Tabs>
+-<Tab zoneid="mx18UNtTxu" title="Curl">
++<Tab zoneid="JGiYWwfMo3" title="Curl">
+ <TabTitle>Curl</TabTitle>
+ 
+ ```Bash
+@@ -1371,14 +1379,15 @@
+     "ratio": "adaptive",
+     "duration": -1,
+     "omni_reference_task_type": "edit",
+-    "output_format": "mov"
++    "output_format": "mov",
++    "watermark": true
+ }'
+ ```
+ 
+ 
+ 
+ </Tab>
+-<Tab zoneid="qpCf1T7h7X" title="Python">
++<Tab zoneid="EZsxFUJrpO" title="Python">
+ <TabTitle>Python</TabTitle>
+ 
+ ```Python
+@@ -1418,6 +1427,7 @@
+             "omni_reference_task_type": "edit",
+             "output_format": "mov",
+         },
++        watermark=True,
+     )
+     print(create_result)
+ 
+@@ -1445,7 +1455,7 @@
+ 
+ 
+ </Tab>
+-<Tab zoneid="GwpuO2O929" title="Java">
++<Tab zoneid="DhKtgrw7yj" title="Java">
+ <TabTitle>Java</TabTitle>
+ 
+ ```Java
+@@ -1535,6 +1545,7 @@
+         createRequest.put("duration", videoDuration);
+         createRequest.put("omni_reference_task_type", "edit");
+         createRequest.put("output_format", "mov");
++        createRequest.put("watermark", true);
+ 
+         retrofit2.Response<CreateContentGenerationTaskResponse> response =
+                 contentGenerationApi.create(createRequest).execute();
+@@ -1593,7 +1604,7 @@
+ 
+ 
+ </Tab>
+-<Tab zoneid="jRxZBDEFPT" title="Go">
++<Tab zoneid="kB8KtpYgdD" title="Go">
+ <TabTitle>Go</TabTitle>
+ 
+ ```Go
+@@ -1654,6 +1665,7 @@
+                 Role: model.NewOptString("reference_video"),
+             },
+         },
++        Watermark:     model.NewOptBool(true),
+     }
+ 
+     createResp, err := client.CreateContentGenerationTask(
+@@ -1722,12 +1734,12 @@
+ <span aceTableMode="list" aceTableWidth="3,3,3"></span>
+ |输入：文本 + 视频（视频1宽高比 7:5，视频2、视频3宽高比 16:9） ||输出（宽高比 7:5） |
+ |---|---|---|
+-|<video src="https://ark-project.tos-cn-beijing.volces.com/doc_video/r2v_extend_video1_75.mov" controls></video><br><br><br>> 提示词：延长@视频1，窗户打开后进入@视频2的美术馆室内，最后镜头进入@视频3的画内 |<video src="https://ark-project.tos-cn-beijing.volces.com/doc_video/r2v_extend_video2.mp4" controls></video><br><br><br><video src="https://ark-project.tos-cn-beijing.volces.com/doc_video/r2v_extend_video3.mp4" controls></video><br> |<video src="https://ark-project.tos-cn-beijing.volces.com/doc_video/r2v_extend_output_75.mov" controls></video><br><br><br>> **输出视频宽高比自动和待延长视频的 7:5 保持一致** |
++|<video src="https://arkdocs.tos-cn-beijing.volces.com/videos/video-generation/r2v_extend_video1_75.mov" controls></video><br><br><br>> 提示词：延长@视频1，窗户打开后进入@视频2的美术馆室内，最后镜头进入@视频3的画内 |<video src="https://arkdocs.tos-cn-beijing.volces.com/videos/video-generation/r2v_extend_video2.mp4" controls></video><br><br><br><video src="https://arkdocs.tos-cn-beijing.volces.com/videos/video-generation/r2v_extend_video3.mp4" controls></video><br> |<video src="https://arkdocs.tos-cn-beijing.volces.com/videos/video-generation/r2v_extend_output_75.mov" controls></video><br><br><br>> **输出视频宽高比自动和待延长视频的 7:5 保持一致** |
+ 
+ 
+ 
+ <Tabs>
+-<Tab zoneid="kKRPVVCEI1" title="Curl">
++<Tab zoneid="GCYQrYzZjK" title="Curl">
+ <TabTitle>Curl</TabTitle>
+ 
+ ```Bash
+@@ -1751,14 +1763,14 @@
+         {
+             "type": "video_url",
+             "video_url": {
+-                "url": "https://ark-project.tos-cn-beijing.volces.com/doc_video/r2v_extend_video2.mp4"
++                "url": "https://arkdocs.tos-cn-beijing.volces.com/videos/video-generation/r2v_extend_video2.mp4"
+             },
+             "role": "reference_video"
+         },
+         {
+             "type": "video_url",
+             "video_url": {
+-                "url": "https://ark-project.tos-cn-beijing.volces.com/doc_video/r2v_extend_video3.mp4"
++                "url": "https://arkdocs.tos-cn-beijing.volces.com/videos/video-generation/r2v_extend_video3.mp4"
+             },
+             "role": "reference_video"
+         }
+@@ -1767,14 +1779,15 @@
+     "ratio": "adaptive",
+     "duration": 11,
+     "omni_reference_task_type": "extend",
+-    "output_format": "mov"
++    "output_format": "mov",
++    "watermark": true
+ }'
+ ```
+ 
+ 
+ 
+ </Tab>
+-<Tab zoneid="C63hI5Y0gh" title="Python">
++<Tab zoneid="JZef6FAU9I" title="Python">
+ <TabTitle>Python</TabTitle>
+ 
+ ```Python
+@@ -1809,14 +1822,14 @@
+             {
+                 "type": "video_url",
+                 "video_url": {
+-                    "url": "https://ark-project.tos-cn-beijing.volces.com/doc_video/r2v_extend_video2.mp4"
++                    "url": "https://arkdocs.tos-cn-beijing.volces.com/videos/video-generation/r2v_extend_video2.mp4"
+                 },
+                 "role": "reference_video",
+             },
+             {
+                 "type": "video_url",
+                 "video_url": {
+-                    "url": "https://ark-project.tos-cn-beijing.volces.com/doc_video/r2v_extend_video3.mp4"
++                    "url": "https://arkdocs.tos-cn-beijing.volces.com/videos/video-generation/r2v_extend_video3.mp4"
+                 },
+                 "role": "reference_video",
+             },
+@@ -1828,6 +1841,7 @@
+             "omni_reference_task_type": "extend",
+             "output_format": "mov",
+         },
++        watermark=True,
+     )
+     print(create_result)
+ 
+@@ -1855,7 +1869,7 @@
+ 
+ 
+ </Tab>
+-<Tab zoneid="pgcfLsYpeZ" title="Java">
++<Tab zoneid="pxPUbedBBB" title="Java">
+ <TabTitle>Java</TabTitle>
+ 
+ ```Java
+@@ -1912,8 +1926,8 @@
+ 
+         // Example resource URLs
+         final String refVideo1 = "https://arkdocs.tos-cn-beijing.volces.com/videos/video-generation/r2v_extend_video1_75.mov";
+-        final String refVideo2 = "https://ark-project.tos-cn-beijing.volces.com/doc_video/r2v_extend_video2.mp4";
+-        final String refVideo3 = "https://ark-project.tos-cn-beijing.volces.com/doc_video/r2v_extend_video3.mp4";
++        final String refVideo2 = "https://arkdocs.tos-cn-beijing.volces.com/videos/video-generation/r2v_extend_video2.mp4";
++        final String refVideo3 = "https://arkdocs.tos-cn-beijing.volces.com/videos/video-generation/r2v_extend_video3.mp4";
+ 
+         // Output video parameters
+         final boolean generateAudio = true;
+@@ -1965,6 +1979,7 @@
+         createRequest.put("duration", videoDuration);
+         createRequest.put("omni_reference_task_type", "extend");
+         createRequest.put("output_format", "mov");
++        createRequest.put("watermark", true);
+ 
+         retrofit2.Response<CreateContentGenerationTaskResponse> response =
+                 contentGenerationApi.create(createRequest).execute();
+@@ -2023,7 +2038,7 @@
+ 
+ 
+ </Tab>
+-<Tab zoneid="r8jmYKbzpT" title="Go">
++<Tab zoneid="RDtypbRW8b" title="Go">
+ <TabTitle>Go</TabTitle>
+ 
+ ```Go
+@@ -2056,8 +2071,8 @@
+ 
+     // Example resource URLs
+     refVideo1 := "https://arkdocs.tos-cn-beijing.volces.com/videos/video-generation/r2v_extend_video1_75.mov"
+-    refVideo2 := "https://ark-project.tos-cn-beijing.volces.com/doc_video/r2v_extend_video2.mp4"
+-    refVideo3 := "https://ark-project.tos-cn-beijing.volces.com/doc_video/r2v_extend_video3.mp4"
++    refVideo2 := "https://arkdocs.tos-cn-beijing.volces.com/videos/video-generation/r2v_extend_video2.mp4"
++    refVideo3 := "https://arkdocs.tos-cn-beijing.volces.com/videos/video-generation/r2v_extend_video3.mp4"
+ 
+     // Output video parameters
+     generateAudio := true
+@@ -2100,6 +2115,7 @@
+                 Role: model.NewOptString("reference_video"),
+             },
+         },
++        Watermark:     model.NewOptBool(true),
+     }
+ 
+     createResp, err := client.CreateContentGenerationTask(
+@@ -2173,7 +2189,7 @@
+ 
+ 
+ <Tabs>
+-<Tab zoneid="zoQNcAqx7g" title="Curl">
++<Tab zoneid="s828IGceN5" title="Curl">
+ <TabTitle>Curl</TabTitle>
+ 
+ ```Bash
+@@ -2204,14 +2220,15 @@
+     ],
+     "generate_audio": true,
+     "ratio": "adaptive",
+-    "duration": 5
++    "duration": 5,
++    "watermark": true
+ }'
+ ```
+ 
+ 
+ 
+ </Tab>
+-<Tab zoneid="VbWGHF8aZo" title="Python">
++<Tab zoneid="PhlBtNnyCQ" title="Python">
+ <TabTitle>Python</TabTitle>
+ 
+ ```Python
+@@ -2254,6 +2271,7 @@
+         generate_audio=True,
+         ratio="adaptive",
+         duration=5,
++        watermark=True,
+     )
+     print(create_result)
+ 
+@@ -2280,7 +2298,7 @@
+ 
+ 
+ </Tab>
+-<Tab zoneid="Wb9CoRi9T4" title="Java">
++<Tab zoneid="XdC1hpcVMD" title="Java">
+ <TabTitle>Java</TabTitle>
+ 
+ ```Java
+@@ -2358,6 +2376,7 @@
+                 .content(contents)
+                 .ratio(videoRatio)
+                 .duration(videoDuration)
++                .watermark(true)
+                 .build();
+ 
+         CreateContentGenerationTaskResponse createResult = service.createContentGenerationTask(createRequest);
+@@ -2411,7 +2430,7 @@
+ 
+ 
+ </Tab>
+-<Tab zoneid="A3qQypqTx7" title="Go">
++<Tab zoneid="GXjAQaVen6" title="Go">
+ <TabTitle>Go</TabTitle>
+ 
+ ```Go
+@@ -2478,6 +2497,7 @@
+                 Role: model.NewOptString("last_frame"),
+             },
+         },
++        Watermark:     model.NewOptBool(true),
+     }
+ 
+     createResp, err := client.CreateContentGenerationTask(ctx, createReq)
+@@ -2539,12 +2559,12 @@
+ <span aceTableMode="list" aceTableWidth="5,5"></span>
+ |输入：文本 + 图片 |输出 |
+ |---|---|
+-|<span>![图片](https://ark-project.tos-cn-beijing.volces.com/doc_image/seedacne2.5_muti_language_input.png) </span><br><br>> 提示词：电影级 hip\-hop / 说唱音乐视频，歌词覆盖 8 种语言...（详见下方代码示例中的完整提示词） |<video src="https://ark-project.tos-cn-beijing.volces.com/doc_video/seedacne2.5_muti_language_output.mp4" controls></video><br> |
++|<span>![图片](https://arkdocs.tos-cn-beijing.volces.com/images/resources/seedacne2.5_muti_language_input.png) </span><br><br>> 提示词：电影级 hip\-hop / 说唱音乐视频，歌词覆盖 8 种语言...（详见下方代码示例中的完整提示词） |<video src="https://arkdocs.tos-cn-beijing.volces.com/videos/resources/seedacne2.5_muti_language_output.mp4" controls></video><br> |
+ 
+ 
+ 
+ <Tabs>
+-<Tab zoneid="Yq626lHkjg" title="Curl">
++<Tab zoneid="vcrHRD052R" title="Curl">
+ <TabTitle>Curl</TabTitle>
+ 
+ ```Bash
+@@ -2561,7 +2581,7 @@
+         {
+             "type": "image_url",
+             "image_url": {
+-                "url": "https://arkdocs.tos-cn-beijing.volces.com/images/video-generation/seedance2.5_muti_language_input.png"
++                "url": "https://arkdocs.tos-cn-beijing.volces.com/images/video-generation/seedance2.5_multi_language_input.png"
+             },
+             "role": "reference_image"
+         }
+@@ -2569,13 +2589,14 @@
+     "generate_audio": true,
+     "ratio": "16:9",
+     "duration": 20,
++    "watermark": true
+ }'
+ ```
+ 
+ 
+ 
+ </Tab>
+-<Tab zoneid="UfIX0R9eBQ" title="Python">
++<Tab zoneid="pwayK9pQOe" title="Python">
+ <TabTitle>Python</TabTitle>
+ 
+ ```Python
+@@ -2603,7 +2624,7 @@
+             {
+                 "type": "image_url",
+                 "image_url": {
+-                    "url": "https://arkdocs.tos-cn-beijing.volces.com/images/video-generation/seedance2.5_muti_language_input.png"
++                    "url": "https://arkdocs.tos-cn-beijing.volces.com/images/video-generation/seedance2.5_multi_language_input.png"
+                 },
+                 "role": "reference_image",
+             },
+@@ -2611,6 +2632,7 @@
+         generate_audio=True,
+         ratio="16:9",
+         duration=20,
++        watermark=True,
+     )
+     print(create_result)
+ 
+@@ -2638,7 +2660,7 @@
+ 
+ 
+ </Tab>
+-<Tab zoneid="Lh03jwyBdv" title="Java">
++<Tab zoneid="B9flKu5pmc" title="Java">
+ <TabTitle>Java</TabTitle>
+ 
+ ```Java
+@@ -2674,7 +2696,7 @@
+         final String prompt = "电影级 hip-hop / 说唱音乐视频，真实照片级质感，高端调性，海边场景。以@图像1构建画面：一支乐队在金色沙滩、海浪拍岸的岸边表演 —— 一名主唱手握麦克风、麦架立于湿沙上激情演唱，一名吉他手立于画面左侧，一名吉他手立于画面右侧，一名鼓手坐在后方的架子鼓后敲击；辽阔的海岸线在身后展开，滚滚海浪层层涌来，巨大而温暖的黄金时刻夕阳斜掠过沙滩、在水面上粼粼闪耀，空气中漂浮着海雾与咸湿水汽。 红色运动服的主唱对着镜头充满节奏感地 RAP 演唱 —— 口型与下颌随每一个字精准对位，头随节拍用力点动，带动整段 flow。乐手们随节奏摇摆律动，身后海浪层层拍岸。这是一首明快带劲的说唱曲 —— 语速快、自信、节拍强劲。踩着节拍硬切（HARD CUT），每次切换双重反差（景别与镜头类型同时改变）。 歌词（主唱依次演唱以下每种语言的「你好」，精准对口型）： 英语：\"Hello\" 中文：\"你好\" 日语：\"こんにちは\" 韩语：\"안녕하세요\" 葡萄牙语：\"Olá\" 泰语：\"สวัสดี\" 西班牙语：\"Hola\" 阿拉伯语：\"مرحبا\" 镜头 1 [0:00–0:03] —— 低角度大远景定场，斯坦尼康在黄金夕照与海雾中缓缓推进，海浪在乐队身后翻涌。歌词第 1 句（英语「Hello」）。硬切。镜头 2 [0:03–0:05] —— 红运动服主唱对镜头 RAP 的特写，手持甩镜切入，身后海面虚焦粼粼波光。歌词第 2 句（中文「你好」）。硬切。镜头 3 [0:05–0:08] —— 微距插入镜头，固定机位，吉他手的手指在弦上快速拨动，沙粒与咸湿水雾从画面前掠过。歌词第 3 句（日语「こんにちは」）。硬切。镜头 4 [0:08–0:10] —— 对某位乐手的 3/4 侧中景，缓慢潜行环绕，乐器金属件与湿润高光映着海面低斜的夕阳。歌词第 4 句（韩语「안녕하세요」）。硬切。镜头 5 [0:10–0:13] —— 岸边一名乐手，快速横移轨道掠过他，他转向镜头，身后一道浪花破碎。歌词第 5 句（葡萄牙语「Olá」）。硬切。镜头 6 [0:13–0:15] —— 水边的鼓手，手持快速上摇，海风与水花吹动他的头发，他随节拍律动敲击。歌词第 6 句（泰语「สวัสดี」）。硬切。镜头 7 [0:15–0:18] —— 对红运动服主唱 flow 正酣时的紧凑猛推，富攻击性的手持，身后暮色海面衬着乐队剪影。歌词第 7 句（西班牙语「Hola」）。硬切。镜头 8 [0:18–0:20] —— 全乐队英雄式大远景，富攻击性的手持推进，主唱与乐手踩着节拍向镜头迈步，海浪拍碎、金色夕光在整支乐队身后炸开光晕。歌词第 8 句（阿拉伯语「مرحبا」）。 白平衡 4000K，青橙（teal-and-amber）调色，35mm，浅景深，胶片颗粒，弥漫的海雾，黄金时刻光晕。质感扎实、高级、高端。节奏感说唱表演，精准对口型，头随节拍点动。无字幕、无文字叠加、无叠化转场、无重复人物，仅用硬切。总时长 20 秒。";
+ 
+         // Example resource URLs
+-        final String refImage1 = "https://arkdocs.tos-cn-beijing.volces.com/images/video-generation/seedance2.5_muti_language_input.png";
++        final String refImage1 = "https://arkdocs.tos-cn-beijing.volces.com/images/video-generation/seedance2.5_multi_language_input.png";
+ 
+         // Output video parameters
+         final boolean generateAudio = true;
+@@ -2707,6 +2729,7 @@
+                 .content(contents)
+                 .ratio(videoRatio)
+                 .duration(videoDuration)
++                .watermark(true)
+                 .build();
+ 
+         CreateContentGenerationTaskResponse createResult = service.createContentGenerationTask(createRequest);
+@@ -2761,7 +2784,7 @@
+ 
+ 
+ </Tab>
+-<Tab zoneid="dLPp92eVNq" title="Go">
++<Tab zoneid="FpyrODSEta" title="Go">
+ <TabTitle>Go</TabTitle>
+ 
+ ```Go
+@@ -2793,7 +2816,7 @@
+     prompt := "电影级 hip-hop / 说唱音乐视频，真实照片级质感，高端调性，海边场景。以@图像1构建画面：一支乐队在金色沙滩、海浪拍岸的岸边表演 —— 一名主唱手握麦克风、麦架立于湿沙上激情演唱，一名吉他手立于画面左侧，一名吉他手立于画面右侧，一名鼓手坐在后方的架子鼓后敲击；辽阔的海岸线在身后展开，滚滚海浪层层涌来，巨大而温暖的黄金时刻夕阳斜掠过沙滩、在水面上粼粼闪耀，空气中漂浮着海雾与咸湿水汽。 红色运动服的主唱对着镜头充满节奏感地 RAP 演唱 —— 口型与下颌随每一个字精准对位，头随节拍用力点动，带动整段 flow。乐手们随节奏摇摆律动，身后海浪层层拍岸。这是一首明快带劲的说唱曲 —— 语速快、自信、节拍强劲。踩着节拍硬切（HARD CUT），每次切换双重反差（景别与镜头类型同时改变）。 歌词（主唱依次演唱以下每种语言的「你好」，精准对口型）： 英语：\"Hello\" 中文：\"你好\" 日语：\"こんにちは\" 韩语：\"안녕하세요\" 葡萄牙语：\"Olá\" 泰语：\"สวัสดี\" 西班牙语：\"Hola\" 阿拉伯语：\"مرحبا\" 镜头 1 [0:00–0:03] —— 低角度大远景定场，斯坦尼康在黄金夕照与海雾中缓缓推进，海浪在乐队身后翻涌。歌词第 1 句（英语「Hello」）。硬切。镜头 2 [0:03–0:05] —— 红运动服主唱对镜头 RAP 的特写，手持甩镜切入，身后海面虚焦粼粼波光。歌词第 2 句（中文「你好」）。硬切。镜头 3 [0:05–0:08] —— 微距插入镜头，固定机位，吉他手的手指在弦上快速拨动，沙粒与咸湿水雾从画面前掠过。歌词第 3 句（日语「こんにちは」）。硬切。镜头 4 [0:08–0:10] —— 对某位乐手的 3/4 侧中景，缓慢潜行环绕，乐器金属件与湿润高光映着海面低斜的夕阳。歌词第 4 句（韩语「안녕하세요」）。硬切。镜头 5 [0:10–0:13] —— 岸边一名乐手，快速横移轨道掠过他，他转向镜头，身后一道浪花破碎。歌词第 5 句（葡萄牙语「Olá」）。硬切。镜头 6 [0:13–0:15] —— 水边的鼓手，手持快速上摇，海风与水花吹动他的头发，他随节拍律动敲击。歌词第 6 句（泰语「สวัสดี」）。硬切。镜头 7 [0:15–0:18] —— 对红运动服主唱 flow 正酣时的紧凑猛推，富攻击性的手持，身后暮色海面衬着乐队剪影。歌词第 7 句（西班牙语「Hola」）。硬切。镜头 8 [0:18–0:20] —— 全乐队英雄式大远景，富攻击性的手持推进，主唱与乐手踩着节拍向镜头迈步，海浪拍碎、金色夕光在整支乐队身后炸开光晕。歌词第 8 句（阿拉伯语「مرحبا」）。 白平衡 4000K，青橙（teal-and-amber）调色，35mm，浅景深，胶片颗粒，弥漫的海雾，黄金时刻光晕。质感扎实、高级、高端。节奏感说唱表演，精准对口型，头随节拍点动。无字幕、无文字叠加、无叠化转场、无重复人物，仅用硬切。总时长 20 秒。"
+ 
+     // Example resource URLs
+-    refImage1 := "https://arkdocs.tos-cn-beijing.volces.com/images/video-generation/seedance2.5_muti_language_input.png"
++    refImage1 := "https://arkdocs.tos-cn-beijing.volces.com/images/video-generation/seedance2.5_multi_language_input.png"
+ 
+     // Output video parameters
+     generateAudio := true
+@@ -2820,6 +2843,7 @@
+                 Role: model.NewOptString("reference_image"),
+             },
+         },
++        Watermark:     model.NewOptBool(true),
+     }
+ 
+     createResp, err := client.CreateContentGenerationTask(ctx, createReq)
+@@ -2915,7 +2939,7 @@
+ 
+ 
+ <Tabs>
+-<Tab zoneid="VVR1Nb4EE5" title="Curl">
++<Tab zoneid="BquwuEJEwm" title="Curl">
+ <TabTitle>Curl</TabTitle>
+ 
+ 1. 创建 Draft 视频生成任务。
+@@ -2937,7 +2961,7 @@
+       {
+         "type": "image_url",
+         "image_url": {
+-          "url": "https://ark-project.tos-cn-beijing.volces.com/doc_image/i2v_foxrgirl.png"
++          "url": "https://arkdocs.tos-cn-beijing.volces.com/images/video-generation/i2v_foxrgirl.png"
+         }
+       }
+     ],
+@@ -2946,7 +2970,8 @@
+     "resolution": "480p",
+     "output_format": "mov",
+     "service_tier": "default",
+-    "draft": true
++    "draft": true,
++    "watermark": true
+   }'
+ ```
+ 
+@@ -3005,14 +3030,14 @@
+ <span aceTableMode="list" aceTableWidth="1,3,3"></span>
+ |类型 |参数 |规则 |
+ |---|---|---|
+-|取值固定参数 |* 模型 ID（`model`）<br><br>* 样片模式（`draft`）<br><br>* 分辨率（`resolution`） |* `model` 必须与创建 Draft 任务时使用的一致。<br><br>* `draft` 可不传入或设置为 `false`。<br><br>* `resolution` 默认且仅支持设置为 `1080p`。 |
++|取值固定参数 |* 模型 ID（`model`）<br><br>* 样片模式（`draft`）<br><br>* 分辨率（`resolution`） |* `model` 必须与创建 Draft 任务时使用的一致。<br><br>* `draft` 可不传入或设置为 `false`。<br><br>* `resolution` 必须传入，仅支持设置为 `1080p`。 |
+ |自动复用参数 |* 提示词（`content.text`）<br><br>* 参考图片/视频/音频（`content.image_url`、`content.video_url`、`content.audio_url`）<br><br>* 时长（`duration`）<br><br>* 宽高比（`ratio`）<br><br>* 随机种子数（`seed`）<br><br>* 是否生成有声视频（`generate_audio`）<br><br>* 任务类型（`omni_reference_task_type`） |* 模型自动复用创建 Draft 任务时使用的参数取值。<br><br>* **禁止传入。即使传入值与 Draft 阶段使用的一致，也会触发报错**。 |
+ |可重新指定参数 |* 返回尾帧（`return_last_frame`）<br><br>* 输出格式（`output_format`）<br><br>* 水印（`watermark`）<br><br>* 服务等级（`service_tier`）<br><br>* 任务超时阈值（`execution_expires_after`）<br><br>* 执行优先级（`priority`）<br><br>* 回调地址（`callback_url`）<br><br>* 用户标识（`safety_identifier`） |* 不传入时，自动使用模型默认值，不会沿用 Draft 视频的实际取值。<br><br>* 参数取值需满足 Seedance 2.5 模型对应的限制，详见 [创建视频生成任务 API](https://ark.volcengine.com/region:cn-beijing/docs/ark/create-video-generation-task-api)。 |
+ 
+ 
+ 
+ <Tabs>
+-<Tab zoneid="mfKvgXH3XC" title="Curl">
++<Tab zoneid="kVkIYfWfmN" title="Curl">
+ <TabTitle>Curl</TabTitle>
+ 
+ 1. 基于 `content.draft_task.id` 创建视频生成任务。
+@@ -3032,7 +3057,8 @@
+          }
+        ],
+        "resolution": "1080p",
+-       "output_format": "mov"
++       "output_format": "mov",
++       "watermark": true
+      }'
+    ```
+ 
