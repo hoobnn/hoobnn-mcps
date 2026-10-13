@@ -2,6 +2,8 @@
 
 Independent MiniMax stdio server, distributed as `hoobnn-minimax-mcp`, not the official `minimax-mcp`. See [Chinese documentation](README.md) for the complete contract and migration notes.
 
+`0.2.0` renames `enhance_video_prompt` to `create_h3_context_ir_task`, matching the official "create H3-Context-IR task" API; the old name has no alias. This is a breaking change.
+
 Install from PyPI with `uv tool install hoobnn-minimax-mcp` (or from this checkout with `uv tool install ./servers/minimax`). Point your MCP client at the absolute path of `~/.local/bin/hoobnn-minimax-mcp`, without arguments, then restart the client.
 
 Set `MINIMAX_API_KEY` and optionally `MINIMAX_API_HOST` (default `https://api.minimax.cn`; existing `api.minimaxi.com` and international `api.minimax.io` hosts are supported). Existing `MINIMAX_MCP_BASE_PATH` and `MINIMAX_API_RESOURCE_MODE` are accepted. New names are `MINIMAX_OUT_DIR` and `MINIMAX_RESOURCE_MODE` (local/url; default local). `MINIMAX_JOB_DIR` controls durable records, default `~/.local/share/hoobnn-minimax-mcp/jobs`. Records contain input references, prompts and temporary URLs, never API keys. Requires macOS/Linux for POSIX locks.

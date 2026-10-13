@@ -12,6 +12,8 @@
 
 </div>
 
+`0.6.0` 适配官方 2026-10-10 模型下线：`clone_voice` / `design_voice` 改用 `voice-enrollment`，默认目标模型 `qwen-audio-3.0-tts-flash`，复刻只接受公网 URL；`text_to_speech` 新增 Qwen-Audio-TTS / CosyVoice 与 `instructions` 语气控制；`rerank` 统一走原生接口；`speech_to_text` 拒绝已下线的日期快照。旧的 qwen3-tts-vc/vd 音色已随模型下线，不能继续使用。
+
 `0.5.0` 去掉 `query_video`：视频进度统一用 `get_job` 查询，完成时自动下载；生成类工具和 `chat`、`text_to_speech`、`speech_to_text` 新增 `parameters`。这是不兼容变更。
 
 | 工具 | 作用 | 默认模型 |
