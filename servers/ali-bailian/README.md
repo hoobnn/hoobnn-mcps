@@ -64,7 +64,7 @@ uv tool install ali-bailian-mcp
 
 参数说明见工具描述（`src/ali_bailian_mcp/server.py`），接口细节以百炼的[文生图](https://help.aliyun.com/zh/model-studio/text-to-image)、[OpenAI 兼容接口](https://help.aliyun.com/zh/model-studio/compatibility-of-openai-with-dashscope)、[千问 TTS](https://help.aliyun.com/zh/model-studio/qwen-tts-api)、[Qwen-Audio-TTS](https://help.aliyun.com/zh/model-studio/qwen-audio-tts-http-api)、[CosyVoice](https://help.aliyun.com/zh/model-studio/cosyvoice-tts-http-api)、[千问 ASR](https://help.aliyun.com/zh/model-studio/qwen-asr-api-reference) 和[万相 3.0 视频](https://help.aliyun.com/zh/model-studio/wan3-video-generation-api-reference)文档为准。
 
-## 0.3 新增接入（待云端验证）
+## 0.3 新增接入
 
 | 工具 | 能力 | 官方契约 |
 |---|---|---|
@@ -121,7 +121,7 @@ HappyHorse 编辑输入视频 3–60 秒，输出最多 15 秒。数字人音频
 
 任务记录保留签名 URL、生成响应及 TTS 文本；不保存 API Key。`url` 模式也写任务记录，音色试听若只有内联数据会保存本地文件。分段文件和响应缓存是恢复所需资产，不自动清理。恢复锁使用 POSIX `flock`，面向 macOS / Linux。
 
-已通过离线故障测试与真实 stdio 检查；未发起云端付费生成，新增产品仍待云端验证。历史接入范围见 [接入记录](https://github.com/hoobnn/hoobnn-mcps/blob/main/docs/mcp-expansion.md)，本轮验证见 [稳定性记录](https://github.com/hoobnn/hoobnn-mcps/blob/main/docs/mcp-reliability.md)。
+已通过离线故障测试与真实 stdio 检查；2026-10-13 用北京地域账号对全部工具做了小样本云端验证（结果见稳定性记录）。历史接入范围见 [接入记录](https://github.com/hoobnn/hoobnn-mcps/blob/main/docs/mcp-expansion.md)，本轮验证见 [稳定性记录](https://github.com/hoobnn/hoobnn-mcps/blob/main/docs/mcp-reliability.md)。
 
 产物的 `media_info` 读取 PNG 头中的实际宽高；若系统已有 `ffprobe`，可读取其他媒体的实际尺寸、时长和音轨信息。不可读取时显式返回 `available=false`，不把请求参数当作实际输出规格。无需新增 Python 依赖。
 

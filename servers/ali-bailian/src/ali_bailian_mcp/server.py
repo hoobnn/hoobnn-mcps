@@ -322,7 +322,7 @@ def edit_video(video: str, prompt: str, reference_images: list[str] | None = Non
     """HappyHorse视频指令编辑：修改风格/元素，video为本地文件或公开URL，reference_images最多5张本地图片/URL。
     输入视频3–60秒，输出最多15秒，超15秒只取前15秒；详细文件限制见官方接口。
     resolution=720P/1080P；audio_setting=origin保留原音轨、auto由模型决定。
-    parameters合并进官方parameters对象。异步计费任务，wait=0默认只提交，最多90秒；之后用get_job查进度，返回task_id/job_id。尚未完成云端验证。
+    parameters合并进官方parameters对象。异步计费任务，wait=0默认只提交，最多90秒；之后用get_job查进度，返回task_id/job_id。
     """
     return products.edit_video(video, prompt, reference_images or [], resolution, audio_setting,
                                watermark, seed, target_dir(out_dir), wait, MODE, parameters)
@@ -334,7 +334,7 @@ def animate_portrait(image: str, audio: str, resolution: str = "480P", wait: int
     """wan2.2-s2v数字人对口型：图片+人声驱动人物口型、表情、动作。输入本地文件或公开URL。
     图片jpg/png/webp等，音频wav/mp3，音频须小于15MB且小于20秒；resolution=480P/720P。
     本地素材上传百炼临时存储。parameters合并进官方parameters对象。按输出秒数计费；wait=0默认只提交，最多90秒，之后用get_job查进度。
-    返回task_id/job_id。北京地域能力，尚未完成云端验证。
+    返回task_id/job_id。北京地域能力。
     """
     return products.animate_portrait(image, audio, resolution, target_dir(out_dir), wait, MODE, parameters)
 
@@ -345,7 +345,7 @@ def embed(model: str = "text-embedding-v4", texts: list[str] | None = None, cont
     """百炼文本/多模态向量化。texts为文本列表；contents用[{"text":"猫"},{"image":"/absolute/cat.png"}]等官方结构。方舟 Doubao 向量模型用 volcengine-ark 的 embed。
     必须且只能选一项。多模态请显式指定model=qwen3-vl-embedding等；图片支持本地路径，视频需公开URL。
     dimensions设置维度；parameters透传模型支持的参数，如enable_fusion。返回向量、usage；include_response=true可取完整response。
-    按输入计费，不自动建索引或知识库。尚未完成云端验证。
+    按输入计费，不自动建索引或知识库。
     """
     return products.embed(model, texts, contents, dimensions, parameters)
 
@@ -355,7 +355,7 @@ def rerank(query: str, documents: list[str], model: str = "qwen3.7-text-rerank",
            top_n: int | None = None, return_documents: bool = False) -> dict:
     """对候选文档按与query的相关性排序，返回原索引和relevance_score；top_n控制数量，return_documents返回原文。
     所有模型（含qwen3-rerank）统一走原生text-rerank接口。
-    分数用于本次请求内比较。按输入计费，模型及地域权限以服务端为准；尚未完成云端验证。
+    分数用于本次请求内比较。按输入计费，模型及地域权限以服务端为准。
     """
     return products.rerank(query, documents, model, top_n, return_documents)
 
@@ -388,8 +388,8 @@ def recover_job(job_id: str, wait: int = 0) -> dict:
 
 @mcp.tool()
 def list_capabilities() -> dict:
-    """列出百炼MCP工具和官方来源，不联网，不代表账号权限；新增能力未完成云端验证。"""
-    return {"ok": True, "account_verified": False, "validation": "offline_only",
+    """列出百炼MCP工具和官方来源，不联网，不代表账号权限；各工具已于2026-10-13用北京地域账号做过小样本云端验证。"""
+    return {"ok": True, "account_verified": False, "validation": "cloud_sampled", "validated_on": "2026-10-13",
             "tools": {"image": ["generate_image"], "language": ["chat", "list_models"],
                       "speech": ["text_to_speech", "speech_to_text"],
                       "voice": ["clone_voice", "design_voice", "list_voices", "get_voice"],
@@ -400,7 +400,7 @@ def list_capabilities() -> dict:
                        "TTS支持非实时qwen3-tts-flash（multimodal-generation）及Qwen-Audio-TTS/CosyVoice（SpeechSynthesizer，支持instruction）；实时/WebSocket模型尚未接入",
                        "Qwen-Audio-TTS/CosyVoice与voice-enrollment官方仅北京地域完整支持；本地按250字分段，官方未写单次文本上限",
                        "speech_to_text只放行qwen3-asr-flash，已下线日期快照本地拒绝", "恢复锁使用POSIX flock，面向macOS/Linux",
-                       "地域、服务开通及实际输出规格尚需后续测试"]}
+                       "云端验证只覆盖北京地域小样本；其他地域与服务开通状态以账号为准"]}
 
 
 def main():

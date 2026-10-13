@@ -114,3 +114,30 @@ servers/doubao-speech/.venv/bin/python scripts/measure_tools.py doubao-speech --
 覆盖 TCP 连接复用、GET 重试与 POST 不重放、慢流总超时、在途取消、gzip/重定向、multipart、真实 worker 上限、错误/schema/progress、任务并发恢复/损坏/SHA、SSE 断流、已付费音频保留和实时会话资源回收。三个实际安装入口完成初始化、发现、调用和正常退出。
 
 这些证据确认本地契约和故障处理，不证明新增云产品已经可用。尚未验证真实账户权限、提供商限流/计费、长任务端到端恢复和云端 p50/p95 延迟。远端检查状态见 [MCP offline contracts](https://github.com/hoobnn/hoobnn-mcps/actions/workflows/test.yml)。下一轮云端验证应按产品选小样本，记录提交/查询/下载耗时与 task_id，在断网和进程重启后检查恢复，并以实际账单确认没有重复生成。
+
+## 云端小样本验证（2026-10-13）
+
+用本机已安装的 `volcengine-ark-mcp 0.6.0`（代码同 0.6.1）、`ali-bailian-mcp 0.6.0`、`doubao-speech-mcp 0.4.1`、`hoobnn-minimax-mcp 0.2.0`，通过 MCP 工具直接调用真实账号（百炼北京地域）。每项一次最小样本，并人工抽查画面和识别回文。
+
+| Server | 工具 / 模型 | 结果 | 备注 |
+|---|---|---|---|
+| ali-bailian | `chat`（qwen3.8-max） | 通过 | |
+| ali-bailian | `embed`（text-embedding-v4 文本、qwen3-vl-embedding 文本+本地图片） | 通过 | `dimensions` 生效 |
+| ali-bailian | `rerank`（qwen3.7-text-rerank） | 通过 | 排序合理 |
+| ali-bailian | `generate_image`（qwen-image-3.0-pro、z-image-turbo） | 通过 | |
+| ali-bailian | `generate_video`（wan3.0，3 秒 480P） | 通过 | 提交到交付约 75 秒，854×480 / 3.0 秒 |
+| ali-bailian | `edit_video`（happyhorse-1.0-video-edit） | 通过 | 约 2 分钟，1280×718，风格替换正确 |
+| ali-bailian | `animate_portrait`（wan2.2-s2v，480P） | 通过 | 输出时长与 7.3 秒输入音频一致，口型有动作 |
+| ali-bailian | `text_to_speech`（qwen3-tts-flash；qwen-audio-3.0-tts-flash + 自定义音色 + instructions） | 通过 | |
+| ali-bailian | `speech_to_text`（qwen3-asr-flash） | 通过 | 回文与合成原文一致，返回 language/emotion |
+| ali-bailian | `design_voice` / `clone_voice` / `get_voice` / `list_voices` | 通过 | 复刻用 TTS 结果的 OSS 签名 URL，约 6 秒从 DEPLOYING 变为 OK，随后合成成功 |
+| ali-bailian | `recover_job`（删除已交付图片后补交付） | 通过 | SHA-256 与 request_id 不变，未重新生成 |
+| volcengine-ark | `generate_image`（Seedream 5.0 lite、5.0 pro） | 通过 | 2048×2048 |
+| volcengine-ark | `recover_job`（删除已交付图片后补交付） | 通过 | 从任务目录缓存恢复，SHA-256 不变 |
+| volcengine-ark | `chat`（seed-2.1-pro 260628/260915）、`embed`（embedding-vision-251215） | 账号未开通 | HTTP 403 AccessDenied |
+| volcengine-ark | `generate_video`（Seedance 2.5、2.0 mini） | 账号未开通 | HTTP 404 ModelNotOpen；1.5 pro 返回 ClosedEndpoint |
+| doubao-speech | `text_to_speech`（seed-tts-2.0） | 通过 | |
+| doubao-speech | `speech_to_text`（flash，volc.bigasr.auc_turbo） | 账号未开通 | HTTP 403 45000030 requested resource not granted |
+| minimax | `text_to_audio`（speech-2.8-hd）、`list_voices` | 通过 | |
+
+失败项都是账号权限，工具如实返回服务端错误和 request id，未把失败当作成功，也没有自动重试付费请求。未覆盖：方舟对话、搜索、向量和 Seedance（需在方舟控制台开通对应模型）；豆包录音文件识别（需开通资源）；断网/进程重启中途的恢复；p50/p95 延迟。
