@@ -1,6 +1,6 @@
 {
   "format_version": 1,
-  "reviewed_at": "2026-10-13T09:34:45.719577+00:00",
+  "reviewed_at": "2026-10-14T07:49:06.949007+00:00",
   "sources": [
     {
       "key": "ali-bailian/bailian-asr",
@@ -380,16 +380,14 @@
         "edit_video",
         "get_job"
       ],
-      "sha256": "43ddd3cd6f26cb094b99912952b18ac85e480d1b90af7622bbc50bf6b9dca25d",
-      "bytes": 22369,
+      "sha256": "d0bae159341fe14536cfe83a348b5edb0bfe8bfcae754642e04f318ae363deeb",
+      "bytes": 23125,
       "models": [
         "HappyHorse",
         "HappyHorse-",
         "happyhorse-1.0-video-edit"
       ],
       "endpoints": [
-        "https://dashscope-us.aliyuncs.com/api/v1/services/aigc/video-generation/video-synthesis",
-        "https://dashscope-us.aliyuncs.com/api/v1/tasks/{task_id}",
         "https://{WorkspaceId}.ap-northeast-1.maas.aliyuncs.com/api/v1/services/aigc/video-generation/video-synthesis",
         "https://{WorkspaceId}.ap-northeast-1.maas.aliyuncs.com/api/v1/tasks/{task_id}",
         "https://{WorkspaceId}.ap-southeast-1.maas.aliyuncs.com/api/v1/services/aigc/video-generation/video-synthesis",
@@ -397,7 +395,9 @@
         "https://{WorkspaceId}.cn-beijing.maas.aliyuncs.com/api/v1/services/aigc/video-generation/video-synthesis",
         "https://{WorkspaceId}.cn-beijing.maas.aliyuncs.com/api/v1/tasks/{task_id}",
         "https://{WorkspaceId}.eu-central-1.maas.aliyuncs.com/api/v1/services/aigc/video-generation/video-synthesis",
-        "https://{WorkspaceId}.eu-central-1.maas.aliyuncs.com/api/v1/tasks/{task_id}"
+        "https://{WorkspaceId}.eu-central-1.maas.aliyuncs.com/api/v1/tasks/{task_id}",
+        "https://{WorkspaceId}.us-east-1.maas.aliyuncs.com/api/v1/services/aigc/video-generation/video-synthesis",
+        "https://{WorkspaceId}.us-east-1.maas.aliyuncs.com/api/v1/tasks/{task_id}"
       ],
       "doc_links": [],
       "title": "HappyHorse-视频编辑API参考",
@@ -1998,8 +1998,8 @@
       "tools": [
         "design_voice"
       ],
-      "sha256": "b1964b0ee0c61142d66c9b56aefa02d637ecd8238a9334966d8a7e765a9876f6",
-      "bytes": 9379,
+      "sha256": "7dbf1a0279172b1b3af6b0e78d963217bb20dc8d4ca491e4d302041f422db252",
+      "bytes": 9396,
       "models": [
         "CosyVoice",
         "Qwen-Audio-TTS",
