@@ -1,6 +1,6 @@
 {
   "format_version": 1,
-  "reviewed_at": "2026-10-13T09:34:42.976384+00:00",
+  "reviewed_at": "2026-10-14T07:49:00.426464+00:00",
   "sources": [
     {
       "key": "volcengine-ark/ark-base-url-and-authentication",
@@ -48,8 +48,8 @@
       "tools": [
         "chat"
       ],
-      "sha256": "33c0da2eb1f4cd9f3641713c80453add80082cdcac65e65193a6266ba696520e",
-      "bytes": 63681,
+      "sha256": "c5dfa40185b1502a9c5a5339c930fb99f2b12ddb68970290ed4754e6414a2484",
+      "bytes": 63799,
       "models": [
         "doubao",
         "doubao-seed-2-0-lite-260215",
@@ -62,7 +62,7 @@
       ],
       "doc_links": [],
       "title": "对话(Chat) API",
-      "updated_at": "2026-10-09T10:00:27Z",
+      "updated_at": "2026-10-13T13:57:48Z",
       "document_id": "1494384",
       "headers": {
         "ETag": null,
@@ -80,8 +80,8 @@
       "tools": [
         "chat"
       ],
-      "sha256": "060145f2982f2fabbc93381ee23e736b395d10a7580de342864fd90a3109264e",
-      "bytes": 129950,
+      "sha256": "c5e6696147cb2f720d98f7b130574297395eef8432d99a93536cc9d751ed917f",
+      "bytes": 130068,
       "models": [
         "Doubao",
         "doubao",
@@ -97,7 +97,7 @@
         "https://www.volcengine.com/docs/84313/1419289#filter-%E8%A1%A8%E8%BE%BE%E5%BC%8F"
       ],
       "title": "创建 Response",
-      "updated_at": "2026-10-09T06:36:34Z",
+      "updated_at": "2026-10-13T13:57:48Z",
       "document_id": "1569618",
       "headers": {
         "ETag": null,
@@ -143,8 +143,8 @@
       "fetch_url": "https://www.volcengine.com/api/doc/getDocList?LibraryCode=ark",
       "kind": "guide",
       "tools": [],
-      "sha256": "92cc3c97346600744840a75fd1bb19b06ba77437bb2b2efe2a89ca011eb86ea1",
-      "bytes": 149358,
+      "sha256": "34e6798d19d5abf2bd31fc350df0df491206a0ddd0920e6147739fd11f5e23e5",
+      "bytes": 149540,
       "models": [
         "Doubao",
         "Seedance",
@@ -159,7 +159,6 @@
         "doubao-work",
         "seedance",
         "seedance-1-0-pro-pro-fast",
-        "seedance-1-5-pro",
         "seedance-2-0",
         "seedance-2-0-model-resource-pack-rules",
         "seedance-2-0-prompt-guide",
@@ -177,7 +176,7 @@
       "endpoints": [],
       "doc_links": [],
       "title": "ark-document-index",
-      "documents": 825,
+      "documents": 826,
       "document_codes": [
         "2024-announcements",
         "2025-announcements",
@@ -600,6 +599,8 @@
         "get-evaluation-result-api",
         "get-foundation-model-api",
         "get-foundation-model-version-api",
+        "get-inference-request-usage-api",
+        "get-inference-task-usage-api",
         "get-inference-usage-api",
         "get-memory-api",
         "get-memory-store-api",
@@ -865,7 +866,6 @@
         "seed-prover-api",
         "seed3d-api",
         "seedance-1-0-pro-pro-fast",
-        "seedance-1-5-pro",
         "seedance-2-0",
         "seedance-2-0-model-resource-pack-rules",
         "seedance-2-0-prompt-guide",
@@ -1053,8 +1053,8 @@
         "generate_image",
         "recover_job"
       ],
-      "sha256": "85311ced3a14239a5cc619ef5847490118f5eef075df551f95169e8d1af133a4",
-      "bytes": 35175,
+      "sha256": "7fb8038e10dd8e865bc062074050d02ec5699f7e19786671b9f9e7331873719a",
+      "bytes": 35169,
       "models": [
         "Doubao",
         "Seedream"
@@ -1066,7 +1066,7 @@
         "https://docs.volcengine.com/docs/TorchObjectStorage/Datasubscription-5?lang=zh"
       ],
       "title": "图片生成 API",
-      "updated_at": "2026-10-10T14:39:45Z",
+      "updated_at": "2026-10-14T07:35:19Z",
       "document_id": "1541523",
       "headers": {
         "ETag": null,
@@ -1420,8 +1420,8 @@
       "tools": [
         "chat"
       ],
-      "sha256": "a7f1ce8c35f763da8a12c746da84d682af9efda6c992e7d86b60d8f823e29bf7",
-      "bytes": 27467,
+      "sha256": "f6fc3357390d9d5793454e4e22f4a7b9e219c07d47ea4951478493e615d82397",
+      "bytes": 27817,
       "models": [
         "doubao",
         "doubao-seed-2-1-pro-260915"
@@ -1435,7 +1435,7 @@
         "https://docs.volcengine.com/docs/87772/2272951?lang=zh#yQ0Kqmsy"
       ],
       "title": "联网搜索工具",
-      "updated_at": "2026-10-09T06:36:34Z",
+      "updated_at": "2026-10-14T07:16:41Z",
       "document_id": "1756990",
       "headers": {
         "ETag": null,

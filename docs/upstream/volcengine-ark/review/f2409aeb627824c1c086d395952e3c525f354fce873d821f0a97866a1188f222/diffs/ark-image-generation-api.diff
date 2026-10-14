@@ -1,0 +1,19 @@
+--- reviewed/volcengine-ark/ark-image-generation-api
++++ current/volcengine-ark/ark-image-generation-api
+@@ -589,14 +589,14 @@
+ * `opaque`：不透明背景模式，生成常规的实体背景图。
+ 
+ 
+-<div data-tips="true" data-tips-type="warning" data-tips-is-title="true">使用限制</div>
++<div data-tips="true" data-tips-type="warning" data-tips-is-title="true">透明背景模式使用要求</div>
+ 
+ 
+ 
+ * <div data-tips="true" data-tips-type="warning">仅支持图生图场景，且只支持输入 <strong>1 张带透明通道</strong>的图片；</div>
+ 
+ 
+-* <div data-tips="true" data-tips-type="warning">透明背景模式下，输出图片默认为 <code>png</code> 格式，若同时配置 <code>output_format</code> 为 <code>jpeg</code>，将触发报错；</div>
++* <div data-tips="true" data-tips-type="warning">输出图片默认为 <code>png</code> 格式，若同时配置 <code>output_format</code> 为 <code>jpeg</code>，将触发报错；</div>
+ 
+ 
+ * <div data-tips="true" data-tips-type="warning">若传入了不支持透明通道的文件格式（如 <code>jpeg</code>），将触发报错。</div>

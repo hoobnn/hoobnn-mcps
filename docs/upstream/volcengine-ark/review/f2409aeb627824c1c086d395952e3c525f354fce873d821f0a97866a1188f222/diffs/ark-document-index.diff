@@ -1,0 +1,37 @@
+--- reviewed/volcengine-ark/ark-document-index
++++ current/volcengine-ark/ark-document-index
+@@ -2947,6 +2947,20 @@
+     "Status": 2
+   },
+   {
++    "DocumentCode": "get-inference-request-usage-api",
++    "DocumentID": 2712980,
++    "Title": "查询单请求用量",
++    "ParentCode": "Checkusage",
++    "Status": 2
++  },
++  {
++    "DocumentCode": "get-inference-task-usage-api",
++    "DocumentID": 2712981,
++    "Title": "查询异步任务用量",
++    "ParentCode": "Checkusage",
++    "Status": 2
++  },
++  {
+     "DocumentCode": "get-inference-usage-api",
+     "DocumentID": 2116766,
+     "Title": "查询推理用量",
+@@ -4802,13 +4816,6 @@
+     "Status": 2
+   },
+   {
+-    "DocumentCode": "seedance-1-5-pro",
+-    "DocumentID": 2168087,
+-    "Title": "Seedance 1.5 pro 提示词指南",
+-    "ParentCode": "tutorials",
+-    "Status": 2
+-  },
+-  {
+     "DocumentCode": "seedance-2-0",
+     "DocumentID": 2291680,
+     "Title": "Doubao Seedance 2.0 系列教程",
