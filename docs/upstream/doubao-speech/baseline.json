@@ -1,6 +1,6 @@
 {
   "format_version": 1,
-  "reviewed_at": "2026-10-13T14:35:17.347380+00:00",
+  "reviewed_at": "2026-10-14T07:49:18.317055+00:00",
   "sources": [
     {
       "key": "doubao-speech/doubao-access-mustread",
@@ -1858,7 +1858,7 @@
         "https://www.volcengine.com/docs/6561/2534847?lang=zh"
       ],
       "title": "任务提交",
-      "updated_at": "2026-09-28T11:41:14Z",
+      "updated_at": "2026-10-14T06:15:23Z",
       "document_id": "2608618",
       "headers": {
         "ETag": null,
@@ -2315,7 +2315,7 @@
         "get_speech_usage_examples",
         "list_speech_capabilities"
       ],
-      "sha256": "b2c10829a4289c9b10226627d2ffdf67ba66d40ca9e557c79bcf49677cfa35e8",
+      "sha256": "17d76312c2d91269ff99cfcaa6b157ac0ee1ba488c350cb0b7b8648e560b944b",
       "bytes": 44917,
       "models": [
         "DoubaoFoundationModelSpeechEntrepreneurAccelerationProgram-CustomerNotice",
