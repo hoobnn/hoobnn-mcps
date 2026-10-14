@@ -1,0 +1,11 @@
+--- reviewed/ali-bailian/bailian-voice-design-guide
++++ current/ali-bailian/bailian-voice-design-guide
+@@ -3,6 +3,8 @@
+ > 通过自然语言描述创建自定义音色，试听预览后用于语音合成。
+ 
+ <meta property="og:title" content="声音设计" />
++
++## 功能介绍
+ 
+ 声音设计适用于快速原型验证、创意内容生产、游戏角色配音等场景。 <span id="vd00_overview_h2" /> <span id="vd05_faq_h2" /> <span id="vd05_q3_h3" />
+ 
