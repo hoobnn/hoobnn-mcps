@@ -1,0 +1,38 @@
+--- reviewed/minimax/music-generation
++++ current/minimax/music-generation
+@@ -2,11 +2,11 @@
+ 
+ > 使用本接口，输入歌词和歌曲描述，进行歌曲生成。
+ 
+-<Note title="Music API 服务调整通知">
+-  自 2026 年 8 月 20 日起，付费接口（音乐生成、歌词生成）不再面向新用户提供服务，历史付费用户可继续使用现有 API 服务；免费音乐生成接口（Music-3.0-free、Music-2.6-free、music-cover-free）停止服务。
+-
+-  如需体验或使用音乐生成能力，可前往 [MiniMax Audio](https://www.minimax.cn/audio)，或使用已发布在 [Hugging Face](https://huggingface.co/MiniMaxAI/MiniMax-Music3) 和 [魔搭 ModelScope](https://modelscope.cn/models/MiniMax/MiniMax-Music3) 的 MiniMax Music 3 开源模型。
+-</Note>
++> [!NOTE]
++>
++> 自 2026 年 8 月 20 日起，付费接口（音乐生成、歌词生成）不再面向新用户提供服务，历史付费用户可继续使用现有 API 服务；免费音乐生成接口（Music-3.0-free、Music-2.6-free、music-cover-free）停止服务。
++>
++> 如需体验或使用音乐生成能力，可前往 [MiniMax Audio](https://www.minimax.cn/audio)，或使用已发布在 [Hugging Face](https://huggingface.co/MiniMaxAI/MiniMax-Music3) 和 [魔搭 ModelScope](https://modelscope.cn/models/MiniMax/MiniMax-Music3) 的 MiniMax Music 3 开源模型。
+ 
+ 
+ ## OpenAPI
+@@ -67,12 +67,12 @@
+           description: |-
+             使用的模型名称。可选值：
+ 
+-            - `music-3.0`（推荐）：文本生成音乐，仅限 M Plan 用户和付费用户使用，RPM 为 120
+-            - `music-2.6`：上一代文本生成音乐模型，仅限 M Plan 用户和付费用户使用，RPM 为 120
+-            - `music-cover`：基于参考音频生成翻唱版本，仅限 M Plan 用户和付费用户使用，RPM 为 120
+-            - `music-3.0-free`：`music-3.0` 的限免版本，所有用户可通过 API Key 使用，RPM 为 3
+-            - `music-2.6-free`：`music-2.6` 的限免版本，所有用户可通过 API Key 使用，RPM 为 3
+-            - `music-cover-free`：`music-cover` 的限免版本，所有用户可通过 API Key 使用，RPM 为 3
++            - `music-3.0`（推荐）：文本生成音乐，RPM 为 120
++            - `music-2.6`：上一代文本生成音乐模型，RPM 为 120
++            - `music-cover`：基于参考音频生成翻唱版本，RPM 为 120
++            - `music-3.0-free`：`music-3.0` 的限免版本，RPM 为 3
++            - `music-2.6-free`：`music-2.6` 的限免版本，RPM 为 3
++            - `music-cover-free`：`music-cover` 的限免版本，RPM 为 3
+           enum:
+             - music-3.0
+             - music-2.6

@@ -1,6 +1,6 @@
 {
   "format_version": 1,
-  "reviewed_at": "2026-10-14T07:49:02.359753+00:00",
+  "reviewed_at": "2026-10-23T06:46:26.532708+00:00",
   "sources": [
     {
       "key": "minimax/file-management-upload",
@@ -26,7 +26,7 @@
       "title": "文件上传",
       "headers": {
         "ETag": null,
-        "Last-Modified": "Wed, 14 Oct 2026 07:48:58 GMT",
+        "Last-Modified": "Fri, 23 Oct 2026 06:46:25 GMT",
         "Content-Type": "text/markdown; charset=utf-8"
       }
     },
@@ -53,7 +53,7 @@
       "title": "图生图",
       "headers": {
         "ETag": null,
-        "Last-Modified": "Wed, 14 Oct 2026 07:49:01 GMT",
+        "Last-Modified": "Fri, 23 Oct 2026 06:46:26 GMT",
         "Content-Type": "text/markdown; charset=utf-8"
       }
     },
@@ -80,7 +80,7 @@
       "title": "文生图",
       "headers": {
         "ETag": null,
-        "Last-Modified": "Wed, 14 Oct 2026 07:49:01 GMT",
+        "Last-Modified": "Fri, 23 Oct 2026 06:46:26 GMT",
         "Content-Type": "text/markdown; charset=utf-8"
       }
     },
@@ -94,8 +94,8 @@
       "tools": [
         "music_generation"
       ],
-      "sha256": "90397823cfe88b53e99f52815889e1e4d69a5eeac4af429c0d390477b37a1f3b",
-      "bytes": 10788,
+      "sha256": "c1f7e1b383d03d7f3845daee27a0198449b0c48c98abd78f13e4740e5d657ed6",
+      "bytes": 10500,
       "models": [
         "Music-2.6-free",
         "Music-3.0-free",
@@ -114,7 +114,7 @@
       "title": "音乐生成 (Music Generation)",
       "headers": {
         "ETag": null,
-        "Last-Modified": "Wed, 14 Oct 2026 07:49:02 GMT",
+        "Last-Modified": "Fri, 23 Oct 2026 06:46:26 GMT",
         "Content-Type": "text/markdown; charset=utf-8"
       }
     },
@@ -129,8 +129,8 @@
         "recover_job",
         "text_to_audio"
       ],
-      "sha256": "c8c42eb076aae5585a394c269a81e852d21637056e63658bb222a5100e1c6e6f",
-      "bytes": 31250,
+      "sha256": "9734ac005d52d92386cd5bced89b5a247c84a342c9c17b62f5c418455dd49efb",
+      "bytes": 31253,
       "models": [
         "speech-2.6-hd",
         "speech-2.6-turbo",
@@ -144,7 +144,7 @@
       "title": "同步语音合成",
       "headers": {
         "ETag": null,
-        "Last-Modified": "Wed, 14 Oct 2026 07:49:00 GMT",
+        "Last-Modified": "Fri, 23 Oct 2026 06:46:25 GMT",
         "Content-Type": "text/markdown; charset=utf-8"
       }
     },
@@ -172,7 +172,7 @@
       "title": "创建视频生成任务",
       "headers": {
         "ETag": null,
-        "Last-Modified": "Wed, 14 Oct 2026 07:48:56 GMT",
+        "Last-Modified": "Fri, 23 Oct 2026 06:46:24 GMT",
         "Content-Type": "text/markdown; charset=utf-8"
       }
     },
@@ -196,7 +196,7 @@
       "title": "取消或删除任务",
       "headers": {
         "ETag": null,
-        "Last-Modified": "Wed, 14 Oct 2026 07:48:56 GMT",
+        "Last-Modified": "Fri, 23 Oct 2026 06:46:24 GMT",
         "Content-Type": "text/markdown; charset=utf-8"
       }
     },
@@ -210,8 +210,8 @@
       "tools": [
         "create_h3_context_ir_task"
       ],
-      "sha256": "a20c9a288ee306b6cbb178c1298e493f3e0974b2aef54ce92560d84f9d580766",
-      "bytes": 21257,
+      "sha256": "29413c07bbb6f3921af79d2b250fa766c18e480f6007c877e71dd763b4b2dcdf",
+      "bytes": 21251,
       "models": [
         "MiniMax-H3"
       ],
@@ -222,7 +222,7 @@
       "title": "创建 H3-Context-IR 任务",
       "headers": {
         "ETag": null,
-        "Last-Modified": "Wed, 14 Oct 2026 07:48:58 GMT",
+        "Last-Modified": "Fri, 23 Oct 2026 06:46:25 GMT",
         "Content-Type": "text/markdown; charset=utf-8"
       }
     },
@@ -250,7 +250,7 @@
       "title": "查询任务列表",
       "headers": {
         "ETag": null,
-        "Last-Modified": "Wed, 14 Oct 2026 07:48:56 GMT",
+        "Last-Modified": "Fri, 23 Oct 2026 06:46:24 GMT",
         "Content-Type": "text/markdown; charset=utf-8"
       }
     },
@@ -278,7 +278,7 @@
       "title": "查询任务",
       "headers": {
         "ETag": null,
-        "Last-Modified": "Wed, 14 Oct 2026 07:48:56 GMT",
+        "Last-Modified": "Fri, 23 Oct 2026 06:46:24 GMT",
         "Content-Type": "text/markdown; charset=utf-8"
       }
     },
@@ -292,7 +292,7 @@
       "tools": [
         "regenerate_video"
       ],
-      "sha256": "ce2f53dd24a0a1aaf84f514f96abdbc82240a404a49f48a88e0dd0359617ebfb",
+      "sha256": "564363881edcced43cbc4837bb4f597d3a5b9c503ff98c096a55a29d81aed753",
       "bytes": 19811,
       "models": [
         "MiniMax-H3"
@@ -304,7 +304,7 @@
       "title": "创建视频再生成任务",
       "headers": {
         "ETag": null,
-        "Last-Modified": "Wed, 14 Oct 2026 07:48:58 GMT",
+        "Last-Modified": "Fri, 23 Oct 2026 06:46:25 GMT",
         "Content-Type": "text/markdown; charset=utf-8"
       }
     },
@@ -333,7 +333,7 @@
       "title": "音色快速复刻",
       "headers": {
         "ETag": null,
-        "Last-Modified": "Wed, 14 Oct 2026 07:49:00 GMT",
+        "Last-Modified": "Fri, 23 Oct 2026 06:46:25 GMT",
         "Content-Type": "text/markdown; charset=utf-8"
       }
     },
@@ -357,7 +357,7 @@
       "title": "音色设计",
       "headers": {
         "ETag": null,
-        "Last-Modified": "Wed, 14 Oct 2026 07:48:59 GMT",
+        "Last-Modified": "Fri, 23 Oct 2026 06:46:25 GMT",
         "Content-Type": "text/markdown; charset=utf-8"
       }
     },
@@ -371,8 +371,8 @@
       "tools": [
         "list_voices"
       ],
-      "sha256": "ad3adbc5f7df4678fee02c8c3af28fd8075b5f9c321a75d7331669cde581c757",
-      "bytes": 6106,
+      "sha256": "9778891d76c3b6199b398c725208067962d15a3a21d96ec69fbb42f92bb56762",
+      "bytes": 6103,
       "models": [],
       "endpoints": [],
       "doc_links": [
@@ -381,7 +381,7 @@
       "title": "查询可用音色ID",
       "headers": {
         "ETag": null,
-        "Last-Modified": "Wed, 14 Oct 2026 07:48:59 GMT",
+        "Last-Modified": "Fri, 23 Oct 2026 06:46:25 GMT",
         "Content-Type": "text/markdown; charset=utf-8"
       }
     }
