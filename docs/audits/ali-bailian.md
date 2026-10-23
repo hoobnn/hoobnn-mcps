@@ -69,6 +69,29 @@
 4. 正文与端点示例均为北京 workspace 域名；新加坡仅部分模型可用（见复刻指南），默认 `DASHSCOPE_BASE_URL` 下的实际可用性未做付费验证。
 5. 本次抓取发现 `bailian-happyhorse-edit` 正文新增美国 workspace 端点、删除 `dashscope-us` 示例，与语音迁移无关，未写入基线，留给下一次上游检查 PR 处理。
 
+## 2026-10-23 上游更新落实（PR #14，待人工复查）
+
+本轮对照最新官方 `.md` 正文与 PR #14 原捕获基线，抓取 **36/36 成功、19 项来源变化、0 失败**。原有32个来源对照主分支10月13日基线时有16篇正文变化；PR原基线已包含HappyHorse域名变化，因此两份差异数量不同。新增4个监控来源：[地域与接入域名](https://help.aliyun.com/zh/model-studio/regions)、[Qwen-Audio-TTS接入方式](https://help.aliyun.com/zh/model-studio/qwen-audio-tts-model-access)、[CosyVoice接入方式](https://help.aliyun.com/zh/model-studio/cosyvoice-model-access)、[MiniMax直供接入](https://help.aliyun.com/zh/model-studio/minimax-api-by-minimax)。保留既有review目录，本轮捕获通过平台独立 `upstream_pr.stage` 写入待审基线、完整diff及内容寻址快照；尚未合并或发布。
+
+| 实质变化 | 实现及验证边界 | 官方依据 |
+|---|---|---|
+| 复刻创建/更新新增 `input.audio`，支持公网URL或Base64 Data URI，旧 `url` 逐步废弃但仍兼容 | `clone_voice` 的现有 `audio` 参数保留，增加互斥的旧 `url` 别名；所有请求统一发送 `input.audio`。本地WAV/MP3/M4A直接编码，不调用模型绑定的临时上传；校验格式、非空和10MB大小，Base64校验解码后大小。远程时长/采样率及声音质量仍由云端校验。`oss://`仍无官方支持证据；不增加云端重试 | [复刻HTTP API](https://help.aliyun.com/zh/model-studio/voice-clone-design-http-api)、[复刻指南](https://help.aliyun.com/zh/model-studio/voice-cloning-user-guide) |
+| 新增 `qwen-audio-3.1-tts-plus` 的合成、复刻、设计支持；Qwen复刻各模型现明确相同的16种language_hints取值 | 加入TTS协议路由、指令支持、复刻/设计目标及自定义音色前缀识别；旧默认模型与别名保持不变。新plus按字符计费；官方API同时列出token计量字段，不把这些字段推定为计费单位 | [TTS模型表](https://help.aliyun.com/zh/model-studio/tts-model)、[Qwen-Audio-TTS HTTP](https://help.aliyun.com/zh/model-studio/qwen-audio-tts-http-api)、[设计指南](https://help.aliyun.com/zh/model-studio/voice-design-user-guide) |
+| Qwen-Audio-TTS HTTP新增新加坡workspace端点；CosyVoice HTTP与设计仍只列北京；HappyHorse美国示例改为workspace域名 | 原 `DASHSCOPE_BASE_URL` 已可配置根域名，无需改变路径。中英README与工具帮助改为按产品、协议及地域说明；音色复刻在新加坡可用不代表本MCP的HTTP合成可用。地域指南明确旧DashScope域名自2026-09-30起不再接收新特性；默认旧域名仅保留存量兼容 | [地域指南](https://help.aliyun.com/zh/model-studio/regions)、[Qwen-Audio-TTS HTTP](https://help.aliyun.com/zh/model-studio/qwen-audio-tts-http-api)、[CosyVoice HTTP](https://help.aliyun.com/zh/model-studio/cosyvoice-tts-http-api)、[HappyHorse](https://help.aliyun.com/zh/model-studio/happyhorse-video-edit-api-reference) |
+| 非实时合成指南将100字符instruction限制明确归入CosyVoice，而非全部Qwen-Audio-TTS | 本地只对CosyVoice应用100字符加权限制（汉字计2），同样检查 `parameters.instruction`；Qwen-Audio-TTS未公布同一上限，交服务端校验，不宣称无限制 | [非实时合成指令控制](https://help.aliyun.com/zh/model-studio/non-realtime-tts-user-guide#nrt_instruct_h3) |
+| 10月21日新增MiniMax/MiniMax-M3.1-Flash；新旧M3思考控制存在协议差异 | `thinking`便利布尔按MiniMax官方对象映射，禁止误发 `enable_thinking`。M3支持adaptive/disabled；M3.1始终adaptive、`reasoning_split=true`、`n=1`，禁用思考/非法深度本地拒绝。五档 `reasoning_effort` 仅M3.1支持；两者不支持 `thinking_budget`、JSON结构化输出和联网搜索，相关便利参数本地拒绝。temperature=1、top_p=0.95固定，由官方忽略其他值。M3.1不支持stop、不能保证parallel_tool_calls=false串行、tool_choice仅auto，文档明确；本工具仍只返回文本与reasoning，未实现完整Function Calling循环 | [MiniMax直供差异/迁移](https://help.aliyun.com/zh/model-studio/minimax-api-by-minimax)、[Chat参数](https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions) |
+
+以下变化已兼容或仅记录：
+
+- Chat新增 `include_tool_usage` 和 `usage.x_tools.search.{count,strategy}`，现有parameters透传与usage原样保留已支持，新增SSE回归验证。官方明确count为搜索意图触发次数，不是实际完成量或计费对账依据。GLM输出默认65536、最大131072等参数说明变化不需要本地硬编码默认值；`max_completion_tokens`继续通过parameters透传。
+- TTS逐段保留官方usage对象，同名数值字段分别累加，修正原先把total_tokens归到characters的错误。旧任务的标量已丢失单位，不能由模型名推回；恢复时保留为 `legacy_untyped`，不混入新characters或token合计。这只是使用量记录，不推算账单费用。
+- 新模型 `deepseek-v4.1-flash-1017`（10月17日）、`xiaomi/mimo-v2.6-pro-ultraspeed`（10月19日）与MiniMax-M3.1的发布/价格/限流表变化已记录，不自动切换默认模型，不把目录列出当作账号开通。补充候选提取正则中的DeepSeek/Xiaomi前缀；首次提取出的旧模型字符串不表示它们都是本轮上新，详情仍以正文diff和模型页为准。
+- 旧Qwen文生图页删除异步 `text2image/image-synthesis` 章节及3.0交叉介绍；当前实现已使用同步multimodal-generation，新版3.0API正文未变，不改路由，也不把目录移除推荐位当作下线公告。
+- Wan3只补充生成格式为MP4/H.264；HappyHorse还有表格样式调整。Chat模型页删去qwen-long的超长文档推荐，目录/价格/限流的命名、展示调整不改变已接入默认模型。
+- 两篇「模型接入方式」新监控页介绍AOQ/WebSocket实时协议，不能据此宣称当前HTTP工具接入实时能力；CosyVoice和Qwen-Audio-Realtime的其他协议不在本轮实现范围。
+
+本轮验证使用官方响应结构的mock和真实本地MCP协议，不发送API Key或付费请求。新模型、新地域、音色实际审核/质量与费用均未做云端验收；2026-10-13北京小样本记录只证明当时版本，不作为本次新增能力已通过云端的证据。
+
 ## 完整工具到官方接口映射
 
 下表路径均相对 `DASHSCOPE_BASE_URL`，远程 API 使用 `Authorization: Bearer DASHSCOPE_API_KEY`。本地任务接口不调用新生成 API，恢复未提交 TTS 分段除外。
@@ -82,7 +105,7 @@
 | `generate_video` | POST `/api/v1/services/aigc/video-generation/video-synthesis`；`wan→wan3.0-video`、`wan-fast→wan3.0-video-prime` | `X-DashScope-Async: enable`、`input.media`、task_id 对应；仅允许这两个已接入 ID。[Wan3 API](https://help.aliyun.com/zh/model-studio/wan3-video-generation-api-reference) |
 | `get_job`（视频任务） | GET `/api/v1/tasks/{task_id}`；不重新选模型 | 六种官方状态及 `video_url` 对应；task_id 与结果 URL 有有效期，不承诺长期远程恢复。[异步协议](https://help.aliyun.com/en/model-studio/happyhorse-video-edit-api-reference) |
 | `list_models` | GET `/api/v1/models?page_no=…&page_size=100` | 已迁移官方目录，包含各模态并分页；目录存在不证明授权。[模型目录 API](https://help.aliyun.com/zh/model-studio/list-models) |
-| `clone_voice` | POST customization；`voice-enrollment` `action=create_voice`，默认 target `qwen-audio-3.0-tts-flash` | 公网 `url` + `prefix`，本地文件/data URL/`oss://` 本地拒绝；缺 `voice_id` 不重建。[复刻 API](https://help.aliyun.com/zh/model-studio/voice-clone-design-http-api)、[复刻指南](https://help.aliyun.com/zh/model-studio/voice-cloning-user-guide) |
+| `clone_voice` | POST customization；`voice-enrollment` `action=create_voice`，默认 target `qwen-audio-3.0-tts-flash` | `input.audio` + `prefix`，支持公网URL、Base64 Data URI、本地WAV/MP3/M4A；旧 `url` 别名与audio互斥；`oss://`本地拒绝；缺 `voice_id` 不重建。[复刻 API](https://help.aliyun.com/zh/model-studio/voice-clone-design-http-api)、[复刻指南](https://help.aliyun.com/zh/model-studio/voice-cloning-user-guide) |
 | `design_voice` | POST customization；`voice-enrollment` `action=create_voice`，默认 target `qwen-audio-3.0-tts-flash` | `voice_prompt/preview_text/prefix/language_hints` + `parameters.sample_rate/response_format`；试听沿用 `voice_preview` 任务与 `recover_job`。[设计 API](https://help.aliyun.com/zh/model-studio/voice-design-api-references)、[设计指南](https://help.aliyun.com/zh/model-studio/voice-design-user-guide) |
 | `list_voices` | POST customization；`voice-enrollment` `action=list_voice` | `kind` 旧值 clone/design/cosyvoice 映射到同一接口；1–100 是本地保护范围。[复刻](https://help.aliyun.com/zh/model-studio/voice-clone-design-http-api)、[设计](https://help.aliyun.com/zh/model-studio/voice-design-api-references) |
 | `get_voice` | POST customization；`voice-enrollment` `action=query_voice` | 返回 `status`（DEPLOYING/OK/UNDEPLOYED）与 `target_model`；`max_pages` 仅兼容保留。[复刻 API](https://help.aliyun.com/zh/model-studio/voice-clone-design-http-api) |
@@ -93,20 +116,20 @@
 | `list_jobs` | 本地 Store.list | 无云 API、无模型；本地记录不是云端状态探针。 |
 | `get_job` | 本地 Store.get | 无云 API、无模型；只读取已存回执。 |
 | `recover_job` | 原 video task_id 查询；image/voice_preview 重新交付；TTS 仅续未提交分段 | 不创建替代 video/image/voice job；TTS 尚未提交分段会产生新的合成费用。远程恢复仍受临时 URL 有效期限制。 |
-| `list_capabilities` | 本地工具目录与官方 URL | `account_verified=false/validation=offline_only` 正确。 |
+| `list_capabilities` | 本地工具目录与官方 URL | `account_verified=false/validation=cloud_sampled/validated_on=2026-10-13` 仅指历史北京小样本，不代表本轮新增模型和地域已验证。 |
 | `get_tool_help` | 共享运行时本地文档 | 无云 API、无模型。 |
 
 上传依赖也已核实：GET `/api/v1/uploads?action=getPolicy&model=…` → 凭证指定的 OSS multipart POST → `oss://…`；请求需 `X-DashScope-OssResourceResolve: enable`。官方限制为 1GB、48 小时、同账号和同模型绑定，不能跨模型复用上传 URL。[官方上传正文](https://help.aliyun.com/zh/model-studio/get-temporary-file-url)。
 
 ## 域名迁移与未验证项
 
-官方现推荐北京 `https://{WorkspaceId}.cn-beijing.maas.aliyuncs.com`、新加坡 `https://{WorkspaceId}.ap-southeast-1.maas.aliyuncs.com`；旧 DashScope 推理域名仍能使用。已有 `DASHSCOPE_BASE_URL` 支持自定义根域名，无须改变 endpoint 路径。**新原生模型目录 API 的北京示例只列 workspace 域名，旧北京域名对此 API 的支持尚未实测**。建议设置真实 workspace 根域名，不能把 `/api/v1` 或 `/compatible-mode/v1` 后缀也塞入 BASE_URL。[域名说明](https://help.aliyun.com/zh/model-studio/qwen-image-api)、[目录地址](https://help.aliyun.com/zh/model-studio/list-models)。
+官方现推荐北京 `https://{WorkspaceId}.cn-beijing.maas.aliyuncs.com`、新加坡 `https://{WorkspaceId}.ap-southeast-1.maas.aliyuncs.com`；HappyHorse美国文档使用 `https://{WorkspaceId}.us-east-1.maas.aliyuncs.com`。旧DashScope域名保留存量兼容，但官方明确自2026-09-30起不再接收新特性。已有 `DASHSCOPE_BASE_URL` 支持自定义根域名，无须改变 endpoint 路径。**新原生模型目录 API 的北京示例只列 workspace 域名，旧北京域名对此 API 的支持尚未实测**。不能把 `/api/v1` 或 `/compatible-mode/v1` 后缀也塞入 BASE_URL。各产品/协议/模型的地域支持不同，不能把根域名存在当作产品可用。[地域与接入域名](https://help.aliyun.com/zh/model-studio/regions)、[目录地址](https://help.aliyun.com/zh/model-studio/list-models)。
 
 未确认：当前账号授权、云端实际输出/费用、限流与性能；公开 URL 指向文件的时长/分辨率/大小；任意用户显式传入的未登记模型。HTTP VC/VD 产品详情的“实时”营销文案与 `tts-model` 中 HTTP 模式表不一致，应以具体 API/模式表为路由依据，不按名称或简介推断协议。没有发送任何付费生成或账号请求。
 
 ## 最新官方文档获取
 
-`ali-bailian-sources.json` 登记 32 个官方来源（2026-10-13 语音迁移新增 5 个）。每篇 `.md` 地址本轮实际 HTTP GET 均为 200、`text/markdown`、完整正文（约 6KB–826KB），可无需登录、无需 JS、无需生成 API Key 获取。例如：
+`ali-bailian-sources.json` 当前登记36个官方来源（2026-10-13语音迁移新增5个，2026-10-23新增4个域名/模型接入页）。本轮36篇`.md`均成功返回机器可读完整正文，可无需登录、无需JS、无需生成API Key获取。例如：
 
 ```sh
 curl --fail --location https://help.aliyun.com/zh/model-studio/list-models.md
@@ -123,3 +146,5 @@ curl --fail --location https://help.aliyun.com/zh/model-studio/list-models.md
 2026-10-13 复核后，百炼包 **33 项离线测试通过**：新增 rerank 原生路由，以及已下线 Qwen 音色创建 / instruct TTS 不发送请求两项回归，替换原设计试听上限测试（该路径已停用）。
 
 2026-10-13 语音迁移后，百炼包 **43 项离线测试通过**：新增复刻 / 设计请求体与本地校验、设计试听交付与恢复不重建、缺音色 ID 不重试、kind 旧值映射、SpeechSynthesizer 路由与请求体、指令长度及模型限制、ASR 下线快照拒绝等回归，全部 mock，无真实付费请求。
+
+2026-10-23更新后，百炼包 **50项离线测试通过**，上游文档/PR流程 **19项测试通过**；来源覆盖检查通过（全库143来源，本平台36来源）。新增回归覆盖本地录音与Data URI、url冲突/大小/格式、3.1-plus设计恢复/TTS路由、产品指令长度差异、按单位累加usage及旧任务恢复、MiniMax思考协议/本地拒绝、搜索统计保留、DeepSeek/Xiaomi候选提取。真实stdio发现19个工具，验证audio/url输入schema、互斥及非法Data URI拒绝和最新chat帮助；父/子进程均校验模块来自PR独占worktree，provider请求数为0。测试通过不表示新模型或地域云端验收。

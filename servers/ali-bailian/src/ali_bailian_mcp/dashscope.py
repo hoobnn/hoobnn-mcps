@@ -22,6 +22,7 @@ CHAT_MODELS = {
     "plus": "qwen3.7-plus",
     "flash": "qwen3.8-flash",
 }
+MINIMAX_THINKING_MODELS = {"MiniMax/MiniMax-M3", "MiniMax/MiniMax-M3.1-Flash"}
 IMAGE_EXT = {"png", "jpeg", "jpg", "webp", "bmp", "tiff", "tif", "gif"}
 
 
@@ -218,7 +219,10 @@ def build_chat_body(o, model):
     # 统一走流式：部分模型（思考模型、omni 等）只支持流式
     body = {"model": model, "messages": messages, "stream": True, "stream_options": {"include_usage": True}}
     if o["thinking"] is not None:
-        body["enable_thinking"] = o["thinking"]
+        if model in MINIMAX_THINKING_MODELS:
+            body["thinking"] = {"type": "adaptive" if o["thinking"] else "disabled"}
+        else:
+            body["enable_thinking"] = o["thinking"]
     if o["thinking_budget"]:
         body["thinking_budget"] = o["thinking_budget"]
     if o["max_tokens"]:
@@ -232,7 +236,32 @@ def build_chat_body(o, model):
     extra = o.get("parameters") or {}
     if set(extra) & {"model", "messages", "stream"}:
         raise InputError("parameters 不能覆盖 model/messages/stream")
+    if model in MINIMAX_THINKING_MODELS:
+        if "enable_thinking" in extra or o["thinking_budget"] is not None or "thinking_budget" in extra:
+            raise InputError("MiniMax直供M3系列不使用enable_thinking/thinking_budget；请用thinking，M3.1-Flash可用parameters.reasoning_effort")
+        if o["thinking"] is not None and "thinking" in extra and extra["thinking"] != body["thinking"]:
+            raise InputError("thinking与parameters.thinking冲突，请只设置一项")
     merge_parameters(body, extra)
+    if model in MINIMAX_THINKING_MODELS:
+        thinking = body.get("thinking", {"type": "adaptive"})
+        if not isinstance(thinking, dict) or thinking.get("type") not in ("adaptive", "disabled"):
+            raise InputError("MiniMax直供M3系列的thinking须为{type: adaptive/disabled}")
+        if body.get("n", 1) != 1:
+            raise InputError("MiniMax直供M3系列只支持n=1")
+        output_format = body.get("response_format")
+        if body.get("enable_search") or (output_format is not None and
+                                        (not isinstance(output_format, dict) or output_format.get("type") != "text")):
+            raise InputError("MiniMax直供M3系列不支持web_search或json_mode/结构化输出")
+        if model == "MiniMax/MiniMax-M3" and "reasoning_effort" in body:
+            raise InputError("MiniMax/MiniMax-M3不支持reasoning_effort；五档思考深度仅M3.1-Flash支持")
+        if model == "MiniMax/MiniMax-M3.1-Flash":
+            if thinking["type"] != "adaptive":
+                raise InputError("MiniMax/MiniMax-M3.1-Flash始终开启思考，不支持thinking=false或disabled")
+            if "reasoning_split" in body and body["reasoning_split"] is not True:
+                raise InputError("MiniMax/MiniMax-M3.1-Flash只支持reasoning_split=true")
+            if "reasoning_effort" in body and body["reasoning_effort"] not in ("low", "medium", "high", "xhigh", "max"):
+                raise InputError("MiniMax/MiniMax-M3.1-Flash的reasoning_effort只支持low/medium/high/xhigh/max")
+            body["reasoning_split"] = True
     return body
 
 

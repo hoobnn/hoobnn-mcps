@@ -292,5 +292,43 @@
     "tools": [],
     "kind": "guide",
     "fetch_url": "https://help.aliyun.com/zh/model-studio/rate-limit.md"
+  },
+  {
+    "id": "bailian-regions",
+    "url": "https://help.aliyun.com/zh/model-studio/regions",
+    "tools": [],
+    "kind": "guide",
+    "fetch_url": "https://help.aliyun.com/zh/model-studio/regions.md"
+  },
+  {
+    "id": "bailian-qwen-audio-tts-access",
+    "url": "https://help.aliyun.com/zh/model-studio/qwen-audio-tts-model-access",
+    "tools": [
+      "text_to_speech",
+      "clone_voice",
+      "design_voice"
+    ],
+    "kind": "guide",
+    "fetch_url": "https://help.aliyun.com/zh/model-studio/qwen-audio-tts-model-access.md"
+  },
+  {
+    "id": "bailian-cosyvoice-access",
+    "url": "https://help.aliyun.com/zh/model-studio/cosyvoice-model-access",
+    "tools": [
+      "text_to_speech",
+      "clone_voice",
+      "design_voice"
+    ],
+    "kind": "guide",
+    "fetch_url": "https://help.aliyun.com/zh/model-studio/cosyvoice-model-access.md"
+  },
+  {
+    "id": "bailian-minimax-chat",
+    "url": "https://help.aliyun.com/zh/model-studio/minimax-api-by-minimax",
+    "tools": [
+      "chat"
+    ],
+    "kind": "api",
+    "fetch_url": "https://help.aliyun.com/zh/model-studio/minimax-api-by-minimax.md"
   }
 ]
