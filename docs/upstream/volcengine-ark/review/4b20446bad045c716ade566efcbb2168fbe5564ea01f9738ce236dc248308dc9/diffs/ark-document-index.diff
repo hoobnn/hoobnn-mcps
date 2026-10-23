@@ -1,0 +1,236 @@
+--- reviewed/volcengine-ark/ark-document-index
++++ current/volcengine-ark/ark-document-index
+@@ -924,6 +924,13 @@
+     "Status": 1
+   },
+   {
++    "DocumentCode": "agent-plan-personal-research-plan-overview",
++    "DocumentID": 2721008,
++    "Title": "Agent Plan Research 套餐概览",
++    "ParentCode": "agent-plan-personal",
++    "Status": 5
++  },
++  {
+     "DocumentCode": "agent-plan-personal-search",
+     "DocumentID": 2301412,
+     "Title": "豆包搜索",
+@@ -1064,16 +1071,9 @@
+     "Status": 1
+   },
+   {
+-    "DocumentCode": "ai-suite-mcp",
+-    "DocumentID": 2702286,
+-    "Title": "MCP",
+-    "ParentCode": "ai-suite",
+-    "Status": 1
+-  },
+-  {
+-    "DocumentCode": "ai-suite-skills",
+-    "DocumentID": 2705548,
+-    "Title": "Skills",
++    "DocumentCode": "ai-suite-document-access",
++    "DocumentID": 2731234,
++    "Title": "读取文档",
+     "ParentCode": "ai-suite",
+     "Status": 1
+   },
+@@ -1178,16 +1178,9 @@
+   {
+     "DocumentCode": "ark-document-skills",
+     "DocumentID": 2705549,
+-    "Title": "方舟文档 Skill",
+-    "ParentCode": "ai-suite-skills",
+-    "Status": 2
+-  },
+-  {
+-    "DocumentCode": "ark-md-test",
+-    "DocumentID": 2715544,
+-    "Title": "Ark Md测试",
+-    "ParentCode": "tests",
+-    "Status": 5
++    "Title": "文档 Skill",
++    "ParentCode": "ai-suite-document-access",
++    "Status": 2
+   },
+   {
+     "DocumentCode": "ark-runtime-sdk-migration",
+@@ -1267,6 +1260,13 @@
+     "Status": 2
+   },
+   {
++    "DocumentCode": "background-tool-tasks",
++    "DocumentID": 2733248,
++    "Title": "运行和管理后台工具任务",
++    "ParentCode": "managed-agents-task-delegation",
++    "Status": 2
++  },
++  {
+     "DocumentCode": "backward-compatibility",
+     "DocumentID": 2683680,
+     "Title": "向后兼容性",
+@@ -1283,7 +1283,7 @@
+   {
+     "DocumentCode": "batch-chat-api",
+     "DocumentID": 1528783,
+-    "Title": "批量(Chat) API（待下线）",
++    "Title": "批量(Chat) API",
+     "ParentCode": "batch-inference-api-reference",
+     "Status": 2
+   },
+@@ -1428,6 +1428,13 @@
+     "Status": 2
+   },
+   {
++    "DocumentCode": "cancel-session-task-api",
++    "DocumentID": 2733251,
++    "Title": "取消会话任务",
++    "ParentCode": "session-tasks",
++    "Status": 2
++  },
++  {
+     "DocumentCode": "canvas",
+     "DocumentID": 1581314,
+     "Title": "Canvas 简介",
+@@ -2359,6 +2366,13 @@
+     "Status": 1
+   },
+   {
++    "DocumentCode": "decision-model",
++    "DocumentID": 2709695,
++    "Title": "决策评估（beta）",
++    "ParentCode": "model-invocation",
++    "Status": 2
++  },
++  {
+     "DocumentCode": "deep-thinking",
+     "DocumentID": 1449737,
+     "Title": "深度思考",
+@@ -2368,7 +2382,7 @@
+   {
+     "DocumentCode": "deepseek-v4-1-flash",
+     "DocumentID": 2687970,
+-    "Title": "DeepSeek-V4.1-Flash",
++    "Title": "DeepSeek-V4.1-Flash（升级 1017）",
+     "ParentCode": "model",
+     "Status": 2
+   },
+@@ -3066,6 +3080,13 @@
+     "Status": 2
+   },
+   {
++    "DocumentCode": "get-session-task-api",
++    "DocumentID": 2733250,
++    "Title": "查询会话任务",
++    "ParentCode": "session-tasks",
++    "Status": 2
++  },
++  {
+     "DocumentCode": "get-skill-api",
+     "DocumentID": 2555980,
+     "Title": "查询技能详情",
+@@ -3346,13 +3367,6 @@
+     "Status": 2
+   },
+   {
+-    "DocumentCode": "json-document-md-content",
+-    "DocumentID": 2715319,
+-    "Title": "Ark json测试",
+-    "ParentCode": "tests",
+-    "Status": 5
+-  },
+-  {
+     "DocumentCode": "knowledge-base-index",
+     "DocumentID": 2673862,
+     "Title": "知识库",
+@@ -3689,6 +3703,13 @@
+     "Status": 5
+   },
+   {
++    "DocumentCode": "list-session-tasks-api",
++    "DocumentID": 2733249,
++    "Title": "查询会话任务列表",
++    "ParentCode": "session-tasks",
++    "Status": 2
++  },
++  {
+     "DocumentCode": "list-sessions-api",
+     "DocumentID": 2555934,
+     "Title": "查询会话列表",
+@@ -4543,6 +4564,13 @@
+     "Status": 2
+   },
+   {
++    "DocumentCode": "read-docs-with-ai-agents",
++    "DocumentID": 2731235,
++    "Title": "选择读取方式",
++    "ParentCode": "ai-suite-document-access",
++    "Status": 2
++  },
++  {
+     "DocumentCode": "real-person-actor-image-ai-creation-commitment",
+     "DocumentID": 2656110,
+     "Title": "真人演员形象 AI 创作承诺函",
+@@ -4970,6 +4998,13 @@
+     "Status": 1
+   },
+   {
++    "DocumentCode": "session-tasks",
++    "DocumentID": 2733247,
++    "Title": "会话任务",
++    "ParentCode": "sessions",
++    "Status": 1
++  },
++  {
+     "DocumentCode": "session-threads",
+     "DocumentID": 2555902,
+     "Title": "会话线程",
+@@ -5215,6 +5250,20 @@
+     "Status": 2
+   },
+   {
++    "DocumentCode": "system-one-api",
++    "DocumentID": 2705552,
++    "Title": "System One API（beta）",
++    "ParentCode": "system-one-api-reference",
++    "Status": 2
++  },
++  {
++    "DocumentCode": "system-one-api-reference",
++    "DocumentID": 2705571,
++    "Title": "System One API（beta）",
++    "ParentCode": "api-reference",
++    "Status": 1
++  },
++  {
+     "DocumentCode": "tax-rates-and-invoices",
+     "DocumentID": 1446839,
+     "Title": "税率与发票",
+@@ -5350,8 +5399,8 @@
+   {
+     "DocumentCode": "tutorials-mcp",
+     "DocumentID": 2289964,
+-    "Title": "方舟文档 MCP",
+-    "ParentCode": "ai-suite-mcp",
++    "Title": "文档 MCP",
++    "ParentCode": "ai-suite-document-access",
+     "Status": 2
+   },
+   {
+@@ -5609,7 +5658,7 @@
+   {
+     "DocumentCode": "video-fine-tuning-data-format",
+     "DocumentID": 2615197,
+-    "Title": "视频生成",
++    "Title": "视频生成模型精调数据格式",
+     "ParentCode": "fine-tuning-dataset-formats",
+     "Status": 2
+   },
+@@ -5679,7 +5728,7 @@
+   {
+     "DocumentCode": "visual-creation-agent",
+     "DocumentID": 2709539,
+-    "Title": "[基础] 使用视觉增强 Agent 生成图片和视频",
++    "Title": "[基础] 使用 Seedance Managed Agent 生成图片和视频",
+     "ParentCode": "managed-agent-tutorials",
+     "Status": 2
+   },

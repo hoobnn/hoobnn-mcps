@@ -1,0 +1,12161 @@
+--- reviewed/volcengine-ark/ark-create-model-responses-api
++++ current/volcengine-ark/ark-create-model-responses-api
+@@ -2,106 +2,74 @@
+ 
+ 通过 Responses API 创建一个 Response，本文介绍接口的输入输出参数。
+ 
+-<span id=".6Ym05p2D"></span>
+ ## 鉴权
+ 
+-本接口支持鉴权方式如下，详情请参见 [Base URL 及鉴权](https://ark.volcengine.com/region:cn-beijing/docs/ark/base-url-and-authentication)。
+-
++本接口支持鉴权方式如下，详情请参见 [Base URL 及鉴权](https://ark.volcengine.com/region:cn-beijing/docs/base-url-and-authentication)。
+ 
+ * API Key 鉴权，请在 [API Key 管理](https://ark.volcengine.com/region:cn-beijing/apiKey) 页面，获取长效 API Key。
+ 
+-
+-
+ ---
+ 
+-
+-
+-<span id="request-parameters"></span>
+ ## 请求参数
+ 
+-<span id=".aGVhZGVyLeWPguaVsA=="></span>
+ ### Header 参数
+ 
+ > 在 HTTP 请求头中传入。
+ 
+-
+-
+ **X\-Fornax\-Trace** `string`  |  开启数据上报
+ 
+ 是否开启数据上报。设置为 `true` 时，Responses API 会将请求数据上报至方舟平台，用于统计分析。开启后，可在推理接入点的**分析统计**页面查看 Trace 列表与 Trace 详情，用于快速排查与定位问题。
+ 
+-<div data-tips="true" data-tips-type="tip" data-tips-is-title="true">说明</div>
+-
+-
+-
+-* <div data-tips="true" data-tips-type="tip">当前仅 Responses API 支持通过该 header 开启数据上报。</div>
+-
+-
+-* <div data-tips="true" data-tips-type="tip">SDK 设置 header 的示例参见 <a href="https://ark.volcengine.com/region:cn-beijing/docs/ark/sdk-common-examples#d5f5495b">开启数据上报</a>。</div>
+-
+-
+-* <div data-tips="true" data-tips-type="tip">支持统计分析的数据范围参见 <a href="https://ark.volcengine.com/region:cn-beijing/docs/ark/manage-inference-endpoints#db0a7d46">分析统计</a>。</div>
+-
+-
+-
+-&nbsp;
+-
+-<span id=".Ym9keS3lj4LmlbA="></span>
++> **说明**
++
++* > 当前仅 Responses API 支持通过该 header 开启数据上报。
++
++* > SDK 设置 header 的示例参见 [开启数据上报](https://ark.volcengine.com/region:cn-beijing/docs/sdk-common-examples#d5f5495b)。
++
++* > 支持统计分析的数据范围参见 [分析统计](https://ark.volcengine.com/region:cn-beijing/docs/manage-inference-endpoints#db0a7d46)。
++
+ ### Body 参数
+ 
+-
+ **input** `string / object[]` `必选`  |  输入内容
+ 
+-模型需要处理的输入内容。可为文本字符串（等同于 `user` 角色的单条文本输入），或输入元素列表（支持消息、函数调用、思考等多种类型，见 *InputItem*）。
+-
++模型需要处理的输入内容。可为文本字符串（等同于 `user` 角色的单条文本输入），或输入元素列表（支持消息、函数调用、思考等多种类型）。
+ 
+ 文本输入 `string`
+ 
+ 输入给模型的文本类型信息，等同于使用 user 角色输入的文本信息。
+ 
+-
+-
+ 输入的元素列表 `object[]`
+ 
+ 输入给模型的信息元素，可以包括不同的信息类型。
+ 
+-
+ 输入的消息 `object`
+ 
+ 发送给模型的消息，其中角色用于指示指令遵循的优先级层级。由 developer 或 system 角色给出的指令优先于 user 角色给出的指令。assistant 角色的消息通常被认为是模型在先前交互中生成的回复。
+ 
+-
+ **content** `string / object[]` `必选`  |  消息内容
+ 
+ `input.content`
+ 
+ 用于生成回复的文本、图片、视频或文件输入，也可以包含先前助手的回复内容。
+ 
+-
+ 文本输入 `string`
+ 
+ 文本类型的消息内容，直接传入字符串。
+ 
+-
+-
+ 输入的内容列表 `object[]`
+ 
+ 内容元素列表，可包含文本、图片、视频、文件和音频等多种模态输入。
+ 
+-
+ 输入模型的文本 `object`
+ 
+ 输入给模型的文本内容。
+ 
+-
+ **text** `string` `必选`  |  文本
+ 
+ `input.content.text`
+ 
+ 文本内容。
+ 
+-
+-
+ **type** `string` `必选`  |  类型
+ 
+ `input.content.type`
+@@ -110,22 +78,16 @@
+ 
+ 取值固定为 `input_text`。
+ 
+-
+-
+ **translation_options** `object`  |  翻译选项
+ 
+ `input.content.translation_options`
+ 
+ 文本翻译选项，指定源语言与目标语言以启用翻译。
+ 
+-
+-
+-
+ 输入模型的图片 `object`
+ 
+ 输入给模型的图片内容。支持通过 file_id、image_url 或 Base64 编码传入。
+ 
+-
+ **type** `string` `必选`  |  类型
+ 
+ `input.content.type`
+@@ -134,3074 +96,5013 @@
+ 
+ 取值固定为 `input_image`。
+ 
+-
+-
+ **detail** `string`  |  精度
+ 
+ `input.content.detail`
+ 
+ 图片解析精度，控制模型处理图片的清晰度与细节层级。可选值：`auto`、`low`、`high`、`xhigh`。
+ 
+-<div data-tips="true" data-tips-type="tip" data-tips-is-title="true">说明</div>
+-
+-
+-<div data-tips="true" data-tips-type="tip">不同模型默认取值及对应的具体像素区间，参见 <a href="https://ark.volcengine.com/region:cn-beijing/docs/ark/image-understanding#bf4d9224">控制图片理解的精细度</a>。</div>
+-
+-
+-
++> **说明**
++
++> 不同模型默认取值及对应的具体像素区间，参见 [控制图片理解的精细度](https://ark.volcengine.com/region:cn-beijing/docs/image-understanding#bf4d9224)。
+ 
+ **file_id** `string`  |  文件 ID
+ 
+ `input.content.file_id`
+ 
+-通过 *Files* API 上传后获取的文件 ID，指向火山引擎 TOS Bucket 中的文件。
++文件 ID。
++
++* 文件 ID 是通过 [Files API](https://ark.volcengine.com/region:cn-beijing/docs/upload-files-api)上传文件后返回的 id。
++
++* **file_id** 对应的文件类型需要和 **type** 保持一致，且文件状态需要为**active**。
++
++* **API Key** 所属项目与 **file_id** 上传时所属项目需保持一致
++
++**image_pixel_limit** `object` `默认值 null`  |  像素限制
++
++`input.content.image_pixel_limit`
++
++输入给模型的图片的像素范围，如不在此范围，图片会被等比例缩放至该范围。
++
++> **注意**
++
++> 图片像素范围需在 `[196, 36000000]`，否则会直接报错。
++
++* > 生效优先级：高于 `detail` 字段，即同时配置 `detail` 与 `image_pixel_limit` 字段时，生效 `image_pixel_limit` 字段配置。
++
++* > 默认生效规则：若未设置 `image_pixel_limit`，则使用 `detail` 配置的值对应的 `min_pixels` / `max_pixels` 值。
++
++**max_pixels** `integer`  |  最大像素
++
++`input.content.image_pixel_limit.max_pixels`
++
++传入图片最大像素限制，大于此像素则等比例缩小至 `max_pixels` 字段取值以下。若未设置，则取值为 `detail` 配置的值对应的 `max_pixels` 值。
++
++**最大值**：`9031680`
++
++**min_pixels** `integer`  |  最小像素
++
++`input.content.image_pixel_limit.min_pixels`
++
++传入图片最小像素限制，小于此像素则等比例放大至 `min_pixels` 字段取值以上。若未设置，则取值为 `detail` 配置的值对应的 `min_pixels` 值。
++
++**最小值**：`1764`
++
++**image_url** `string`  |  图片地址
++
++`input.content.image_url`
++
++图片 URL 或 Base64 编码（格式 `data:image/{格式};base64,{编码}`）
++
++输入模型的音频 `object`
++
++输入给模型的音频内容。支持通过 file_id 或 audio_url 传入。
++
++**type** `string` `必选`  |  类型
++
++`input.content.type`
++
++内容类型标识，用于区分 ContentItem 变体。
++
++取值固定为 `input_audio`。
++
++**audio_url** `string`  |  音频地址
++
++`input.content.audio_url`
++
++音频 URL 或 Base64 编码。
++
++**chunking_strategy** `object`  |  分段策略
++
++`input.content.chunking_strategy`
++
++音频分段策略配置。
++
++**type** `string` `必选`  |  类型
++
++`input.content.chunking_strategy.type`
++
++分段策略的类型标识。
++
++取值固定为 `server_vad`。
++
++**prefix_padding_ms** `integer`  |  前置填充
++
++`input.content.chunking_strategy.prefix_padding_ms`
++
++语音前置静音填充时长（毫秒）
++
++**silence_duration_ms** `integer`  |  静音时长
++
++`input.content.chunking_strategy.silence_duration_ms`
++
++触发分段的静音持续时长（毫秒）
++
++**threshold** `number`  |  检测阈值
++
++`input.content.chunking_strategy.threshold`
++
++VAD 检测阈值。
++
++**file_id** `string`  |  文件 ID
++
++`input.content.file_id`
++
++文件 ID。
++
++* 文件 ID 是通过 [Files API](https://ark.volcengine.com/region:cn-beijing/docs/upload-files-api)上传文件后返回的 id。
++
++* **file_id** 对应的文件类型需要和 **type** 保持一致，且文件状态需要为**active**。
++
++* **API Key** 所属项目与 **file_id** 上传时所属项目需保持一致
++
++输入模型的文件 `object`
++
++输入给模型的文件内容。支持通过 file_id、file_data（Base64）或 file_url 传入。
++
++**type** `string` `必选`  |  类型
++
++`input.content.type`
++
++内容项的类型标识。
++
++取值固定为 `input_file`。
++
++**file_data** `string`  |  文件数据
++
++`input.content.file_data`
++
++Base64 编码的文件内容。
++
++> **说明**
++
++> 文件大小上限为 50 MB。
++
++**file_id** `string`  |  文件 ID
++
++`input.content.file_id`
++
++文件 ID。
++
++* 文件 ID 是通过 [Files API](https://ark.volcengine.com/region:cn-beijing/docs/upload-files-api)上传文件后返回的 id。
++
++* **file_id** 对应的文件类型需要和 **type** 保持一致，且文件状态需要为**active**。
++
++* **API Key** 所属项目与 **file_id** 上传时所属项目需保持一致
++
++**file_url** `string`  |  文件地址
++
++`input.content.file_url`
++
++可访问的文件 URL。
++
++> **说明**
++
++> 文件大小上限为 50 MB。
++
++**filename** `string`  |  文件名
++
++`input.content.filename`
++
++文件名称。
++
++> **说明**
++
++> 使用 `file_data` 传入文件内容时必传。
++
++输入模型的视频 `object`
++
++输入给模型的视频内容。支持通过 file_id、video_url 或 Base64 编码传入。
++
++**type** `string` `必选`  |  类型
++
++`input.content.type`
++
++内容类型标识，用于标记该 ContentItem 为视频输入变体。
++
++取值固定为 `input_video`。
++
++**video_url** `string` `必选`  |  视频地址
++
++`input.content.video_url`
++
++视频内容来源。可传完整的 HTTP(S) URL，或 data URL 形式的 Base64 编码视频。
++
++**file_id** `string`  |  文件 ID
++
++`input.content.file_id`
++
++文件 ID。
++
++* 文件 ID 是通过 [Files API](https://ark.volcengine.com/region:cn-beijing/docs/upload-files-api)上传文件后返回的 id。
++
++* **file_id** 对应的文件类型需要和 **type** 保持一致，且文件状态需要为**active**。
++
++* **API Key** 所属项目与 **file_id** 上传时所属项目需保持一致
++
++**fps** `number`  |  抽帧帧率
++
++`input.content.fps`
++
++视频抽帧频率，指定每秒从视频中提取的图像帧数。
++
++> **说明**
++
++> 使用 `file_id` 传入视频时，`fps` 参数失效。
++
++**取值范围**：`[0.2, 5]`
++
++模型文本输出 `object`
++
++模型生成的文本输出，可在多轮对话中作为上下文回传。
++
++**type** `string` `必选`  |  类型
++
++`input.content.type`
++
++内容类型标识。
++
++取值固定为 `output_text`。
++
++**annotations** `object[]`  |  标注列表
++
++`input.content.annotations`
++
++文本附带的标注信息列表（如引用来源等）
++
++网页引用 `object`
++
++引用自互联网网页的标注信息。
++
++**title** `string` `必选`  |  标题
++
++`input.content.annotations.title`
++
++引用网页的标题。
++
++**type** `string` `必选`  |  类型
++
++`input.content.annotations.type`
++
++标注类型的判别字段（discriminator）。
++
++取值固定为 `url_citation`。
++
++**url** `string` `必选`  |  网址
++
++`input.content.annotations.url`
++
++引用网页的 URL 地址。
++
++**cover_image** `object`  |  封面图
++
++`input.content.annotations.cover_image`
++
++网页封面图片信息。
++
++**height** `integer`  |  高度
++
++`input.content.annotations.cover_image.height`
++
++封面图片高度（像素）
++
++**url** `string`  |  图片地址
++
++`input.content.annotations.cover_image.url`
++
++封面图片的 URL 地址。
++
++**width** `integer`  |  宽度
++
++`input.content.annotations.cover_image.width`
++
++封面图片宽度（像素）
++
++**freshness_info** `string`  |  新鲜度
++
++`input.content.annotations.freshness_info`
++
++内容新鲜度信息。
++
++**logo_url** `string`  |  Logo 地址
++
++`input.content.annotations.logo_url`
++
++网站 Logo 图标地址。
++
++**mobile_url** `string`  |  移动端地址
++
++`input.content.annotations.mobile_url`
++
++移动端访问地址。
++
++**publish_time** `string`  |  发布时间
++
++`input.content.annotations.publish_time`
++
++网页发布时间。
++
++**site_name** `string`  |  站点名
++
++`input.content.annotations.site_name`
++
++站点名称。
++
++**summary** `string`  |  摘要
++
++`input.content.annotations.summary`
++
++网页内容摘要。
++
++文档引用 `object`
++
++引用自私域知识库文档的标注信息。
++
++**type** `string` `必选`  |  类型
++
++`input.content.annotations.type`
++
++标注类型。
++
++取值固定为 `doc_citation`。
++
++**chunk_attachment** `object[]`  |  分块附件
++
++`input.content.annotations.chunk_attachment`
++
++引用分块附带的附件信息列表。
++
++**chunk_id** `integer`  |  分块 ID
++
++`input.content.annotations.chunk_id`
++
++引用文档分块的 ID。
++
++**doc_id** `string`  |  文档 ID
++
++`input.content.annotations.doc_id`
++
++引用文档的 ID。
++
++**doc_name** `string`  |  文档名
++
++`input.content.annotations.doc_name`
++
++引用文档的名称。
++
++**text** `string`  |  文本内容
++
++`input.content.text`
++
++模型生成的文本内容。
++
++模型思维链文本 `object`
++
++模型思维链文本输出，可在多轮对话中作为上下文回传。
++
++**type** `string` `必选`  |  类型
++
++`input.content.type`
++
++内容类型标识。
++
++取值固定为 `reasoning_text`。
++
++**annotations** `object[]`  |  标注列表
++
++`input.content.annotations`
++
++思维链附带的标注信息列表。
++
++网页引用 `object`
++
++引用自互联网网页的标注信息。
++
++**title** `string` `必选`  |  标题
++
++`input.content.annotations.title`
++
++引用网页的标题。
++
++**type** `string` `必选`  |  类型
++
++`input.content.annotations.type`
++
++标注类型的判别字段（discriminator）。
++
++取值固定为 `url_citation`。
++
++**url** `string` `必选`  |  网址
++
++`input.content.annotations.url`
++
++引用网页的 URL 地址。
++
++**cover_image** `object`  |  封面图
++
++`input.content.annotations.cover_image`
++
++网页封面图片信息。
++
++**height** `integer`  |  高度
++
++`input.content.annotations.cover_image.height`
++
++封面图片高度（像素）
++
++**url** `string`  |  图片地址
++
++`input.content.annotations.cover_image.url`
++
++封面图片的 URL 地址。
++
++**width** `integer`  |  宽度
++
++`input.content.annotations.cover_image.width`
++
++封面图片宽度（像素）
++
++**freshness_info** `string`  |  新鲜度
++
++`input.content.annotations.freshness_info`
++
++内容新鲜度信息。
++
++**logo_url** `string`  |  Logo 地址
++
++`input.content.annotations.logo_url`
++
++网站 Logo 图标地址。
++
++**mobile_url** `string`  |  移动端地址
++
++`input.content.annotations.mobile_url`
++
++移动端访问地址。
++
++**publish_time** `string`  |  发布时间
++
++`input.content.annotations.publish_time`
++
++网页发布时间。
++
++**site_name** `string`  |  站点名
++
++`input.content.annotations.site_name`
++
++站点名称。
++
++**summary** `string`  |  摘要
++
++`input.content.annotations.summary`
++
++网页内容摘要。
++
++文档引用 `object`
++
++引用自私域知识库文档的标注信息。
++
++**type** `string` `必选`  |  类型
++
++`input.content.annotations.type`
++
++标注类型。
++
++取值固定为 `doc_citation`。
++
++**chunk_attachment** `object[]`  |  分块附件
++
++`input.content.annotations.chunk_attachment`
++
++引用分块附带的附件信息列表。
++
++**chunk_id** `integer`  |  分块 ID
++
++`input.content.annotations.chunk_id`
++
++引用文档分块的 ID。
++
++**doc_id** `string`  |  文档 ID
++
++`input.content.annotations.doc_id`
++
++引用文档的 ID。
++
++**doc_name** `string`  |  文档名
++
++`input.content.annotations.doc_name`
++
++引用文档的名称。
++
++**text** `string`  |  文本内容
++
++`input.content.text`
++
++模型思维链文本内容。
++
++**id** `string`  |  条目 ID
++
++`input.id`
++
++输入条目的唯一 ID。
++
++**partial** `boolean`  |  续写模式
++
++`input.partial`
++
++是否启用续写模式。
++
++> **说明**
++
++* > 仅 `assistant` 角色的消息支持开启续写模式，模型会在原消息内容后继续生成，而非重新起草。
++
++* > 续写场景下 `partial` 必须显式设为 `true`。
++
++**phase** `string`  |  消息阶段
++
++`input.phase`
++
++标记 assistant 消息属于中间讲解还是最终回答。在回放 assistant 历史消息时，建议保留并原样回传该字段。可选值：`commentary`、`final_answer`。
++
++**role** `string`  |  角色
++
++`input.role`
++
++输入消息的角色，决定指令的优先级层级。可选值：`user`、`system`、`assistant`、`developer`。
++
++**type** `string` `默认值 message`  |  类型
++
++`input.type`
++
++输入元素类型标识。
++
++取值固定为 `message`。
++
++> **说明**
++
++> 当 `role` 设置为 `assistant`，且 `content` 中包含 `output_text` 内容块，必须显式传入 `"type": "message"`。
++
++函数调用记录 `object`
++
++历史工具函数调用记录，用于多轮对话中回传模型之前发起的函数调用。
++
++**type** `string` `必选`  |  类型
++
++`input.type`
++
++输入元素类型标记，用于区分不同类型的历史输入条目。
++
++取值固定为 `function_call`。
++
++**arguments** `string`  |  参数
++
++`input.arguments`
++
++函数参数的 JSON 字符串。
++
++**call_id** `string`  |  调用 ID
++
++`input.call_id`
++
++函数工具调用的唯一标识 ID，与之前模型输出的 function_call.call_id 对应，用于在多轮回传中关联同一次调用及其结果。
++
++**id** `string`  |  条目 ID
++
++`input.id`
++
++该 function_call 条目在 Response 中的唯一 ID，区别于用于关联函数结果的 `call_id`。
++
++**name** `string`  |  函数名
++
++`input.name`
++
++要运行的函数名称。
++
++**status** `string`  |  状态
++
++`input.status`
++
++该 function_call 条目当前的处理状态。可选值：`in_progress`、`completed`、`incomplete`。
++
++函数返回结果 `object`
++
++工具函数返回的结果，用于将函数执行结果回传给模型。
++
++**type** `string` `必选`  |  类型
++
++`input.type`
++
++输入元素类型标识。
++
++取值固定为 `function_call_output`。
++
++**call_id** `string`  |  调用 ID
++
++`input.call_id`
++
++函数工具调用的唯一标识 ID（与对应 function_call 的 call_id 一致）
++
++**id** `string`  |  条目 ID
++
++`input.id`
++
++函数返回结果的唯一 ID。
++
++**output** `string / object[]`  |  输出结果
++
++`input.output`
++
++工具函数执行完成后返回给模型的结果内容。
++
++文本输入 `string`
++
++文本类型的工具函数返回内容，直接传入字符串。
++
++输入的内容列表 `object[]`
++
++内容元素列表，可包含文本、图片、文件和音频等多种模态输入。
++
++输入模型的文本 `object`
++
++输入给模型的文本内容。
++
++**text** `string` `必选`  |  文本
++
++`input.output.text`
++
++文本内容。
++
++**type** `string` `必选`  |  类型
++
++`input.output.type`
++
++内容类型标识。
++
++取值固定为 `input_text`。
++
++**translation_options** `object`  |  翻译选项
++
++`input.output.translation_options`
++
++文本翻译选项，指定源语言与目标语言以启用翻译。
++
++输入模型的图片 `object`
++
++输入给模型的图片内容。支持通过 file_id、image_url 或 Base64 编码传入。
++
++**type** `string` `必选`  |  类型
++
++`input.output.type`
++
++内容类型标识。
++
++取值固定为 `input_image`。
++
++**detail** `string`  |  精度
++
++`input.output.detail`
++
++图片解析精度，控制模型处理图片的清晰度与细节层级。可选值：`auto`、`low`、`high`、`xhigh`。
++
++> **说明**
++
++> 不同模型默认取值及对应的具体像素区间，参见 [控制图片理解的精细度](https://ark.volcengine.com/region:cn-beijing/docs/image-understanding#bf4d9224)。
++
++**file_id** `string`  |  文件 ID
++
++`input.output.file_id`
++
++文件 ID。
++
++* 文件 ID 是通过 [Files API](https://ark.volcengine.com/region:cn-beijing/docs/upload-files-api)上传文件后返回的 id。
++
++* **file_id** 对应的文件类型需要和 **type** 保持一致，且文件状态需要为**active**。
++
++* **API Key** 所属项目与 **file_id** 上传时所属项目需保持一致
++
++**image_pixel_limit** `object` `默认值 null`  |  像素限制
++
++`input.output.image_pixel_limit`
++
++输入给模型的图片的像素范围，如不在此范围，图片会被等比例缩放至该范围。
++
++> **注意**
++
++> 图片像素范围需在 `[196, 36000000]`，否则会直接报错。
++
++* > 生效优先级：高于 `detail` 字段，即同时配置 `detail` 与 `image_pixel_limit` 字段时，生效 `image_pixel_limit` 字段配置。
++
++* > 默认生效规则：若未设置 `image_pixel_limit`，则使用 `detail` 配置的值对应的 `min_pixels` / `max_pixels` 值。
++
++**max_pixels** `integer`  |  最大像素
++
++`input.output.image_pixel_limit.max_pixels`
++
++传入图片最大像素限制，大于此像素则等比例缩小至 `max_pixels` 字段取值以下。若未设置，则取值为 `detail` 配置的值对应的 `max_pixels` 值。
++
++**最大值**：`9031680`
++
++**min_pixels** `integer`  |  最小像素
++
++`input.output.image_pixel_limit.min_pixels`
++
++传入图片最小像素限制，小于此像素则等比例放大至 `min_pixels` 字段取值以上。若未设置，则取值为 `detail` 配置的值对应的 `min_pixels` 值。
++
++**最小值**：`1764`
++
++**image_url** `string`  |  图片地址
++
++`input.output.image_url`
++
++图片 URL 或 Base64 编码（格式 `data:image/{格式};base64,{编码}`）
++
++输入模型的音频 `object`
++
++输入给模型的音频内容。支持通过 file_id 或 audio_url 传入。
++
++**type** `string` `必选`  |  类型
++
++`input.output.type`
++
++内容类型标识，用于区分 ContentItem 变体。
++
++取值固定为 `input_audio`。
++
++**audio_url** `string`  |  音频地址
++
++`input.output.audio_url`
++
++音频 URL 或 Base64 编码。
++
++**chunking_strategy** `object`  |  分段策略
++
++`input.output.chunking_strategy`
++
++音频分段策略配置。
++
++**type** `string` `必选`  |  类型
++
++`input.output.chunking_strategy.type`
++
++分段策略的类型标识。
++
++取值固定为 `server_vad`。
++
++**prefix_padding_ms** `integer`  |  前置填充
++
++`input.output.chunking_strategy.prefix_padding_ms`
++
++语音前置静音填充时长（毫秒）
++
++**silence_duration_ms** `integer`  |  静音时长
++
++`input.output.chunking_strategy.silence_duration_ms`
++
++触发分段的静音持续时长（毫秒）
++
++**threshold** `number`  |  检测阈值
++
++`input.output.chunking_strategy.threshold`
++
++VAD 检测阈值。
++
++**file_id** `string`  |  文件 ID
++
++`input.output.file_id`
++
++文件 ID。
++
++* 文件 ID 是通过 [Files API](https://ark.volcengine.com/region:cn-beijing/docs/upload-files-api)上传文件后返回的 id。
++
++* **file_id** 对应的文件类型需要和 **type** 保持一致，且文件状态需要为**active**。
++
++* **API Key** 所属项目与 **file_id** 上传时所属项目需保持一致
++
++输入模型的文件 `object`
++
++输入给模型的文件内容。支持通过 file_id、file_data（Base64）或 file_url 传入。
++
++**type** `string` `必选`  |  类型
++
++`input.output.type`
++
++内容项的类型标识。
++
++取值固定为 `input_file`。
++
++**file_data** `string`  |  文件数据
++
++`input.output.file_data`
++
++Base64 编码的文件内容。
++
++> **说明**
++
++> 文件大小上限为 50 MB。
++
++**file_id** `string`  |  文件 ID
++
++`input.output.file_id`
++
++文件 ID。
++
++* 文件 ID 是通过 [Files API](https://ark.volcengine.com/region:cn-beijing/docs/upload-files-api)上传文件后返回的 id。
++
++* **file_id** 对应的文件类型需要和 **type** 保持一致，且文件状态需要为**active**。
++
++* **API Key** 所属项目与 **file_id** 上传时所属项目需保持一致
++
++**file_url** `string`  |  文件地址
++
++`input.output.file_url`
++
++可访问的文件 URL。
++
++> **说明**
++
++> 文件大小上限为 50 MB。
++
++**filename** `string`  |  文件名
++
++`input.output.filename`
++
++文件名称。
++
++> **说明**
++
++> 使用 `file_data` 传入文件内容时必传。
++
++模型文本输出 `object`
++
++模型生成的文本输出，可在多轮对话中作为上下文回传。
++
++**type** `string` `必选`  |  类型
++
++`input.output.type`
++
++内容类型标识。
++
++取值固定为 `output_text`。
++
++**annotations** `object[]`  |  标注列表
++
++`input.output.annotations`
++
++文本附带的标注信息列表（如引用来源等）
++
++网页引用 `object`
++
++引用自互联网网页的标注信息。
++
++**title** `string` `必选`  |  标题
++
++`input.output.annotations.title`
++
++引用网页的标题。
++
++**type** `string` `必选`  |  类型
++
++`input.output.annotations.type`
++
++标注类型的判别字段（discriminator）。
++
++取值固定为 `url_citation`。
++
++**url** `string` `必选`  |  网址
++
++`input.output.annotations.url`
++
++引用网页的 URL 地址。
++
++**cover_image** `object`  |  封面图
++
++`input.output.annotations.cover_image`
++
++网页封面图片信息。
++
++**height** `integer`  |  高度
++
++`input.output.annotations.cover_image.height`
++
++封面图片高度（像素）
++
++**url** `string`  |  图片地址
++
++`input.output.annotations.cover_image.url`
++
++封面图片的 URL 地址。
++
++**width** `integer`  |  宽度
++
++`input.output.annotations.cover_image.width`
++
++封面图片宽度（像素）
++
++**freshness_info** `string`  |  新鲜度
++
++`input.output.annotations.freshness_info`
++
++内容新鲜度信息。
++
++**logo_url** `string`  |  Logo 地址
++
++`input.output.annotations.logo_url`
++
++网站 Logo 图标地址。
++
++**mobile_url** `string`  |  移动端地址
++
++`input.output.annotations.mobile_url`
++
++移动端访问地址。
++
++**publish_time** `string`  |  发布时间
++
++`input.output.annotations.publish_time`
++
++网页发布时间。
++
++**site_name** `string`  |  站点名
++
++`input.output.annotations.site_name`
++
++站点名称。
++
++**summary** `string`  |  摘要
++
++`input.output.annotations.summary`
++
++网页内容摘要。
++
++文档引用 `object`
++
++引用自私域知识库文档的标注信息。
++
++**type** `string` `必选`  |  类型
++
++`input.output.annotations.type`
++
++标注类型。
++
++取值固定为 `doc_citation`。
++
++**chunk_attachment** `object[]`  |  分块附件
++
++`input.output.annotations.chunk_attachment`
++
++引用分块附带的附件信息列表。
++
++**chunk_id** `integer`  |  分块 ID
++
++`input.output.annotations.chunk_id`
++
++引用文档分块的 ID。
++
++**doc_id** `string`  |  文档 ID
++
++`input.output.annotations.doc_id`
++
++引用文档的 ID。
++
++**doc_name** `string`  |  文档名
++
++`input.output.annotations.doc_name`
++
++引用文档的名称。
++
++**text** `string`  |  文本内容
++
++`input.output.text`
++
++模型生成的文本内容。
++
++模型思维链文本 `object`
++
++模型思维链文本输出，可在多轮对话中作为上下文回传。
++
++**type** `string` `必选`  |  类型
++
++`input.output.type`
++
++内容类型标识。
++
++取值固定为 `reasoning_text`。
++
++**annotations** `object[]`  |  标注列表
++
++`input.output.annotations`
++
++思维链附带的标注信息列表。
++
++网页引用 `object`
++
++引用自互联网网页的标注信息。
++
++**title** `string` `必选`  |  标题
++
++`input.output.annotations.title`
++
++引用网页的标题。
++
++**type** `string` `必选`  |  类型
++
++`input.output.annotations.type`
++
++标注类型的判别字段（discriminator）。
++
++取值固定为 `url_citation`。
++
++**url** `string` `必选`  |  网址
++
++`input.output.annotations.url`
++
++引用网页的 URL 地址。
++
++**cover_image** `object`  |  封面图
++
++`input.output.annotations.cover_image`
++
++网页封面图片信息。
++
++**height** `integer`  |  高度
++
++`input.output.annotations.cover_image.height`
++
++封面图片高度（像素）
++
++**url** `string`  |  图片地址
++
++`input.output.annotations.cover_image.url`
++
++封面图片的 URL 地址。
++
++**width** `integer`  |  宽度
++
++`input.output.annotations.cover_image.width`
++
++封面图片宽度（像素）
++
++**freshness_info** `string`  |  新鲜度
++
++`input.output.annotations.freshness_info`
++
++内容新鲜度信息。
++
++**logo_url** `string`  |  Logo 地址
++
++`input.output.annotations.logo_url`
++
++网站 Logo 图标地址。
++
++**mobile_url** `string`  |  移动端地址
++
++`input.output.annotations.mobile_url`
++
++移动端访问地址。
++
++**publish_time** `string`  |  发布时间
++
++`input.output.annotations.publish_time`
++
++网页发布时间。
++
++**site_name** `string`  |  站点名
++
++`input.output.annotations.site_name`
++
++站点名称。
++
++**summary** `string`  |  摘要
++
++`input.output.annotations.summary`
++
++网页内容摘要。
++
++文档引用 `object`
++
++引用自私域知识库文档的标注信息。
++
++**type** `string` `必选`  |  类型
++
++`input.output.annotations.type`
++
++标注类型。
++
++取值固定为 `doc_citation`。
++
++**chunk_attachment** `object[]`  |  分块附件
++
++`input.output.annotations.chunk_attachment`
++
++引用分块附带的附件信息列表。
++
++**chunk_id** `integer`  |  分块 ID
++
++`input.output.annotations.chunk_id`
++
++引用文档分块的 ID。
++
++**doc_id** `string`  |  文档 ID
++
++`input.output.annotations.doc_id`
++
++引用文档的 ID。
++
++**doc_name** `string`  |  文档名
++
++`input.output.annotations.doc_name`
++
++引用文档的名称。
++
++**text** `string`  |  文本内容
++
++`input.output.text`
++
++模型思维链文本内容。
++
++**status** `string`  |  状态
++
++`input.status`
++
++函数输出条目的处理状态。可选值：`in_progress`、`completed`、`incomplete`。
++
++模型思维链信息 `object`
++
++在模型生成响应时使用的思维链信息。如果需要手动管理，需要设置该字段，以便在后续的对话中进行管理。
++
++**status** `string` `必选`  |  状态
++
++`input.status`
++
++推理内容的状态。可选值：`in_progress`、`completed`、`incomplete`。
++
++**type** `string` `必选`  |  类型
++
++`input.type`
++
++输入元素类型判别标签。
++
++取值固定为 `reasoning`。
++
++**content** `object[]`  |  推理内容
++
++`input.content`
++
++推理过程的内容元素列表。
++
++模型回答文本 `object`
++
++模型生成的最终回答文本。
++
++**type** `string` `必选`  |  类型
++
++`input.content.type`
++
++内容类型判别字段，用于区分 union 变体。
++
++取值固定为 `output_text`。
++
++**annotations** `object[]`  |  标注列表
++
++`input.content.annotations`
++
++文本附带的标注信息列表（如引用来源等）
++
++网页引用 `object`
++
++引用自互联网网页的标注信息。
++
++**title** `string` `必选`  |  标题
++
++`input.content.annotations.title`
++
++引用网页的标题。
++
++**type** `string` `必选`  |  类型
++
++`input.content.annotations.type`
++
++标注类型的判别字段（discriminator）。
++
++取值固定为 `url_citation`。
++
++**url** `string` `必选`  |  网址
++
++`input.content.annotations.url`
++
++引用网页的 URL 地址。
++
++**cover_image** `object`  |  封面图
++
++`input.content.annotations.cover_image`
++
++网页封面图片信息。
++
++**height** `integer`  |  高度
++
++`input.content.annotations.cover_image.height`
++
++封面图片高度（像素）
++
++**url** `string`  |  图片地址
++
++`input.content.annotations.cover_image.url`
++
++封面图片的 URL 地址。
++
++**width** `integer`  |  宽度
++
++`input.content.annotations.cover_image.width`
++
++封面图片宽度（像素）
++
++**freshness_info** `string`  |  新鲜度
++
++`input.content.annotations.freshness_info`
++
++内容新鲜度信息。
++
++**logo_url** `string`  |  Logo 地址
++
++`input.content.annotations.logo_url`
++
++网站 Logo 图标地址。
++
++**mobile_url** `string`  |  移动端地址
++
++`input.content.annotations.mobile_url`
++
++移动端访问地址。
++
++**publish_time** `string`  |  发布时间
++
++`input.content.annotations.publish_time`
++
++网页发布时间。
++
++**site_name** `string`  |  站点名
++
++`input.content.annotations.site_name`
++
++站点名称。
++
++**summary** `string`  |  摘要
++
++`input.content.annotations.summary`
++
++网页内容摘要。
++
++文档引用 `object`
++
++引用自私域知识库文档的标注信息。
++
++**type** `string` `必选`  |  类型
++
++`input.content.annotations.type`
++
++标注类型。
++
++取值固定为 `doc_citation`。
++
++**chunk_attachment** `object[]`  |  分块附件
++
++`input.content.annotations.chunk_attachment`
++
++引用分块附带的附件信息列表。
++
++**chunk_id** `integer`  |  分块 ID
++
++`input.content.annotations.chunk_id`
++
++引用文档分块的 ID。
++
++**doc_id** `string`  |  文档 ID
++
++`input.content.annotations.doc_id`
++
++引用文档的 ID。
++
++**doc_name** `string`  |  文档名
++
++`input.content.annotations.doc_name`
++
++引用文档的名称。
++
++**text** `string`  |  文本内容
++
++`input.content.text`
++
++模型生成的文本内容。
++
++模型思维链文本 `object`
++
++模型生成的思维链文本。
++
++**type** `string` `必选`  |  类型
++
++`input.content.type`
++
++内容类型标识，用于区分 union 变体。
++
++取值固定为 `reasoning_text`。
++
++**annotations** `object[]`  |  标注列表
++
++`input.content.annotations`
++
++思维链附带的标注信息列表。
++
++网页引用 `object`
++
++引用自互联网网页的标注信息。
++
++**title** `string` `必选`  |  标题
++
++`input.content.annotations.title`
++
++引用网页的标题。
++
++**type** `string` `必选`  |  类型
++
++`input.content.annotations.type`
++
++标注类型的判别字段（discriminator）。
++
++取值固定为 `url_citation`。
++
++**url** `string` `必选`  |  网址
++
++`input.content.annotations.url`
++
++引用网页的 URL 地址。
++
++**cover_image** `object`  |  封面图
++
++`input.content.annotations.cover_image`
++
++网页封面图片信息。
++
++**height** `integer`  |  高度
++
++`input.content.annotations.cover_image.height`
++
++封面图片高度（像素）
++
++**url** `string`  |  图片地址
++
++`input.content.annotations.cover_image.url`
++
++封面图片的 URL 地址。
++
++**width** `integer`  |  宽度
++
++`input.content.annotations.cover_image.width`
++
++封面图片宽度（像素）
++
++**freshness_info** `string`  |  新鲜度
++
++`input.content.annotations.freshness_info`
++
++内容新鲜度信息。
++
++**logo_url** `string`  |  Logo 地址
++
++`input.content.annotations.logo_url`
++
++网站 Logo 图标地址。
++
++**mobile_url** `string`  |  移动端地址
++
++`input.content.annotations.mobile_url`
++
++移动端访问地址。
++
++**publish_time** `string`  |  发布时间
++
++`input.content.annotations.publish_time`
++
++网页发布时间。
++
++**site_name** `string`  |  站点名
++
++`input.content.annotations.site_name`
++
++站点名称。
++
++**summary** `string`  |  摘要
++
++`input.content.annotations.summary`
++
++网页内容摘要。
++
++文档引用 `object`
++
++引用自私域知识库文档的标注信息。
++
++**type** `string` `必选`  |  类型
++
++`input.content.annotations.type`
++
++标注类型。
++
++取值固定为 `doc_citation`。
++
++**chunk_attachment** `object[]`  |  分块附件
++
++`input.content.annotations.chunk_attachment`
++
++引用分块附带的附件信息列表。
++
++**chunk_id** `integer`  |  分块 ID
++
++`input.content.annotations.chunk_id`
++
++引用文档分块的 ID。
++
++**doc_id** `string`  |  文档 ID
++
++`input.content.annotations.doc_id`
++
++引用文档的 ID。
++
++**doc_name** `string`  |  文档名
++
++`input.content.annotations.doc_name`
++
++引用文档的名称。
++
++**text** `string`  |  文本内容
++
++`input.content.text`
++
++模型思维链文本内容。
++
++**encrypted_content** `string`  |  加密思维链
++
++`input.encrypted_content`
++
++思考内容加密原文。经加密及压缩处理后的思考内容加密原文。
++
++在 Agent 场景下如果不采用 `previous_response_id` 方式进行多轮对话，则必须回传思考内容加密原文，保证模型推理效果。
++
++相关文档：
++
++* [关键规则](https://ark.volcengine.com/region:cn-beijing/docs/agent-model-invocation-practice#key-rules)
++
++* [回传思考内容加密块使用示例](https://ark.volcengine.com/region:cn-beijing/docs/agent-model-invocation-practice#encrypted-thinking-block-examples)
+ 
+ **模型支持**：
+ 
+-
+-* **doubao\-seed\-2.0\-mini**：260428 及后续版本
+-
+-* **doubao\-seed\-2.0\-lite**：全版本支持
+-
+-* **doubao\-seed\-2.0\-pro**：全版本支持
+-
+-
+-
+-**image_pixel_limit** `object` `默认值 null`  |  像素限制
+-
+-`input.content.image_pixel_limit`
+-
+-输入给模型的图片的像素范围，如不在此范围，图片会被等比例缩放至该范围。
+-
+-<div data-tips="true" data-tips-type="warning" data-tips-is-title="true">注意</div>
+-
+-
+-<div data-tips="true" data-tips-type="warning">图片像素范围需在 <code>[196, 36000000]</code>，否则会直接报错。</div>
+-
+-
+-
+-* <div data-tips="true" data-tips-type="warning">生效优先级：高于 <code>detail</code> 字段，即同时配置 <code>detail</code> 与 <code>image_pixel_limit</code> 字段时，生效 <code>image_pixel_limit</code> 字段配置。</div>
+-
+-
+-* <div data-tips="true" data-tips-type="warning">默认生效规则：若未设置 <code>image_pixel_limit</code>，则使用 <code>detail</code> 配置的值对应的 <code>min_pixels</code> / <code>max_pixels</code> 值。</div>
+-
+-
+-
+-
+-**max_pixels** `integer`  |  最大像素
+-
+-`input.content.image_pixel_limit.max_pixels`
+-
+-传入图片最大像素限制，大于此像素则等比例缩小至 `max_pixels` 字段取值以下。若未设置，则取值为 `detail` 配置的值对应的 `max_pixels` 值。
+-
+-**最大值**：`9031680`
+-
+-
+-
+-**min_pixels** `integer`  |  最小像素
+-
+-`input.content.image_pixel_limit.min_pixels`
+-
+-传入图片最小像素限制，小于此像素则等比例放大至 `min_pixels` 字段取值以上。若未设置，则取值为 `detail` 配置的值对应的 `min_pixels` 值。
+-
+-**最小值**：`1764`
+-
+-
+-
+-
+-**image_url** `string`  |  图片地址
+-
+-`input.content.image_url`
+-
+-图片 URL 或 Base64 编码（格式 `data:image/{格式};base64,{编码}`）
+-
+-
+-
+-
+-输入模型的音频 `object`
+-
+-输入给模型的音频内容。支持通过 file_id 或 audio_url 传入。
+-
++* `doubao-seed-2-0-lite-260428 及后续版本`
++
++**id** `string`  |  推理 ID
++
++`input.id`
++
++推理内容的唯一标识 ID。
++
++**summary** `object[]`  |  推理摘要
++
++`input.summary`
++
++模型推理过程的分段摘要，每项对应一段摘要文本，用于多轮对话回传管理思维链上下文。
+ 
+ **type** `string` `必选`  |  类型
+ 
+-`input.content.type`
+-
+-内容类型标识，用于区分 ContentItem 变体。
+-
+-取值固定为 `input_audio`。
+-
+-
+-
+-**audio_url** `string`  |  音频地址
+-
+-`input.content.audio_url`
+-
+-音频 URL 或 Base64 编码。
+-
+-
+-
+-**chunking_strategy** `object`  |  分段策略
+-
+-`input.content.chunking_strategy`
+-
+-音频分段策略配置。
+-
++`input.summary.type`
++
++摘要片段类型标识。
++
++取值固定为 `summary_text`。
++
++**text** `string`  |  摘要文本
++
++`input.summary.text`
++
++思维链摘要文本内容。
++
++MCP 审批请求 `object`
++
++历史 MCP 工具审批请求记录，用于多轮对话上下文回传。
++
++**arguments** `string` `必选`  |  调用参数
++
++`input.arguments`
++
++工具调用参数的 JSON 字符串。
++
++**name** `string` `必选`  |  工具名
++
++`input.name`
++
++待运行的工具名称。
++
++**server_label** `string` `必选`  |  服务标签
++
++`input.server_label`
++
++发起请求的 MCP Server 标签。
+ 
+ **type** `string` `必选`  |  类型
+ 
+-`input.content.chunking_strategy.type`
+-
+-分段策略的类型标识。
+-
+-取值固定为 `server_vad`。
+-
+-
+-
+-**prefix_padding_ms** `integer`  |  前置填充
+-
+-`input.content.chunking_strategy.prefix_padding_ms`
+-
+-语音前置静音填充时长（毫秒）
+-
+-
+-
+-**silence_duration_ms** `integer`  |  静音时长
+-
+-`input.content.chunking_strategy.silence_duration_ms`
+-
+-触发分段的静音持续时长（毫秒）
+-
+-
+-
+-**threshold** `number`  |  检测阈值
+-
+-`input.content.chunking_strategy.threshold`
+-
+-VAD 检测阈值。
+-
+-
+-
+-
+-**file_id** `string`  |  文件 ID
+-
+-`input.content.file_id`
+-
+-通过 *Files* API 上传后获取的文件 ID，指向火山引擎 TOS Bucket 中的音频文件。
++`input.type`
++
++输入元素类型。
++
++取值固定为 `mcp_approval_request`。
++
++**id** `string`  |  请求 ID
++
++`input.id`
++
++审批请求的唯一 ID。
++
++MCP 审批响应 `object`
++
++历史 MCP 工具审批响应记录，回传给模型后据此决定是否调用工具。
++
++**approval_request_id** `string` `必选`  |  请求 ID
++
++`input.approval_request_id`
++
++被回应的审批请求 ID。
++
++**approve** `boolean` `必选`  |  是否批准
++
++`input.approve`
++
++是否批准该工具调用请求。
++
++**type** `string` `必选`  |  类型
++
++`input.type`
++
++输入元素类型标识。
++
++取值固定为 `mcp_approval_response`。
++
++**id** `string`  |  响应 ID
++
++`input.id`
++
++审批响应的唯一 ID。
++
++**reason** `string`  |  决策理由
++
++`input.reason`
++
++对该审批决策的说明或依据。
++
++MCP 工具清单 `object`
++
++历史 MCP 工具清单记录，用于多轮对话上下文回传。
++
++**server_label** `string` `必选`  |  服务标签
++
++`input.server_label`
++
++该工具清单所属的 MCP Server 标签。
++
++**type** `string` `必选`  |  类型
++
++`input.type`
++
++输入元素类型，用于标识这是一条 MCP 工具清单记录。
++
++取值固定为 `mcp_list_tools`。
++
++**error** `string`  |  错误信息
++
++`input.error`
++
++MCP Server 无法返回工具列表时的错误信息。
++
++**id** `string`  |  列表 ID
++
++`input.id`
++
++工具列表的唯一 ID。
++
++**tools** `object[]`  |  工具列表
++
++`input.tools`
++
++该 MCP Server 上可用的工具列表。
++
++**name** `string` `必选`  |  工具名
++
++`input.tools.name`
++
++工具名称。
++
++**annotations** `object`  |  注解信息
++
++`input.tools.annotations`
++
++工具的附加注解信息。
++
++**description** `string`  |  工具描述
++
++`input.tools.description`
++
++工具的功能描述。
++
++**input_schema** `object`  |  入参 Schema
++
++`input.tools.input_schema`
++
++描述工具入参的 JSON Schema。
++
++MCP 工具调用 `object`
++
++历史 MCP 工具调用记录，用于多轮对话上下文回传。
++
++**name** `string` `必选`  |  工具名
++
++`input.name`
++
++实际运行的工具名称。
++
++**server_label** `string` `必选`  |  服务标签
++
++`input.server_label`
++
++运行工具的 MCP Server 标签。
++
++**type** `string` `必选`  |  类型
++
++`input.type`
++
++输入元素类型判别标签，标识该条目为 MCP 工具调用记录。
++
++取值固定为 `mcp_call`。
++
++**arguments** `string`  |  调用参数
++
++`input.arguments`
++
++传递给 MCP 工具的调用参数，JSON 字符串。
++
++> **说明**
++
++> 该字段通过 `response.mcp_call_arguments.delta` 事件流式追加，初始 `output_item.added` 事件可能不携带该字段。
++
++**error** `string`  |  错误信息
++
++`input.error`
++
++工具调用失败时的错误信息。
++
++**id** `string`  |  调用 ID
++
++`input.id`
++
++工具调用的唯一 ID。
++
++**output** `string`  |  返回结果
++
++`input.output`
++
++工具调用的返回结果。
++
++上下文元素 `object`
++
++表示模型生成回复时需参考的上下文内容。该项可以包含文本、图片和视频输入，以及先前助手的回复和工具调用的输出。
++
++**id** `string` `必选`  |  条目 ID
++
++`input.id`
++
++引用的上下文条目 ID。
++
++**type** `string` `必选`  |  类型
++
++`input.type`
++
++输入元素类型标识。
++
++取值固定为 `item_reference`。
++
++**model** `string` `必选`  |  模型 ID
++
++本次请求调用的模型 ID（Model ID），用于指定处理输入内容的模型。
++
++> **说明**
++
++* > 开通模型服务并查询 Model ID，请参见 [模型列表](https://ark.volcengine.com/region:cn-beijing/docs/model-list)。
++
++* > 若需要多个应用分别调用模型服务或做更细粒度的权限管理，可改传 Endpoint ID（在线推理接入点的 ID）。
++
++**caching** `object`  |  上下文缓存
++
++是否为本次请求开启上下文缓存。
++
++> **注意**
++
++> 不可与 instructions 字段、tools（除自定义函数 Function Calling 外）字段一起使用。
++
++**prefix** `boolean` `默认值 false`  |  仅写缓存
++
++`caching.prefix`
++
++是否仅写入前缀缓存，不生成回复。`true` 只写缓存，不返回模型输出；`false` 正常生成回复并写缓存。
++
++**type** `string` `默认值 disabled`  |  缓存模式
++
++`caching.type`
++
++缓存模式。
++
++* `enabled`：开启上下文缓存。
++
++* `disabled`：关闭上下文缓存。
++
++**context_management** `object`  |  上下文管理
++
++上下文管理策略，帮助模型有效利用上下文窗口。
++
++**edits** `object[]` `必选`  |  编辑策略
++
++`context_management.edits`
++
++要应用的上下文编辑策略列表，按顺序执行。
++
++清理工具调用 `object`
++
++清理工具调用记录的编辑策略。
++
++**clear_tool_inputs** `object` `必选`  |  清理范围
++
++`context_management.edits.clear_tool_inputs`
++
++清理范围配置（清理全部或仅清理指定工具）
++
++**clear_all** `boolean`  |  全部清理
++
++`context_management.edits.clear_tool_inputs.clear_all`
++
++是否清理全部工具调用记录。
++
++**tool_name_list** `object`  |  指定工具名
++
++`context_management.edits.clear_tool_inputs.tool_name_list`
++
++仅清理指定名称的工具调用记录。
++
++**clear_tool_names** `string[]` `必选`  |  工具名列表
++
++`context_management.edits.clear_tool_inputs.tool_name_list.clear_tool_names`
++
++需要清理记录的工具名称列表。
++
++**type** `string` `必选`  |  类型
++
++`context_management.edits.type`
++
++编辑策略类型（union 判别字段）
++
++取值固定为 `clear_tool_uses`。
++
++**exclude_tools** `string[]`  |  排除工具
++
++`context_management.edits.exclude_tools`
++
++免清理的工具名称列表。列表中的工具，其调用记录不会被清理，仍完整保留在上下文中。
++
++**keep** `object`  |  保留策略
++
++`context_management.edits.keep`
++
++保留最近若干次工具调用。
++
++**type** `string` `必选`  |  类型
++
++`context_management.edits.keep.type`
++
++保留策略类型。
++
++取值固定为 `tool_uses`。
++
++**value** `integer` `必选`  |  保留次数
++
++`context_management.edits.keep.value`
++
++保留的最近工具调用次数。
++
++**trigger** `object`  |  触发条件
++
++`context_management.edits.trigger`
++
++触发清理的阈值配置。
++
++**type** `string` `必选`  |  类型
++
++`context_management.edits.trigger.type`
++
++触发类型（discriminator）
++
++取值固定为 `tool_uses`。
++
++**value** `integer` `必选`  |  触发阈值
++
++`context_management.edits.trigger.value`
++
++累计工具调用次数达到该阈值时触发清理。
++
++清理思维链 `object`
++
++清理思维链内容的编辑策略。
++
++**keep** `object` `必选`  |  保留策略
++
++`context_management.edits.keep`
++
++保留策略，配置清理思维链后仍要保留的内容范围。
++
++> **注意**
++
++> *ClearThinkingKeep* 二选一：设 *all* 为 `"all"` 表示全部保留，或通过 *thinking_turn_params* 保留指定轮次。
++
++**all** `string`  |  全部保留
++
++`context_management.edits.keep.all`
++
++全部保留策略的启用标识。
++
++取值固定为 `all`。
++
++**thinking_turn_params** `object`  |  按轮次保留
++
++`context_management.edits.keep.thinking_turn_params`
++
++按轮次保留的策略配置。
++
++**type** `string` `必选`  |  类型
++
++`context_management.edits.keep.thinking_turn_params.type`
++
++保留策略类型（判别字段）
++
++取值固定为 `thinking_turns`。
++
++**value** `integer` `必选`  |  保留轮次
++
++`context_management.edits.keep.thinking_turn_params.value`
++
++保留的最近思维链轮次数量。
++
++**最小值**：`0`
++
++**type** `string` `必选`  |  类型
++
++`context_management.edits.type`
++
++编辑策略类型判别字段。
++
++取值固定为 `clear_thinking`。
++
++**expire_at** `integer`  |  过期时间戳
++
++存储过期时刻，UTC Unix 时间戳（秒），对 `store`（上下文存储）和 `caching`（上下文缓存）都生效。默认值：`创建时刻+259200`
++
++> **说明**
++
++* > 取值范围：`(创建时刻, 创建时刻+604800]`，即最多保留 7 天。
++
++* > 缓存存储时间计费按 `过期时刻 - 创建时刻` 计算，不满 1 小时按 1 小时计。
++
++* > 详细配置及示例代码请参见 [文档](https://ark.volcengine.com/region:cn-beijing/docs/context-cache#expire-cache)。
++
++**include** `string[]`  |  附加输出数据
++
++指定要在模型响应中返回的其他输出数据。
++
++**instructions** `string`  |  系统指令
++
++在模型上下文中作为系统消息或开发者指令插入。
++
++> **说明**
++
++> 与 `previous_response_id` 一起使用时，前一个回复中的指令不会被继承到下一个回复中。
++
++> **注意**
++
++> 不可与缓存能力一起使用。配置了 instructions 字段后，本轮请求无法写入缓存和使用缓存：
++
++* > caching 字段配置为 `{"type":"enabled"}` 时报错。
++
++* > 传入带缓存的 previous_response_id 时，缓存输入（cached_tokens）为 0。
++
++**max_output_tokens** `integer`  |  最大输出长度
++
++控制模型本次响应输出的最大长度（单位 token），包含模型回答与思维链内容。
++
++> **说明**
++
++* > `deepseek-v4-1-flash-261017`、`deepseek-v4-1-flash-260910`、`deepseek-v4-1-flash-economy-261017` 模型该字段默认值 128k。
++
++* > 模型输出总长度还受模型的上下文长度限制，实际可用上限以模型列表为准。
++
++* > 计入的输出 token 包含模型回答与思维链内容之和。
++
++**max_tool_calls** `integer`  |  最大调用轮次
++
++最大工具调用轮次（一轮里不限制次数），在工具调用达到此限制次数后，提示模型停止更多工具调用并进行回答。
++
++> **注意**
++
++* > 该参数为尽力而为（best effort）机制，不保证成功，最终调用次数会受模型推理效果、工具返回结果有效性等因素影响。
++
++* > 各工具类型的默认值：
++
++   * > `web_search` 基础联网搜索工具默认值 `3`。
++
++   * > `image_process` 图像处理工具默认值 `10`，不支持修改。
++
++   * > `knowledge_search` 私域知识库搜索工具默认值 `3`。
++
++   * > 豆包助手不支持此参数。
++
++**取值范围**：`[1, 10]`
++
++**metadata** `object`  |  自定义元数据
++
++用户自定义键值对元数据，会与响应对象一同存储并在后续读取时原样回显。最多支持 16 对键值，key 长度不超过 64 个字符，value 长度不超过 512 个字符。
++
++**previous_response_id** `string`  |  上轮响应 ID
++
++上一个模型回复的唯一标识符。传入该字段可实现多轮对话。
++
++> **说明**
++
++* > 在请求中传入 `previous_response_id`，会引入上一轮请求的输入和回答内容，本次请求的输入 tokens 会相应增加。
++
++* > 在多轮连续对话中，建议在每次请求之间加入约 100 毫秒的延迟，否则可能会导致调用失败。
++
++**prompt_cache_key** `string`  |  缓存路由标识
++
++用于提升隐式缓存命中率的缓存路由标识。取值相同的请求会优先路由到缓存命中率更高的服务，从而提升隐式缓存命中率。
++
++**reasoning** `object`  |  思考工作量
++
++限制深度思考的工作量。减少深度思考工作量可使响应速度更快，并且深度思考的 token 用量更小。
++
++**effort** `string`  |  思考深度
++
++`reasoning.effort`
++
++限制思考的工作量。减少思考深度可提升速度，思考花费的 token 更少。
++
++* `none`：关闭思考。
++
++* `minimal`：关闭思考，直接回答。
++
++* `low`：轻量思考，侧重快速响应。
++
++* `medium`：均衡模式，兼顾速度与深度。
++
++* `high`：深度分析，处理复杂问题。
++
++* `xhigh`：更高程度思考。
++
++* `max`：最高程度思考，适配高难度推理任务。
++
++> **说明**
++
++> 支持该字段的模型、默认取值、参数兼容映射规则，以及与 `thinking.type` 字段的关系，详见 [文档](https://ark.volcengine.com/region:cn-beijing/docs/responses-api-deep-thinking#dc4c1547)。
++
++**service_tier** `string`  |  推理模式
++
++控制使用的在线推理模式。
++
++* `fast`：本次请求优先使用 [在线推理（低延迟）](https://ark.volcengine.com/region:cn-beijing/docs/online-inference-low-latency) 模式。
++
++   * 推理接入点（`model` 字段指定）有低延迟限流配额，本次请求将会优先使用低延迟限流配额，获得更高的服务等级（延迟、可用性等）。
++
++   * 推理接入点无低延迟限流配额，或者限流配额已满，降级至 **在线推理（常规）**  模式，维持常规的服务等级。
++
++* `auto`：本次请求优先使用 [在线推理（TPM 保障包）](https://ark.volcengine.com/region:cn-beijing/docs/tpm-guarantee-package) 模式。
++
++   * 推理接入点有 TPM 保障包额度，本次请求将会优先使用 TPM 保障包额度，获得最高的服务等级。
++
++   * 推理接入点无 TPM 保障包额度或用超额度，降级至 **在线推理（常规）**  模式，维持常规的服务等级。
++
++* `default`：本次请求只使用 [在线推理（常规）](https://ark.volcengine.com/region:cn-beijing/docs/online-inference-standard) 模式，维持常规的服务等级。
++
++   * 即使调用的推理接入点有 TPM 保障包额度 / 低延迟限流额度，也只使用在线推理（常规）模式。
++
++* `flex`：本次请求使用 [在线推理（低优）](https://ark.volcengine.com/region:cn-beijing/docs/online-inference-flex) 模式。
++
++**store** `boolean` `默认值 true`  |  存储响应
++
++是否存储生成的模型响应，以便后续通过 API 检索。
++
++* `false`：不存储生成的模型响应。
++
++* `true`：存储当前模型响应。
++
++当 `service_tier` 为 `flex` 时，本字段只能设置为 `false`。
++
++**stream** `boolean` `默认值 false`  |  流式输出
++
++响应内容是否流式返回。
++
++* `false`：模型生成完所有内容后一次性返回结果。
++
++* `true`：按 SSE 协议逐块返回模型生成内容，并以一条 `data: [DONE]` 消息结束。
++
++**temperature** `number` `默认值 1.0`  |  采样温度
++
++采样温度，控制生成文本时对每个候选词的概率分布进行平滑的程度。
++
++* 取值为 0 时，模型仅考虑对数概率最大的一个 token。
++
++* 较高的值（如 0.8）会使输出更加随机，较低的值（如 0.2）会使输出更加集中确定。
++
++> **注意**
++
++> 调用下列模型时，本字段取值固定为 1，手动指定的参数值将被忽略。
++
++* > doubao\-seed\-2\-0\-code\-preview\-260215
++
++* > doubao\-seed\-2\-0\-pro\-260215
++
++* > doubao\-seed\-2\-0\-lite\-260215
++
++**取值范围**：`[0, 2]`
++
++**text** `object`  |  输出格式
++
++模型文本输出的格式定义，可以是自然语言，也可以是结构化的 JSON 数据。
++
++**format** `object` `必选`  |  输出格式
++
++`text.format`
++
++文本输出格式定义。
++
++**type** `string` `必选`  |  格式类型
++
++`text.format.type`
++
++输出格式类型。可选值：`text`、`json_schema`、`json_object`。
++
++> **注意**
++
++> `json_object` / `json_schema` 能力尚在 beta 阶段，请谨慎在生产环境使用。
++
++**description** `string`  |  格式描述
++
++`text.format.description`
++
++格式描述信息。
++
++**name** `string`  |  格式名称
++
++`text.format.name`
++
++格式名称，作为 JSON Schema 输出格式的标识。
++
++> **注意**
++
++> 仅当 *type* 为 `json_schema` 时需要提供此字段。
++
++**schema** `object`  |  Schema 定义
++
++`text.format.schema`
++
++JSON Schema 定义。当 *type* 为 `json_schema` 时必填。
++
++**strict** `boolean`  |  严格模式
++
++`text.format.strict`
++
++是否严格按 JSON Schema 校验模型输出。
++
++> **注意**
++
++> 仅当 *type* 为 `json_schema` 时生效。
++
++**thinking** `object`  |  深度思考开关
++
++配置模型深度思考模式的开关，通过子字段 `type` 指定启用、关闭或由模型自行判断。
++
++> **说明**
++
++> 未传入 `thinking` 时，模型默认开启深度思考；如需关闭，需显式将子字段 `type` 设置为 `disabled`。
++
++**type** `string`  |  思考模式
++
++`thinking.type`
++
++深度思考模式。
++
++* `enabled`：开启深度思考。
++
++* `disabled`：关闭深度思考。
++
++**tool_choice** `string / object`  |  工具调用策略
++
++本次请求，模型返回信息中是否有待调用的工具的调用策略。
++
++> **说明**
++
++* > 未指定工具时默认值为 `none`；存在工具时默认值为 `auto`。
+ 
+ **模型支持**：
+ 
+-
+-* **doubao\-seed\-2.0\-mini**：260428 及后续版本
+-
+-* **doubao\-seed\-2.0\-lite**：全版本支持
+-
+-* **doubao\-seed\-2.0\-pro**：全版本支持
+-
+-
+-
+-
+-输入模型的文件 `object`
+-
+-输入给模型的文件内容。支持通过 file_id、file_data（Base64）或 file_url 传入。
+-
++* `Doubao Seed 2.0 系列`
++
++简单策略 `string`
++
++直接传入字符串 `none`、`auto` 或 `required`，控制工具调用整体策略。
++
++指定工具 `object`
++
++通过对象指定具体工具类型或工具名进行调用。
++
++**type** `string` `必选`  |  工具类型
++
++`tool_choice.type`
++
++指定要调用的工具类型，用于精确路由到对应工具。可选值：
++
++* `function`
++
++* `web_search`
++
++* `image_process`
++
++* `mcp`
++
++* `knowledge_search`
++
++* `doubao_app`
++
++**name** `string`  |  工具名称
++
++`tool_choice.name`
++
++指定要调用的具体工具名，如函数名或 MCP 服务下的工具名。
++
++**tools** `object[]`  |  工具列表
++
++模型可以调用的工具列表，支持内置工具（Built\-in tools）、MCP 工具和自定义工具（Function Calling）
++
++函数调用 `object`
++
++自定义函数调用（Function Calling），让模型生成结构化的函数参数。
++
++**name** `string` `必选`  |  函数名
++
++`tools.name`
++
++供模型调用的函数名称，模型在 function_call 输出中以该名称回传，用于匹配对应函数。
+ 
+ **type** `string` `必选`  |  类型
+ 
+-`input.content.type`
+-
+-内容项的类型标识。
+-
+-取值固定为 `input_file`。
+-
+-
+-
+-**file_data** `string`  |  文件数据
+-
+-`input.content.file_data`
+-
+-Base64 编码的文件内容。
+-
+-<div data-tips="true" data-tips-type="tip" data-tips-is-title="true">说明</div>
+-
+-
+-<div data-tips="true" data-tips-type="tip">文件大小上限为 50 MB。</div>
+-
+-
+-
+-
+-**file_id** `string`  |  文件 ID
+-
+-`input.content.file_id`
+-
+-通过 *Files* API 上传后获取的文件 ID，指向火山引擎 TOS Bucket 中的文件。
++`tools.type`
++
++工具类型标识，用于在 union 中区分不同工具类别。
++
++取值固定为 `function`。
++
++**description** `string`  |  函数描述
++
++`tools.description`
++
++函数的描述信息，帮助模型理解何时使用该函数。
++
++**parameters** `object`  |  参数定义
++
++`tools.parameters`
++
++函数参数定义，遵循 JSON Schema 格式。
++
++联网搜索 `object`
++
++联网搜索工具，让模型在需要时自动进行网页搜索获取实时信息。
++
++**type** `string` `必选`  |  类型
++
++`tools.type`
++
++工具类型标识，用于区分 Tool 的不同变体。
++
++取值固定为 `web_search`。
++
++**limit** `integer` `默认值 10`  |  最大结果数
++
++`tools.limit`
++
++每轮搜索最大返回结果数量。
++
++> **说明**
++
++> 单次搜索最多返回 20 条；单轮可能有多次搜索，最终召回条数受此参数限制影响。
++
++**取值范围**：`[1, 50]`
++
++**max_keyword** `integer`  |  最大关键词数
++
++`tools.max_keyword`
++
++最大并行搜索关键词数量。
++
++**取值范围**：`[1, 50]`
++
++**sources** `string[]`  |  搜索来源
++
++`tools.sources`
++
++搜索信息来源限制，指定模型可从哪些渠道检索网页内容。可选值：`toutiao`、`douyin`、`moji`、`search_engine`、`doubao`。
++
++> **说明**
++
++> `doubao` 不能与其他搜索来源同时配置。传入 `["doubao"]` 时，`tools.limit`、`tools.max_keyword`、`tools.user_location` 均不生效，向它们传入的值将被忽略。
++
++**user_location** `object`  |  用户位置
++
++`tools.user_location`
++
++用户地理位置信息，用于搜索优化。
++
++**type** `string` `必选`  |  类型
++
++`tools.user_location.type`
++
++位置类型。
++
++取值固定为 `approximate`。
++
++**city** `string`  |  城市
++
++`tools.user_location.city`
++
++用户所在城市。
++
++**country** `string`  |  国家
++
++`tools.user_location.country`
++
++用户所在国家。
++
++**region** `string`  |  地区
++
++`tools.user_location.region`
++
++用户所在地区。
++
++**timezone** `number`  |  时区
++
++`tools.user_location.timezone`
++
++用户所在时区。
++
++图像处理 `object`
++
++图像处理工具，让模型对图片进行画点、选区、缩放、旋转等操作。
++
++**type** `string` `必选`  |  类型
++
++`tools.type`
++
++工具类型标识，用于区分 Tool 的不同变体。
++
++取值固定为 `image_process`。
++
++**grounding** `object`  |  选区功能
++
++`tools.grounding`
++
++选区/裁切功能配置，启用后模型可返回图像中目标的检测框或裁切区域坐标。
++
++**type** `string` `默认值 enabled`  |  开关
++
++`tools.grounding.type`
++
++功能开关。可选值：`enabled`、`disabled`。
++
++**point** `object`  |  画点功能
++
++`tools.point`
++
++画点/画线功能开关。
++
++**type** `string` `默认值 enabled`  |  开关
++
++`tools.point.type`
++
++功能开关。可选值：`enabled`、`disabled`。
++
++**rotate** `object`  |  旋转功能
++
++`tools.rotate`
++
++旋转功能开关。启用后模型可请求对图片按指定角度进行旋转。
++
++> **注意**
++
++> 旋转角度支持范围为 0\-359 度。
++
++**type** `string` `默认值 enabled`  |  开关
++
++`tools.rotate.type`
++
++功能开关。可选值：`enabled`、`disabled`。
++
++**zoom** `object`  |  缩放功能
++
++`tools.zoom`
++
++缩放功能开关，启用后模型可对图像目标区域执行缩放操作。
++
++> **说明**
++
++> 缩放倍率支持范围 0.5\-2.0 倍。
++
++**type** `string` `默认值 enabled`  |  开关
++
++`tools.zoom.type`
++
++功能开关。可选值：`enabled`、`disabled`。
++
++MCP 工具 `object`
++
++MCP（Model Context Protocol）工具，让模型调用外部 MCP Server 提供的工具。
++
++**server_label** `string` `必选`  |  服务标签
++
++`tools.server_label`
++
++MCP Server 的唯一标识标签。模型在工具调用输出中通过该标签指向对应 Server，便于在多个 MCP Server 场景下区分调用来源。
++
++**server_url** `string` `必选`  |  服务地址
++
++`tools.server_url`
++
++MCP Server 的 HTTP(S) 访问地址，模型通过该地址向 Server 发起工具调用请求。
++
++**type** `string` `必选`  |  类型
++
++`tools.type`
++
++工具类型标识，用于区分 Tool 的不同变体。
++
++取值固定为 `mcp`。
++
++**allowed_tools** `string[] / object`  |  允许工具
++
++`tools.allowed_tools`
++
++允许模型调用的工具范围。可传工具名称字符串数组，或包含 `tool_names` 字段的过滤器对象。
++
++工具名数组 `string[]`
++
++直接传入允许调用的工具名称数组。
++
++工具过滤器 `object`
++
++通过过滤器对象指定允许调用的工具范围。
++
++**tool_names** `string[]` `必选`  |  工具名列表
++
++`tools.allowed_tools.tool_names`
++
++允许调用的工具名称列表。
++
++**headers** `object`  |  请求头
++
++`tools.headers`
++
++调用 MCP Server 时附加的 HTTP 请求头，以字符串键值对形式指定 header 名与值。
++
++> **说明**
++
++* > 常用于传递鉴权信息（如 `Authorization`）。
++
++* > `Authorization` 字段不会被服务端存储。
++
++**require_approval** `string / object` `默认值 always`  |  审批策略
++
++`tools.require_approval`
++
++MCP 工具调用前的审批策略；支持简单模式（字符串）或按工具粒度控制（过滤器对象）。
++
++简单策略 `string`
++
++直接传入字符串 `always` 或 `never`，对所有工具应用统一审批策略。
++
++工具过滤器 `object`
++
++通过过滤器对象按工具粒度配置审批策略。
++
++**always** `object`  |  始终审批
++
++`tools.require_approval.always`
++
++始终需要审批的工具过滤器。
++
++**tool_names** `string[]` `必选`  |  工具名列表
++
++`tools.require_approval.always.tool_names`
++
++始终需要审批的工具名称列表。
++
++**never** `object`  |  无需审批
++
++`tools.require_approval.never`
++
++无需审批的工具过滤器。
++
++**tool_names** `string[]` `必选`  |  工具名列表
++
++`tools.require_approval.never.tool_names`
++
++无需审批即可调用的工具名称列表。
++
++**server_description** `string`  |  服务描述
++
++`tools.server_description`
++
++MCP Server 的描述信息，帮助模型理解何时使用该 Server。
++
++知识库搜索 `object`
++
++私域知识库搜索工具，让模型检索企业内部知识库中的文档内容。
++
++**knowledge_resource_id** `string` `必选`  |  知识库 ID
++
++`tools.knowledge_resource_id`
++
++**type** `string` `必选`  |  类型
++
++`tools.type`
++
++工具类型标识，用于区分 Tool 的不同变体。
++
++取值固定为 `knowledge_search`。
++
++**dense_weight** `number` `默认值 0.5`  |  稠密权重
++
++`tools.dense_weight`
++
++混合检索中稠密向量（语义）检索的权重，值越大越偏向语义匹配，越小越偏向关键词匹配。
++
++> **说明**
++
++> 仅在混合检索（索引算法为 `hnsw_hybrid`）下生效。
++
++**取值范围**：`[0.2, 1]`
++
++**description** `string`  |  知识库描述
++
++`tools.description`
++
++知识库描述信息，帮助模型理解何时使用该知识库。
++
++**doc_filter** `object`  |  文档过滤
++
++`tools.doc_filter`
++
++设置文档字段级别的检索过滤条件，确保只在符合条件的文档中检索。
++
++> **说明**
++
++* > 支持用作过滤条件的文档字段：
++
++   * > 系统字段：`doc_id`（仅手动创建的知识库）、`_sys_auto_doc_id`（手动 + API 创建均适用）
++
++   * > 自定义字段：已为知识库文档添加的**文档标签**（对应知识库 `index_config.fields` 中的 `field`）
++
++* > 支持单一条件过滤和多条件组合过滤（支持 `And` / `Or` 逻辑运算）。
++
++* > 详细使用方式和支持字段参见 [filter 表达式](https://www.volcengine.com/docs/84313/1419289#filter-%E8%A1%A8%E8%BE%BE%E5%BC%8F)。
++
++* > 若自定义字段类型为 `Boolean`，取值范围是 `True` / `False`，大小写规则：cURL 用 `true` / `false`，Python 用 `True` / `False`。
++
++**limit** `integer` `默认值 10`  |  最大结果数
++
++`tools.limit`
++
++最大搜索结果数量。
++
++**取值范围**：`[1, 200]`
++
++**max_keyword** `integer`  |  最大关键词数
++
++`tools.max_keyword`
++
++最大并行搜索关键词数量。
++
++**取值范围**：`[1, 50]`
++
++**ranking_options** `object`  |  排序选项
++
++`tools.ranking_options`
++
++检索后处理选项。可参考 [知识库 API 文档](https://www.volcengine.com/docs/84313/1350012) `post_processing` 字段。
++
++**chunk_diffusion_count** `integer` `默认值 0`  |  切片扩散数
++
++`tools.ranking_options.chunk_diffusion_count`
++
++检索阶段返回命中切片的上下几片邻近切片。取 `0` 表示不进行 chunk diffusion。
++
++**取值范围**：`[0, 5]`
++
++**chunk_group** `boolean` `默认值 false`  |  文本聚合
++
++`tools.ranking_options.chunk_group`
++
++文本聚合。
++
++* 默认不聚合。
++
++* 对于非结构化文件，可开启文本聚合以更好保留原文档内容语序。
++
++* 开启后，会根据文档及文档顺序，对切片重新聚合排序返回。
++
++**get_attachment_link** `boolean` `默认值 false`  |  获取附件链接
++
++`tools.ranking_options.get_attachment_link`
++
++是否获取切片中图片的临时下载链接。
++
++**rerank_model** `string` `默认值 base-multilingual-rerank`  |  Rerank 模型
++
++`tools.ranking_options.rerank_model`
++
++rerank 模型选择。可选值：`base-multilingual-rerank`、`m3-v2-rerank`。
++
++> **说明**
++
++* > 仅在 `rerank_switch` 为 `true` 时生效。
++
++* > `base-multilingual-rerank`（推荐）：速度快、长文本、支持 70+ 种语言。
++
++* > `m3-v2-rerank`：常规文本、支持 100+ 种语言。
++
++**rerank_only_chunk** `boolean` `默认值 false`  |  仅切片重排
++
++`tools.ranking_options.rerank_only_chunk`
++
++是否仅根据 chunk 内容计算重排分数。`true` 只根据 chunk 内容计算分；`false` 根据 chunk title + 内容一起计算排序分。
++
++**rerank_switch** `boolean` `默认值 false`  |  开启重排
++
++`tools.ranking_options.rerank_switch`
++
++是否自动对检索结果做 rerank。若设置为 `true`，则会自动请求 rerank 模型排序。
++
++**retrieve_count** `integer` `默认值 25`  |  重排切片数
++
++`tools.ranking_options.retrieve_count`
++
++进入重排的切片数量。
++
++> **注意**
++
++* > 仅在 `rerank_switch` 为 `true` 时生效。
++
++* > `retrieve_count` 需要大于等于 `limit`，否则会抛出错误。
++
++豆包助手 `object`
++
++豆包助手工具，让模型使用豆包的聊天、深度思考、AI 搜索和推理搜索能力。
++
++**feature** `object` `必选`  |  功能配置
++
++`tools.feature`
++
++豆包助手的子功能配置，用于按需开启聊天、深度思考、AI 搜索、推理搜索四类能力并设置对应角色描述。
++
++**ai_search** `object`  |  AI 搜索
++
++`tools.feature.ai_search`
++
++AI 搜索功能配置。
++
++**role_description** `string`  |  角色描述
++
++`tools.feature.ai_search.role_description`
++
++使用豆包助手时修改角色设定。默认值：`你的名字是豆包,有很强的专业性。`
++
++> **注意**
++
++> 此字段与 `system prompt`、`instructions` 互斥，同时配置时以本字段为准。
++
++**type** `string` `默认值 disabled`  |  开关
++
++`tools.feature.ai_search.type`
++
++功能开关。可选值：`enabled`、`disabled`。
++
++**chat** `object`  |  普通聊天
++
++`tools.feature.chat`
++
++普通聊天功能配置。
++
++**role_description** `string`  |  角色描述
++
++`tools.feature.chat.role_description`
++
++使用豆包助手时修改角色设定。默认值：`你的名字是豆包,有很强的专业性。`
++
++> **注意**
++
++> 此字段与 `system prompt`、`instructions` 互斥，同时配置时以本字段为准。
++
++**type** `string` `默认值 disabled`  |  开关
++
++`tools.feature.chat.type`
++
++功能开关。可选值：`enabled`、`disabled`。
++
++**deep_chat** `object`  |  深度聊天
++
++`tools.feature.deep_chat`
++
++深度聊天功能配置。
++
++**role_description** `string`  |  角色描述
++
++`tools.feature.deep_chat.role_description`
++
++使用豆包助手时修改角色设定。默认值：`你的名字是豆包,有很强的专业性。`
++
++> **注意**
++
++> 此字段与 `system prompt`、`instructions` 互斥，同时配置时以本字段为准。
++
++**type** `string` `默认值 disabled`  |  开关
++
++`tools.feature.deep_chat.type`
++
++功能开关。可选值：`enabled`、`disabled`。
++
++**reasoning_search** `object`  |  推理搜索
++
++`tools.feature.reasoning_search`
++
++推理搜索功能配置。
++
++**role_description** `string`  |  角色描述
++
++`tools.feature.reasoning_search.role_description`
++
++使用豆包助手时修改角色设定。默认值：`你的名字是豆包,有很强的专业性。`
++
++> **注意**
++
++> 此字段与 `system prompt`、`instructions` 互斥，同时配置时以本字段为准。
++
++**type** `string` `默认值 disabled`  |  开关
++
++`tools.feature.reasoning_search.type`
++
++功能开关。可选值：`enabled`、`disabled`。
++
++**type** `string` `必选`  |  类型
++
++`tools.type`
++
++工具类型，此处固定为 `doubao_app`
++
++**user_location** `object`  |  用户位置
++
++`tools.user_location`
++
++用户地理位置信息，用于搜索优化。
++
++**type** `string` `必选`  |  类型
++
++`tools.user_location.type`
++
++位置类型。
++
++取值固定为 `approximate`。
++
++**city** `string`  |  城市
++
++`tools.user_location.city`
++
++用户所在城市。
++
++**country** `string`  |  国家
++
++`tools.user_location.country`
++
++用户所在国家。
++
++**region** `string`  |  地区
++
++`tools.user_location.region`
++
++用户所在地区。
++
++**timezone** `number`  |  时区
++
++`tools.user_location.timezone`
++
++用户所在时区。
++
++**top_p** `number` `默认值 0.7`  |  核采样阈值
++
++核采样概率阈值。模型只考虑累计概率质量在 top_p 内的 token；取值为 0 时仅考虑对数概率最大的单个 token。
++
++> **说明**
++
++> 通常仅调整 `temperature` 或 `top_p` 其中之一，不建议同时修改。
++
++> **注意**
++
++* > 当调用下列模型，字段取值固定为 0.95，手动指定的参数值将被忽略。
++
++   * > doubao\-seed\-2\-0\-code\-preview\-260215
++
++   * > doubao\-seed\-2\-0\-pro\-260215
++
++   * > doubao\-seed\-2\-0\-lite\-260215
++
++* > `glm-5-3-flash-260828` 模型默认值为 0.95。
++
++* > `deepseek-v4-1-flash-261017`、`deepseek-v4-1-flash-260910`、`deepseek-v4-1-flash-economy-261017` 模型 top_p 参数取值规则如下：
++
++   * > 思考模式：参数生效。不传该参数时，使用 tool 时默认值为 0.95，其他情况默认值为 1。
++
++      * <div data-tips="true" data-tips-type="warning">传入值 < 0.95：系统自动提升至 0.95。</div>
++
++      * > 传入值 ≥ 0.95：按实际传入值使用。
++
++   * > 非思考模式：字段取值固定为 1.0，传入的值将被忽略。
++
++**取值范围**：`[0, 1]`
++
++## 响应参数
++
++### 非流式调用响应。
++
++**created_at** `integer`  |  创建时间戳
++
++本次请求创建时间的 Unix 时间戳（秒）
++
++**id** `string`  |  响应 ID
++
++本次请求的唯一标识。
++
++**model** `string`  |  模型 ID
++
++本次请求实际使用的模型名称和版本。
++
++**object** `string`  |  对象类型
++
++响应对象的类型标识。
++
++取值固定为 `response`。
++
++**output** `object[]`  |  输出条目
++
++模型的输出消息列表，包含模型响应本次请求生成的回答、思维链、工具调用。
++
++消息输出 `object`
++
++模型生成的消息输出，包含文本内容。
++
++**content** `object[]`  |  输出内容
++
++`output.content`
++
++输出内容列表。
++
++模型回答文本 `object`
++
++模型生成的最终回答文本。
++
++**type** `string`  |  类型
++
++`output.content.type`
++
++内容类型判别字段，用于区分 union 变体。
++
++取值固定为 `output_text`。
++
++**annotations** `object[]`  |  标注列表
++
++`output.content.annotations`
++
++文本附带的标注信息列表（如引用来源等）
++
++网页引用 `object`
++
++引用自互联网网页的标注信息。
++
++**title** `string`  |  标题
++
++`output.content.annotations.title`
++
++引用网页的标题。
++
++**type** `string`  |  类型
++
++`output.content.annotations.type`
++
++标注类型的判别字段（discriminator）。
++
++取值固定为 `url_citation`。
++
++**url** `string`  |  网址
++
++`output.content.annotations.url`
++
++引用网页的 URL 地址。
++
++**cover_image** `object`  |  封面图
++
++`output.content.annotations.cover_image`
++
++网页封面图片信息。
++
++**height** `integer`  |  高度
++
++`output.content.annotations.cover_image.height`
++
++封面图片高度（像素）
++
++**url** `string`  |  图片地址
++
++`output.content.annotations.cover_image.url`
++
++封面图片的 URL 地址。
++
++**width** `integer`  |  宽度
++
++`output.content.annotations.cover_image.width`
++
++封面图片宽度（像素）
++
++**freshness_info** `string`  |  新鲜度
++
++`output.content.annotations.freshness_info`
++
++内容新鲜度信息。
++
++**logo_url** `string`  |  Logo 地址
++
++`output.content.annotations.logo_url`
++
++网站 Logo 图标地址。
++
++**mobile_url** `string`  |  移动端地址
++
++`output.content.annotations.mobile_url`
++
++移动端访问地址。
++
++**publish_time** `string`  |  发布时间
++
++`output.content.annotations.publish_time`
++
++网页发布时间。
++
++**site_name** `string`  |  站点名
++
++`output.content.annotations.site_name`
++
++站点名称。
++
++**summary** `string`  |  摘要
++
++`output.content.annotations.summary`
++
++网页内容摘要。
++
++文档引用 `object`
++
++引用自私域知识库文档的标注信息。
++
++**type** `string`  |  类型
++
++`output.content.annotations.type`
++
++标注类型。
++
++取值固定为 `doc_citation`。
++
++**chunk_attachment** `object[]`  |  分块附件
++
++`output.content.annotations.chunk_attachment`
++
++引用分块附带的附件信息列表。
++
++**chunk_id** `integer`  |  分块 ID
++
++`output.content.annotations.chunk_id`
++
++引用文档分块的 ID。
++
++**doc_id** `string`  |  文档 ID
++
++`output.content.annotations.doc_id`
++
++引用文档的 ID。
++
++**doc_name** `string`  |  文档名
++
++`output.content.annotations.doc_name`
++
++引用文档的名称。
++
++**text** `string`  |  文本内容
++
++`output.content.text`
++
++模型生成的文本内容。
++
++模型思维链文本 `object`
++
++模型生成的思维链文本。
++
++**type** `string`  |  类型
++
++`output.content.type`
++
++内容类型标识，用于区分 union 变体。
++
++取值固定为 `reasoning_text`。
++
++**annotations** `object[]`  |  标注列表
++
++`output.content.annotations`
++
++思维链附带的标注信息列表。
++
++网页引用 `object`
++
++引用自互联网网页的标注信息。
++
++**title** `string`  |  标题
++
++`output.content.annotations.title`
++
++引用网页的标题。
++
++**type** `string`  |  类型
++
++`output.content.annotations.type`
++
++标注类型的判别字段（discriminator）。
++
++取值固定为 `url_citation`。
++
++**url** `string`  |  网址
++
++`output.content.annotations.url`
++
++引用网页的 URL 地址。
++
++**cover_image** `object`  |  封面图
++
++`output.content.annotations.cover_image`
++
++网页封面图片信息。
++
++**height** `integer`  |  高度
++
++`output.content.annotations.cover_image.height`
++
++封面图片高度（像素）
++
++**url** `string`  |  图片地址
++
++`output.content.annotations.cover_image.url`
++
++封面图片的 URL 地址。
++
++**width** `integer`  |  宽度
++
++`output.content.annotations.cover_image.width`
++
++封面图片宽度（像素）
++
++**freshness_info** `string`  |  新鲜度
++
++`output.content.annotations.freshness_info`
++
++内容新鲜度信息。
++
++**logo_url** `string`  |  Logo 地址
++
++`output.content.annotations.logo_url`
++
++网站 Logo 图标地址。
++
++**mobile_url** `string`  |  移动端地址
++
++`output.content.annotations.mobile_url`
++
++移动端访问地址。
++
++**publish_time** `string`  |  发布时间
++
++`output.content.annotations.publish_time`
++
++网页发布时间。
++
++**site_name** `string`  |  站点名
++
++`output.content.annotations.site_name`
++
++站点名称。
++
++**summary** `string`  |  摘要
++
++`output.content.annotations.summary`
++
++网页内容摘要。
++
++文档引用 `object`
++
++引用自私域知识库文档的标注信息。
++
++**type** `string`  |  类型
++
++`output.content.annotations.type`
++
++标注类型。
++
++取值固定为 `doc_citation`。
++
++**chunk_attachment** `object[]`  |  分块附件
++
++`output.content.annotations.chunk_attachment`
++
++引用分块附带的附件信息列表。
++
++**chunk_id** `integer`  |  分块 ID
++
++`output.content.annotations.chunk_id`
++
++引用文档分块的 ID。
++
++**doc_id** `string`  |  文档 ID
++
++`output.content.annotations.doc_id`
++
++引用文档的 ID。
++
++**doc_name** `string`  |  文档名
++
++`output.content.annotations.doc_name`
++
++引用文档的名称。
++
++**text** `string`  |  文本内容
++
++`output.content.text`
++
++模型思维链文本内容。
++
++**id** `string`  |  条目 ID
++
++`output.id`
++
++输出条目唯一标识。
++
++**role** `string`  |  角色
++
++`output.role`
++
++消息发送者的角色。
++
++取值固定为 `assistant`。
++
++**status** `string`  |  状态
++
++`output.status`
++
++消息输出条目的当前状态。
++
++* `completed`：消息已生成完毕。
++
++* `in_progress`：消息正在生成中（流式场景）。
++
++* `incomplete`：消息未完整生成（例如达到 `max_output_tokens` 上限）。
++
++* `failed`：消息生成失败。
++
++**type** `string`  |  类型
++
++`output.type`
++
++输出条目的类型标识。
++
++取值固定为 `message`。
++
++**partial** `boolean`  |  增量片段
++
++`output.partial`
++
++是否为流式增量片段。
++
++**phase** `string`  |  消息阶段
++
++`output.phase`
++
++标记 assistant 消息属于中间讲解还是最终回答。在回放 assistant 历史消息时，建议保留并原样回传该字段。可选值：`commentary`、`final_answer`。
++
++函数调用输出 `object`
++
++模型发起的函数调用请求。
++
++**type** `string`  |  类型
++
++`output.type`
++
++输出条目类型标识，用于区分 OutputItem 变体。
++
++取值固定为 `function_call`。
++
++**arguments** `string`  |  参数
++
++`output.arguments`
++
++函数参数的 JSON 字符串。
++
++**call_id** `string`  |  调用 ID
++
++`output.call_id`
++
++函数调用的唯一标识 ID，用于将该 function_call 输出与后续回传的 function_call_output 关联匹配。
++
++**id** `string`  |  条目 ID
++
++`output.id`
++
++输出条目唯一标识。
++
++**name** `string`  |  函数名
++
++`output.name`
++
++调用的函数名称。
++
++**status** `string`  |  状态
++
++`output.status`
++
++函数调用条目的当前状态。
++
++* `completed`：函数调用请求已生成完毕。
++
++* `in_progress`：函数调用请求正在生成中（流式场景）。
++
++* `incomplete`：函数调用请求未完整生成（例如达到 `max_output_tokens` 上限）。
++
++* `failed`：函数调用生成失败。
++
++思维链输出 `object`
++
++模型的深度思考过程输出。
++
++**status** `string`  |  状态
++
++`output.status`
++
++推理条目的处理状态，用于判断思维链是否生成完成。可选值：`completed`、`failed`、`in_progress`、`incomplete`。
++
++**summary** `object[]`  |  推理摘要
++
++`output.summary`
++
++推理摘要内容列表。
++
++**type** `string`  |  类型
++
++`output.summary.type`
++
++摘要片段类型标识。
++
++取值固定为 `summary_text`。
++
++**text** `string`  |  摘要文本
++
++`output.summary.text`
++
++思维链摘要文本内容。
++
++**type** `string`  |  类型
++
++`output.type`
++
++输出条目类型标识，用于区分 OutputItem 变体。
++
++取值固定为 `reasoning`。
++
++**content** `object[]`  |  推理内容
++
++`output.content`
++
++思维链推理过程的内容元素列表。
++
++模型回答文本 `object`
++
++模型生成的最终回答文本。
++
++**type** `string`  |  类型
++
++`output.content.type`
++
++内容类型判别字段，用于区分 union 变体。
++
++取值固定为 `output_text`。
++
++**annotations** `object[]`  |  标注列表
++
++`output.content.annotations`
++
++文本附带的标注信息列表（如引用来源等）
++
++网页引用 `object`
++
++引用自互联网网页的标注信息。
++
++**title** `string`  |  标题
++
++`output.content.annotations.title`
++
++引用网页的标题。
++
++**type** `string`  |  类型
++
++`output.content.annotations.type`
++
++标注类型的判别字段（discriminator）。
++
++取值固定为 `url_citation`。
++
++**url** `string`  |  网址
++
++`output.content.annotations.url`
++
++引用网页的 URL 地址。
++
++**cover_image** `object`  |  封面图
++
++`output.content.annotations.cover_image`
++
++网页封面图片信息。
++
++**height** `integer`  |  高度
++
++`output.content.annotations.cover_image.height`
++
++封面图片高度（像素）
++
++**url** `string`  |  图片地址
++
++`output.content.annotations.cover_image.url`
++
++封面图片的 URL 地址。
++
++**width** `integer`  |  宽度
++
++`output.content.annotations.cover_image.width`
++
++封面图片宽度（像素）
++
++**freshness_info** `string`  |  新鲜度
++
++`output.content.annotations.freshness_info`
++
++内容新鲜度信息。
++
++**logo_url** `string`  |  Logo 地址
++
++`output.content.annotations.logo_url`
++
++网站 Logo 图标地址。
++
++**mobile_url** `string`  |  移动端地址
++
++`output.content.annotations.mobile_url`
++
++移动端访问地址。
++
++**publish_time** `string`  |  发布时间
++
++`output.content.annotations.publish_time`
++
++网页发布时间。
++
++**site_name** `string`  |  站点名
++
++`output.content.annotations.site_name`
++
++站点名称。
++
++**summary** `string`  |  摘要
++
++`output.content.annotations.summary`
++
++网页内容摘要。
++
++文档引用 `object`
++
++引用自私域知识库文档的标注信息。
++
++**type** `string`  |  类型
++
++`output.content.annotations.type`
++
++标注类型。
++
++取值固定为 `doc_citation`。
++
++**chunk_attachment** `object[]`  |  分块附件
++
++`output.content.annotations.chunk_attachment`
++
++引用分块附带的附件信息列表。
++
++**chunk_id** `integer`  |  分块 ID
++
++`output.content.annotations.chunk_id`
++
++引用文档分块的 ID。
++
++**doc_id** `string`  |  文档 ID
++
++`output.content.annotations.doc_id`
++
++引用文档的 ID。
++
++**doc_name** `string`  |  文档名
++
++`output.content.annotations.doc_name`
++
++引用文档的名称。
++
++**text** `string`  |  文本内容
++
++`output.content.text`
++
++模型生成的文本内容。
++
++模型思维链文本 `object`
++
++模型生成的思维链文本。
++
++**type** `string`  |  类型
++
++`output.content.type`
++
++内容类型标识，用于区分 union 变体。
++
++取值固定为 `reasoning_text`。
++
++**annotations** `object[]`  |  标注列表
++
++`output.content.annotations`
++
++思维链附带的标注信息列表。
++
++网页引用 `object`
++
++引用自互联网网页的标注信息。
++
++**title** `string`  |  标题
++
++`output.content.annotations.title`
++
++引用网页的标题。
++
++**type** `string`  |  类型
++
++`output.content.annotations.type`
++
++标注类型的判别字段（discriminator）。
++
++取值固定为 `url_citation`。
++
++**url** `string`  |  网址
++
++`output.content.annotations.url`
++
++引用网页的 URL 地址。
++
++**cover_image** `object`  |  封面图
++
++`output.content.annotations.cover_image`
++
++网页封面图片信息。
++
++**height** `integer`  |  高度
++
++`output.content.annotations.cover_image.height`
++
++封面图片高度（像素）
++
++**url** `string`  |  图片地址
++
++`output.content.annotations.cover_image.url`
++
++封面图片的 URL 地址。
++
++**width** `integer`  |  宽度
++
++`output.content.annotations.cover_image.width`
++
++封面图片宽度（像素）
++
++**freshness_info** `string`  |  新鲜度
++
++`output.content.annotations.freshness_info`
++
++内容新鲜度信息。
++
++**logo_url** `string`  |  Logo 地址
++
++`output.content.annotations.logo_url`
++
++网站 Logo 图标地址。
++
++**mobile_url** `string`  |  移动端地址
++
++`output.content.annotations.mobile_url`
++
++移动端访问地址。
++
++**publish_time** `string`  |  发布时间
++
++`output.content.annotations.publish_time`
++
++网页发布时间。
++
++**site_name** `string`  |  站点名
++
++`output.content.annotations.site_name`
++
++站点名称。
++
++**summary** `string`  |  摘要
++
++`output.content.annotations.summary`
++
++网页内容摘要。
++
++文档引用 `object`
++
++引用自私域知识库文档的标注信息。
++
++**type** `string`  |  类型
++
++`output.content.annotations.type`
++
++标注类型。
++
++取值固定为 `doc_citation`。
++
++**chunk_attachment** `object[]`  |  分块附件
++
++`output.content.annotations.chunk_attachment`
++
++引用分块附带的附件信息列表。
++
++**chunk_id** `integer`  |  分块 ID
++
++`output.content.annotations.chunk_id`
++
++引用文档分块的 ID。
++
++**doc_id** `string`  |  文档 ID
++
++`output.content.annotations.doc_id`
++
++引用文档的 ID。
++
++**doc_name** `string`  |  文档名
++
++`output.content.annotations.doc_name`
++
++引用文档的名称。
++
++**text** `string`  |  文本内容
++
++`output.content.text`
++
++模型思维链文本内容。
++
++**encrypted_content** `string`  |  加密思维链
++
++`output.encrypted_content`
++
++思考内容加密原文。经加密及压缩处理后的思考内容原文。
++
++相关文档：
++
++* [关键规则](https://ark.volcengine.com/region:cn-beijing/docs/agent-model-invocation-practice#key-rules)
++
++* [回传思考内容加密块使用示例](https://ark.volcengine.com/region:cn-beijing/docs/agent-model-invocation-practice#encrypted-thinking-block-examples)
++
++> **说明**
++
++> 流式输出场景下，思考内容加密原文通过 `response.output_item.added`、`response.output_item.done`、`response.completed` 等相关事件下发，需要按事件中 `encrypted_content` 字段非空过滤获取。
+ 
+ **模型支持**：
+ 
+-
+-* **doubao\-seed\-2.0\-mini**：260428 及后续版本
+-
+-* **doubao\-seed\-2.0\-lite**：全版本支持
+-
+-* **doubao\-seed\-2.0\-pro**：全版本支持
+-
+-
+-
+-**file_url** `string`  |  文件地址
+-
+-`input.content.file_url`
+-
+-可访问的文件 URL。
+-
+-<div data-tips="true" data-tips-type="tip" data-tips-is-title="true">说明</div>
+-
+-
+-<div data-tips="true" data-tips-type="tip">文件大小上限为 50 MB。</div>
+-
+-
+-
+-
+-**filename** `string`  |  文件名
+-
+-`input.content.filename`
+-
+-文件名称。
+-
+-<div data-tips="true" data-tips-type="tip" data-tips-is-title="true">说明</div>
+-
+-
+-<div data-tips="true" data-tips-type="tip">使用 <code>file_data</code> 传入文件内容时必传。</div>
+-
+-
+-
+-
+-
+-输入模型的视频 `object`
+-
+-输入给模型的视频内容。支持通过 file_id、video_url 或 Base64 编码传入。
+-
+-
+-**type** `string` `必选`  |  类型
+-
+-`input.content.type`
+-
+-内容类型标识，用于标记该 ContentItem 为视频输入变体。
+-
+-取值固定为 `input_video`。
+-
+-
+-
+-**video_url** `string` `必选`  |  视频地址
+-
+-`input.content.video_url`
+-
+-视频内容来源。可传完整的 HTTP(S) URL，或 data URL 形式的 Base64 编码视频。
+-
+-
+-
+-**file_id** `string`  |  文件 ID
+-
+-`input.content.file_id`
+-
+-通过 *Files* API 上传后获取的文件 ID，指向火山引擎 TOS Bucket 中的视频文件。
+-
+-**模型支持**：
+-
+-
+-* **doubao\-seed\-2.0\-mini**：260428 及后续版本
+-
+-* **doubao\-seed\-2.0\-lite**：全版本支持
+-
+-* **doubao\-seed\-2.0\-pro**：全版本支持
+-
+-
+-
+-**fps** `number`  |  抽帧帧率
+-
+-`input.content.fps`
+-
+-视频抽帧频率，指定每秒从视频中提取的图像帧数。
+-
+-<div data-tips="true" data-tips-type="tip" data-tips-is-title="true">说明</div>
+-
+-
+-<div data-tips="true" data-tips-type="tip">使用 <code>file_id</code> 传入视频时，<code>fps</code> 参数失效。</div>
+-
+-
+-**取值范围**：`[0.2, 5]`
+-
+-
+-
+-
+-模型文本输出 `object`
+-
+-模型生成的文本输出，可在多轮对话中作为上下文回传。
+-
+-
+-**type** `string` `必选`  |  类型
+-
+-`input.content.type`
+-
+-内容类型标识。
++* `doubao-seed-2-0-lite-260428 及后续版本`
++
++**id** `string`  |  条目 ID
++
++`output.id`
++
++输出条目唯一标识。
++
++语音转写输出 `object`
++
++模型返回的语音转写输出。
++
++**status** `string`  |  状态
++
++`output.status`
++
++语音转写条目的当前状态。
++
++* `completed`：转写已生成完毕。
++
++* `in_progress`：转写正在生成中（流式场景）。
++
++* `incomplete`：转写未完整生成（例如达到输出上限而截断）。
++
++* `failed`：转写生成失败。
++
++**type** `string`  |  类型
++
++`output.type`
++
++输出条目类型标识。
++
++取值固定为 `transcription`。
++
++**id** `string`  |  条目 ID
++
++`output.id`
++
++输出条目唯一标识。
++
++**transcription** `object[]`  |  转写内容
++
++`output.transcription`
++
++语音转写结果片段列表。
++
++**type** `string`  |  类型
++
++`output.transcription.type`
++
++转写片段类型。
++
++取值固定为 `transcription_text`。
++
++**chunks** `object[]`  |  音频小段
++
++`output.transcription.chunks`
++
++当前片段对应的音频小段列表。
++
++**end_time** `integer`  |  结束时间
++
++`output.transcription.chunks.end_time`
++
++片段结束时间（毫秒）
++
++**start_time** `integer`  |  开始时间
++
++`output.transcription.chunks.start_time`
++
++片段开始时间（毫秒）
++
++**text** `string`  |  文字内容
++
++`output.transcription.chunks.text`
++
++当前片段对应的文字内容。
++
++**text** `string`  |  转写文本
++
++`output.transcription.text`
++
++当前片段的转写文本。
++
++网页搜索调用 `object`
++
++模型发起的网页搜索调用记录。
++
++**id** `string`  |  条目 ID
++
++`output.id`
++
++输出条目唯一标识。
++
++**status** `string`  |  状态
++
++`output.status`
++
++网页搜索调用的当前状态。可选值：`in_progress`、`searching`、`completed`、`incomplete`、`failed`。
++
++**type** `string`  |  类型
++
++`output.type`
++
++输出条目类型标识，用于区分 OutputItem 变体。
++
++取值固定为 `web_search_call`。
++
++**action** `object`  |  搜索动作
++
++`output.action`
++
++描述模型执行的网页搜索动作，包括搜索类型与查询关键字。
++
++**query** `string`  |  查询语句
++
++`output.action.query`
++
++模型实际发起的搜索查询语句。
++
++**type** `string`  |  类型
++
++`output.action.type`
++
++网页搜索动作的类型标识。
++
++取值固定为 `search`。
++
++**queries** `string[]`  |  查询语句列表
++
++`output.action.queries`
++
++本次网页搜索产生的查询语句列表。
++
++图像处理调用 `object`
++
++模型发起的图像处理调用记录。
++
++**id** `string`  |  条目 ID
++
++`output.id`
++
++输出条目唯一标识。
++
++**status** `string`  |  状态
++
++`output.status`
++
++图像处理调用的当前状态。
++
++* `completed`：图像处理已完成。
++
++* `in_progress`：图像处理正在执行中。
++
++* `incomplete`：图像处理未完整执行（例如被中断或截断）。
++
++* `failed`：图像处理执行失败，具体原因见 `error` 字段。
++
++**type** `string`  |  类型
++
++`output.type`
++
++输出条目类型标识，用于区分 OutputItem 变体。
++
++取值固定为 `image_process`。
++
++**action** `object`  |  处理动作
++
++`output.action`
++
++图像处理动作详情。
++
++**type** `string`  |  类型
++
++`output.action.type`
++
++图像处理动作类型。
++
++**result_image_url** `string`  |  结果图地址
++
++`output.action.result_image_url`
++
++处理后图像的 URL 地址。
++
++**arguments** `object`  |  处理参数
++
++`output.arguments`
++
++图像处理动作的输入参数，以键值对形式承载具体处理选项。
++
++**error** `object`  |  图像处理错误
++
++`output.error`
++
++图像处理失败时的错误信息。
++
++**message** `string`  |  错误描述
++
++`output.error.message`
++
++错误的可读描述。
++
++MCP 审批请求 `object`
++
++MCP 工具调用前的审批请求记录。
++
++**arguments** `string`  |  调用参数
++
++`output.arguments`
++
++工具调用参数的 JSON 字符串。
++
++**name** `string`  |  工具名
++
++`output.name`
++
++待运行的工具名称。
++
++**server_label** `string`  |  服务标签
++
++`output.server_label`
++
++发起请求的 MCP Server 标签。
++
++**type** `string`  |  类型
++
++`output.type`
++
++输出项类型标识符，用于区分 OutputItem 的变体。
++
++取值固定为 `mcp_approval_request`。
++
++**id** `string`  |  请求 ID
++
++`output.id`
++
++审批请求的唯一 ID。
++
++MCP 工具清单 `object`
++
++MCP Server 提供的工具清单输出。
++
++**server_label** `string`  |  服务标签
++
++`output.server_label`
++
++MCP Server 标签。
++
++**type** `string`  |  类型
++
++`output.type`
++
++输出项类型标识。
++
++取值固定为 `mcp_list_tools`。
++
++**error** `string`  |  错误信息
++
++`output.error`
++
++当 MCP Server 无法返回工具列表时的错误信息。
++
++**id** `string`  |  列表 ID
++
++`output.id`
++
++工具列表的唯一 ID。
++
++**tools** `object[]`  |  工具列表
++
++`output.tools`
++
++该 MCP Server 上可用的工具列表。
++
++**name** `string`  |  工具名
++
++`output.tools.name`
++
++工具名称。
++
++**annotations** `object`  |  注解信息
++
++`output.tools.annotations`
++
++工具的附加注解信息。
++
++**description** `string`  |  工具描述
++
++`output.tools.description`
++
++工具的功能描述。
++
++**input_schema** `object`  |  入参 Schema
++
++`output.tools.input_schema`
++
++描述工具入参的 JSON Schema。
++
++MCP 工具调用 `object`
++
++模型对 MCP 工具的实际调用记录及结果。
++
++**name** `string`  |  工具名
++
++`output.name`
++
++实际运行的工具名称。
++
++**server_label** `string`  |  服务标签
++
++`output.server_label`
++
++运行工具的 MCP Server 标签。
++
++**type** `string`  |  类型
++
++`output.type`
++
++标识该输出项为 MCP 工具调用记录。
++
++取值固定为 `mcp_call`。
++
++**arguments** `string`  |  调用参数
++
++`output.arguments`
++
++传递给 MCP 工具的调用参数，格式为 JSON 字符串。
++
++> **说明**
++
++> 该字段通过 `response.mcp_call_arguments.delta` 事件流式追加，初始 `output_item.added` 事件可能不携带该字段。
++
++**error** `string`  |  错误信息
++
++`output.error`
++
++工具调用失败时的错误信息。
++
++**id** `string`  |  调用 ID
++
++`output.id`
++
++工具调用的唯一 ID。
++
++**output** `string`  |  返回结果
++
++`output.output`
++
++工具调用的返回结果。
++
++知识库检索调用 `object`
++
++模型发起的私域知识库检索调用记录。
++
++**knowledge_resource_id** `string`  |  知识库 ID
++
++`output.knowledge_resource_id`
++
++检索使用的知识库 ID。
++
++**queries** `string[]`  |  查询语句
++
++`output.queries`
++
++模型实际执行的检索查询语句。
++
++**status** `string`  |  状态
++
++`output.status`
++
++知识库检索调用的执行状态。可选值：`in_progress`、`searching`、`completed`、`failed`、`incomplete`。
++
++**type** `string`  |  类型
++
++`output.type`
++
++输出条目类型标识，用于区分不同类型的输出条目。
++
++取值固定为 `knowledge_search_call`。
++
++**id** `string`  |  条目 ID
++
++`output.id`
++
++输出条目唯一标识。
++
++豆包应用调用 `object`
++
++模型对豆包助手能力的调用记录。
++
++**type** `string`  |  类型
++
++`output.type`
++
++输出条目类型标识。
++
++取值固定为 `doubao_app_call`。
++
++**blocks** `object[]`  |  内容块
++
++`output.blocks`
++
++豆包应用调用产出的内容块列表。
++
++文本输出 `object`
++
++豆包应用产出的文本输出内容块。
++
++**type** `string`  |  类型
++
++`output.blocks.type`
++
++内容块类型标识符。
+ 
+ 取值固定为 `output_text`。
+ 
+-
+-
+-**annotations** `object[]`  |  标注列表
+-
+-`input.content.annotations`
+-
+-文本附带的标注信息列表（如引用来源等）
+-
+-
+-网页引用 `object`
+-
+-引用自互联网网页的标注信息。
+-
+-
+-**title** `string` `必选`  |  标题
+-
+-`input.content.annotations.title`
+-
+-引用网页的标题。
+-
+-
+-
+-**type** `string` `必选`  |  类型
+-
+-`input.content.annotations.type`
+-
+-标注类型的判别字段（discriminator）。
+-
+-取值固定为 `url_citation`。
+-
+-
+-
+-**url** `string` `必选`  |  网址
+-
+-`input.content.annotations.url`
+-
+-引用网页的 URL 地址。
+-
+-
+-
+-**cover_image** `object`  |  封面图
+-
+-`input.content.annotations.cover_image`
+-
+-网页封面图片信息。
+-
+-
+-**height** `integer`  |  高度
+-
+-`input.content.annotations.cover_image.height`
+-
+-封面图片高度（像素）
+-
+-
+-
+-**url** `string`  |  图片地址
+-
+-`input.content.annotations.cover_image.url`
+-
+-封面图片的 URL 地址。
+-
+-
+-
+-**width** `integer`  |  宽度
+-
+-`input.content.annotations.cover_image.width`
+-
+-封面图片宽度（像素）
+-
+-
+-
+-
+-**freshness_info** `string`  |  新鲜度
+-
+-`input.content.annotations.freshness_info`
+-
+-内容新鲜度信息。
+-
+-
+-
+-**logo_url** `string`  |  Logo 地址
+-
+-`input.content.annotations.logo_url`
+-
+-网站 Logo 图标地址。
+-
+-
+-
+-**mobile_url** `string`  |  移动端地址
+-
+-`input.content.annotations.mobile_url`
+-
+-移动端访问地址。
+-
+-
+-
+-**publish_time** `string`  |  发布时间
+-
+-`input.content.annotations.publish_time`
+-
+-网页发布时间。
+-
+-
+-
+-**site_name** `string`  |  站点名
+-
+-`input.content.annotations.site_name`
+-
+-站点名称。
+-
+-
+-
+-**summary** `string`  |  摘要
+-
+-`input.content.annotations.summary`
+-
+-网页内容摘要。
+-
+-
+-
+-
+-文档引用 `object`
+-
+-引用自私域知识库文档的标注信息。
+-
+-
+-**type** `string` `必选`  |  类型
+-
+-`input.content.annotations.type`
+-
+-标注类型。
+-
+-取值固定为 `doc_citation`。
+-
+-
+-
+-**chunk_attachment** `object[]`  |  分块附件
+-
+-`input.content.annotations.chunk_attachment`
+-
+-引用分块附带的附件信息列表。
+-
+-
+-
+-**chunk_id** `integer`  |  分块 ID
+-
+-`input.content.annotations.chunk_id`
+-
+-引用文档分块的 ID。
+-
+-
+-
+-**doc_id** `string`  |  文档 ID
+-
+-`input.content.annotations.doc_id`
+-
+-引用文档的 ID。
+-
+-
+-
+-**doc_name** `string`  |  文档名
+-
+-`input.content.annotations.doc_name`
+-
+-引用文档的名称。
+-
+-
+-
+-
++**id** `string`  |  块 ID
++
++`output.blocks.id`
++
++内容块的唯一标识。
++
++**parent_id** `string`  |  父级 ID
++
++`output.blocks.parent_id`
++
++所属父级条目的 ID。
++
++**status** `string`  |  状态
++
++`output.blocks.status`
++
++内容块状态。
+ 
+ **text** `string`  |  文本内容
+ 
+-`input.content.text`
+-
+-模型生成的文本内容。
+-
+-
+-
+-
+-模型思维链文本 `object`
+-
+-模型思维链文本输出，可在多轮对话中作为上下文回传。
+-
+-
+-**type** `string` `必选`  |  类型
+-
+-`input.content.type`
+-
+-内容类型标识。
++`output.blocks.text`
++
++思维链文本 `object`
++
++豆包应用产出的思维链文本内容块。
++
++**type** `string`  |  类型
++
++`output.blocks.type`
++
++内容块类型标识符。
+ 
+ 取值固定为 `reasoning_text`。
+ 
+-
+-
+-**annotations** `object[]`  |  标注列表
+-
+-`input.content.annotations`
+-
+-思维链附带的标注信息列表。
+-
+-
+-网页引用 `object`
+-
+-引用自互联网网页的标注信息。
+-
+-
+-**title** `string` `必选`  |  标题
+-
+-`input.content.annotations.title`
+-
+-引用网页的标题。
+-
+-
+-
+-**type** `string` `必选`  |  类型
+-
+-`input.content.annotations.type`
+-
+-标注类型的判别字段（discriminator）。
+-
+-取值固定为 `url_citation`。
+-
+-
+-
+-**url** `string` `必选`  |  网址
+-
+-`input.content.annotations.url`
+-
+-引用网页的 URL 地址。
+-
+-
+-
+-**cover_image** `object`  |  封面图
+-
+-`input.content.annotations.cover_image`
+-
+-网页封面图片信息。
+-
+-
+-**height** `integer`  |  高度
+-
+-`input.content.annotations.cover_image.height`
+-
+-封面图片高度（像素）
+-
+-
+-
+-**url** `string`  |  图片地址
+-
+-`input.content.annotations.cover_image.url`
+-
+-封面图片的 URL 地址。
+-
+-
+-
+-**width** `integer`  |  宽度
+-
+-`input.content.annotations.cover_image.width`
+-
+-封面图片宽度（像素）
+-
+-
+-
+-
+-**freshness_info** `string`  |  新鲜度
+-
+-`input.content.annotations.freshness_info`
+-
+-内容新鲜度信息。
+-
+-
+-
+-**logo_url** `string`  |  Logo 地址
+-
+-`input.content.annotations.logo_url`
+-
+-网站 Logo 图标地址。
+-
+-
+-
+-**mobile_url** `string`  |  移动端地址
+-
+-`input.content.annotations.mobile_url`
+-
+-移动端访问地址。
+-
+-
+-
+-**publish_time** `string`  |  发布时间
+-
+-`input.content.annotations.publish_time`
+-
+-网页发布时间。
+-
+-
+-
+-**site_name** `string`  |  站点名
+-
+-`input.content.annotations.site_name`
+-
+-站点名称。
+-
+-
+-
+-**summary** `string`  |  摘要
+-
+-`input.content.annotations.summary`
+-
+-网页内容摘要。
+-
+-
+-
+-
+-文档引用 `object`
+-
+-引用自私域知识库文档的标注信息。
+-
+-
+-**type** `string` `必选`  |  类型
+-
+-`input.content.annotations.type`
+-
+-标注类型。
+-
+-取值固定为 `doc_citation`。
+-
+-
+-
+-**chunk_attachment** `object[]`  |  分块附件
+-
+-`input.content.annotations.chunk_attachment`
+-
+-引用分块附带的附件信息列表。
+-
+-
+-
+-**chunk_id** `integer`  |  分块 ID
+-
+-`input.content.annotations.chunk_id`
+-
+-引用文档分块的 ID。
+-
+-
+-
+-**doc_id** `string`  |  文档 ID
+-
+-`input.content.annotations.doc_id`
+-
+-引用文档的 ID。
+-
+-
+-
+-**doc_name** `string`  |  文档名
+-
+-`input.content.annotations.doc_name`
+-
+-引用文档的名称。
+-
+-
+-
+-
+-
+-**text** `string`  |  文本内容
+-
+-`input.content.text`
+-
+-模型思维链文本内容。
+-
+-
+-
+-
+-
++**id** `string`  |  块 ID
++
++`output.blocks.id`
++
++内容块的唯一标识。
++
++**parent_id** `string`  |  父级 ID
++
++`output.blocks.parent_id`
++
++所属父级条目的 ID。
++
++**reasoning_text** `string`  |  思考文本
++
++`output.blocks.reasoning_text`
++
++思维链文本内容。
++
++**status** `string`  |  状态
++
++`output.blocks.status`
++
++内容块状态。
++
++搜索过程 `object`
++
++豆包应用 AI 搜索过程产出的内容块。
++
++**type** `string`  |  类型
++
++`output.blocks.type`
++
++内容块类型标识符。
++
++取值固定为 `search`。
++
++**id** `string`  |  块 ID
++
++`output.blocks.id`
++
++内容块的唯一标识。
++
++**parent_id** `string`  |  父级 ID
++
++`output.blocks.parent_id`
++
++所属父级条目的 ID。
++
++**queries** `string[]`  |  查询语句
++
++`output.blocks.queries`
++
++搜索查询语句列表。
++
++**results** `object[]`  |  搜索结果
++
++`output.blocks.results`
++
++搜索结果列表。
++
++**text_card** `object`  |  文本卡片
++
++`output.blocks.results.text_card`
++
++文本卡片形式的搜索结果。
++
++**sitename** `string`  |  站点名
++
++`output.blocks.results.text_card.sitename`
++
++来源站点名称。
++
++**title** `string`  |  标题
++
++`output.blocks.results.text_card.title`
++
++搜索结果标题。
++
++**url** `string`  |  网址
++
++`output.blocks.results.text_card.url`
++
++搜索结果 URL 地址。
++
++**status** `string`  |  状态
++
++`output.blocks.status`
++
++内容块状态。
++
++**summary** `string`  |  搜索总结
++
++`output.blocks.summary`
++
++AI 搜索过程中对本轮搜索结果的总结性文字，概括从搜索结果中提取的核心信息。
++
++推理搜索过程 `object`
++
++豆包应用推理搜索过程产出的内容块。
++
++**type** `string`  |  类型
++
++`output.blocks.type`
++
++内容块类型。
++
++取值固定为 `reasoning_search`。
++
++**id** `string`  |  块 ID
++
++`output.blocks.id`
++
++内容块的唯一标识。
++
++**parent_id** `string`  |  父级 ID
++
++`output.blocks.parent_id`
++
++所属父级条目的 ID。
++
++**queries** `string[]`  |  查询语句
++
++`output.blocks.queries`
++
++搜索查询语句列表。
++
++**results** `object[]`  |  搜索结果
++
++`output.blocks.results`
++
++搜索结果列表。
++
++**text_card** `object`  |  文本卡片
++
++`output.blocks.results.text_card`
++
++文本卡片形式的搜索结果。
++
++**sitename** `string`  |  站点名
++
++`output.blocks.results.text_card.sitename`
++
++来源站点名称。
++
++**title** `string`  |  标题
++
++`output.blocks.results.text_card.title`
++
++搜索结果标题。
++
++**url** `string`  |  网址
++
++`output.blocks.results.text_card.url`
++
++搜索结果 URL 地址。
++
++**status** `string`  |  状态
++
++`output.blocks.status`
++
++推理搜索内容块的处理状态。可选值：`in_progress`、`searching`、`completed`、`incomplete`、`failed`。
++
++**summary** `string`  |  搜索总结
++
++`output.blocks.summary`
++
++推理搜索过程中对本轮搜索结果的总结性文字，概括从搜索结果中提取的核心信息。
++
++**feature** `string`  |  功能名
++
++`output.feature`
++
++本次调用触发的豆包子功能名称。可选值：`chat`、`deep_chat`、`ai_search`、`reasoning_search`。
+ 
+ **id** `string`  |  条目 ID
+ 
+-`input.id`
+-
+-输入条目的唯一 ID。
+-
+-
+-
+-**partial** `boolean`  |  续写模式
+-
+-`input.partial`
+-
+-是否启用续写模式。
+-
+-<div data-tips="true" data-tips-type="tip" data-tips-is-title="true">说明</div>
+-
+-
+-
+-* <div data-tips="true" data-tips-type="tip">仅 <code>assistant</code> 角色的消息支持开启续写模式，模型会在原消息内容后继续生成，而非重新起草。</div>
+-
+-
+-* <div data-tips="true" data-tips-type="tip">续写场景下 <code>partial</code> 必须显式设为 <code>true</code>。</div>
+-
+-
+-
+-
+-**phase** `string`  |  消息阶段
+-
+-`input.phase`
+-
+-标记 assistant 消息属于中间讲解还是最终回答。在回放 assistant 历史消息时，建议保留并原样回传该字段。可选值：`commentary`、`final_answer`。
+-
+-
+-
+-**role** `string`  |  角色
+-
+-`input.role`
+-
+-输入消息的角色，决定指令的优先级层级。可选值：`user`、`system`、`assistant`、`developer`。
+-
+-
+-
+-**type** `string` `默认值 message`  |  类型
+-
+-`input.type`
+-
+-输入元素类型标识。
+-
+-取值固定为 `message`。
+-
+-
+-
+-
+-函数调用记录 `object`
+-
+-历史工具函数调用记录，用于多轮对话中回传模型之前发起的函数调用。
+-
+-
+-**type** `string` `必选`  |  类型
+-
+-`input.type`
+-
+-输入元素类型标记，用于区分不同类型的历史输入条目。
+-
+-取值固定为 `function_call`。
+-
+-
+-
+-**arguments** `string`  |  参数
+-
+-`input.arguments`
+-
+-函数参数的 JSON 字符串。
+-
+-
+-
+-**call_id** `string`  |  调用 ID
+-
+-`input.call_id`
+-
+-函数工具调用的唯一标识 ID，与之前模型输出的 function_call.call_id 对应，用于在多轮回传中关联同一次调用及其结果。
+-
+-
++`output.id`
++
++输出条目唯一标识。
++
++**status** `string`  |  状态
++
++`output.status`
++
++输出状态。可选值：`completed`、`failed`、`in_progress`、`incomplete`。
++
++智能体工具调用 `object`
++
++模型发起的智能体工具调用记录。
++
++**name** `string`  |  工具名
++
++`output.name`
++
++被调用的智能体工具名称。
++
++**status** `string`  |  状态
++
++`output.status`
++
++智能体工具调用的执行状态。可选值：`completed`、`failed`、`in_progress`、`incomplete`。
++
++**type** `string`  |  类型
++
++`output.type`
++
++输出条目类型标识符，用于区分 OutputItem 的 variant。
++
++取值固定为 `agent_tool_call`。
+ 
+ **id** `string`  |  条目 ID
+ 
+-`input.id`
+-
+-该 function_call 条目在 Response 中的唯一 ID，区别于用于关联函数结果的 `call_id`。
+-
+-
++`output.id`
++
++输出条目唯一标识。
++
++**caching** `object`  |  上下文缓存
++
++是否开启缓存。
++
++**prefix** `boolean`  |  仅写缓存
++
++`caching.prefix`
++
++是否仅写入前缀缓存，不生成回复。`true` 只写缓存，不返回模型输出；`false` 正常生成回复并写缓存。
++
++**type** `string`  |  缓存模式
++
++`caching.type`
++
++缓存模式。
++
++* `enabled`：开启上下文缓存。
++
++* `disabled`：关闭上下文缓存。
++
++**context_management** `object`  |  上下文管理
++
++本次请求实际应用的上下文管理策略信息。
++
++**applied_edits** `object[]`  |  已应用编辑
++
++`context_management.applied_edits`
++
++已应用的上下文编辑结果列表。
++
++清理工具调用 `object`
++
++已应用的清理工具调用编辑结果。
++
++**cleared_tool_uses** `integer`  |  清理次数
++
++`context_management.applied_edits.cleared_tool_uses`
++
++已清理的工具调用数量。
++
++**type** `string`  |  类型
++
++`context_management.applied_edits.type`
++
++编辑类型。
++
++取值固定为 `clear_tool_uses`。
++
++清理思维链 `object`
++
++已应用的清理思维链编辑结果。
++
++**cleared_thinking_turns** `integer`  |  清理轮次
++
++`context_management.applied_edits.cleared_thinking_turns`
++
++已清理的思维链轮次数量。
++
++**type** `string`  |  类型
++
++`context_management.applied_edits.type`
++
++编辑类型。
++
++取值固定为 `clear_thinking`。
++
++**error** `object`  |  响应错误
++
++模型未能生成响应时返回的错误对象。
++
++**code** `string`  |  错误码
++
++`error.code`
++
++**message** `string`  |  错误描述
++
++`error.message`
++
++错误信息的可读描述。
++
++**expire_at** `integer`  |  过期时间戳
++
++响应储存的过期时刻 Unix 时间戳（秒），回显请求中的 expire_at 设置，对 store 与 caching 均生效。
++
++> **说明**
++
++> 最多保留 7 天。
++
++**incomplete_details** `object`  |  未完成详情
++
++响应未能完成的细节。
++
++**reason** `string`  |  原因
++
++`incomplete_details.reason`
++
++响应未完成的原因。
++
++**content_filter** `object`  |  内容过滤
++
++`incomplete_details.content_filter`
++
++内容过滤详情。
++
++**details** `string`  |  详情
++
++`incomplete_details.content_filter.details`
++
++内容过滤命中的详细描述。
++
++**type** `string`  |  类型
++
++`incomplete_details.content_filter.type`
++
++内容过滤命中的类型。
++
++**instructions** `string`  |  系统指令
++
++在模型上下文中插入的系统（或开发者）指令，作为首项。
++
++> **说明**
++
++> 与 `previous_response_id` 一起使用时，前一响应中的指令不会延续到下一响应。
++
++**max_output_tokens** `integer`  |  最大输出长度
++
++模型输出最大 token 数，包含模型回答和思维链内容。
++
++**max_tool_calls** `integer`  |  最大调用轮次
++
++本次请求生效的最大工具调用轮次。
++
++**metadata** `object`  |  自定义元数据
++
++回显请求中的 metadata 键值对元数据。最多支持 16 对键值，key 长度不超过 64 个字符，value 长度不超过 512 个字符，服务端不会解释其中内容。
++
++**previous_response_id** `string`  |  上轮响应 ID
++
++本次请求时传入的历史响应 ID。
++
++**reasoning** `object`  |  思考工作量
++
++本次请求实际生效的深度思考工作量配置。
++
++**effort** `string`  |  思考深度
++
++`reasoning.effort`
++
++限制思考的工作量。减少思考深度可提升速度，思考花费的 token 更少。
++
++* `none`：关闭思考。
++
++* `minimal`：关闭思考，直接回答。
++
++* `low`：轻量思考，侧重快速响应。
++
++* `medium`：均衡模式，兼顾速度与深度。
++
++* `high`：深度分析，处理复杂问题。
++
++* `xhigh`：更高程度思考。
++
++* `max`：最高程度思考，适配高难度推理任务。
++
++> **说明**
++
++> 支持该字段的模型、默认取值、参数兼容映射规则，以及与 `thinking.type` 字段的关系，详见 [文档](https://ark.volcengine.com/region:cn-beijing/docs/responses-api-deep-thinking#dc4c1547)。
++
++**service_tier** `string`  |  推理模式
++
++本次请求实际使用的推理模式。
++
++* `fast`：本次请求使用 [在线推理（低延迟）](https://ark.volcengine.com/region:cn-beijing/docs/online-inference-low-latency) 模式。
++
++* `auto`：本次请求使用 [在线推理（TPM 保障包）](https://ark.volcengine.com/region:cn-beijing/docs/tpm-guarantee-package) 模式。
++
++* `default`：本次请求使用 [在线推理（常规）](https://ark.volcengine.com/region:cn-beijing/docs/online-inference-standard) 模式。
++
++* `flex`：本次请求使用 [在线推理（低优）](https://ark.volcengine.com/region:cn-beijing/docs/online-inference-flex) 模式。
++
++**status** `string`  |  响应状态
++
++生成响应的状态。
++
++**store** `boolean`  |  存储响应
++
++响应是否被储存的实际状态。
++
++**temperature** `number`  |  采样温度
++
++本次请求实际使用的采样温度。
++
++**text** `object`  |  输出格式
++
++用于定义输出的格式，可以是纯文本，也可以是结构化的 JSON 数据。
++
++**format** `object`  |  输出格式
++
++`text.format`
++
++文本输出格式定义。
++
++**type** `string`  |  格式类型
++
++`text.format.type`
++
++输出格式类型。可选值：`text`、`json_schema`、`json_object`。
++
++> **注意**
++
++> `json_object` / `json_schema` 能力尚在 beta 阶段，请谨慎在生产环境使用。
++
++**description** `string`  |  格式描述
++
++`text.format.description`
++
++格式描述信息。
++
++**name** `string`  |  格式名称
++
++`text.format.name`
++
++格式名称，作为 JSON Schema 输出格式的标识。
++
++> **注意**
++
++> 仅当 *type* 为 `json_schema` 时需要提供此字段。
++
++**schema** `object`  |  Schema 定义
++
++`text.format.schema`
++
++JSON Schema 定义。当 *type* 为 `json_schema` 时必填。
++
++**strict** `boolean`  |  严格模式
++
++`text.format.strict`
++
++是否严格按 JSON Schema 校验模型输出。
++
++> **注意**
++
++> 仅当 *type* 为 `json_schema` 时生效。
++
++**thinking** `object`  |  深度思考配置
++
++本次请求实际生效的深度思考模式配置。
++
++**type** `string`  |  思考模式
++
++`thinking.type`
++
++深度思考模式。
++
++* `enabled`：开启深度思考。
++
++* `disabled`：关闭深度思考。
++
++**tool_choice** `string / object`  |  工具调用策略
++
++本次请求实际生效的工具调用策略。
++
++> **说明**
++
++> 未指定工具时默认值为 `none`；存在工具时默认值为 `auto`。
++
++简单策略 `string`
++
++直接传入字符串 `none`、`auto` 或 `required`，控制工具调用整体策略。
++
++指定工具 `object`
++
++通过对象指定具体工具类型或工具名进行调用。
++
++**type** `string`  |  工具类型
++
++`tool_choice.type`
++
++指定要调用的工具类型，用于精确路由到对应工具。可选值：
++
++* `function`
++
++* `web_search`
++
++* `image_process`
++
++* `mcp`
++
++* `knowledge_search`
++
++* `doubao_app`
++
++**name** `string`  |  工具名称
++
++`tool_choice.name`
++
++指定要调用的具体工具名，如函数名或 MCP 服务下的工具名。
++
++**tools** `object[]`  |  工具列表
++
++模型可以调用的工具列表。
++
++函数调用 `object`
++
++自定义函数调用（Function Calling），让模型生成结构化的函数参数。
+ 
+ **name** `string`  |  函数名
+ 
+-`input.name`
+-
+-要运行的函数名称。
+-
+-
+-
+-**status** `string`  |  状态
+-
+-`input.status`
+-
+-该 function_call 条目当前的处理状态。可选值：`in_progress`、`completed`、`incomplete`。
+-
+-
+-
+-
+-函数返回结果 `object`
+-
+-工具函数返回的结果，用于将函数执行结果回传给模型。
+-
+-
+-**type** `string` `必选`  |  类型
+-
+-`input.type`
+-
+-输入元素类型标识。
+-
+-取值固定为 `function_call_output`。
+-
+-
+-
+-**call_id** `string`  |  调用 ID
+-
+-`input.call_id`
+-
+-函数工具调用的唯一标识 ID（与对应 function_call 的 call_id 一致）
+-
+-
+-
+-**id** `string`  |  条目 ID
+-
+-`input.id`
+-
+-函数返回结果的唯一 ID。
+-
+-
+-
+-**output** `string / object[]`  |  输出结果
+-
+-`input.output`
+-
+-工具函数执行完成后返回给模型的结果内容。
+-
+-
+-文本输入 `string`
+-
+-文本类型的消息内容，直接传入字符串。
+-
+-
+-
+-输入的内容列表 `object[]`
+-
+-内容元素列表，可包含文本、图片、视频、文件和音频等多种模态输入。
+-
+-
+-输入模型的文本 `object`
+-
+-输入给模型的文本内容。
+-
+-
+-**text** `string` `必选`  |  文本
+-
+-`input.output.text`
+-
+-文本内容。
+-
+-
+-
+-**type** `string` `必选`  |  类型
+-
+-`input.output.type`
+-
+-内容类型标识。
+-
+-取值固定为 `input_text`。
+-
+-
+-
+-**translation_options** `object`  |  翻译选项
+-
+-`input.output.translation_options`
+-
+-文本翻译选项，指定源语言与目标语言以启用翻译。
+-
+-
+-
+-
+-输入模型的图片 `object`
+-
+-输入给模型的图片内容。支持通过 file_id、image_url 或 Base64 编码传入。
+-
+-
+-**type** `string` `必选`  |  类型
+-
+-`input.output.type`
+-
+-内容类型标识。
+-
+-取值固定为 `input_image`。
+-
+-
+-
+-**detail** `string`  |  精度
+-
+-`input.output.detail`
+-
+-图片解析精度，控制模型处理图片的清晰度与细节层级。可选值：`auto`、`low`、`high`、`xhigh`。
+-
+-<div data-tips="true" data-tips-type="tip" data-tips-is-title="true">说明</div>
+-
+-
+-<div data-tips="true" data-tips-type="tip">不同模型默认取值及对应的具体像素区间，参见 <a href="https://ark.volcengine.com/region:cn-beijing/docs/ark/image-understanding#bf4d9224">控制图片理解的精细度</a>。</div>
+-
+-
+-
+-
+-**file_id** `string`  |  文件 ID
+-
+-`input.output.file_id`
+-
+-通过 *Files* API 上传后获取的文件 ID，指向火山引擎 TOS Bucket 中的文件。
+-
+-**模型支持**：
+-
+-
+-* **doubao\-seed\-2.0\-mini**：260428 及后续版本
+-
+-* **doubao\-seed\-2.0\-lite**：全版本支持
+-
+-* **doubao\-seed\-2.0\-pro**：全版本支持
+-
+-
+-
+-**image_pixel_limit** `object` `默认值 null`  |  像素限制
+-
+-`input.output.image_pixel_limit`
+-
+-输入给模型的图片的像素范围，如不在此范围，图片会被等比例缩放至该范围。
+-
+-<div data-tips="true" data-tips-type="warning" data-tips-is-title="true">注意</div>
+-
+-
+-<div data-tips="true" data-tips-type="warning">图片像素范围需在 <code>[196, 36000000]</code>，否则会直接报错。</div>
+-
+-
+-
+-* <div data-tips="true" data-tips-type="warning">生效优先级：高于 <code>detail</code> 字段，即同时配置 <code>detail</code> 与 <code>image_pixel_limit</code> 字段时，生效 <code>image_pixel_limit</code> 字段配置。</div>
+-
+-
+-* <div data-tips="true" data-tips-type="warning">默认生效规则：若未设置 <code>image_pixel_limit</code>，则使用 <code>detail</code> 配置的值对应的 <code>min_pixels</code> / <code>max_pixels</code> 值。</div>
+-
+-
+-
+-
+-**max_pixels** `integer`  |  最大像素
+-
+-`input.output.image_pixel_limit.max_pixels`
+-
+-传入图片最大像素限制，大于此像素则等比例缩小至 `max_pixels` 字段取值以下。若未设置，则取值为 `detail` 配置的值对应的 `max_pixels` 值。
+-
+-**最大值**：`9031680`
+-
+-
+-
+-**min_pixels** `integer`  |  最小像素
+-
+-`input.output.image_pixel_limit.min_pixels`
+-
+-传入图片最小像素限制，小于此像素则等比例放大至 `min_pixels` 字段取值以上。若未设置，则取值为 `detail` 配置的值对应的 `min_pixels` 值。
+-
+-**最小值**：`1764`
+-
+-
+-
+-
+-**image_url** `string`  |  图片地址
+-
+-`input.output.image_url`
+-
+-图片 URL 或 Base64 编码（格式 `data:image/{格式};base64,{编码}`）
+-
+-
+-
+-
+-输入模型的音频 `object`
+-
+-输入给模型的音频内容。支持通过 file_id 或 audio_url 传入。
+-
+-
+-**type** `string` `必选`  |  类型
+-
+-`input.output.type`
+-
+-内容类型标识，用于区分 ContentItem 变体。
+-
+-取值固定为 `input_audio`。
+-
+-
+-
+-**audio_url** `string`  |  音频地址
+-
+-`input.output.audio_url`
+-
+-音频 URL 或 Base64 编码。
+-
+-
+-
+-**chunking_strategy** `object`  |  分段策略
+-
+-`input.output.chunking_strategy`
+-
+-音频分段策略配置。
+-
+-
+-**type** `string` `必选`  |  类型
+-
+-`input.output.chunking_strategy.type`
+-
+-分段策略的类型标识。
+-
+-取值固定为 `server_vad`。
+-
+-
+-
+-**prefix_padding_ms** `integer`  |  前置填充
+-
+-`input.output.chunking_strategy.prefix_padding_ms`
+-
+-语音前置静音填充时长（毫秒）
+-
+-
+-
+-**silence_duration_ms** `integer`  |  静音时长
+-
+-`input.output.chunking_strategy.silence_duration_ms`
+-
+-触发分段的静音持续时长（毫秒）
+-
+-
+-
+-**threshold** `number`  |  检测阈值
+-
+-`input.output.chunking_strategy.threshold`
+-
+-VAD 检测阈值。
+-
+-
+-
+-
+-**file_id** `string`  |  文件 ID
+-
+-`input.output.file_id`
+-
+-通过 *Files* API 上传后获取的文件 ID，指向火山引擎 TOS Bucket 中的音频文件。
+-
+-**模型支持**：
+-
+-
+-* **doubao\-seed\-2.0\-mini**：260428 及后续版本
+-
+-* **doubao\-seed\-2.0\-lite**：全版本支持
+-
+-* **doubao\-seed\-2.0\-pro**：全版本支持
+-
+-
+-
+-
+-输入模型的文件 `object`
+-
+-输入给模型的文件内容。支持通过 file_id、file_data（Base64）或 file_url 传入。
+-
+-
+-**type** `string` `必选`  |  类型
+-
+-`input.output.type`
+-
+-内容项的类型标识。
+-
+-取值固定为 `input_file`。
+-
+-
+-
+-**file_data** `string`  |  文件数据
+-
+-`input.output.file_data`
+-
+-Base64 编码的文件内容。
+-
+-<div data-tips="true" data-tips-type="tip" data-tips-is-title="true">说明</div>
+-
+-
+-<div data-tips="true" data-tips-type="tip">文件大小上限为 50 MB。</div>
+-
+-
+-
+-
+-**file_id** `string`  |  文件 ID
+-
+-`input.output.file_id`
+-
+-通过 *Files* API 上传后获取的文件 ID，指向火山引擎 TOS Bucket 中的文件。
+-
+-**模型支持**：
+-
+-
+-* **doubao\-seed\-2.0\-mini**：260428 及后续版本
+-
+-* **doubao\-seed\-2.0\-lite**：全版本支持
+-
+-* **doubao\-seed\-2.0\-pro**：全版本支持
+-
+-
+-
+-**file_url** `string`  |  文件地址
+-
+-`input.output.file_url`
+-
+-可访问的文件 URL。
+-
+-<div data-tips="true" data-tips-type="tip" data-tips-is-title="true">说明</div>
+-
+-
+-<div data-tips="true" data-tips-type="tip">文件大小上限为 50 MB。</div>
+-
+-
+-
+-
+-**filename** `string`  |  文件名
+-
+-`input.output.filename`
+-
+-文件名称。
+-
+-<div data-tips="true" data-tips-type="tip" data-tips-is-title="true">说明</div>
+-
+-
+-<div data-tips="true" data-tips-type="tip">使用 <code>file_data</code> 传入文件内容时必传。</div>
+-
+-
+-
+-
+-
+-输入模型的视频 `object`
+-
+-输入给模型的视频内容。支持通过 file_id、video_url 或 Base64 编码传入。
+-
+-
+-**type** `string` `必选`  |  类型
+-
+-`input.output.type`
+-
+-内容类型标识，用于标记该 ContentItem 为视频输入变体。
+-
+-取值固定为 `input_video`。
+-
+-
+-
+-**video_url** `string` `必选`  |  视频地址
+-
+-`input.output.video_url`
+-
+-视频内容来源。可传完整的 HTTP(S) URL，或 data URL 形式的 Base64 编码视频。
+-
+-
+-
+-**file_id** `string`  |  文件 ID
+-
+-`input.output.file_id`
+-
+-通过 *Files* API 上传后获取的文件 ID，指向火山引擎 TOS Bucket 中的视频文件。
+-
+-**模型支持**：
+-
+-
+-* **doubao\-seed\-2.0\-mini**：260428 及后续版本
+-
+-* **doubao\-seed\-2.0\-lite**：全版本支持
+-
+-* **doubao\-seed\-2.0\-pro**：全版本支持
+-
+-
+-
+-**fps** `number`  |  抽帧帧率
+-
+-`input.output.fps`
+-
+-视频抽帧频率，指定每秒从视频中提取的图像帧数。
+-
+-<div data-tips="true" data-tips-type="tip" data-tips-is-title="true">说明</div>
+-
+-
+-<div data-tips="true" data-tips-type="tip">使用 <code>file_id</code> 传入视频时，<code>fps</code> 参数失效。</div>
+-
+-
+-**取值范围**：`[0.2, 5]`
+-
+-
+-
+-
+-模型文本输出 `object`
+-
+-模型生成的文本输出，可在多轮对话中作为上下文回传。
+-
+-
+-**type** `string` `必选`  |  类型
+-
+-`input.output.type`
+-
+-内容类型标识。
+-
+-取值固定为 `output_text`。
+-
+-
+-
+-**annotations** `object[]`  |  标注列表
+-
+-`input.output.annotations`
+-
+-文本附带的标注信息列表（如引用来源等）
+-
+-
+-网页引用 `object`
+-
+-引用自互联网网页的标注信息。
+-
+-
+-**title** `string` `必选`  |  标题
+-
+-`input.output.annotations.title`
+-
+-引用网页的标题。
+-
+-
+-
+-**type** `string` `必选`  |  类型
+-
+-`input.output.annotations.type`
+-
+-标注类型的判别字段（discriminator）。
+-
+-取值固定为 `url_citation`。
+-
+-
+-
+-**url** `string` `必选`  |  网址
+-
+-`input.output.annotations.url`
+-
+-引用网页的 URL 地址。
+-
+-
+-
+-**cover_image** `object`  |  封面图
+-
+-`input.output.annotations.cover_image`
+-
+-网页封面图片信息。
+-
+-
+-**height** `integer`  |  高度
+-
+-`input.output.annotations.cover_image.height`
+-
+-封面图片高度（像素）
+-
+-
+-
+-**url** `string`  |  图片地址
+-
+-`input.output.annotations.cover_image.url`
+-
+-封面图片的 URL 地址。
+-
+-
+-
+-**width** `integer`  |  宽度
+-
+-`input.output.annotations.cover_image.width`
+-
+-封面图片宽度（像素）
+-
+-
+-
+-
+-**freshness_info** `string`  |  新鲜度
+-
+-`input.output.annotations.freshness_info`
+-
+-内容新鲜度信息。
+-
+-
+-
+-**logo_url** `string`  |  Logo 地址
+-
+-`input.output.annotations.logo_url`
+-
+-网站 Logo 图标地址。
+-
+-
+-
+-**mobile_url** `string`  |  移动端地址
+-
+-`input.output.annotations.mobile_url`
+-
+-移动端访问地址。
+-
+-
+-
+-**publish_time** `string`  |  发布时间
+-
+-`input.output.annotations.publish_time`
+-
+-网页发布时间。
+-
+-
+-
+-**site_name** `string`  |  站点名
+-
+-`input.output.annotations.site_name`
+-
+-站点名称。
+-
+-
+-
+-**summary** `string`  |  摘要
+-
+-`input.output.annotations.summary`
+-
+-网页内容摘要。
+-
+-
+-
+-
+-文档引用 `object`
+-
+-引用自私域知识库文档的标注信息。
+-
+-
+-**type** `string` `必选`  |  类型
+-
+-`input.output.annotations.type`
+-
+-标注类型。
+-
+-取值固定为 `doc_citation`。
+-
+-
+-
+-**chunk_attachment** `object[]`  |  分块附件
+-
+-`input.output.annotations.chunk_attachment`
+-
+-引用分块附带的附件信息列表。
+-
+-
+-
+-**chunk_id** `integer`  |  分块 ID
+-
+-`input.output.annotations.chunk_id`
+-
+-引用文档分块的 ID。
+-
+-
+-
+-**doc_id** `string`  |  文档 ID
+-
+-`input.output.annotations.doc_id`
+-
+-引用文档的 ID。
+-
+-
+-
+-**doc_name** `string`  |  文档名
+-
+-`input.output.annotations.doc_name`
+-
+-引用文档的名称。
+-
+-
+-
+-
+-
+-**text** `string`  |  文本内容
+-
+-`input.output.text`
+-
+-模型生成的文本内容。
+-
+-
+-
+-
+-模型思维链文本 `object`
+-
+-模型思维链文本输出，可在多轮对话中作为上下文回传。
+-
+-
+-**type** `string` `必选`  |  类型
+-
+-`input.output.type`
+-
+-内容类型标识。
+-
+-取值固定为 `reasoning_text`。
+-
+-
+-
+-**annotations** `object[]`  |  标注列表
+-
+-`input.output.annotations`
+-
+-思维链附带的标注信息列表。
+-
+-
+-网页引用 `object`
+-
+-引用自互联网网页的标注信息。
+-
+-
+-**title** `string` `必选`  |  标题
+-
+-`input.output.annotations.title`
+-
+-引用网页的标题。
+-
+-
+-
+-**type** `string` `必选`  |  类型
+-
+-`input.output.annotations.type`
+-
+-标注类型的判别字段（discriminator）。
+-
+-取值固定为 `url_citation`。
+-
+-
+-
+-**url** `string` `必选`  |  网址
+-
+-`input.output.annotations.url`
+-
+-引用网页的 URL 地址。
+-
+-
+-
+-**cover_image** `object`  |  封面图
+-
+-`input.output.annotations.cover_image`
+-
+-网页封面图片信息。
+-
+-
+-**height** `integer`  |  高度
+-
+-`input.output.annotations.cover_image.height`
+-
+-封面图片高度（像素）
+-
+-
+-
+-**url** `string`  |  图片地址
+-
+-`input.output.annotations.cover_image.url`
+-
+-封面图片的 URL 地址。
+-
+-
+-
+-**width** `integer`  |  宽度
+-
+-`input.output.annotations.cover_image.width`
+-
+-封面图片宽度（像素）
+-
+-
+-
+-
+-**freshness_info** `string`  |  新鲜度
+-
+-`input.output.annotations.freshness_info`
+-
+-内容新鲜度信息。
+-
+-
+-
+-**logo_url** `string`  |  Logo 地址
+-
+-`input.output.annotations.logo_url`
+-
+-网站 Logo 图标地址。
+-
+-
+-
+-**mobile_url** `string`  |  移动端地址
+-
+-`input.output.annotations.mobile_url`
+-
+-移动端访问地址。
+-
+-
+-
+-**publish_time** `string`  |  发布时间
+-
+-`input.output.annotations.publish_time`
+-
+-网页发布时间。
+-
+-
+-
+-**site_name** `string`  |  站点名
+-
+-`input.output.annotations.site_name`
+-
+-站点名称。
+-
+-
+-
+-**summary** `string`  |  摘要
+-
+-`input.output.annotations.summary`
+-
+-网页内容摘要。
+-
+-
+-
+-
+-文档引用 `object`
+-
+-引用自私域知识库文档的标注信息。
+-
+-
+-**type** `string` `必选`  |  类型
+-
+-`input.output.annotations.type`
+-
+-标注类型。
+-
+-取值固定为 `doc_citation`。
+-
+-
+-
+-**chunk_attachment** `object[]`  |  分块附件
+-
+-`input.output.annotations.chunk_attachment`
+-
+-引用分块附带的附件信息列表。
+-
+-
+-
+-**chunk_id** `integer`  |  分块 ID
+-
+-`input.output.annotations.chunk_id`
+-
+-引用文档分块的 ID。
+-
+-
+-
+-**doc_id** `string`  |  文档 ID
+-
+-`input.output.annotations.doc_id`
+-
+-引用文档的 ID。
+-
+-
+-
+-**doc_name** `string`  |  文档名
+-
+-`input.output.annotations.doc_name`
+-
+-引用文档的名称。
+-
+-
+-
+-
+-
+-**text** `string`  |  文本内容
+-
+-`input.output.text`
+-
+-模型思维链文本内容。
+-
+-
+-
+-
+-
+-
+-**status** `string`  |  状态
+-
+-`input.status`
+-
+-函数输出条目的处理状态。可选值：`in_progress`、`completed`、`incomplete`。
+-
+-
+-
+-
+-模型思维链信息 `object`
+-
+-在模型生成响应时使用的思维链信息。如果需要手动管理，需要设置该字段，以便在后续的对话中进行管理。
+-
+-
+-**status** `string` `必选`  |  状态
+-
+-`input.status`
+-
+-推理内容的状态。可选值：`in_progress`、`completed`、`incomplete`。
+-
+-
+-
+-**type** `string` `必选`  |  类型
+-
+-`input.type`
+-
+-输入元素类型判别标签。
+-
+-取值固定为 `reasoning`。
+-
+-
+-
+-**content** `object[]`  |  推理内容
+-
+-`input.content`
+-
+-推理过程的内容元素列表。
+-
+-
+-模型回答文本 `object`
+-
+-模型生成的最终回答文本。
+-
+-
+-**type** `string` `必选`  |  类型
+-
+-`input.content.type`
+-
+-内容类型判别字段，用于区分 union 变体。
+-
+-取值固定为 `output_text`。
+-
+-
+-
+-**annotations** `object[]`  |  标注列表
+-
+-`input.content.annotations`
+-
+-文本附带的标注信息列表（如引用来源等）
+-
+-
+-网页引用 `object`
+-
+-引用自互联网网页的标注信息。
+-
+-
+-**title** `string` `必选`  |  标题
+-
+-`input.content.annotations.title`
+-
+-引用网页的标题。
+-
+-
+-
+-**type** `string` `必选`  |  类型
+-
+-`input.content.annotations.type`
+-
+-标注类型的判别字段（discriminator）。
+-
+-取值固定为 `url_citation`。
+-
+-
+-
+-**url** `string` `必选`  |  网址
+-
+-`input.content.annotations.url`
+-
+-引用网页的 URL 地址。
+-
+-
+-
+-**cover_image** `object`  |  封面图
+-
+-`input.content.annotations.cover_image`
+-
+-网页封面图片信息。
+-
+-
+-**height** `integer`  |  高度
+-
+-`input.content.annotations.cover_image.height`
+-
+-封面图片高度（像素）
+-
+-
+-
+-**url** `string`  |  图片地址
+-
+-`input.content.annotations.cover_image.url`
+-
+-封面图片的 URL 地址。
+-
+-
+-
+-**width** `integer`  |  宽度
+-
+-`input.content.annotations.cover_image.width`
+-
+-封面图片宽度（像素）
+-
+-
+-
+-
+-**freshness_info** `string`  |  新鲜度
+-
+-`input.content.annotations.freshness_info`
+-
+-内容新鲜度信息。
+-
+-
+-
+-**logo_url** `string`  |  Logo 地址
+-
+-`input.content.annotations.logo_url`
+-
+-网站 Logo 图标地址。
+-
+-
+-
+-**mobile_url** `string`  |  移动端地址
+-
+-`input.content.annotations.mobile_url`
+-
+-移动端访问地址。
+-
+-
+-
+-**publish_time** `string`  |  发布时间
+-
+-`input.content.annotations.publish_time`
+-
+-网页发布时间。
+-
+-
+-
+-**site_name** `string`  |  站点名
+-
+-`input.content.annotations.site_name`
+-
+-站点名称。
+-
+-
+-
+-**summary** `string`  |  摘要
+-
+-`input.content.annotations.summary`
+-
+-网页内容摘要。
+-
+-
+-
+-
+-文档引用 `object`
+-
+-引用自私域知识库文档的标注信息。
+-
+-
+-**type** `string` `必选`  |  类型
+-
+-`input.content.annotations.type`
+-
+-标注类型。
+-
+-取值固定为 `doc_citation`。
+-
+-
+-
+-**chunk_attachment** `object[]`  |  分块附件
+-
+-`input.content.annotations.chunk_attachment`
+-
+-引用分块附带的附件信息列表。
+-
+-
+-
+-**chunk_id** `integer`  |  分块 ID
+-
+-`input.content.annotations.chunk_id`
+-
+-引用文档分块的 ID。
+-
+-
+-
+-**doc_id** `string`  |  文档 ID
+-
+-`input.content.annotations.doc_id`
+-
+-引用文档的 ID。
+-
+-
+-
+-**doc_name** `string`  |  文档名
+-
+-`input.content.annotations.doc_name`
+-
+-引用文档的名称。
+-
+-
+-
+-
+-
+-**text** `string`  |  文本内容
+-
+-`input.content.text`
+-
+-模型生成的文本内容。
+-
+-
+-
+-
+-模型思维链文本 `object`
+-
+-模型生成的思维链文本。
+-
+-
+-**type** `string` `必选`  |  类型
+-
+-`input.content.type`
+-
+-内容类型标识，用于区分 union 变体。
+-
+-取值固定为 `reasoning_text`。
+-
+-
+-
+-**annotations** `object[]`  |  标注列表
+-
+-`input.content.annotations`
+-
+-思维链附带的标注信息列表。
+-
+-
+-网页引用 `object`
+-
+-引用自互联网网页的标注信息。
+-
+-
+-**title** `string` `必选`  |  标题
+-
+-`input.content.annotations.title`
+-
+-引用网页的标题。
+-
+-
+-
+-**type** `string` `必选`  |  类型
+-
+-`input.content.annotations.type`
+-
+-标注类型的判别字段（discriminator）。
+-
+-取值固定为 `url_citation`。
+-
+-
+-
+-**url** `string` `必选`  |  网址
+-
+-`input.content.annotations.url`
+-
+-引用网页的 URL 地址。
+-
+-
+-
+-**cover_image** `object`  |  封面图
+-
+-`input.content.annotations.cover_image`
+-
+-网页封面图片信息。
+-
+-
+-**height** `integer`  |  高度
+-
+-`input.content.annotations.cover_image.height`
+-
+-封面图片高度（像素）
+-
+-
+-
+-**url** `string`  |  图片地址
+-
+-`input.content.annotations.cover_image.url`
+-
+-封面图片的 URL 地址。
+-
+-
+-
+-**width** `integer`  |  宽度
+-
+-`input.content.annotations.cover_image.width`
+-
+-封面图片宽度（像素）
+-
+-
+-
+-
+-**freshness_info** `string`  |  新鲜度
+-
+-`input.content.annotations.freshness_info`
+-
+-内容新鲜度信息。
+-
+-
+-
+-**logo_url** `string`  |  Logo 地址
+-
+-`input.content.annotations.logo_url`
+-
+-网站 Logo 图标地址。
+-
+-
+-
+-**mobile_url** `string`  |  移动端地址
+-
+-`input.content.annotations.mobile_url`
+-
+-移动端访问地址。
+-
+-
+-
+-**publish_time** `string`  |  发布时间
+-
+-`input.content.annotations.publish_time`
+-
+-网页发布时间。
+-
+-
+-
+-**site_name** `string`  |  站点名
+-
+-`input.content.annotations.site_name`
+-
+-站点名称。
+-
+-
+-
+-**summary** `string`  |  摘要
+-
+-`input.content.annotations.summary`
+-
+-网页内容摘要。
+-
+-
+-
+-
+-文档引用 `object`
+-
+-引用自私域知识库文档的标注信息。
+-
+-
+-**type** `string` `必选`  |  类型
+-
+-`input.content.annotations.type`
+-
+-标注类型。
+-
+-取值固定为 `doc_citation`。
+-
+-
+-
+-**chunk_attachment** `object[]`  |  分块附件
+-
+-`input.content.annotations.chunk_attachment`
+-
+-引用分块附带的附件信息列表。
+-
+-
+-
+-**chunk_id** `integer`  |  分块 ID
+-
+-`input.content.annotations.chunk_id`
+-
+-引用文档分块的 ID。
+-
+-
+-
+-**doc_id** `string`  |  文档 ID
+-
+-`input.content.annotations.doc_id`
+-
+-引用文档的 ID。
+-
+-
+-
+-**doc_name** `string`  |  文档名
+-
+-`input.content.annotations.doc_name`
+-
+-引用文档的名称。
+-
+-
+-
+-
+-
+-**text** `string`  |  文本内容
+-
+-`input.content.text`
+-
+-模型思维链文本内容。
+-
+-
+-
+-
+-
+-**encrypted_content** `string`  |  加密思维链
+-
+-`input.encrypted_content`
+-
+-思考内容加密原文。经加密及压缩处理后的思考内容加密原文。
+-
+-在 Agent 场景下如果不采用 `previous_response_id` 方式进行多轮对话，则必须回传思考内容加密原文，保证模型推理效果。
+-
+-相关文档：
+-
+-
+-* [关键规则](https://ark.volcengine.com/region:cn-beijing/docs/ark/agent-model-invocation-practice#key-rules)
+-
+-* [回传思考内容加密块使用示例](https://ark.volcengine.com/region:cn-beijing/docs/ark/agent-model-invocation-practice#encrypted-thinking-block-examples)
+-
+-
+-**模型支持**：
+-
+-
+-* `doubao-seed-2-0-lite-260428 及后续版本`
+-
+-
+-
+-**id** `string`  |  推理 ID
+-
+-`input.id`
+-
+-推理内容的唯一标识 ID。
+-
+-
+-
+-**summary** `object[]`  |  推理摘要
+-
+-`input.summary`
+-
+-模型推理过程的分段摘要，每项对应一段摘要文本，用于多轮对话回传管理思维链上下文。
+-
+-
+-**type** `string` `必选`  |  类型
+-
+-`input.summary.type`
+-
+-摘要片段类型标识。
+-
+-取值固定为 `summary_text`。
+-
+-
+-
+-**text** `string`  |  摘要文本
+-
+-`input.summary.text`
+-
+-思维链摘要文本内容。
+-
+-
+-
+-
+-
+-MCP 审批请求 `object`
+-
+-历史 MCP 工具审批请求记录，用于多轮对话上下文回传。
+-
+-
+-**arguments** `string` `必选`  |  调用参数
+-
+-`input.arguments`
+-
+-工具调用参数的 JSON 字符串。
+-
+-
+-
+-**name** `string` `必选`  |  工具名
+-
+-`input.name`
+-
+-待运行的工具名称。
+-
+-
+-
+-**server_label** `string` `必选`  |  服务标签
+-
+-`input.server_label`
+-
+-发起请求的 MCP Server 标签。
+-
+-
+-
+-**type** `string` `必选`  |  类型
+-
+-`input.type`
+-
+-输入元素类型。
+-
+-取值固定为 `mcp_approval_request`。
+-
+-
+-
+-**id** `string`  |  请求 ID
+-
+-`input.id`
+-
+-审批请求的唯一 ID。
+-
+-
+-
+-
+-MCP 审批响应 `object`
+-
+-历史 MCP 工具审批响应记录，回传给模型后据此决定是否调用工具。
+-
+-
+-**approval_request_id** `string` `必选`  |  请求 ID
+-
+-`input.approval_request_id`
+-
+-被回应的审批请求 ID。
+-
+-
+-
+-**approve** `boolean` `必选`  |  是否批准
+-
+-`input.approve`
+-
+-是否批准该工具调用请求。
+-
+-
+-
+-**type** `string` `必选`  |  类型
+-
+-`input.type`
+-
+-输入元素类型标识。
+-
+-取值固定为 `mcp_approval_response`。
+-
+-
+-
+-**id** `string`  |  响应 ID
+-
+-`input.id`
+-
+-审批响应的唯一 ID。
+-
+-
+-
+-**reason** `string`  |  决策理由
+-
+-`input.reason`
+-
+-对该审批决策的说明或依据。
+-
+-
+-
+-
+-MCP 工具清单 `object`
+-
+-历史 MCP 工具清单记录，用于多轮对话上下文回传。
+-
+-
+-**server_label** `string` `必选`  |  服务标签
+-
+-`input.server_label`
+-
+-该工具清单所属的 MCP Server 标签。
+-
+-
+-
+-**type** `string` `必选`  |  类型
+-
+-`input.type`
+-
+-输入元素类型，用于标识这是一条 MCP 工具清单记录。
+-
+-取值固定为 `mcp_list_tools`。
+-
+-
+-
+-**error** `string`  |  错误信息
+-
+-`input.error`
+-
+-MCP Server 无法返回工具列表时的错误信息。
+-
+-
+-
+-**id** `string`  |  列表 ID
+-
+-`input.id`
+-
+-工具列表的唯一 ID。
+-
+-
+-
+-**tools** `object[]`  |  工具列表
+-
+-`input.tools`
+-
+-该 MCP Server 上可用的工具列表。
+-
+-
+-**name** `string` `必选`  |  工具名
+-
+-`input.tools.name`
+-
+-工具名称。
+-
+-
+-
+-**annotations** `object`  |  注解信息
+-
+-`input.tools.annotations`
+-
+-工具的附加注解信息。
+-
+-
+-
+-**description** `string`  |  工具描述
+-
+-`input.tools.description`
+-
+-工具的功能描述。
+-
+-
+-
+-**input_schema** `object`  |  入参 Schema
+-
+-`input.tools.input_schema`
+-
+-描述工具入参的 JSON Schema。
+-
+-
+-
+-
+-
+-MCP 工具调用 `object`
+-
+-历史 MCP 工具调用记录，用于多轮对话上下文回传。
+-
+-
+-**name** `string` `必选`  |  工具名
+-
+-`input.name`
+-
+-实际运行的工具名称。
+-
+-
+-
+-**server_label** `string` `必选`  |  服务标签
+-
+-`input.server_label`
+-
+-运行工具的 MCP Server 标签。
+-
+-
+-
+-**type** `string` `必选`  |  类型
+-
+-`input.type`
+-
+-输入元素类型判别标签，标识该条目为 MCP 工具调用记录。
+-
+-取值固定为 `mcp_call`。
+-
+-
+-
+-**arguments** `string`  |  调用参数
+-
+-`input.arguments`
+-
+-传递给 MCP 工具的调用参数，JSON 字符串。
+-
+-<div data-tips="true" data-tips-type="tip" data-tips-is-title="true">说明</div>
+-
+-
+-<div data-tips="true" data-tips-type="tip">该字段通过 <code>response.mcp_call_arguments.delta</code> 事件流式追加，初始 <code>output_item.added</code> 事件可能不携带该字段。</div>
+-
+-
+-
+-
+-**error** `string`  |  错误信息
+-
+-`input.error`
+-
+-工具调用失败时的错误信息。
+-
+-
+-
+-**id** `string`  |  调用 ID
+-
+-`input.id`
+-
+-工具调用的唯一 ID。
+-
+-
+-
+-**output** `string`  |  返回结果
+-
+-`input.output`
+-
+-工具调用的返回结果。
+-
+-
+-
+-
+-上下文元素 `object`
+-
+-表示模型生成回复时需参考的上下文内容。该项可以包含文本、图片和视频输入，以及先前助手的回复和工具调用的输出。
+-
+-
+-**id** `string` `必选`  |  条目 ID
+-
+-`input.id`
+-
+-引用的上下文条目 ID。
+-
+-
+-
+-**type** `string` `必选`  |  类型
+-
+-`input.type`
+-
+-输入元素类型标识。
+-
+-取值固定为 `item_reference`。
+-
+-
+-
+-
+-
+-
+-**model** `string` `必选`  |  模型 ID
+-
+-本次请求调用的模型 ID（Model ID），用于指定处理输入内容的模型。
+-
+-<div data-tips="true" data-tips-type="tip" data-tips-is-title="true">说明</div>
+-
+-
+-
+-* <div data-tips="true" data-tips-type="tip">开通模型服务并查询 Model ID，请参见 <a href="https://ark.volcengine.com/region:cn-beijing/docs/ark/model-list">模型列表</a>。</div>
+-
+-
+-* <div data-tips="true" data-tips-type="tip">若需要多个应用分别调用模型服务或做更细粒度的权限管理，可改传 Endpoint ID（在线推理接入点的 ID）。</div>
+-
+-
+-
+-
+-**caching** `object`  |  上下文缓存
+-
+-是否为本次请求开启上下文缓存。
+-
+-<div data-tips="true" data-tips-type="warning" data-tips-is-title="true">注意</div>
+-
+-
+-<div data-tips="true" data-tips-type="warning">不可与 instructions 字段、tools（除自定义函数 Function Calling 外）字段一起使用。</div>
+-
+-
+-
+-**prefix** `boolean` `默认值 false`  |  仅写缓存
+-
+-`caching.prefix`
+-
+-是否仅写入前缀缓存，不生成回复。`true` 只写缓存，不返回模型输出；`false` 正常生成回复并写缓存。
+-
+-
+-
+-**type** `string` `默认值 disabled`  |  缓存模式
+-
+-`caching.type`
+-
+-缓存模式。
+-
+-
+-* `enabled`：开启上下文缓存。
+-
+-* `disabled`：关闭上下文缓存。
+-
+-
+-
+-
+-**context_management** `object`  |  上下文管理
+-
+-上下文管理策略，帮助模型有效利用上下文窗口。
+-
+-
+-**edits** `object[]` `必选`  |  编辑策略
+-
+-`context_management.edits`
+-
+-要应用的上下文编辑策略列表，按顺序执行。
+-
+-
+-清理工具调用 `object`
+-
+-清理工具调用记录的编辑策略。
+-
+-
+-**clear_tool_inputs** `object` `必选`  |  清理范围
+-
+-`context_management.edits.clear_tool_inputs`
+-
+-清理范围配置（清理全部或仅清理指定工具）
+-
+-
+-**clear_all** `boolean`  |  全部清理
+-
+-`context_management.edits.clear_tool_inputs.clear_all`
+-
+-是否清理全部工具调用记录。
+-
+-
+-
+-**tool_name_list** `object`  |  指定工具名
+-
+-`context_management.edits.clear_tool_inputs.tool_name_list`
+-
+-仅清理指定名称的工具调用记录。
+-
+-
+-**clear_tool_names** `string[]` `必选`  |  工具名列表
+-
+-`context_management.edits.clear_tool_inputs.tool_name_list.clear_tool_names`
+-
+-需要清理记录的工具名称列表。
+-
+-
+-
+-
+-
+-**type** `string` `必选`  |  类型
+-
+-`context_management.edits.type`
+-
+-编辑策略类型（union 判别字段）
+-
+-取值固定为 `clear_tool_uses`。
+-
+-
+-
+-**exclude_tools** `string[]`  |  排除工具
+-
+-`context_management.edits.exclude_tools`
+-
+-免清理的工具名称列表。列表中的工具，其调用记录不会被清理，仍完整保留在上下文中。
+-
+-
+-
+-**keep** `object`  |  保留策略
+-
+-`context_management.edits.keep`
+-
+-保留最近若干次工具调用。
+-
+-
+-**type** `string` `必选`  |  类型
+-
+-`context_management.edits.keep.type`
+-
+-保留策略类型。
+-
+-取值固定为 `tool_uses`。
+-
+-
+-
+-**value** `integer` `必选`  |  保留次数
+-
+-`context_management.edits.keep.value`
+-
+-保留的最近工具调用次数。
+-
+-
+-
+-
+-**trigger** `object`  |  触发条件
+-
+-`context_management.edits.trigger`
+-
+-触发清理的阈值配置。
+-
+-
+-**type** `string` `必选`  |  类型
+-
+-`context_management.edits.trigger.type`
+-
+-触发类型（discriminator）
+-
+-取值固定为 `tool_uses`。
+-
+-
+-
+-**value** `integer` `必选`  |  触发阈值
+-
+-`context_management.edits.trigger.value`
+-
+-累计工具调用次数达到该阈值时触发清理。
+-
+-
+-
+-
+-
+-清理思维链 `object`
+-
+-清理思维链内容的编辑策略。
+-
+-
+-**keep** `object` `必选`  |  保留策略
+-
+-`context_management.edits.keep`
+-
+-保留策略，配置清理思维链后仍要保留的内容范围。
+-
+-<div data-tips="true" data-tips-type="warning" data-tips-is-title="true">注意</div>
+-
+-
+-<div data-tips="true" data-tips-type="warning"><em>ClearThinkingKeep</em> 二选一：设 <em>all</em> 为 <code>"all"</code> 表示全部保留，或通过 <em>thinking_turn_params</em> 保留指定轮次。</div>
+-
+-
+-
+-**all** `string`  |  全部保留
+-
+-`context_management.edits.keep.all`
+-
+-全部保留策略的启用标识。
+-
+-取值固定为 `all`。
+-
+-
+-
+-**thinking_turn_params** `object`  |  按轮次保留
+-
+-`context_management.edits.keep.thinking_turn_params`
+-
+-按轮次保留的策略配置。
+-
+-
+-**type** `string` `必选`  |  类型
+-
+-`context_management.edits.keep.thinking_turn_params.type`
+-
+-保留策略类型（判别字段）
+-
+-取值固定为 `thinking_turns`。
+-
+-
+-
+-**value** `integer` `必选`  |  保留轮次
+-
+-`context_management.edits.keep.thinking_turn_params.value`
+-
+-保留的最近思维链轮次数量。
+-
+-**最小值**：`0`
+-
+-
+-
+-
+-
+-**type** `string` `必选`  |  类型
+-
+-`context_management.edits.type`
+-
+-编辑策略类型判别字段。
+-
+-取值固定为 `clear_thinking`。
+-
+-
+-
+-
+-
+-
+-**expire_at** `integer`  |  过期时间戳
+-
+-存储过期时刻，UTC Unix 时间戳（秒），对 `store`（上下文存储）和 `caching`（上下文缓存）都生效。默认值：`创建时刻+259200`
+-
+-<div data-tips="true" data-tips-type="tip" data-tips-is-title="true">说明</div>
+-
+-
+-
+-* <div data-tips="true" data-tips-type="tip">取值范围：<code>(创建时刻, 创建时刻+604800]</code>，即最多保留 7 天。</div>
+-
+-
+-* <div data-tips="true" data-tips-type="tip">缓存存储时间计费按 <code>过期时刻 - 创建时刻</code> 计算，不满 1 小时按 1 小时计。</div>
+-
+-
+-* <div data-tips="true" data-tips-type="tip">详细配置及示例代码请参见 <a href="https://ark.volcengine.com/region:cn-beijing/docs/ark/context-cache#expire-cache">文档</a>。</div>
+-
+-
+-
+-
+-**include** `string[]`  |  附加输出数据
+-
+-指定要在模型响应中返回的其他输出数据。
+-
+-
+-
+-**instructions** `string`  |  系统指令
+-
+-在模型上下文中作为系统消息或开发者指令插入。
+-
+-<div data-tips="true" data-tips-type="tip" data-tips-is-title="true">说明</div>
+-
+-
+-<div data-tips="true" data-tips-type="tip">与 <code>previous_response_id</code> 一起使用时，前一个回复中的指令不会被继承到下一个回复中。</div>
+-
+-
+-<div data-tips="true" data-tips-type="warning" data-tips-is-title="true">注意</div>
+-
+-
+-<div data-tips="true" data-tips-type="warning">不可与缓存能力一起使用。配置了 instructions 字段后，本轮请求无法写入缓存和使用缓存：</div>
+-
+-
+-
+-* <div data-tips="true" data-tips-type="warning">caching 字段配置为 <code>{"type":"enabled"}</code> 时报错。</div>
+-
+-
+-* <div data-tips="true" data-tips-type="warning">传入带缓存的 previous_response_id 时，缓存输入（cached_tokens）为 0。</div>
+-
+-
+-
+-
+-**max_output_tokens** `integer`  |  最大输出长度
+-
+-控制模型本次响应输出的最大长度（单位 token），包含模型回答与思维链内容。
+-
+-<div data-tips="true" data-tips-type="tip" data-tips-is-title="true">说明</div>
+-
+-
+-
+-* <div data-tips="true" data-tips-type="tip"><code>deepseek-v4-1-flash-260910</code> 模型该字段默认值 128k。</div>
+-
+-
+-* <div data-tips="true" data-tips-type="tip">模型输出总长度还受模型的上下文长度限制，实际可用上限以模型列表为准。</div>
+-
+-
+-* <div data-tips="true" data-tips-type="tip">计入的输出 token 包含模型回答与思维链内容之和。</div>
+-
+-
+-
+-
+-**max_tool_calls** `integer`  |  最大调用轮次
+-
+-最大工具调用轮次（一轮里不限制次数），在工具调用达到此限制次数后，提示模型停止更多工具调用并进行回答。
+-
+-<div data-tips="true" data-tips-type="warning" data-tips-is-title="true">注意</div>
+-
+-
+-
+-* <div data-tips="true" data-tips-type="warning">该参数为尽力而为（best effort）机制，不保证成功，最终调用次数会受模型推理效果、工具返回结果有效性等因素影响。</div>
+-
+-
+-* <div data-tips="true" data-tips-type="warning">各工具类型的默认值：</div>
+-
+-
+-   * <div data-tips="true" data-tips-type="warning"><code>web_search</code> 基础联网搜索工具默认值 <code>3</code>。</div>
+-
+-
+-   * <div data-tips="true" data-tips-type="warning"><code>image_process</code> 图像处理工具默认值 <code>10</code>，不支持修改。</div>
+-
+-
+-   * <div data-tips="true" data-tips-type="warning"><code>knowledge_search</code> 私域知识库搜索工具默认值 <code>3</code>。</div>
+-
+-
+-   * <div data-tips="true" data-tips-type="warning">豆包助手不支持此参数。</div>
+-
+-
+-
+-**取值范围**：`[1, 10]`
+-
+-
+-
+-**metadata** `object`  |  自定义元数据
+-
+-用户自定义键值对元数据，会与响应对象一同存储并在后续读取时原样回显。最多支持 16 对键值，key 长度不超过 64 个字符，value 长度不超过 512 个字符。
+-
+-
+-
+-**previous_response_id** `string`  |  上轮响应 ID
+-
+-上一个模型回复的唯一标识符。传入该字段可实现多轮对话。
+-
+-<div data-tips="true" data-tips-type="tip" data-tips-is-title="true">说明</div>
+-
+-
+-
+-* <div data-tips="true" data-tips-type="tip">在请求中传入 <code>previous_response_id</code>，会引入上一轮请求的输入和回答内容，本次请求的输入 tokens 会相应增加。</div>
+-
+-
+-* <div data-tips="true" data-tips-type="tip">在多轮连续对话中，建议在每次请求之间加入约 100 毫秒的延迟，否则可能会导致调用失败。</div>
+-
+-
+-
+-
+-**prompt_cache_key** `string`  |  缓存路由标识
+-
+-用于提升隐式缓存命中率的缓存路由标识。取值相同的请求会优先路由到缓存命中率更高的服务，从而提升隐式缓存命中率。
+-
+-
+-
+-**reasoning** `object`  |  思考工作量
+-
+-限制深度思考的工作量。减少深度思考工作量可使响应速度更快，并且深度思考的 token 用量更小。
+-
+-
+-**effort** `string`  |  思考深度
+-
+-`reasoning.effort`
+-
+-限制思考的工作量。减少思考深度可提升速度，思考花费的 token 更少。
+-
+-
+-* `none`：关闭思考。
+-
+-* `minimal`：关闭思考，直接回答。
+-
+-* `low`：轻量思考，侧重快速响应。
+-
+-* `medium`：均衡模式，兼顾速度与深度。
+-
+-* `high`：深度分析，处理复杂问题。
+-
+-* `xhigh`：更高程度思考。
+-
+-* `max`：最高程度思考，适配高难度推理任务。
+-
+-
+-<div data-tips="true" data-tips-type="warning" data-tips-is-title="true">说明</div>
+-
+-
+-<div data-tips="true" data-tips-type="warning">支持该字段的模型、默认取值、参数兼容映射规则，以及与 <code>thinking.type</code> 字段的关系，详见 <a href="https://ark.volcengine.com/region:cn-beijing/docs/ark/responses-api-deep-thinking#dc4c1547">文档</a>。</div>
+-
+-
+-
+-
+-
+-**service_tier** `string` `默认值 auto`  |  推理模式
+-
+-控制使用的在线推理模式。
+-
+-
+-* `fast`：本次请求优先使用 [在线推理（低延迟）](https://ark.volcengine.com/region:cn-beijing/docs/ark/online-inference-low-latency) 模式。
+-
+-   * 推理接入点（`model` 字段指定）有低延迟限流配额，本次请求将会优先使用低延迟限流配额，获得更高的服务等级（延迟、可用性等）。
+-
+-   * 推理接入点无低延迟限流配额，或者限流配额已满，降级至 **在线推理（常规）**  模式，维持常规的服务等级。
+-
+-* `auto`：本次请求优先使用 [在线推理（TPM 保障包）](https://ark.volcengine.com/region:cn-beijing/docs/ark/tpm-guarantee-package) 模式。
+-
+-   * 推理接入点有 TPM 保障包额度，本次请求将会优先使用 TPM 保障包额度，获得最高的服务等级。
+-
+-   * 推理接入点无 TPM 保障包额度或用超额度，降级至 **在线推理（常规）**  模式，维持常规的服务等级。
+-
+-* `default`：本次请求只使用 [在线推理（常规）](https://ark.volcengine.com/region:cn-beijing/docs/ark/online-inference-standard) 模式。维持常规的服务等级，即使调用的推理接入点有 TPM 保障包额度 / 低延迟限流额度。
+-
+-* `flex`：本次请求使用 [在线推理（低优）](https://ark.volcengine.com/region:cn-beijing/docs/ark/online-inference-flex) 模式。
+-
+-
+-
+-**store** `boolean` `默认值 true`  |  存储响应
+-
+-是否存储生成的模型响应，以便后续通过 API 检索。
+-
+-
+-* `false`：不存储生成的模型响应。
+-
+-* `true`：存储当前模型响应。
+-
+-
+-当 `service_tier` 为 `flex` 时，本字段只能设置为 `false`。
+-
+-
+-
+-**stream** `boolean` `默认值 false`  |  流式输出
+-
+-响应内容是否流式返回。
+-
+-
+-* `false`：模型生成完所有内容后一次性返回结果。
+-
+-* `true`：按 SSE 协议逐块返回模型生成内容，并以一条 `data: [DONE]` 消息结束。
+-
+-
+-
+-**temperature** `number` `默认值 1.0`  |  采样温度
+-
+-采样温度，控制生成文本时对每个候选词的概率分布进行平滑的程度。
+-
+-
+-* 取值为 0 时，模型仅考虑对数概率最大的一个 token。
+-
+-* 较高的值（如 0.8）会使输出更加随机，较低的值（如 0.2）会使输出更加集中确定。
+-
+-
+-<div data-tips="true" data-tips-type="warning" data-tips-is-title="true">注意</div>
+-
+-
+-<div data-tips="true" data-tips-type="warning">调用下列模型时，本字段取值固定为 1，手动指定的参数值将被忽略。</div>
+-
+-
+-
+-* <div data-tips="true" data-tips-type="warning">doubao\-seed\-2\-0\-code\-preview\-260215</div>
+-
+-
+-* <div data-tips="true" data-tips-type="warning">doubao\-seed\-2\-0\-pro\-260215</div>
+-
+-
+-* <div data-tips="true" data-tips-type="warning">doubao\-seed\-2\-0\-lite\-260215</div>
+-
+-
+-
+-**取值范围**：`[0, 2]`
+-
+-
+-
+-**text** `object`  |  输出格式
+-
+-模型文本输出的格式定义，可以是自然语言，也可以是结构化的 JSON 数据。
+-
+-
+-**format** `object` `必选`  |  输出格式
+-
+-`text.format`
+-
+-文本输出格式定义。
+-
+-
+-**type** `string` `必选`  |  格式类型
+-
+-`text.format.type`
+-
+-输出格式类型。可选值：`text`、`json_schema`、`json_object`。
+-
+-<div data-tips="true" data-tips-type="warning" data-tips-is-title="true">注意</div>
+-
+-
+-<div data-tips="true" data-tips-type="warning"><code>json_object</code> / <code>json_schema</code> 能力尚在 beta 阶段，请谨慎在生产环境使用。</div>
+-
+-
+-
+-
+-**description** `string`  |  格式描述
+-
+-`text.format.description`
+-
+-格式描述信息。
+-
+-
+-
+-**name** `string`  |  格式名称
+-
+-`text.format.name`
+-
+-格式名称，作为 JSON Schema 输出格式的标识。
+-
+-<div data-tips="true" data-tips-type="warning" data-tips-is-title="true">注意</div>
+-
+-
+-<div data-tips="true" data-tips-type="warning">仅当 <em>type</em> 为 <code>json_schema</code> 时需要提供此字段。</div>
+-
+-
+-
+-
+-**schema** `object`  |  Schema 定义
+-
+-`text.format.schema`
+-
+-JSON Schema 定义。当 *type* 为 `json_schema` 时必填。
+-
+-
+-
+-**strict** `boolean`  |  严格模式
+-
+-`text.format.strict`
+-
+-是否严格按 JSON Schema 校验模型输出。
+-
+-<div data-tips="true" data-tips-type="warning" data-tips-is-title="true">注意</div>
+-
+-
+-<div data-tips="true" data-tips-type="warning">仅当 <em>type</em> 为 <code>json_schema</code> 时生效。</div>
+-
+-
+-
+-
+-
+-
+-**thinking** `object`  |  深度思考开关
+-
+-配置模型深度思考模式的开关，通过子字段 `type` 指定启用、关闭或由模型自行判断。
+-
+-<div data-tips="true" data-tips-type="tip" data-tips-is-title="true">说明</div>
+-
+-
+-<div data-tips="true" data-tips-type="tip">未传入 <code>thinking</code> 时，模型默认开启深度思考；如需关闭，需显式将子字段 <code>type</code> 设置为 <code>disabled</code>。</div>
+-
+-
+-
+-**type** `string`  |  思考模式
+-
+-`thinking.type`
+-
+-深度思考模式。
+-
+-
+-* `enabled`：开启深度思考。
+-
+-* `disabled`：关闭深度思考。
+-
+-* `auto`：由模型自行判断是否需要深度思考。
+-
+-
+-
+-
+-**tool_choice** `string / object`  |  工具调用策略
+-
+-本次请求，模型返回信息中是否有待调用的工具的调用策略。
+-
+-<div data-tips="true" data-tips-type="tip" data-tips-is-title="true">说明</div>
+-
+-
+-
+-* <div data-tips="true" data-tips-type="tip">未指定工具时默认值为 <code>none</code>；存在工具时默认值为 <code>auto</code>。</div>
+-
+-
+-
+-**模型支持**：
+-
+-
+-* `Doubao Seed 2.0 系列`
+-
+-
++`tools.name`
++
++供模型调用的函数名称，模型在 function_call 输出中以该名称回传，用于匹配对应函数。
++
++**type** `string`  |  类型
++
++`tools.type`
++
++工具类型标识，用于在 union 中区分不同工具类别。
++
++取值固定为 `function`。
++
++**description** `string`  |  函数描述
++
++`tools.description`
++
++函数的描述信息，帮助模型理解何时使用该函数。
++
++**parameters** `object`  |  参数定义
++
++`tools.parameters`
++
++函数参数定义，遵循 JSON Schema 格式。
++
++联网搜索 `object`
++
++联网搜索工具，让模型在需要时自动进行网页搜索获取实时信息。
++
++**type** `string`  |  类型
++
++`tools.type`
++
++工具类型标识，用于区分 Tool 的不同变体。
++
++取值固定为 `web_search`。
++
++**limit** `integer`  |  最大结果数
++
++`tools.limit`
++
++每轮搜索最大返回结果数量。
++
++> **说明**
++
++> 单次搜索最多返回 20 条；单轮可能有多次搜索，最终召回条数受此参数限制影响。
++
++**取值范围**：`[1, 50]`
++
++**max_keyword** `integer`  |  最大关键词数
++
++`tools.max_keyword`
++
++最大并行搜索关键词数量。
++
++**取值范围**：`[1, 50]`
++
++**sources** `string[]`  |  搜索来源
++
++`tools.sources`
++
++搜索信息来源限制，指定模型可从哪些渠道检索网页内容。可选值：`toutiao`、`douyin`、`moji`、`search_engine`、`doubao`。
++
++> **说明**
++
++> `doubao` 不能与其他搜索来源同时配置。传入 `["doubao"]` 时，`tools.limit`、`tools.max_keyword`、`tools.user_location` 均不生效，向它们传入的值将被忽略。
++
++**user_location** `object`  |  用户位置
++
++`tools.user_location`
++
++用户地理位置信息，用于搜索优化。
++
++**type** `string`  |  类型
++
++`tools.user_location.type`
++
++位置类型。
++
++取值固定为 `approximate`。
++
++**city** `string`  |  城市
++
++`tools.user_location.city`
++
++用户所在城市。
++
++**country** `string`  |  国家
++
++`tools.user_location.country`
++
++用户所在国家。
++
++**region** `string`  |  地区
++
++`tools.user_location.region`
++
++用户所在地区。
++
++**timezone** `number`  |  时区
++
++`tools.user_location.timezone`
++
++用户所在时区。
++
++图像处理 `object`
++
++图像处理工具，让模型对图片进行画点、选区、缩放、旋转等操作。
++
++**type** `string`  |  类型
++
++`tools.type`
++
++工具类型标识，用于区分 Tool 的不同变体。
++
++取值固定为 `image_process`。
++
++**grounding** `object`  |  选区功能
++
++`tools.grounding`
++
++选区/裁切功能配置，启用后模型可返回图像中目标的检测框或裁切区域坐标。
++
++**type** `string`  |  开关
++
++`tools.grounding.type`
++
++功能开关。可选值：`enabled`、`disabled`。
++
++**point** `object`  |  画点功能
++
++`tools.point`
++
++画点/画线功能开关。
++
++**type** `string`  |  开关
++
++`tools.point.type`
++
++功能开关。可选值：`enabled`、`disabled`。
++
++**rotate** `object`  |  旋转功能
++
++`tools.rotate`
++
++旋转功能开关。启用后模型可请求对图片按指定角度进行旋转。
++
++> **注意**
++
++> 旋转角度支持范围为 0\-359 度。
++
++**type** `string`  |  开关
++
++`tools.rotate.type`
++
++功能开关。可选值：`enabled`、`disabled`。
++
++**zoom** `object`  |  缩放功能
++
++`tools.zoom`
++
++缩放功能开关，启用后模型可对图像目标区域执行缩放操作。
++
++> **说明**
++
++> 缩放倍率支持范围 0.5\-2.0 倍。
++
++**type** `string`  |  开关
++
++`tools.zoom.type`
++
++功能开关。可选值：`enabled`、`disabled`。
++
++MCP 工具 `object`
++
++MCP（Model Context Protocol）工具，让模型调用外部 MCP Server 提供的工具。
++
++**server_label** `string`  |  服务标签
++
++`tools.server_label`
++
++MCP Server 的唯一标识标签。模型在工具调用输出中通过该标签指向对应 Server，便于在多个 MCP Server 场景下区分调用来源。
++
++**server_url** `string`  |  服务地址
++
++`tools.server_url`
++
++MCP Server 的 HTTP(S) 访问地址，模型通过该地址向 Server 发起工具调用请求。
++
++**type** `string`  |  类型
++
++`tools.type`
++
++工具类型标识，用于区分 Tool 的不同变体。
++
++取值固定为 `mcp`。
++
++**allowed_tools** `string[] / object`  |  允许工具
++
++`tools.allowed_tools`
++
++允许模型调用的工具范围。可传工具名称字符串数组，或包含 `tool_names` 字段的过滤器对象。
++
++工具名数组 `string[]`
++
++直接传入允许调用的工具名称数组。
++
++工具过滤器 `object`
++
++通过过滤器对象指定允许调用的工具范围。
++
++**tool_names** `string[]`  |  工具名列表
++
++`tools.allowed_tools.tool_names`
++
++允许调用的工具名称列表。
++
++**headers** `object`  |  请求头
++
++`tools.headers`
++
++调用 MCP Server 时附加的 HTTP 请求头，以字符串键值对形式指定 header 名与值。
++
++> **说明**
++
++* > 常用于传递鉴权信息（如 `Authorization`）。
++
++* > `Authorization` 字段不会被服务端存储。
++
++**require_approval** `string / object`  |  审批策略
++
++`tools.require_approval`
++
++MCP 工具调用前的审批策略；支持简单模式（字符串）或按工具粒度控制（过滤器对象）。
+ 
+ 简单策略 `string`
+ 
+-直接传入字符串 `none`、`auto` 或 `required`，控制工具调用整体策略。
+-
+-
+-
+-指定工具 `object`
+-
+-通过对象指定具体工具类型或工具名进行调用。
+-
+-
+-**type** `string` `必选`  |  工具类型
+-
+-`tool_choice.type`
+-
+-指定要调用的工具类型，用于精确路由到对应工具。可选值：
+-
+-
+-* `function`
+-
+-* `web_search`
+-
+-* `image_process`
+-
+-* `mcp`
+-
+-* `knowledge_search`
+-
+-* `doubao_app`
+-
+-
+-
+-**name** `string`  |  工具名称
+-
+-`tool_choice.name`
+-
+-指定要调用的具体工具名，如函数名或 MCP 服务下的工具名。
+-
+-
+-
+-
+-
+-**tools** `object[]`  |  工具列表
+-
+-模型可以调用的工具列表，支持内置工具（Built\-in tools）、MCP 工具和自定义工具（Function Calling）
+-
+-
+-函数调用 `object`
+-
+-自定义函数调用（Function Calling），让模型生成结构化的函数参数。
+-
+-
+-**name** `string` `必选`  |  函数名
+-
+-`tools.name`
+-
+-供模型调用的函数名称，模型在 function_call 输出中以该名称回传，用于匹配对应函数。
+-
+-
+-
+-**type** `string` `必选`  |  类型
++直接传入字符串 `always` 或 `never`，对所有工具应用统一审批策略。
++
++工具过滤器 `object`
++
++通过过滤器对象按工具粒度配置审批策略。
++
++**always** `object`  |  始终审批
++
++`tools.require_approval.always`
++
++始终需要审批的工具过滤器。
++
++**tool_names** `string[]`  |  工具名列表
++
++`tools.require_approval.always.tool_names`
++
++始终需要审批的工具名称列表。
++
++**never** `object`  |  无需审批
++
++`tools.require_approval.never`
++
++无需审批的工具过滤器。
++
++**tool_names** `string[]`  |  工具名列表
++
++`tools.require_approval.never.tool_names`
++
++无需审批即可调用的工具名称列表。
++
++**server_description** `string`  |  服务描述
++
++`tools.server_description`
++
++MCP Server 的描述信息，帮助模型理解何时使用该 Server。
++
++知识库搜索 `object`
++
++私域知识库搜索工具，让模型检索企业内部知识库中的文档内容。
++
++**knowledge_resource_id** `string`  |  知识库 ID
++
++`tools.knowledge_resource_id`
++
++**type** `string`  |  类型
+ 
+ `tools.type`
+ 
+-工具类型标识，用于在 union 中区分不同工具类别。
+-
+-取值固定为 `function`。
+-
+-
+-
+-**description** `string`  |  函数描述
++工具类型标识，用于区分 Tool 的不同变体。
++
++取值固定为 `knowledge_search`。
++
++**dense_weight** `number`  |  稠密权重
++
++`tools.dense_weight`
++
++混合检索中稠密向量（语义）检索的权重，值越大越偏向语义匹配，越小越偏向关键词匹配。
++
++> **说明**
++
++> 仅在混合检索（索引算法为 `hnsw_hybrid`）下生效。
++
++**取值范围**：`[0.2, 1]`
++
++**description** `string`  |  知识库描述
+ 
+ `tools.description`
+ 
+-函数的描述信息，帮助模型理解何时使用该函数。
+-
+-
+-
+-**parameters** `object`  |  参数定义
+-
+-`tools.parameters`
+-
+-函数参数定义，遵循 JSON Schema 格式。
+-
+-
+-
+-
+-联网搜索 `object`
+-
+-联网搜索工具，让模型在需要时自动进行网页搜索获取实时信息。
+-
+-
+-**type** `string` `必选`  |  类型
++知识库描述信息，帮助模型理解何时使用该知识库。
++
++**doc_filter** `object`  |  文档过滤
++
++`tools.doc_filter`
++
++设置文档字段级别的检索过滤条件，确保只在符合条件的文档中检索。
++
++> **说明**
++
++* > 支持用作过滤条件的文档字段：
++
++   * > 系统字段：`doc_id`（仅手动创建的知识库）、`_sys_auto_doc_id`（手动 + API 创建均适用）
++
++   * > 自定义字段：已为知识库文档添加的**文档标签**（对应知识库 `index_config.fields` 中的 `field`）
++
++* > 支持单一条件过滤和多条件组合过滤（支持 `And` / `Or` 逻辑运算）。
++
++* > 详细使用方式和支持字段参见 [filter 表达式](https://www.volcengine.com/docs/84313/1419289#filter-%E8%A1%A8%E8%BE%BE%E5%BC%8F)。
++
++* > 若自定义字段类型为 `Boolean`，取值范围是 `True` / `False`，大小写规则：cURL 用 `true` / `false`，Python 用 `True` / `False`。
++
++**limit** `integer`  |  最大结果数
++
++`tools.limit`
++
++最大搜索结果数量。
++
++**取值范围**：`[1, 200]`
++
++**max_keyword** `integer`  |  最大关键词数
++
++`tools.max_keyword`
++
++最大并行搜索关键词数量。
++
++**取值范围**：`[1, 50]`
++
++**ranking_options** `object`  |  排序选项
++
++`tools.ranking_options`
++
++检索后处理选项。可参考 [知识库 API 文档](https://www.volcengine.com/docs/84313/1350012) `post_processing` 字段。
++
++**chunk_diffusion_count** `integer`  |  切片扩散数
++
++`tools.ranking_options.chunk_diffusion_count`
++
++检索阶段返回命中切片的上下几片邻近切片。取 `0` 表示不进行 chunk diffusion。
++
++**取值范围**：`[0, 5]`
++
++**chunk_group** `boolean`  |  文本聚合
++
++`tools.ranking_options.chunk_group`
++
++文本聚合。
++
++* 默认不聚合。
++
++* 对于非结构化文件，可开启文本聚合以更好保留原文档内容语序。
++
++* 开启后，会根据文档及文档顺序，对切片重新聚合排序返回。
++
++**get_attachment_link** `boolean`  |  获取附件链接
++
++`tools.ranking_options.get_attachment_link`
++
++是否获取切片中图片的临时下载链接。
++
++**rerank_model** `string`  |  Rerank 模型
++
++`tools.ranking_options.rerank_model`
++
++rerank 模型选择。默认值：`base-multilingual-rerank`。取值：`base-multilingual-rerank` / `m3-v2-rerank`。
++
++> **说明**
++
++* > 仅在 `rerank_switch` 为 `true` 时生效。
++
++* > `base-multilingual-rerank`（推荐）：速度快、长文本、支持 70+ 种语言。
++
++* > `m3-v2-rerank`：常规文本、支持 100+ 种语言。
++
++**rerank_only_chunk** `boolean`  |  仅切片重排
++
++`tools.ranking_options.rerank_only_chunk`
++
++是否仅根据 chunk 内容计算重排分数。`true` 只根据 chunk 内容计算分；`false` 根据 chunk title + 内容一起计算排序分。
++
++**rerank_switch** `boolean`  |  开启重排
++
++`tools.ranking_options.rerank_switch`
++
++是否自动对检索结果做 rerank。若设置为 `true`，则会自动请求 rerank 模型排序。
++
++**retrieve_count** `integer`  |  重排切片数
++
++`tools.ranking_options.retrieve_count`
++
++进入重排的切片数量。
++
++> **注意**
++
++* > 仅在 `rerank_switch` 为 `true` 时生效。
++
++* > `retrieve_count` 需要大于等于 `limit`，否则会抛出错误。
++
++豆包助手 `object`
++
++豆包助手工具，让模型使用豆包的聊天、深度思考、AI 搜索和推理搜索能力。
++
++**feature** `object`  |  功能配置
++
++`tools.feature`
++
++豆包助手的子功能配置，用于按需开启聊天、深度思考、AI 搜索、推理搜索四类能力并设置对应角色描述。
++
++**ai_search** `object`  |  AI 搜索
++
++`tools.feature.ai_search`
++
++AI 搜索功能配置。
++
++**role_description** `string`  |  角色描述
++
++`tools.feature.ai_search.role_description`
++
++使用豆包助手时修改角色设定。默认值：`你的名字是豆包,有很强的专业性。`
++
++> **注意**
++
++> 此字段与 `system prompt`、`instructions` 互斥，同时配置时以本字段为准。
++
++**type** `string`  |  开关
++
++`tools.feature.ai_search.type`
++
++功能开关。可选值：`enabled`、`disabled`。
++
++**chat** `object`  |  普通聊天
++
++`tools.feature.chat`
++
++普通聊天功能配置。
++
++**role_description** `string`  |  角色描述
++
++`tools.feature.chat.role_description`
++
++使用豆包助手时修改角色设定。默认值：`你的名字是豆包,有很强的专业性。`
++
++> **注意**
++
++> 此字段与 `system prompt`、`instructions` 互斥，同时配置时以本字段为准。
++
++**type** `string`  |  开关
++
++`tools.feature.chat.type`
++
++功能开关。可选值：`enabled`、`disabled`。
++
++**deep_chat** `object`  |  深度聊天
++
++`tools.feature.deep_chat`
++
++深度聊天功能配置。
++
++**role_description** `string`  |  角色描述
++
++`tools.feature.deep_chat.role_description`
++
++使用豆包助手时修改角色设定。默认值：`你的名字是豆包,有很强的专业性。`
++
++> **注意**
++
++> 此字段与 `system prompt`、`instructions` 互斥，同时配置时以本字段为准。
++
++**type** `string`  |  开关
++
++`tools.feature.deep_chat.type`
++
++功能开关。可选值：`enabled`、`disabled`。
++
++**reasoning_search** `object`  |  推理搜索
++
++`tools.feature.reasoning_search`
++
++推理搜索功能配置。
++
++**role_description** `string`  |  角色描述
++
++`tools.feature.reasoning_search.role_description`
++
++使用豆包助手时修改角色设定。默认值：`你的名字是豆包,有很强的专业性。`
++
++> **注意**
++
++> 此字段与 `system prompt`、`instructions` 互斥，同时配置时以本字段为准。
++
++**type** `string`  |  开关
++
++`tools.feature.reasoning_search.type`
++
++功能开关。可选值：`enabled`、`disabled`。
++
++**type** `string`  |  类型
+ 
+ `tools.type`
+ 
+-工具类型标识，用于区分 Tool 的不同变体。
+-
+-取值固定为 `web_search`。
+-
+-
+-
+-**limit** `integer` `默认值 10`  |  最大结果数
+-
+-`tools.limit`
+-
+-每轮搜索最大返回结果数量。
+-
+-<div data-tips="true" data-tips-type="tip" data-tips-is-title="true">说明</div>
+-
+-
+-<div data-tips="true" data-tips-type="tip">单次搜索最多返回 20 条；单轮可能有多次搜索，最终召回条数受此参数限制影响。</div>
+-
+-
+-**取值范围**：`[1, 50]`
+-
+-
+-
+-**max_keyword** `integer`  |  最大关键词数
+-
+-`tools.max_keyword`
+-
+-最大并行搜索关键词数量。
+-
+-**取值范围**：`[1, 50]`
+-
+-
+-
+-**sources** `string[]`  |  搜索来源
+-
+-`tools.sources`
+-
+-搜索信息来源限制，指定模型可从哪些渠道检索网页内容。可选值：`toutiao`、`douyin`、`moji`、`search_engine`、`doubao`。
+-
+-<div data-tips="true" data-tips-type="tip" data-tips-is-title="true">说明</div>
+-
+-
+-<div data-tips="true" data-tips-type="tip"><code>doubao</code> 不能与其他搜索来源同时配置。传入 <code>["doubao"]</code> 时，<code>tools.limit</code>、<code>tools.max_keyword</code>、<code>tools.user_location</code> 均不生效，向它们传入的值将被忽略。</div>
+-
+-
+-
++工具类型，此处固定为 `doubao_app`
+ 
+ **user_location** `object`  |  用户位置
+ 
+@@ -3209,8 +5110,7 @@
+ 
+ 用户地理位置信息，用于搜索优化。
+ 
+-
+-**type** `string` `必选`  |  类型
++**type** `string`  |  类型
+ 
+ `tools.user_location.type`
+ 
+@@ -3218,3978 +5118,164 @@
+ 
+ 取值固定为 `approximate`。
+ 
+-
+-
+ **city** `string`  |  城市
+ 
+ `tools.user_location.city`
+ 
+ 用户所在城市。
+ 
+-
+-
+ **country** `string`  |  国家
+ 
+ `tools.user_location.country`
+ 
+ 用户所在国家。
+ 
+-
+-
+ **region** `string`  |  地区
+ 
+ `tools.user_location.region`
+ 
+ 用户所在地区。
+ 
+-
+-
+ **timezone** `number`  |  时区
+ 
+ `tools.user_location.timezone`
+ 
+ 用户所在时区。
+ 
+-
+-
+-
+-
+-图像处理 `object`
+-
+-图像处理工具，让模型对图片进行画点、选区、缩放、旋转等操作。
+-
+-
+-**type** `string` `必选`  |  类型
+-
+-`tools.type`
+-
+-工具类型标识，用于区分 Tool 的不同变体。
+-
+-取值固定为 `image_process`。
+-
+-
+-
+-**grounding** `object`  |  选区功能
+-
+-`tools.grounding`
+-
+-选区/裁切功能配置，启用后模型可返回图像中目标的检测框或裁切区域坐标。
+-
+-
+-**type** `string` `默认值 enabled`  |  开关
+-
+-`tools.grounding.type`
+-
+-功能开关。可选值：`enabled`、`disabled`。
+-
+-
+-
+-
+-**point** `object`  |  画点功能
+-
+-`tools.point`
+-
+-画点/画线功能开关。
+-
+-
+-**type** `string` `默认值 enabled`  |  开关
+-
+-`tools.point.type`
+-
+-功能开关。可选值：`enabled`、`disabled`。
+-
+-
+-
+-
+-**rotate** `object`  |  旋转功能
+-
+-`tools.rotate`
+-
+-旋转功能开关。启用后模型可请求对图片按指定角度进行旋转。
+-
+-<div data-tips="true" data-tips-type="warning" data-tips-is-title="true">注意</div>
+-
+-
+-<div data-tips="true" data-tips-type="warning">旋转角度支持范围为 0\-359 度。</div>
+-
+-
+-
+-**type** `string` `默认值 enabled`  |  开关
+-
+-`tools.rotate.type`
+-
+-功能开关。可选值：`enabled`、`disabled`。
+-
+-
+-
+-
+-**zoom** `object`  |  缩放功能
+-
+-`tools.zoom`
+-
+-缩放功能开关，启用后模型可对图像目标区域执行缩放操作。
+-
+-<div data-tips="true" data-tips-type="tip" data-tips-is-title="true">说明</div>
+-
+-
+-<div data-tips="true" data-tips-type="tip">缩放倍率支持范围 0.5\-2.0 倍。</div>
+-
+-
+-
+-**type** `string` `默认值 enabled`  |  开关
+-
+-`tools.zoom.type`
+-
+-功能开关。可选值：`enabled`、`disabled`。
+-
+-
+-
+-
+-
+-MCP 工具 `object`
+-
+-MCP（Model Context Protocol）工具，让模型调用外部 MCP Server 提供的工具。
+-
+-
+-**server_label** `string` `必选`  |  服务标签
+-
+-`tools.server_label`
+-
+-MCP Server 的唯一标识标签。模型在工具调用输出中通过该标签指向对应 Server，便于在多个 MCP Server 场景下区分调用来源。
+-
+-
+-
+-**server_url** `string` `必选`  |  服务地址
+-
+-`tools.server_url`
+-
+-MCP Server 的 HTTP(S) 访问地址，模型通过该地址向 Server 发起工具调用请求。
+-
+-
+-
+-**type** `string` `必选`  |  类型
+-
+-`tools.type`
+-
+-工具类型标识，用于区分 Tool 的不同变体。
+-
+-取值固定为 `mcp`。
+-
+-
+-
+-**allowed_tools** `string[] / object`  |  允许工具
+-
+-`tools.allowed_tools`
+-
+-允许模型调用的工具范围。可传工具名称字符串数组，或包含 `tool_names` 字段的过滤器对象。
+-
+-
+-工具名数组 `string[]`
+-
+-直接传入允许调用的工具名称数组。
+-
+-
+-
+-工具过滤器 `object`
+-
+-通过过滤器对象指定允许调用的工具范围。
+-
+-
+-**tool_names** `string[]` `必选`  |  工具名列表
+-
+-`tools.allowed_tools.tool_names`
+-
+-允许调用的工具名称列表。
+-
+-
+-
+-
+-
+-**headers** `object`  |  请求头
+-
+-`tools.headers`
+-
+-调用 MCP Server 时附加的 HTTP 请求头，以字符串键值对形式指定 header 名与值。
+-
+-<div data-tips="true" data-tips-type="tip" data-tips-is-title="true">说明</div>
+-
+-
+-
+-* <div data-tips="true" data-tips-type="tip">常用于传递鉴权信息（如 <code>Authorization</code>）。</div>
+-
+-
+-* <div data-tips="true" data-tips-type="tip"><code>Authorization</code> 字段不会被服务端存储。</div>
+-
+-
+-
+-
+-**require_approval** `string / object` `默认值 always`  |  审批策略
+-
+-`tools.require_approval`
+-
+-MCP 工具调用前的审批策略；支持简单模式（字符串）或按工具粒度控制（过滤器对象）。
+-
+-
+-简单策略 `string`
+-
+-直接传入字符串 `always` 或 `never`，对所有工具应用统一审批策略。
+-
+-
+-
+-工具过滤器 `object`
+-
+-通过过滤器对象按工具粒度配置审批策略。
+-
+-
+-**always** `object`  |  始终审批
+-
+-`tools.require_approval.always`
+-
+-始终需要审批的工具过滤器。
+-
+-
+-**tool_names** `string[]` `必选`  |  工具名列表
+-
+-`tools.require_approval.always.tool_names`
+-
+-始终需要审批的工具名称列表。
+-
+-
+-
+-
+-**never** `object`  |  无需审批
+-
+-`tools.require_approval.never`
+-
+-无需审批的工具过滤器。
+-
+-
+-**tool_names** `string[]` `必选`  |  工具名列表
+-
+-`tools.require_approval.never.tool_names`
+-
+-无需审批即可调用的工具名称列表。
+-
+-
+-
+-
+-
+-
+-**server_description** `string`  |  服务描述
+-
+-`tools.server_description`
+-
+-MCP Server 的描述信息，帮助模型理解何时使用该 Server。
+-
+-
+-
+-
+-知识库搜索 `object`
+-
+-私域知识库搜索工具，让模型检索企业内部知识库中的文档内容。
+-
+-
+-**knowledge_resource_id** `string` `必选`  |  知识库 ID
+-
+-`tools.knowledge_resource_id`
+-
+-
+-
+-**type** `string` `必选`  |  类型
+-
+-`tools.type`
+-
+-工具类型标识，用于区分 Tool 的不同变体。
+-
+-取值固定为 `knowledge_search`。
+-
+-
+-
+-**dense_weight** `number` `默认值 0.5`  |  稠密权重
+-
+-`tools.dense_weight`
+-
+-混合检索中稠密向量（语义）检索的权重，值越大越偏向语义匹配，越小越偏向关键词匹配。
+-
+-<div data-tips="true" data-tips-type="tip" data-tips-is-title="true">说明</div>
+-
+-
+-<div data-tips="true" data-tips-type="tip">仅在混合检索（索引算法为 <code>hnsw_hybrid</code>）下生效。</div>
+-
+-
+-**取值范围**：`[0.2, 1]`
+-
+-
+-
+-**description** `string`  |  知识库描述
+-
+-`tools.description`
+-
+-知识库描述信息，帮助模型理解何时使用该知识库。
+-
+-
+-
+-**doc_filter** `object`  |  文档过滤
+-
+-`tools.doc_filter`
+-
+-设置文档字段级别的检索过滤条件，确保只在符合条件的文档中检索。
+-
+-<div data-tips="true" data-tips-type="tip" data-tips-is-title="true">说明</div>
+-
+-
+-
+-* <div data-tips="true" data-tips-type="tip">支持用作过滤条件的文档字段：</div>
+-
+-
+-   * <div data-tips="true" data-tips-type="tip">系统字段：<code>doc_id</code>（仅手动创建的知识库）、<code>_sys_auto_doc_id</code>（手动 + API 创建均适用）</div>
+-
+-
+-   * <div data-tips="true" data-tips-type="tip">自定义字段：已为知识库文档添加的<strong>文档标签</strong>（对应知识库 <code>index_config.fields</code> 中的 <code>field</code>）</div>
+-
+-
+-* <div data-tips="true" data-tips-type="tip">支持单一条件过滤和多条件组合过滤（支持 <code>And</code> / <code>Or</code> 逻辑运算）。</div>
+-
+-
+-* <div data-tips="true" data-tips-type="tip">详细使用方式和支持字段参见 <a href="https://www.volcengine.com/docs/84313/1419289#filter-%E8%A1%A8%E8%BE%BE%E5%BC%8F">filter 表达式</a>。</div>
+-
+-
+-* <div data-tips="true" data-tips-type="tip">若自定义字段类型为 <code>Boolean</code>，取值范围是 <code>True</code> / <code>False</code>，大小写规则：cURL 用 <code>true</code> / <code>false</code>，Python 用 <code>True</code> / <code>False</code>。</div>
+-
+-
+-
+-
+-**limit** `integer` `默认值 10`  |  最大结果数
+-
+-`tools.limit`
+-
+-最大搜索结果数量。
+-
+-**取值范围**：`[1, 200]`
+-
+-
+-
+-**max_keyword** `integer`  |  最大关键词数
+-
+-`tools.max_keyword`
+-
+-最大并行搜索关键词数量。
+-
+-**取值范围**：`[1, 50]`
+-
+-
+-
+-**ranking_options** `object`  |  排序选项
+-
+-`tools.ranking_options`
+-
+-检索后处理选项。可参考 [知识库 API 文档](https://www.volcengine.com/docs/84313/1350012) `post_processing` 字段。
+-
+-
+-**chunk_diffusion_count** `integer` `默认值 0`  |  切片扩散数
+-
+-`tools.ranking_options.chunk_diffusion_count`
+-
+-检索阶段返回命中切片的上下几片邻近切片。取 `0` 表示不进行 chunk diffusion。
+-
+-**取值范围**：`[0, 5]`
+-
+-
+-
+-**chunk_group** `boolean` `默认值 false`  |  文本聚合
+-
+-`tools.ranking_options.chunk_group`
+-
+-文本聚合。
+-
+-
+-* 默认不聚合。
+-
+-* 对于非结构化文件，可开启文本聚合以更好保留原文档内容语序。
+-
+-* 开启后，会根据文档及文档顺序，对切片重新聚合排序返回。
+-
+-
+-
+-**get_attachment_link** `boolean` `默认值 false`  |  获取附件链接
+-
+-`tools.ranking_options.get_attachment_link`
+-
+-是否获取切片中图片的临时下载链接。
+-
+-
+-
+-**rerank_model** `string` `默认值 base-multilingual-rerank`  |  Rerank 模型
+-
+-`tools.ranking_options.rerank_model`
+-
+-rerank 模型选择。可选值：`base-multilingual-rerank`、`m3-v2-rerank`。
+-
+-<div data-tips="true" data-tips-type="tip" data-tips-is-title="true">说明</div>
+-
+-
+-
+-* <div data-tips="true" data-tips-type="tip">仅在 <code>rerank_switch</code> 为 <code>true</code> 时生效。</div>
+-
+-
+-* <div data-tips="true" data-tips-type="tip"><code>base-multilingual-rerank</code>（推荐）：速度快、长文本、支持 70+ 种语言。</div>
+-
+-
+-* <div data-tips="true" data-tips-type="tip"><code>m3-v2-rerank</code>：常规文本、支持 100+ 种语言。</div>
+-
+-
+-
+-
+-**rerank_only_chunk** `boolean` `默认值 false`  |  仅切片重排
+-
+-`tools.ranking_options.rerank_only_chunk`
+-
+-是否仅根据 chunk 内容计算重排分数。`true` 只根据 chunk 内容计算分；`false` 根据 chunk title + 内容一起计算排序分。
+-
+-
+-
+-**rerank_switch** `boolean` `默认值 false`  |  开启重排
+-
+-`tools.ranking_options.rerank_switch`
+-
+-是否自动对检索结果做 rerank。若设置为 `true`，则会自动请求 rerank 模型排序。
+-
+-
+-
+-**retrieve_count** `integer` `默认值 25`  |  重排切片数
+-
+-`tools.ranking_options.retrieve_count`
+-
+-进入重排的切片数量。
+-
+-<div data-tips="true" data-tips-type="warning" data-tips-is-title="true">注意</div>
+-
+-
+-
+-* <div data-tips="true" data-tips-type="warning">仅在 <code>rerank_switch</code> 为 <code>true</code> 时生效。</div>
+-
+-
+-* <div data-tips="true" data-tips-type="warning"><code>retrieve_count</code> 需要大于等于 <code>limit</code>，否则会抛出错误。</div>
+-
+-
+-
+-
+-
+-
+-豆包助手 `object`
+-
+-豆包助手工具，让模型使用豆包的聊天、深度思考、AI 搜索和推理搜索能力。
+-
+-
+-**feature** `object` `必选`  |  功能配置
+-
+-`tools.feature`
+-
+-豆包助手的子功能配置，用于按需开启聊天、深度思考、AI 搜索、推理搜索四类能力并设置对应角色描述。
+-
+-
+-**ai_search** `object`  |  AI 搜索
+-
+-`tools.feature.ai_search`
+-
+-AI 搜索功能配置。
+-
+-
+-**role_description** `string`  |  角色描述
+-
+-`tools.feature.ai_search.role_description`
+-
+-使用豆包助手时修改角色设定。默认值：`你的名字是豆包,有很强的专业性。`
+-
+-<div data-tips="true" data-tips-type="warning" data-tips-is-title="true">注意</div>
+-
+-
+-<div data-tips="true" data-tips-type="warning">此字段与 <code>system prompt</code>、<code>instructions</code> 互斥，同时配置时以本字段为准。</div>
+-
+-
+-
+-
+-**type** `string` `默认值 disabled`  |  开关
+-
+-`tools.feature.ai_search.type`
+-
+-功能开关。可选值：`enabled`、`disabled`。
+-
+-
+-
+-
+-**chat** `object`  |  普通聊天
+-
+-`tools.feature.chat`
+-
+-普通聊天功能配置。
+-
+-
+-**role_description** `string`  |  角色描述
+-
+-`tools.feature.chat.role_description`
+-
+-使用豆包助手时修改角色设定。默认值：`你的名字是豆包,有很强的专业性。`
+-
+-<div data-tips="true" data-tips-type="warning" data-tips-is-title="true">注意</div>
+-
+-
+-<div data-tips="true" data-tips-type="warning">此字段与 <code>system prompt</code>、<code>instructions</code> 互斥，同时配置时以本字段为准。</div>
+-
+-
+-
+-
+-**type** `string` `默认值 disabled`  |  开关
+-
+-`tools.feature.chat.type`
+-
+-功能开关。可选值：`enabled`、`disabled`。
+-
+-
+-
+-
+-**deep_chat** `object`  |  深度聊天
+-
+-`tools.feature.deep_chat`
+-
+-深度聊天功能配置。
+-
+-
+-**role_description** `string`  |  角色描述
+-
+-`tools.feature.deep_chat.role_description`
+-
+-使用豆包助手时修改角色设定。默认值：`你的名字是豆包,有很强的专业性。`
+-
+-<div data-tips="true" data-tips-type="warning" data-tips-is-title="true">注意</div>
+-
+-
+-<div data-tips="true" data-tips-type="warning">此字段与 <code>system prompt</code>、<code>instructions</code> 互斥，同时配置时以本字段为准。</div>
+-
+-
+-
+-
+-**type** `string` `默认值 disabled`  |  开关
+-
+-`tools.feature.deep_chat.type`
+-
+-功能开关。可选值：`enabled`、`disabled`。
+-
+-
+-
+-
+-**reasoning_search** `object`  |  推理搜索
+-
+-`tools.feature.reasoning_search`
+-
+-推理搜索功能配置。
+-
+-
+-**role_description** `string`  |  角色描述
+-
+-`tools.feature.reasoning_search.role_description`
+-
+-使用豆包助手时修改角色设定。默认值：`你的名字是豆包,有很强的专业性。`
+-
+-<div data-tips="true" data-tips-type="warning" data-tips-is-title="true">注意</div>
+-
+-
+-<div data-tips="true" data-tips-type="warning">此字段与 <code>system prompt</code>、<code>instructions</code> 互斥，同时配置时以本字段为准。</div>
+-
+-
+-
+-
+-**type** `string` `默认值 disabled`  |  开关
+-
+-`tools.feature.reasoning_search.type`
+-
+-功能开关。可选值：`enabled`、`disabled`。
+-
+-
+-
+-
+-
+-**type** `string` `必选`  |  类型
+-
+-`tools.type`
+-
+-工具类型，此处固定为 `doubao_app`
+-
+-
+-
+-**user_location** `object`  |  用户位置
+-
+-`tools.user_location`
+-
+-用户地理位置信息，用于搜索优化。
+-
+-
+-**type** `string` `必选`  |  类型
+-
+-`tools.user_location.type`
+-
+-位置类型。
+-
+-取值固定为 `approximate`。
+-
+-
+-
+-**city** `string`  |  城市
+-
+-`tools.user_location.city`
+-
+-用户所在城市。
+-
+-
+-
+-**country** `string`  |  国家
+-
+-`tools.user_location.country`
+-
+-用户所在国家。
+-
+-
+-
+-**region** `string`  |  地区
+-
+-`tools.user_location.region`
+-
+-用户所在地区。
+-
+-
+-
+-**timezone** `number`  |  时区
+-
+-`tools.user_location.timezone`
+-
+-用户所在时区。
+-
+-
+-
+-
+-
+-
+-**top_p** `number` `默认值 0.7`  |  核采样阈值
+-
+-核采样概率阈值。模型只考虑累计概率质量在 top_p 内的 token；取值为 0 时仅考虑对数概率最大的单个 token。
+-
+-<div data-tips="true" data-tips-type="tip" data-tips-is-title="true">说明</div>
+-
+-
+-<div data-tips="true" data-tips-type="tip">通常仅调整 <code>temperature</code> 或 <code>top_p</code> 其中之一，不建议同时修改。</div>
+-
+-
+-<div data-tips="true" data-tips-type="warning" data-tips-is-title="true">注意</div>
+-
+-
+-
+-* <div data-tips="true" data-tips-type="warning">当调用下列模型，字段取值固定为 0.95，手动指定的参数值将被忽略。</div>
+-
+-
+-   * <div data-tips="true" data-tips-type="warning">doubao\-seed\-2\-0\-code\-preview\-260215</div>
+-
+-
+-   * <div data-tips="true" data-tips-type="warning">doubao\-seed\-2\-0\-pro\-260215</div>
+-
+-
+-   * <div data-tips="true" data-tips-type="warning">doubao\-seed\-2\-0\-lite\-260215</div>
+-
+-
+-* <div data-tips="true" data-tips-type="warning"><code>glm-5-3-flash-260828</code> 模型默认值为 0.95。</div>
+-
+-
+-* <div data-tips="true" data-tips-type="warning"><code>deepseek-v4-1-flash-260910</code> 模型 top_p 参数取值规则如下：</div>
+-
+-
+-   * <div data-tips="true" data-tips-type="warning">思考模式：参数生效。不传该参数时，使用 tool 时默认值为 0.95，其他情况默认值为 1。</div>
+-
+-
+-      * <div data-tips="true" data-tips-type="warning">传入值 < 0.95：系统自动提升至 0.95。</div>
+-
+-
+-      * <div data-tips="true" data-tips-type="warning">传入值 ≥ 0.95：按实际传入值使用。</div>
+-
+-
+-   * <div data-tips="true" data-tips-type="warning">非思考模式：字段取值固定为 1.0，传入的值将被忽略。</div>
+-
+-
+-
+-**取值范围**：`[0, 1]`
+-
+-
+-&nbsp;
+-
+-<span id=".5ZON5bqU5Y-C5pWw"></span>
+-## 响应参数
+-
+-<span id=".6Z2e5rWB5byP6LCD55So5ZON5bqU44CC"></span>
+-### 非流式调用响应。
+-
+-
+-**created_at** `integer`  |  创建时间戳
+-
+-本次请求创建时间的 Unix 时间戳（秒）
+-
+-
+-
+-**id** `string`  |  响应 ID
+-
+-本次请求的唯一标识。
+-
+-
+-
+-**model** `string`  |  模型 ID
+-
+-本次请求实际使用的模型名称和版本。
+-
+-
+-
+-**object** `string`  |  对象类型
+-
+-响应对象的类型标识。
+-
+-取值固定为 `response`。
+-
+-
+-
+-**output** `object[]`  |  输出条目
+-
+-模型的输出消息列表，包含模型响应本次请求生成的回答、思维链、工具调用。
+-
+-
+-消息输出 `object`
+-
+-模型生成的消息输出，包含文本内容。
+-
+-
+-**content** `object[]`  |  输出内容
+-
+-`output.content`
+-
+-输出内容列表。
+-
+-
+-模型回答文本 `object`
+-
+-模型生成的最终回答文本。
+-
+-
+-**type** `string`  |  类型
+-
+-`output.content.type`
+-
+-内容类型判别字段，用于区分 union 变体。
+-
+-取值固定为 `output_text`。
+-
+-
+-
+-**annotations** `object[]`  |  标注列表
+-
+-`output.content.annotations`
+-
+-文本附带的标注信息列表（如引用来源等）
+-
+-
+-网页引用 `object`
+-
+-引用自互联网网页的标注信息。
+-
+-
+-**title** `string`  |  标题
+-
+-`output.content.annotations.title`
+-
+-引用网页的标题。
+-
+-
+-
+-**type** `string`  |  类型
+-
+-`output.content.annotations.type`
+-
+-标注类型的判别字段（discriminator）。
+-
+-取值固定为 `url_citation`。
+-
+-
+-
+-**url** `string`  |  网址
+-
+-`output.content.annotations.url`
+-
+-引用网页的 URL 地址。
+-
+-
+-
+-**cover_image** `object`  |  封面图
+-
+-`output.content.annotations.cover_image`
+-
+-网页封面图片信息。
+-
+-
+-**height** `integer`  |  高度
+-
+-`output.content.annotations.cover_image.height`
+-
+-封面图片高度（像素）
+-
+-
+-
+-**url** `string`  |  图片地址
+-
+-`output.content.annotations.cover_image.url`
+-
+-封面图片的 URL 地址。
+-
+-
+-
+-**width** `integer`  |  宽度
+-
+-`output.content.annotations.cover_image.width`
+-
+-封面图片宽度（像素）
+-
+-
+-
+-
+-**freshness_info** `string`  |  新鲜度
+-
+-`output.content.annotations.freshness_info`
+-
+-内容新鲜度信息。
+-
+-
+-
+-**logo_url** `string`  |  Logo 地址
+-
+-`output.content.annotations.logo_url`
+-
+-网站 Logo 图标地址。
+-
+-
+-
+-**mobile_url** `string`  |  移动端地址
+-
+-`output.content.annotations.mobile_url`
+-
+-移动端访问地址。
+-
+-
+-
+-**publish_time** `string`  |  发布时间
+-
+-`output.content.annotations.publish_time`
+-
+-网页发布时间。
+-
+-
+-
+-**site_name** `string`  |  站点名
+-
+-`output.content.annotations.site_name`
+-
+-站点名称。
+-
+-
+-
+-**summary** `string`  |  摘要
+-
+-`output.content.annotations.summary`
+-
+-网页内容摘要。
+-
+-
+-
+-
+-文档引用 `object`
+-
+-引用自私域知识库文档的标注信息。
+-
+-
+-**type** `string`  |  类型
+-
+-`output.content.annotations.type`
+-
+-标注类型。
+-
+-取值固定为 `doc_citation`。
+-
+-
+-
+-**chunk_attachment** `object[]`  |  分块附件
+-
+-`output.content.annotations.chunk_attachment`
+-
+-引用分块附带的附件信息列表。
+-
+-
+-
+-**chunk_id** `integer`  |  分块 ID
+-
+-`output.content.annotations.chunk_id`
+-
+-引用文档分块的 ID。
+-
+-
+-
+-**doc_id** `string`  |  文档 ID
+-
+-`output.content.annotations.doc_id`
+-
+-引用文档的 ID。
+-
+-
+-
+-**doc_name** `string`  |  文档名
+-
+-`output.content.annotations.doc_name`
+-
+-引用文档的名称。
+-
+-
+-
+-
+-
+-**text** `string`  |  文本内容
+-
+-`output.content.text`
+-
+-模型生成的文本内容。
+-
+-
+-
+-
+-模型思维链文本 `object`
+-
+-模型生成的思维链文本。
+-
+-
+-**type** `string`  |  类型
+-
+-`output.content.type`
+-
+-内容类型标识，用于区分 union 变体。
+-
+-取值固定为 `reasoning_text`。
+-
+-
+-
+-**annotations** `object[]`  |  标注列表
+-
+-`output.content.annotations`
+-
+-思维链附带的标注信息列表。
+-
+-
+-网页引用 `object`
+-
+-引用自互联网网页的标注信息。
+-
+-
+-**title** `string`  |  标题
+-
+-`output.content.annotations.title`
+-
+-引用网页的标题。
+-
+-
+-
+-**type** `string`  |  类型
+-
+-`output.content.annotations.type`
+-
+-标注类型的判别字段（discriminator）。
+-
+-取值固定为 `url_citation`。
+-
+-
+-
+-**url** `string`  |  网址
+-
+-`output.content.annotations.url`
+-
+-引用网页的 URL 地址。
+-
+-
+-
+-**cover_image** `object`  |  封面图
+-
+-`output.content.annotations.cover_image`
+-
+-网页封面图片信息。
+-
+-
+-**height** `integer`  |  高度
+-
+-`output.content.annotations.cover_image.height`
+-
+-封面图片高度（像素）
+-
+-
+-
+-**url** `string`  |  图片地址
+-
+-`output.content.annotations.cover_image.url`
+-
+-封面图片的 URL 地址。
+-
+-
+-
+-**width** `integer`  |  宽度
+-
+-`output.content.annotations.cover_image.width`
+-
+-封面图片宽度（像素）
+-
+-
+-
+-
+-**freshness_info** `string`  |  新鲜度
+-
+-`output.content.annotations.freshness_info`
+-
+-内容新鲜度信息。
+-
+-
+-
+-**logo_url** `string`  |  Logo 地址
+-
+-`output.content.annotations.logo_url`
+-
+-网站 Logo 图标地址。
+-
+-
+-
+-**mobile_url** `string`  |  移动端地址
+-
+-`output.content.annotations.mobile_url`
+-
+-移动端访问地址。
+-
+-
+-
+-**publish_time** `string`  |  发布时间
+-
+-`output.content.annotations.publish_time`
+-
+-网页发布时间。
+-
+-
+-
+-**site_name** `string`  |  站点名
+-
+-`output.content.annotations.site_name`
+-
+-站点名称。
+-
+-
+-
+-**summary** `string`  |  摘要
+-
+-`output.content.annotations.summary`
+-
+-网页内容摘要。
+-
+-
+-
+-
+-文档引用 `object`
+-
+-引用自私域知识库文档的标注信息。
+-
+-
+-**type** `string`  |  类型
+-
+-`output.content.annotations.type`
+-
+-标注类型。
+-
+-取值固定为 `doc_citation`。
+-
+-
+-
+-**chunk_attachment** `object[]`  |  分块附件
+-
+-`output.content.annotations.chunk_attachment`
+-
+-引用分块附带的附件信息列表。
+-
+-
+-
+-**chunk_id** `integer`  |  分块 ID
+-
+-`output.content.annotations.chunk_id`
+-
+-引用文档分块的 ID。
+-
+-
+-
+-**doc_id** `string`  |  文档 ID
+-
+-`output.content.annotations.doc_id`
+-
+-引用文档的 ID。
+-
+-
+-
+-**doc_name** `string`  |  文档名
+-
+-`output.content.annotations.doc_name`
+-
+-引用文档的名称。
+-
+-
+-
+-
+-
+-**text** `string`  |  文本内容
+-
+-`output.content.text`
+-
+-模型思维链文本内容。
+-
+-
+-
+-
+-
+-**id** `string`  |  条目 ID
+-
+-`output.id`
+-
+-输出条目唯一标识。
+-
+-
+-
+-**role** `string`  |  角色
+-
+-`output.role`
+-
+-消息发送者的角色。
+-
+-取值固定为 `assistant`。
+-
+-
+-
+-**status** `string`  |  状态
+-
+-`output.status`
+-
+-消息输出条目的当前状态。
+-
+-
+-* `completed`：消息已生成完毕。
+-
+-* `in_progress`：消息正在生成中（流式场景）。
+-
+-* `incomplete`：消息未完整生成（例如达到 `max_output_tokens` 上限）。
+-
+-* `failed`：消息生成失败。
+-
+-
+-
+-**type** `string`  |  类型
+-
+-`output.type`
+-
+-输出条目的类型标识。
+-
+-取值固定为 `message`。
+-
+-
+-
+-**partial** `boolean`  |  增量片段
+-
+-`output.partial`
+-
+-是否为流式增量片段。
+-
+-
+-
+-**phase** `string`  |  消息阶段
+-
+-`output.phase`
+-
+-标记 assistant 消息属于中间讲解还是最终回答。在回放 assistant 历史消息时，建议保留并原样回传该字段。可选值：`commentary`、`final_answer`。
+-
+-
+-
+-
+-函数调用输出 `object`
+-
+-模型发起的函数调用请求。
+-
+-
+-**type** `string`  |  类型
+-
+-`output.type`
+-
+-输出条目类型标识，用于区分 OutputItem 变体。
+-
+-取值固定为 `function_call`。
+-
+-
+-
+-**arguments** `string`  |  参数
+-
+-`output.arguments`
+-
+-函数参数的 JSON 字符串。
+-
+-
+-
+-**call_id** `string`  |  调用 ID
+-
+-`output.call_id`
+-
+-函数调用的唯一标识 ID，用于将该 function_call 输出与后续回传的 function_call_output 关联匹配。
+-
+-
+-
+-**id** `string`  |  条目 ID
+-
+-`output.id`
+-
+-输出条目唯一标识。
+-
+-
+-
+-**name** `string`  |  函数名
+-
+-`output.name`
+-
+-调用的函数名称。
+-
+-
+-
+-**status** `string`  |  状态
+-
+-`output.status`
+-
+-函数调用条目的当前状态。
+-
+-
+-* `completed`：函数调用请求已生成完毕。
+-
+-* `in_progress`：函数调用请求正在生成中（流式场景）。
+-
+-* `incomplete`：函数调用请求未完整生成（例如达到 `max_output_tokens` 上限）。
+-
+-* `failed`：函数调用生成失败。
+-
+-
+-
+-
+-思维链输出 `object`
+-
+-模型的深度思考过程输出。
+-
+-
+-**status** `string`  |  状态
+-
+-`output.status`
+-
+-推理条目的处理状态，用于判断思维链是否生成完成。可选值：`completed`、`failed`、`in_progress`、`incomplete`。
+-
+-
+-
+-**summary** `object[]`  |  推理摘要
+-
+-`output.summary`
+-
+-推理摘要内容列表。
+-
+-
+-**type** `string`  |  类型
+-
+-`output.summary.type`
+-
+-摘要片段类型标识。
+-
+-取值固定为 `summary_text`。
+-
+-
+-
+-**text** `string`  |  摘要文本
+-
+-`output.summary.text`
+-
+-思维链摘要文本内容。
+-
+-
+-
+-
+-**type** `string`  |  类型
+-
+-`output.type`
+-
+-输出条目类型标识，用于区分 OutputItem 变体。
+-
+-取值固定为 `reasoning`。
+-
+-
+-
+-**content** `object[]`  |  推理内容
+-
+-`output.content`
+-
+-思维链推理过程的内容元素列表。
+-
+-
+-模型回答文本 `object`
+-
+-模型生成的最终回答文本。
+-
+-
+-**type** `string`  |  类型
+-
+-`output.content.type`
+-
+-内容类型判别字段，用于区分 union 变体。
+-
+-取值固定为 `output_text`。
+-
+-
+-
+-**annotations** `object[]`  |  标注列表
+-
+-`output.content.annotations`
+-
+-文本附带的标注信息列表（如引用来源等）
+-
+-
+-网页引用 `object`
+-
+-引用自互联网网页的标注信息。
+-
+-
+-**title** `string`  |  标题
+-
+-`output.content.annotations.title`
+-
+-引用网页的标题。
+-
+-
+-
+-**type** `string`  |  类型
+-
+-`output.content.annotations.type`
+-
+-标注类型的判别字段（discriminator）。
+-
+-取值固定为 `url_citation`。
+-
+-
+-
+-**url** `string`  |  网址
+-
+-`output.content.annotations.url`
+-
+-引用网页的 URL 地址。
+-
+-
+-
+-**cover_image** `object`  |  封面图
+-
+-`output.content.annotations.cover_image`
+-
+-网页封面图片信息。
+-
+-
+-**height** `integer`  |  高度
+-
+-`output.content.annotations.cover_image.height`
+-
+-封面图片高度（像素）
+-
+-
+-
+-**url** `string`  |  图片地址
+-
+-`output.content.annotations.cover_image.url`
+-
+-封面图片的 URL 地址。
+-
+-
+-
+-**width** `integer`  |  宽度
+-
+-`output.content.annotations.cover_image.width`
+-
+-封面图片宽度（像素）
+-
+-
+-
+-
+-**freshness_info** `string`  |  新鲜度
+-
+-`output.content.annotations.freshness_info`
+-
+-内容新鲜度信息。
+-
+-
+-
+-**logo_url** `string`  |  Logo 地址
+-
+-`output.content.annotations.logo_url`
+-
+-网站 Logo 图标地址。
+-
+-
+-
+-**mobile_url** `string`  |  移动端地址
+-
+-`output.content.annotations.mobile_url`
+-
+-移动端访问地址。
+-
+-
+-
+-**publish_time** `string`  |  发布时间
+-
+-`output.content.annotations.publish_time`
+-
+-网页发布时间。
+-
+-
+-
+-**site_name** `string`  |  站点名
+-
+-`output.content.annotations.site_name`
+-
+-站点名称。
+-
+-
+-
+-**summary** `string`  |  摘要
+-
+-`output.content.annotations.summary`
+-
+-网页内容摘要。
+-
+-
+-
+-
+-文档引用 `object`
+-
+-引用自私域知识库文档的标注信息。
+-
+-
+-**type** `string`  |  类型
+-
+-`output.content.annotations.type`
+-
+-标注类型。
+-
+-取值固定为 `doc_citation`。
+-
+-
+-
+-**chunk_attachment** `object[]`  |  分块附件
+-
+-`output.content.annotations.chunk_attachment`
+-
+-引用分块附带的附件信息列表。
+-
+-
+-
+-**chunk_id** `integer`  |  分块 ID
+-
+-`output.content.annotations.chunk_id`
+-
+-引用文档分块的 ID。
+-
+-
+-
+-**doc_id** `string`  |  文档 ID
+-
+-`output.content.annotations.doc_id`
+-
+-引用文档的 ID。
+-
+-
+-
+-**doc_name** `string`  |  文档名
+-
+-`output.content.annotations.doc_name`
+-
+-引用文档的名称。
+-
+-
+-
+-
+-
+-**text** `string`  |  文本内容
+-
+-`output.content.text`
+-
+-模型生成的文本内容。
+-
+-
+-
+-
+-模型思维链文本 `object`
+-
+-模型生成的思维链文本。
+-
+-
+-**type** `string`  |  类型
+-
+-`output.content.type`
+-
+-内容类型标识，用于区分 union 变体。
+-
+-取值固定为 `reasoning_text`。
+-
+-
+-
+-**annotations** `object[]`  |  标注列表
+-
+-`output.content.annotations`
+-
+-思维链附带的标注信息列表。
+-
+-
+-网页引用 `object`
+-
+-引用自互联网网页的标注信息。
+-
+-
+-**title** `string`  |  标题
+-
+-`output.content.annotations.title`
+-
+-引用网页的标题。
+-
+-
+-
+-**type** `string`  |  类型
+-
+-`output.content.annotations.type`
+-
+-标注类型的判别字段（discriminator）。
+-
+-取值固定为 `url_citation`。
+-
+-
+-
+-**url** `string`  |  网址
+-
+-`output.content.annotations.url`
+-
+-引用网页的 URL 地址。
+-
+-
+-
+-**cover_image** `object`  |  封面图
+-
+-`output.content.annotations.cover_image`
+-
+-网页封面图片信息。
+-
+-
+-**height** `integer`  |  高度
+-
+-`output.content.annotations.cover_image.height`
+-
+-封面图片高度（像素）
+-
+-
+-
+-**url** `string`  |  图片地址
+-
+-`output.content.annotations.cover_image.url`
+-
+-封面图片的 URL 地址。
+-
+-
+-
+-**width** `integer`  |  宽度
+-
+-`output.content.annotations.cover_image.width`
+-
+-封面图片宽度（像素）
+-
+-
+-
+-
+-**freshness_info** `string`  |  新鲜度
+-
+-`output.content.annotations.freshness_info`
+-
+-内容新鲜度信息。
+-
+-
+-
+-**logo_url** `string`  |  Logo 地址
+-
+-`output.content.annotations.logo_url`
+-
+-网站 Logo 图标地址。
+-
+-
+-
+-**mobile_url** `string`  |  移动端地址
+-
+-`output.content.annotations.mobile_url`
+-
+-移动端访问地址。
+-
+-
+-
+-**publish_time** `string`  |  发布时间
+-
+-`output.content.annotations.publish_time`
+-
+-网页发布时间。
+-
+-
+-
+-**site_name** `string`  |  站点名
+-
+-`output.content.annotations.site_name`
+-
+-站点名称。
+-
+-
+-
+-**summary** `string`  |  摘要
+-
+-`output.content.annotations.summary`
+-
+-网页内容摘要。
+-
+-
+-
+-
+-文档引用 `object`
+-
+-引用自私域知识库文档的标注信息。
+-
+-
+-**type** `string`  |  类型
+-
+-`output.content.annotations.type`
+-
+-标注类型。
+-
+-取值固定为 `doc_citation`。
+-
+-
+-
+-**chunk_attachment** `object[]`  |  分块附件
+-
+-`output.content.annotations.chunk_attachment`
+-
+-引用分块附带的附件信息列表。
+-
+-
+-
+-**chunk_id** `integer`  |  分块 ID
+-
+-`output.content.annotations.chunk_id`
+-
+-引用文档分块的 ID。
+-
+-
+-
+-**doc_id** `string`  |  文档 ID
+-
+-`output.content.annotations.doc_id`
+-
+-引用文档的 ID。
+-
+-
+-
+-**doc_name** `string`  |  文档名
+-
+-`output.content.annotations.doc_name`
+-
+-引用文档的名称。
+-
+-
+-
+-
+-
+-**text** `string`  |  文本内容
+-
+-`output.content.text`
+-
+-模型思维链文本内容。
+-
+-
+-
+-
+-
+-**encrypted_content** `string`  |  加密思维链
+-
+-`output.encrypted_content`
+-
+-思考内容加密原文。经加密及压缩处理后的思考内容原文。
+-
+-相关文档：
+-
+-
+-* [关键规则](https://ark.volcengine.com/region:cn-beijing/docs/ark/agent-model-invocation-practice#key-rules)
+-
+-* [回传思考内容加密块使用示例](https://ark.volcengine.com/region:cn-beijing/docs/ark/agent-model-invocation-practice#encrypted-thinking-block-examples)
+-
+-
+-<div data-tips="true" data-tips-type="tip" data-tips-is-title="true">说明</div>
+-
+-
+-<div data-tips="true" data-tips-type="tip">流式输出场景下，思考内容加密原文通过 <code>response.output_item.added</code>、<code>response.output_item.done</code>、<code>response.completed</code> 等相关事件下发，需要按事件中 <code>encrypted_content</code> 字段非空过滤获取。</div>
+-
+-
+-**模型支持**：
+-
+-
+-* `doubao-seed-2-0-lite-260428 及后续版本`
+-
+-
+-
+-**id** `string`  |  条目 ID
+-
+-`output.id`
+-
+-输出条目唯一标识。
+-
+-
+-
+-
+-语音转写输出 `object`
+-
+-模型返回的语音转写输出。
+-
+-
+-**status** `string`  |  状态
+-
+-`output.status`
+-
+-语音转写条目的当前状态。
+-
+-
+-* `completed`：转写已生成完毕。
+-
+-* `in_progress`：转写正在生成中（流式场景）。
+-
+-* `incomplete`：转写未完整生成（例如达到输出上限而截断）。
+-
+-* `failed`：转写生成失败。
+-
+-
+-
+-**type** `string`  |  类型
+-
+-`output.type`
+-
+-输出条目类型标识。
+-
+-取值固定为 `transcription`。
+-
+-
+-
+-**id** `string`  |  条目 ID
+-
+-`output.id`
+-
+-输出条目唯一标识。
+-
+-
+-
+-**transcription** `object[]`  |  转写内容
+-
+-`output.transcription`
+-
+-语音转写结果片段列表。
+-
+-
+-**type** `string`  |  类型
+-
+-`output.transcription.type`
+-
+-转写片段类型。
+-
+-取值固定为 `transcription_text`。
+-
+-
+-
+-**chunks** `object[]`  |  音频小段
+-
+-`output.transcription.chunks`
+-
+-当前片段对应的音频小段列表。
+-
+-
+-**end_time** `integer`  |  结束时间
+-
+-`output.transcription.chunks.end_time`
+-
+-片段结束时间（毫秒）
+-
+-
+-
+-**start_time** `integer`  |  开始时间
+-
+-`output.transcription.chunks.start_time`
+-
+-片段开始时间（毫秒）
+-
+-
+-
+-**text** `string`  |  文字内容
+-
+-`output.transcription.chunks.text`
+-
+-当前片段对应的文字内容。
+-
+-
+-
+-
+-**text** `string`  |  转写文本
+-
+-`output.transcription.text`
+-
+-当前片段的转写文本。
+-
+-
+-
+-
+-
+-网页搜索调用 `object`
+-
+-模型发起的网页搜索调用记录。
+-
+-
+-**id** `string`  |  条目 ID
+-
+-`output.id`
+-
+-输出条目唯一标识。
+-
+-
+-
+-**status** `string`  |  状态
+-
+-`output.status`
+-
+-网页搜索调用的当前状态。可选值：`in_progress`、`searching`、`completed`、`incomplete`、`failed`。
+-
+-
+-
+-**type** `string`  |  类型
+-
+-`output.type`
+-
+-输出条目类型标识，用于区分 OutputItem 变体。
+-
+-取值固定为 `web_search_call`。
+-
+-
+-
+-**action** `object`  |  搜索动作
+-
+-`output.action`
+-
+-描述模型执行的网页搜索动作，包括搜索类型与查询关键字。
+-
+-
+-**query** `string`  |  查询语句
+-
+-`output.action.query`
+-
+-模型实际发起的搜索查询语句。
+-
+-
+-
+-**type** `string`  |  类型
+-
+-`output.action.type`
+-
+-网页搜索动作的类型标识。
+-
+-取值固定为 `search`。
+-
+-
+-
+-**queries** `string[]`  |  查询语句列表
+-
+-`output.action.queries`
+-
+-本次网页搜索产生的查询语句列表。
+-
+-
+-
+-
+-
+-图像处理调用 `object`
+-
+-模型发起的图像处理调用记录。
+-
+-
+-**id** `string`  |  条目 ID
+-
+-`output.id`
+-
+-输出条目唯一标识。
+-
+-
+-
+-**status** `string`  |  状态
+-
+-`output.status`
+-
+-图像处理调用的当前状态。
+-
+-
+-* `completed`：图像处理已完成。
+-
+-* `in_progress`：图像处理正在执行中。
+-
+-* `incomplete`：图像处理未完整执行（例如被中断或截断）。
+-
+-* `failed`：图像处理执行失败，具体原因见 `error` 字段。
+-
+-
+-
+-**type** `string`  |  类型
+-
+-`output.type`
+-
+-输出条目类型标识，用于区分 OutputItem 变体。
+-
+-取值固定为 `image_process`。
+-
+-
+-
+-**action** `object`  |  处理动作
+-
+-`output.action`
+-
+-图像处理动作详情。
+-
+-
+-**type** `string`  |  类型
+-
+-`output.action.type`
+-
+-图像处理动作类型。
+-
+-
+-
+-**result_image_url** `string`  |  结果图地址
+-
+-`output.action.result_image_url`
+-
+-处理后图像的 URL 地址。
+-
+-
+-
+-
+-**arguments** `object`  |  处理参数
+-
+-`output.arguments`
+-
+-图像处理动作的输入参数，以键值对形式承载具体处理选项。
+-
+-
+-
+-**error** `object`  |  图像处理错误
+-
+-`output.error`
+-
+-图像处理失败时的错误信息。
+-
+-
+-**message** `string`  |  错误描述
+-
+-`output.error.message`
+-
+-错误的可读描述。
+-
+-
+-
+-
+-
+-MCP 审批请求 `object`
+-
+-MCP 工具调用前的审批请求记录。
+-
+-
+-**arguments** `string`  |  调用参数
+-
+-`output.arguments`
+-
+-工具调用参数的 JSON 字符串。
+-
+-
+-
+-**name** `string`  |  工具名
+-
+-`output.name`
+-
+-待运行的工具名称。
+-
+-
+-
+-**server_label** `string`  |  服务标签
+-
+-`output.server_label`
+-
+-发起请求的 MCP Server 标签。
+-
+-
+-
+-**type** `string`  |  类型
+-
+-`output.type`
+-
+-输出项类型标识符，用于区分 OutputItem 的变体。
+-
+-取值固定为 `mcp_approval_request`。
+-
+-
+-
+-**id** `string`  |  请求 ID
+-
+-`output.id`
+-
+-审批请求的唯一 ID。
+-
+-
+-
+-
+-MCP 工具清单 `object`
+-
+-MCP Server 提供的工具清单输出。
+-
+-
+-**server_label** `string`  |  服务标签
+-
+-`output.server_label`
+-
+-MCP Server 标签。
+-
+-
+-
+-**type** `string`  |  类型
+-
+-`output.type`
+-
+-输出项类型标识。
+-
+-取值固定为 `mcp_list_tools`。
+-
+-
+-
+-**error** `string`  |  错误信息
+-
+-`output.error`
+-
+-当 MCP Server 无法返回工具列表时的错误信息。
+-
+-
+-
+-**id** `string`  |  列表 ID
+-
+-`output.id`
+-
+-工具列表的唯一 ID。
+-
+-
+-
+-**tools** `object[]`  |  工具列表
+-
+-`output.tools`
+-
+-该 MCP Server 上可用的工具列表。
+-
+-
+-**name** `string`  |  工具名
+-
+-`output.tools.name`
+-
+-工具名称。
+-
+-
+-
+-**annotations** `object`  |  注解信息
+-
+-`output.tools.annotations`
+-
+-工具的附加注解信息。
+-
+-
+-
+-**description** `string`  |  工具描述
+-
+-`output.tools.description`
+-
+-工具的功能描述。
+-
+-
+-
+-**input_schema** `object`  |  入参 Schema
+-
+-`output.tools.input_schema`
+-
+-描述工具入参的 JSON Schema。
+-
+-
+-
+-
+-
+-MCP 工具调用 `object`
+-
+-模型对 MCP 工具的实际调用记录及结果。
+-
+-
+-**name** `string`  |  工具名
+-
+-`output.name`
+-
+-实际运行的工具名称。
+-
+-
+-
+-**server_label** `string`  |  服务标签
+-
+-`output.server_label`
+-
+-运行工具的 MCP Server 标签。
+-
+-
+-
+-**type** `string`  |  类型
+-
+-`output.type`
+-
+-标识该输出项为 MCP 工具调用记录。
+-
+-取值固定为 `mcp_call`。
+-
+-
+-
+-**arguments** `string`  |  调用参数
+-
+-`output.arguments`
+-
+-传递给 MCP 工具的调用参数，格式为 JSON 字符串。
+-
+-<div data-tips="true" data-tips-type="tip" data-tips-is-title="true">说明</div>
+-
+-
+-<div data-tips="true" data-tips-type="tip">该字段通过 <code>response.mcp_call_arguments.delta</code> 事件流式追加，初始 <code>output_item.added</code> 事件可能不携带该字段。</div>
+-
+-
+-
+-
+-**error** `string`  |  错误信息
+-
+-`output.error`
+-
+-工具调用失败时的错误信息。
+-
+-
+-
+-**id** `string`  |  调用 ID
+-
+-`output.id`
+-
+-工具调用的唯一 ID。
+-
+-
+-
+-**output** `string`  |  返回结果
+-
+-`output.output`
+-
+-工具调用的返回结果。
+-
+-
+-
+-
+-知识库检索调用 `object`
+-
+-模型发起的私域知识库检索调用记录。
+-
+-
+-**knowledge_resource_id** `string`  |  知识库 ID
+-
+-`output.knowledge_resource_id`
+-
+-检索使用的知识库 ID。
+-
+-
+-
+-**queries** `string[]`  |  查询语句
+-
+-`output.queries`
+-
+-模型实际执行的检索查询语句。
+-
+-
+-
+-**status** `string`  |  状态
+-
+-`output.status`
+-
+-知识库检索调用的执行状态。可选值：`in_progress`、`searching`、`completed`、`failed`、`incomplete`。
+-
+-
+-
+-**type** `string`  |  类型
+-
+-`output.type`
+-
+-输出条目类型标识，用于区分不同类型的输出条目。
+-
+-取值固定为 `knowledge_search_call`。
+-
+-
+-
+-**id** `string`  |  条目 ID
+-
+-`output.id`
+-
+-输出条目唯一标识。
+-
+-
+-
+-
+-豆包应用调用 `object`
+-
+-模型对豆包助手能力的调用记录。
+-
+-
+-**type** `string`  |  类型
+-
+-`output.type`
+-
+-输出条目类型标识。
+-
+-取值固定为 `doubao_app_call`。
+-
+-
+-
+-**blocks** `object[]`  |  内容块
+-
+-`output.blocks`
+-
+-豆包应用调用产出的内容块列表。
+-
+-
+-文本输出 `object`
+-
+-豆包应用产出的文本输出内容块。
+-
+-
+-**type** `string`  |  类型
+-
+-`output.blocks.type`
+-
+-内容块类型标识符。
+-
+-取值固定为 `output_text`。
+-
+-
+-
+-**id** `string`  |  块 ID
+-
+-`output.blocks.id`
+-
+-内容块的唯一标识。
+-
+-
+-
+-**parent_id** `string`  |  父级 ID
+-
+-`output.blocks.parent_id`
+-
+-所属父级条目的 ID。
+-
+-
+-
+-**status** `string`  |  状态
+-
+-`output.blocks.status`
+-
+-内容块状态。
+-
+-
+-
+-**text** `string`  |  文本内容
+-
+-`output.blocks.text`
+-
+-
+-
+-
+-思维链文本 `object`
+-
+-豆包应用产出的思维链文本内容块。
+-
+-
+-**type** `string`  |  类型
+-
+-`output.blocks.type`
+-
+-内容块类型标识符。
+-
+-取值固定为 `reasoning_text`。
+-
+-
+-
+-**id** `string`  |  块 ID
+-
+-`output.blocks.id`
+-
+-内容块的唯一标识。
+-
+-
+-
+-**parent_id** `string`  |  父级 ID
+-
+-`output.blocks.parent_id`
+-
+-所属父级条目的 ID。
+-
+-
+-
+-**reasoning_text** `string`  |  思考文本
+-
+-`output.blocks.reasoning_text`
+-
+-思维链文本内容。
+-
+-
+-
+-**status** `string`  |  状态
+-
+-`output.blocks.status`
+-
+-内容块状态。
+-
+-
+-
+-
+-搜索过程 `object`
+-
+-豆包应用 AI 搜索过程产出的内容块。
+-
+-
+-**type** `string`  |  类型
+-
+-`output.blocks.type`
+-
+-内容块类型标识符。
+-
+-取值固定为 `search`。
+-
+-
+-
+-**id** `string`  |  块 ID
+-
+-`output.blocks.id`
+-
+-内容块的唯一标识。
+-
+-
+-
+-**parent_id** `string`  |  父级 ID
+-
+-`output.blocks.parent_id`
+-
+-所属父级条目的 ID。
+-
+-
+-
+-**queries** `string[]`  |  查询语句
+-
+-`output.blocks.queries`
+-
+-搜索查询语句列表。
+-
+-
+-
+-**results** `object[]`  |  搜索结果
+-
+-`output.blocks.results`
+-
+-搜索结果列表。
+-
+-
+-**text_card** `object`  |  文本卡片
+-
+-`output.blocks.results.text_card`
+-
+-文本卡片形式的搜索结果。
+-
+-
+-**sitename** `string`  |  站点名
+-
+-`output.blocks.results.text_card.sitename`
+-
+-来源站点名称。
+-
+-
+-
+-**title** `string`  |  标题
+-
+-`output.blocks.results.text_card.title`
+-
+-搜索结果标题。
+-
+-
+-
+-**url** `string`  |  网址
+-
+-`output.blocks.results.text_card.url`
+-
+-搜索结果 URL 地址。
+-
+-
+-
+-
+-
+-**status** `string`  |  状态
+-
+-`output.blocks.status`
+-
+-内容块状态。
+-
+-
+-
+-**summary** `string`  |  搜索总结
+-
+-`output.blocks.summary`
+-
+-AI 搜索过程中对本轮搜索结果的总结性文字，概括从搜索结果中提取的核心信息。
+-
+-
+-
+-
+-推理搜索过程 `object`
+-
+-豆包应用推理搜索过程产出的内容块。
+-
+-
+-**type** `string`  |  类型
+-
+-`output.blocks.type`
+-
+-内容块类型。
+-
+-取值固定为 `reasoning_search`。
+-
+-
+-
+-**id** `string`  |  块 ID
+-
+-`output.blocks.id`
+-
+-内容块的唯一标识。
+-
+-
+-
+-**parent_id** `string`  |  父级 ID
+-
+-`output.blocks.parent_id`
+-
+-所属父级条目的 ID。
+-
+-
+-
+-**queries** `string[]`  |  查询语句
+-
+-`output.blocks.queries`
+-
+-搜索查询语句列表。
+-
+-
+-
+-**results** `object[]`  |  搜索结果
+-
+-`output.blocks.results`
+-
+-搜索结果列表。
+-
+-
+-**text_card** `object`  |  文本卡片
+-
+-`output.blocks.results.text_card`
+-
+-文本卡片形式的搜索结果。
+-
+-
+-**sitename** `string`  |  站点名
+-
+-`output.blocks.results.text_card.sitename`
+-
+-来源站点名称。
+-
+-
+-
+-**title** `string`  |  标题
+-
+-`output.blocks.results.text_card.title`
+-
+-搜索结果标题。
+-
+-
+-
+-**url** `string`  |  网址
+-
+-`output.blocks.results.text_card.url`
+-
+-搜索结果 URL 地址。
+-
+-
+-
+-
+-
+-**status** `string`  |  状态
+-
+-`output.blocks.status`
+-
+-推理搜索内容块的处理状态。可选值：`in_progress`、`searching`、`completed`、`incomplete`、`failed`。
+-
+-
+-
+-**summary** `string`  |  搜索总结
+-
+-`output.blocks.summary`
+-
+-推理搜索过程中对本轮搜索结果的总结性文字，概括从搜索结果中提取的核心信息。
+-
+-
+-
+-
+-
+-**feature** `string`  |  功能名
+-
+-`output.feature`
+-
+-本次调用触发的豆包子功能名称。可选值：`chat`、`deep_chat`、`ai_search`、`reasoning_search`。
+-
+-
+-
+-**id** `string`  |  条目 ID
+-
+-`output.id`
+-
+-输出条目唯一标识。
+-
+-
+-
+-**status** `string`  |  状态
+-
+-`output.status`
+-
+-输出状态。可选值：`completed`、`failed`、`in_progress`、`incomplete`。
+-
+-
+-
+-
+-智能体工具调用 `object`
+-
+-模型发起的智能体工具调用记录。
+-
+-
+-**name** `string`  |  工具名
+-
+-`output.name`
+-
+-被调用的智能体工具名称。
+-
+-
+-
+-**status** `string`  |  状态
+-
+-`output.status`
+-
+-智能体工具调用的执行状态。可选值：`completed`、`failed`、`in_progress`、`incomplete`。
+-
+-
+-
+-**type** `string`  |  类型
+-
+-`output.type`
+-
+-输出条目类型标识符，用于区分 OutputItem 的 variant。
+-
+-取值固定为 `agent_tool_call`。
+-
+-
+-
+-**id** `string`  |  条目 ID
+-
+-`output.id`
+-
+-输出条目唯一标识。
+-
+-
+-
+-
+-
+-**caching** `object`  |  上下文缓存
+-
+-是否开启缓存。
+-
+-
+-**prefix** `boolean`  |  仅写缓存
+-
+-`caching.prefix`
+-
+-是否仅写入前缀缓存，不生成回复。`true` 只写缓存，不返回模型输出；`false` 正常生成回复并写缓存。
+-
+-
+-
+-**type** `string`  |  缓存模式
+-
+-`caching.type`
+-
+-缓存模式。
+-
+-
+-* `enabled`：开启上下文缓存。
+-
+-* `disabled`：关闭上下文缓存。
+-
+-
+-
+-
+-**context_management** `object`  |  上下文管理
+-
+-本次请求实际应用的上下文管理策略信息。
+-
+-
+-**applied_edits** `object[]`  |  已应用编辑
+-
+-`context_management.applied_edits`
+-
+-已应用的上下文编辑结果列表。
+-
+-
+-清理工具调用 `object`
+-
+-已应用的清理工具调用编辑结果。
+-
+-
+-**cleared_tool_uses** `integer`  |  清理次数
+-
+-`context_management.applied_edits.cleared_tool_uses`
+-
+-已清理的工具调用数量。
+-
+-
+-
+-**type** `string`  |  类型
+-
+-`context_management.applied_edits.type`
+-
+-编辑类型。
+-
+-取值固定为 `clear_tool_uses`。
+-
+-
+-
+-
+-清理思维链 `object`
+-
+-已应用的清理思维链编辑结果。
+-
+-
+-**cleared_thinking_turns** `integer`  |  清理轮次
+-
+-`context_management.applied_edits.cleared_thinking_turns`
+-
+-已清理的思维链轮次数量。
+-
+-
+-
+-**type** `string`  |  类型
+-
+-`context_management.applied_edits.type`
+-
+-编辑类型。
+-
+-取值固定为 `clear_thinking`。
+-
+-
+-
+-
+-
+-
+-**error** `object`  |  响应错误
+-
+-模型未能生成响应时返回的错误对象。
+-
+-
+-**code** `string`  |  错误码
+-
+-`error.code`
+-
+-
+-
+-**message** `string`  |  错误描述
+-
+-`error.message`
+-
+-错误信息的可读描述。
+-
+-
+-
+-
+-**expire_at** `integer`  |  过期时间戳
+-
+-响应储存的过期时刻 Unix 时间戳（秒），回显请求中的 expire_at 设置，对 store 与 caching 均生效。
+-
+-<div data-tips="true" data-tips-type="tip" data-tips-is-title="true">说明</div>
+-
+-
+-<div data-tips="true" data-tips-type="tip">最多保留 7 天。</div>
+-
+-
+-
+-
+-**incomplete_details** `object`  |  未完成详情
+-
+-响应未能完成的细节。
+-
+-
+-**reason** `string`  |  原因
+-
+-`incomplete_details.reason`
+-
+-响应未完成的原因。
+-
+-
+-
+-**content_filter** `object`  |  内容过滤
+-
+-`incomplete_details.content_filter`
+-
+-内容过滤详情。
+-
+-
+-**details** `string`  |  详情
+-
+-`incomplete_details.content_filter.details`
+-
+-内容过滤命中的详细描述。
+-
+-
+-
+-**type** `string`  |  类型
+-
+-`incomplete_details.content_filter.type`
+-
+-内容过滤命中的类型。
+-
+-
+-
+-
+-
+-**instructions** `string`  |  系统指令
+-
+-在模型上下文中插入的系统（或开发者）指令，作为首项。
+-
+-<div data-tips="true" data-tips-type="tip" data-tips-is-title="true">说明</div>
+-
+-
+-<div data-tips="true" data-tips-type="tip">与 <code>previous_response_id</code> 一起使用时，前一响应中的指令不会延续到下一响应。</div>
+-
+-
+-
+-
+-**max_output_tokens** `integer`  |  最大输出长度
+-
+-模型输出最大 token 数，包含模型回答和思维链内容。
+-
+-
+-
+-**max_tool_calls** `integer`  |  最大调用轮次
+-
+-本次请求生效的最大工具调用轮次。
+-
+-
+-
+-**metadata** `object`  |  自定义元数据
+-
+-回显请求中的 metadata 键值对元数据。最多支持 16 对键值，key 长度不超过 64 个字符，value 长度不超过 512 个字符，服务端不会解释其中内容。
+-
+-
+-
+-**previous_response_id** `string`  |  上轮响应 ID
+-
+-本次请求时传入的历史响应 ID。
+-
+-
+-
+-**reasoning** `object`  |  思考工作量
+-
+-本次请求实际生效的深度思考工作量配置。
+-
+-
+-**effort** `string`  |  思考深度
+-
+-`reasoning.effort`
+-
+-限制思考的工作量。减少思考深度可提升速度，思考花费的 token 更少。
+-
+-
+-* `none`：关闭思考。
+-
+-* `minimal`：关闭思考，直接回答。
+-
+-* `low`：轻量思考，侧重快速响应。
+-
+-* `medium`：均衡模式，兼顾速度与深度。
+-
+-* `high`：深度分析，处理复杂问题。
+-
+-* `xhigh`：更高程度思考。
+-
+-* `max`：最高程度思考，适配高难度推理任务。
+-
+-
+-<div data-tips="true" data-tips-type="warning" data-tips-is-title="true">说明</div>
+-
+-
+-<div data-tips="true" data-tips-type="warning">支持该字段的模型、默认取值、参数兼容映射规则，以及与 <code>thinking.type</code> 字段的关系，详见 <a href="https://ark.volcengine.com/region:cn-beijing/docs/ark/responses-api-deep-thinking#dc4c1547">文档</a>。</div>
+-
+-
+-
+-
+-
+-**service_tier** `string`  |  推理模式
+-
+-本次请求实际使用的推理模式。
+-
+-
+-* `fast`：本次请求使用 [在线推理（低延迟）](https://ark.volcengine.com/region:cn-beijing/docs/ark/online-inference-low-latency) 模式。
+-
+-* `auto`：本次请求使用 [在线推理（TPM 保障包）](https://ark.volcengine.com/region:cn-beijing/docs/ark/tpm-guarantee-package) 模式。
+-
+-* `default`：本次请求使用 [在线推理（常规）](https://ark.volcengine.com/region:cn-beijing/docs/ark/online-inference-standard) 模式。
+-
+-* `flex`：本次请求使用 [在线推理（低优）](https://ark.volcengine.com/region:cn-beijing/docs/ark/online-inference-flex) 模式。
+-
+-
+-
+-**status** `string`  |  响应状态
+-
+-生成响应的状态。
+-
+-
+-
+-**store** `boolean`  |  存储响应
+-
+-响应是否被储存的实际状态。
+-
+-
+-
+-**temperature** `number`  |  采样温度
+-
+-本次请求实际使用的采样温度。
+-
+-
+-
+-**text** `object`  |  输出格式
+-
+-用于定义输出的格式，可以是纯文本，也可以是结构化的 JSON 数据。
+-
+-
+-**format** `object`  |  输出格式
+-
+-`text.format`
+-
+-文本输出格式定义。
+-
+-
+-**type** `string`  |  格式类型
+-
+-`text.format.type`
+-
+-输出格式类型。可选值：`text`、`json_schema`、`json_object`。
+-
+-<div data-tips="true" data-tips-type="warning" data-tips-is-title="true">注意</div>
+-
+-
+-<div data-tips="true" data-tips-type="warning"><code>json_object</code> / <code>json_schema</code> 能力尚在 beta 阶段，请谨慎在生产环境使用。</div>
+-
+-
+-
+-
+-**description** `string`  |  格式描述
+-
+-`text.format.description`
+-
+-格式描述信息。
+-
+-
+-
+-**name** `string`  |  格式名称
+-
+-`text.format.name`
+-
+-格式名称，作为 JSON Schema 输出格式的标识。
+-
+-<div data-tips="true" data-tips-type="warning" data-tips-is-title="true">注意</div>
+-
+-
+-<div data-tips="true" data-tips-type="warning">仅当 <em>type</em> 为 <code>json_schema</code> 时需要提供此字段。</div>
+-
+-
+-
+-
+-**schema** `object`  |  Schema 定义
+-
+-`text.format.schema`
+-
+-JSON Schema 定义。当 *type* 为 `json_schema` 时必填。
+-
+-
+-
+-**strict** `boolean`  |  严格模式
+-
+-`text.format.strict`
+-
+-是否严格按 JSON Schema 校验模型输出。
+-
+-<div data-tips="true" data-tips-type="warning" data-tips-is-title="true">注意</div>
+-
+-
+-<div data-tips="true" data-tips-type="warning">仅当 <em>type</em> 为 <code>json_schema</code> 时生效。</div>
+-
+-
+-
+-
+-
+-
+-**thinking** `object`  |  深度思考配置
+-
+-本次请求实际生效的深度思考模式配置。
+-
+-
+-**type** `string`  |  思考模式
+-
+-`thinking.type`
+-
+-深度思考模式。
+-
+-
+-* `enabled`：开启深度思考。
+-
+-* `disabled`：关闭深度思考。
+-
+-* `auto`：由模型自行判断是否需要深度思考。
+-
+-
+-
+-
+-**tool_choice** `string / object`  |  工具调用策略
+-
+-本次请求实际生效的工具调用策略。
+-
+-<div data-tips="true" data-tips-type="tip" data-tips-is-title="true">说明</div>
+-
+-
+-<div data-tips="true" data-tips-type="tip">未指定工具时默认值为 <code>none</code>；存在工具时默认值为 <code>auto</code>。</div>
+-
+-
+-
+-简单策略 `string`
+-
+-直接传入字符串 `none`、`auto` 或 `required`，控制工具调用整体策略。
+-
+-
+-
+-指定工具 `object`
+-
+-通过对象指定具体工具类型或工具名进行调用。
+-
+-
+-**type** `string`  |  工具类型
+-
+-`tool_choice.type`
+-
+-指定要调用的工具类型，用于精确路由到对应工具。可选值：
+-
+-
+-* `function`
+-
+-* `web_search`
+-
+-* `image_process`
+-
+-* `mcp`
+-
+-* `knowledge_search`
+-
+-* `doubao_app`
+-
+-
+-
+-**name** `string`  |  工具名称
+-
+-`tool_choice.name`
+-
+-指定要调用的具体工具名，如函数名或 MCP 服务下的工具名。
+-
+-
+-
+-
+-
+-**tools** `object[]`  |  工具列表
+-
+-模型可以调用的工具列表。
+-
+-
+-函数调用 `object`
+-
+-自定义函数调用（Function Calling），让模型生成结构化的函数参数。
+-
+-
+-**name** `string`  |  函数名
+-
+-`tools.name`
+-
+-供模型调用的函数名称，模型在 function_call 输出中以该名称回传，用于匹配对应函数。
+-
+-
+-
+-**type** `string`  |  类型
+-
+-`tools.type`
+-
+-工具类型标识，用于在 union 中区分不同工具类别。
+-
+-取值固定为 `function`。
+-
+-
+-
+-**description** `string`  |  函数描述
+-
+-`tools.description`
+-
+-函数的描述信息，帮助模型理解何时使用该函数。
+-
+-
+-
+-**parameters** `object`  |  参数定义
+-
+-`tools.parameters`
+-
+-函数参数定义，遵循 JSON Schema 格式。
+-
+-
+-
+-
+-联网搜索 `object`
+-
+-联网搜索工具，让模型在需要时自动进行网页搜索获取实时信息。
+-
+-
+-**type** `string`  |  类型
+-
+-`tools.type`
+-
+-工具类型标识，用于区分 Tool 的不同变体。
+-
+-取值固定为 `web_search`。
+-
+-
+-
+-**limit** `integer`  |  最大结果数
+-
+-`tools.limit`
+-
+-每轮搜索最大返回结果数量。
+-
+-<div data-tips="true" data-tips-type="tip" data-tips-is-title="true">说明</div>
+-
+-
+-<div data-tips="true" data-tips-type="tip">单次搜索最多返回 20 条；单轮可能有多次搜索，最终召回条数受此参数限制影响。</div>
+-
+-
+-**取值范围**：`[1, 50]`
+-
+-
+-
+-**max_keyword** `integer`  |  最大关键词数
+-
+-`tools.max_keyword`
+-
+-最大并行搜索关键词数量。
+-
+-**取值范围**：`[1, 50]`
+-
+-
+-
+-**sources** `string[]`  |  搜索来源
+-
+-`tools.sources`
+-
+-搜索信息来源限制，指定模型可从哪些渠道检索网页内容。可选值：`toutiao`、`douyin`、`moji`、`search_engine`、`doubao`。
+-
+-<div data-tips="true" data-tips-type="tip" data-tips-is-title="true">说明</div>
+-
+-
+-<div data-tips="true" data-tips-type="tip"><code>doubao</code> 不能与其他搜索来源同时配置。传入 <code>["doubao"]</code> 时，<code>tools.limit</code>、<code>tools.max_keyword</code>、<code>tools.user_location</code> 均不生效，向它们传入的值将被忽略。</div>
+-
+-
+-
+-
+-**user_location** `object`  |  用户位置
+-
+-`tools.user_location`
+-
+-用户地理位置信息，用于搜索优化。
+-
+-
+-**type** `string`  |  类型
+-
+-`tools.user_location.type`
+-
+-位置类型。
+-
+-取值固定为 `approximate`。
+-
+-
+-
+-**city** `string`  |  城市
+-
+-`tools.user_location.city`
+-
+-用户所在城市。
+-
+-
+-
+-**country** `string`  |  国家
+-
+-`tools.user_location.country`
+-
+-用户所在国家。
+-
+-
+-
+-**region** `string`  |  地区
+-
+-`tools.user_location.region`
+-
+-用户所在地区。
+-
+-
+-
+-**timezone** `number`  |  时区
+-
+-`tools.user_location.timezone`
+-
+-用户所在时区。
+-
+-
+-
+-
+-
+-图像处理 `object`
+-
+-图像处理工具，让模型对图片进行画点、选区、缩放、旋转等操作。
+-
+-
+-**type** `string`  |  类型
+-
+-`tools.type`
+-
+-工具类型标识，用于区分 Tool 的不同变体。
+-
+-取值固定为 `image_process`。
+-
+-
+-
+-**grounding** `object`  |  选区功能
+-
+-`tools.grounding`
+-
+-选区/裁切功能配置，启用后模型可返回图像中目标的检测框或裁切区域坐标。
+-
+-
+-**type** `string`  |  开关
+-
+-`tools.grounding.type`
+-
+-功能开关。可选值：`enabled`、`disabled`。
+-
+-
+-
+-
+-**point** `object`  |  画点功能
+-
+-`tools.point`
+-
+-画点/画线功能开关。
+-
+-
+-**type** `string`  |  开关
+-
+-`tools.point.type`
+-
+-功能开关。可选值：`enabled`、`disabled`。
+-
+-
+-
+-
+-**rotate** `object`  |  旋转功能
+-
+-`tools.rotate`
+-
+-旋转功能开关。启用后模型可请求对图片按指定角度进行旋转。
+-
+-<div data-tips="true" data-tips-type="warning" data-tips-is-title="true">注意</div>
+-
+-
+-<div data-tips="true" data-tips-type="warning">旋转角度支持范围为 0\-359 度。</div>
+-
+-
+-
+-**type** `string`  |  开关
+-
+-`tools.rotate.type`
+-
+-功能开关。可选值：`enabled`、`disabled`。
+-
+-
+-
+-
+-**zoom** `object`  |  缩放功能
+-
+-`tools.zoom`
+-
+-缩放功能开关，启用后模型可对图像目标区域执行缩放操作。
+-
+-<div data-tips="true" data-tips-type="tip" data-tips-is-title="true">说明</div>
+-
+-
+-<div data-tips="true" data-tips-type="tip">缩放倍率支持范围 0.5\-2.0 倍。</div>
+-
+-
+-
+-**type** `string`  |  开关
+-
+-`tools.zoom.type`
+-
+-功能开关。可选值：`enabled`、`disabled`。
+-
+-
+-
+-
+-
+-MCP 工具 `object`
+-
+-MCP（Model Context Protocol）工具，让模型调用外部 MCP Server 提供的工具。
+-
+-
+-**server_label** `string`  |  服务标签
+-
+-`tools.server_label`
+-
+-MCP Server 的唯一标识标签。模型在工具调用输出中通过该标签指向对应 Server，便于在多个 MCP Server 场景下区分调用来源。
+-
+-
+-
+-**server_url** `string`  |  服务地址
+-
+-`tools.server_url`
+-
+-MCP Server 的 HTTP(S) 访问地址，模型通过该地址向 Server 发起工具调用请求。
+-
+-
+-
+-**type** `string`  |  类型
+-
+-`tools.type`
+-
+-工具类型标识，用于区分 Tool 的不同变体。
+-
+-取值固定为 `mcp`。
+-
+-
+-
+-**allowed_tools** `string[] / object`  |  允许工具
+-
+-`tools.allowed_tools`
+-
+-允许模型调用的工具范围。可传工具名称字符串数组，或包含 `tool_names` 字段的过滤器对象。
+-
+-
+-工具名数组 `string[]`
+-
+-直接传入允许调用的工具名称数组。
+-
+-
+-
+-工具过滤器 `object`
+-
+-通过过滤器对象指定允许调用的工具范围。
+-
+-
+-**tool_names** `string[]`  |  工具名列表
+-
+-`tools.allowed_tools.tool_names`
+-
+-允许调用的工具名称列表。
+-
+-
+-
+-
+-
+-**headers** `object`  |  请求头
+-
+-`tools.headers`
+-
+-调用 MCP Server 时附加的 HTTP 请求头，以字符串键值对形式指定 header 名与值。
+-
+-<div data-tips="true" data-tips-type="tip" data-tips-is-title="true">说明</div>
+-
+-
+-
+-* <div data-tips="true" data-tips-type="tip">常用于传递鉴权信息（如 <code>Authorization</code>）。</div>
+-
+-
+-* <div data-tips="true" data-tips-type="tip"><code>Authorization</code> 字段不会被服务端存储。</div>
+-
+-
+-
+-
+-**require_approval** `string / object`  |  审批策略
+-
+-`tools.require_approval`
+-
+-MCP 工具调用前的审批策略；支持简单模式（字符串）或按工具粒度控制（过滤器对象）。
+-
+-
+-简单策略 `string`
+-
+-直接传入字符串 `always` 或 `never`，对所有工具应用统一审批策略。
+-
+-
+-
+-工具过滤器 `object`
+-
+-通过过滤器对象按工具粒度配置审批策略。
+-
+-
+-**always** `object`  |  始终审批
+-
+-`tools.require_approval.always`
+-
+-始终需要审批的工具过滤器。
+-
+-
+-**tool_names** `string[]`  |  工具名列表
+-
+-`tools.require_approval.always.tool_names`
+-
+-始终需要审批的工具名称列表。
+-
+-
+-
+-
+-**never** `object`  |  无需审批
+-
+-`tools.require_approval.never`
+-
+-无需审批的工具过滤器。
+-
+-
+-**tool_names** `string[]`  |  工具名列表
+-
+-`tools.require_approval.never.tool_names`
+-
+-无需审批即可调用的工具名称列表。
+-
+-
+-
+-
+-
+-
+-**server_description** `string`  |  服务描述
+-
+-`tools.server_description`
+-
+-MCP Server 的描述信息，帮助模型理解何时使用该 Server。
+-
+-
+-
+-
+-知识库搜索 `object`
+-
+-私域知识库搜索工具，让模型检索企业内部知识库中的文档内容。
+-
+-
+-**knowledge_resource_id** `string`  |  知识库 ID
+-
+-`tools.knowledge_resource_id`
+-
+-
+-
+-**type** `string`  |  类型
+-
+-`tools.type`
+-
+-工具类型标识，用于区分 Tool 的不同变体。
+-
+-取值固定为 `knowledge_search`。
+-
+-
+-
+-**dense_weight** `number`  |  稠密权重
+-
+-`tools.dense_weight`
+-
+-混合检索中稠密向量（语义）检索的权重，值越大越偏向语义匹配，越小越偏向关键词匹配。
+-
+-<div data-tips="true" data-tips-type="tip" data-tips-is-title="true">说明</div>
+-
+-
+-<div data-tips="true" data-tips-type="tip">仅在混合检索（索引算法为 <code>hnsw_hybrid</code>）下生效。</div>
+-
+-
+-**取值范围**：`[0.2, 1]`
+-
+-
+-
+-**description** `string`  |  知识库描述
+-
+-`tools.description`
+-
+-知识库描述信息，帮助模型理解何时使用该知识库。
+-
+-
+-
+-**doc_filter** `object`  |  文档过滤
+-
+-`tools.doc_filter`
+-
+-设置文档字段级别的检索过滤条件，确保只在符合条件的文档中检索。
+-
+-<div data-tips="true" data-tips-type="tip" data-tips-is-title="true">说明</div>
+-
+-
+-
+-* <div data-tips="true" data-tips-type="tip">支持用作过滤条件的文档字段：</div>
+-
+-
+-   * <div data-tips="true" data-tips-type="tip">系统字段：<code>doc_id</code>（仅手动创建的知识库）、<code>_sys_auto_doc_id</code>（手动 + API 创建均适用）</div>
+-
+-
+-   * <div data-tips="true" data-tips-type="tip">自定义字段：已为知识库文档添加的<strong>文档标签</strong>（对应知识库 <code>index_config.fields</code> 中的 <code>field</code>）</div>
+-
+-
+-* <div data-tips="true" data-tips-type="tip">支持单一条件过滤和多条件组合过滤（支持 <code>And</code> / <code>Or</code> 逻辑运算）。</div>
+-
+-
+-* <div data-tips="true" data-tips-type="tip">详细使用方式和支持字段参见 <a href="https://www.volcengine.com/docs/84313/1419289#filter-%E8%A1%A8%E8%BE%BE%E5%BC%8F">filter 表达式</a>。</div>
+-
+-
+-* <div data-tips="true" data-tips-type="tip">若自定义字段类型为 <code>Boolean</code>，取值范围是 <code>True</code> / <code>False</code>，大小写规则：cURL 用 <code>true</code> / <code>false</code>，Python 用 <code>True</code> / <code>False</code>。</div>
+-
+-
+-
+-
+-**limit** `integer`  |  最大结果数
+-
+-`tools.limit`
+-
+-最大搜索结果数量。
+-
+-**取值范围**：`[1, 200]`
+-
+-
+-
+-**max_keyword** `integer`  |  最大关键词数
+-
+-`tools.max_keyword`
+-
+-最大并行搜索关键词数量。
+-
+-**取值范围**：`[1, 50]`
+-
+-
+-
+-**ranking_options** `object`  |  排序选项
+-
+-`tools.ranking_options`
+-
+-检索后处理选项。可参考 [知识库 API 文档](https://www.volcengine.com/docs/84313/1350012) `post_processing` 字段。
+-
+-
+-**chunk_diffusion_count** `integer`  |  切片扩散数
+-
+-`tools.ranking_options.chunk_diffusion_count`
+-
+-检索阶段返回命中切片的上下几片邻近切片。取 `0` 表示不进行 chunk diffusion。
+-
+-**取值范围**：`[0, 5]`
+-
+-
+-
+-**chunk_group** `boolean`  |  文本聚合
+-
+-`tools.ranking_options.chunk_group`
+-
+-文本聚合。
+-
+-
+-* 默认不聚合。
+-
+-* 对于非结构化文件，可开启文本聚合以更好保留原文档内容语序。
+-
+-* 开启后，会根据文档及文档顺序，对切片重新聚合排序返回。
+-
+-
+-
+-**get_attachment_link** `boolean`  |  获取附件链接
+-
+-`tools.ranking_options.get_attachment_link`
+-
+-是否获取切片中图片的临时下载链接。
+-
+-
+-
+-**rerank_model** `string`  |  Rerank 模型
+-
+-`tools.ranking_options.rerank_model`
+-
+-rerank 模型选择。默认值：`base-multilingual-rerank`。取值：`base-multilingual-rerank` / `m3-v2-rerank`。
+-
+-<div data-tips="true" data-tips-type="tip" data-tips-is-title="true">说明</div>
+-
+-
+-
+-* <div data-tips="true" data-tips-type="tip">仅在 <code>rerank_switch</code> 为 <code>true</code> 时生效。</div>
+-
+-
+-* <div data-tips="true" data-tips-type="tip"><code>base-multilingual-rerank</code>（推荐）：速度快、长文本、支持 70+ 种语言。</div>
+-
+-
+-* <div data-tips="true" data-tips-type="tip"><code>m3-v2-rerank</code>：常规文本、支持 100+ 种语言。</div>
+-
+-
+-
+-
+-**rerank_only_chunk** `boolean`  |  仅切片重排
+-
+-`tools.ranking_options.rerank_only_chunk`
+-
+-是否仅根据 chunk 内容计算重排分数。`true` 只根据 chunk 内容计算分；`false` 根据 chunk title + 内容一起计算排序分。
+-
+-
+-
+-**rerank_switch** `boolean`  |  开启重排
+-
+-`tools.ranking_options.rerank_switch`
+-
+-是否自动对检索结果做 rerank。若设置为 `true`，则会自动请求 rerank 模型排序。
+-
+-
+-
+-**retrieve_count** `integer`  |  重排切片数
+-
+-`tools.ranking_options.retrieve_count`
+-
+-进入重排的切片数量。
+-
+-<div data-tips="true" data-tips-type="warning" data-tips-is-title="true">注意</div>
+-
+-
+-
+-* <div data-tips="true" data-tips-type="warning">仅在 <code>rerank_switch</code> 为 <code>true</code> 时生效。</div>
+-
+-
+-* <div data-tips="true" data-tips-type="warning"><code>retrieve_count</code> 需要大于等于 <code>limit</code>，否则会抛出错误。</div>
+-
+-
+-
+-
+-
+-
+-豆包助手 `object`
+-
+-豆包助手工具，让模型使用豆包的聊天、深度思考、AI 搜索和推理搜索能力。
+-
+-
+-**feature** `object`  |  功能配置
+-
+-`tools.feature`
+-
+-豆包助手的子功能配置，用于按需开启聊天、深度思考、AI 搜索、推理搜索四类能力并设置对应角色描述。
+-
+-
+-**ai_search** `object`  |  AI 搜索
+-
+-`tools.feature.ai_search`
+-
+-AI 搜索功能配置。
+-
+-
+-**role_description** `string`  |  角色描述
+-
+-`tools.feature.ai_search.role_description`
+-
+-使用豆包助手时修改角色设定。默认值：`你的名字是豆包,有很强的专业性。`
+-
+-<div data-tips="true" data-tips-type="warning" data-tips-is-title="true">注意</div>
+-
+-
+-<div data-tips="true" data-tips-type="warning">此字段与 <code>system prompt</code>、<code>instructions</code> 互斥，同时配置时以本字段为准。</div>
+-
+-
+-
+-
+-**type** `string`  |  开关
+-
+-`tools.feature.ai_search.type`
+-
+-功能开关。可选值：`enabled`、`disabled`。
+-
+-
+-
+-
+-**chat** `object`  |  普通聊天
+-
+-`tools.feature.chat`
+-
+-普通聊天功能配置。
+-
+-
+-**role_description** `string`  |  角色描述
+-
+-`tools.feature.chat.role_description`
+-
+-使用豆包助手时修改角色设定。默认值：`你的名字是豆包,有很强的专业性。`
+-
+-<div data-tips="true" data-tips-type="warning" data-tips-is-title="true">注意</div>
+-
+-
+-<div data-tips="true" data-tips-type="warning">此字段与 <code>system prompt</code>、<code>instructions</code> 互斥，同时配置时以本字段为准。</div>
+-
+-
+-
+-
+-**type** `string`  |  开关
+-
+-`tools.feature.chat.type`
+-
+-功能开关。可选值：`enabled`、`disabled`。
+-
+-
+-
+-
+-**deep_chat** `object`  |  深度聊天
+-
+-`tools.feature.deep_chat`
+-
+-深度聊天功能配置。
+-
+-
+-**role_description** `string`  |  角色描述
+-
+-`tools.feature.deep_chat.role_description`
+-
+-使用豆包助手时修改角色设定。默认值：`你的名字是豆包,有很强的专业性。`
+-
+-<div data-tips="true" data-tips-type="warning" data-tips-is-title="true">注意</div>
+-
+-
+-<div data-tips="true" data-tips-type="warning">此字段与 <code>system prompt</code>、<code>instructions</code> 互斥，同时配置时以本字段为准。</div>
+-
+-
+-
+-
+-**type** `string`  |  开关
+-
+-`tools.feature.deep_chat.type`
+-
+-功能开关。可选值：`enabled`、`disabled`。
+-
+-
+-
+-
+-**reasoning_search** `object`  |  推理搜索
+-
+-`tools.feature.reasoning_search`
+-
+-推理搜索功能配置。
+-
+-
+-**role_description** `string`  |  角色描述
+-
+-`tools.feature.reasoning_search.role_description`
+-
+-使用豆包助手时修改角色设定。默认值：`你的名字是豆包,有很强的专业性。`
+-
+-<div data-tips="true" data-tips-type="warning" data-tips-is-title="true">注意</div>
+-
+-
+-<div data-tips="true" data-tips-type="warning">此字段与 <code>system prompt</code>、<code>instructions</code> 互斥，同时配置时以本字段为准。</div>
+-
+-
+-
+-
+-**type** `string`  |  开关
+-
+-`tools.feature.reasoning_search.type`
+-
+-功能开关。可选值：`enabled`、`disabled`。
+-
+-
+-
+-
+-
+-**type** `string`  |  类型
+-
+-`tools.type`
+-
+-工具类型，此处固定为 `doubao_app`
+-
+-
+-
+-**user_location** `object`  |  用户位置
+-
+-`tools.user_location`
+-
+-用户地理位置信息，用于搜索优化。
+-
+-
+-**type** `string`  |  类型
+-
+-`tools.user_location.type`
+-
+-位置类型。
+-
+-取值固定为 `approximate`。
+-
+-
+-
+-**city** `string`  |  城市
+-
+-`tools.user_location.city`
+-
+-用户所在城市。
+-
+-
+-
+-**country** `string`  |  国家
+-
+-`tools.user_location.country`
+-
+-用户所在国家。
+-
+-
+-
+-**region** `string`  |  地区
+-
+-`tools.user_location.region`
+-
+-用户所在地区。
+-
+-
+-
+-**timezone** `number`  |  时区
+-
+-`tools.user_location.timezone`
+-
+-用户所在时区。
+-
+-
+-
+-
+-
+-
+ **top_p** `number`  |  核采样阈值
+ 
+ 本次请求实际使用的核采样概率阈值。
+ 
+-
+-
+ **usage** `object`  |  Token 用量
+ 
+ 本次请求的 token 用量统计，含输入/输出 token 数及工具调用明细。
+ 
+-
+ **input_tokens** `integer`  |  输入 token 数
+ 
+ `usage.input_tokens`
+ 
+ 输入消耗的 token 数量。
+ 
+-
+-
+ **input_tokens_details** `object`  |  输入明细
+ 
+ `usage.input_tokens_details`
+ 
+ 输入 token 用量明细。
+ 
+-
+ **cached_tokens** `integer`  |  缓存 token
+ 
+ `usage.input_tokens_details.cached_tokens`
+ 
+ 命中缓存的 token 数量。
+ 
+-
+-
+ **audio_cached_tokens** `integer`  |  音频缓存 Token 数
+ 
+ `usage.input_tokens_details.audio_cached_tokens`
+ 
+ 缓存命中的音频输入内容所消耗的 token 数量。仅在隐式缓存模式且命中音频缓存时返回；开启显式缓存时该字段不返回。
+ 
+-
+-
+ **audio_tokens** `integer`  |  音频 token
+ 
+ `usage.input_tokens_details.audio_tokens`
+ 
+ 音频输入消耗的 token 数量。
+ 
+-
+-
+-
+ **output_tokens** `integer`  |  输出 token 数
+ 
+ `usage.output_tokens`
+ 
+ 输出消耗的 token 数量。
+ 
+-
+-
+ **output_tokens_details** `object`  |  输出明细
+ 
+ `usage.output_tokens_details`
+ 
+ 输出 token 用量明细。
+ 
+-
+ **reasoning_tokens** `integer`  |  思考 token
+ 
+ `usage.output_tokens_details.reasoning_tokens`
+ 
+ 深度思考消耗的 token 数量。
+ 
+-
+-
+-
+ **total_tokens** `integer`  |  总 token 数
+ 
+ `usage.total_tokens`
+ 
+ 本次请求消耗的 token 总数。
+ 
+-
+-
+ **tool_usage** `object`  |  工具用量
+ 
+ `usage.tool_usage`
+ 
+ 工具调用用量统计。
+ 
+-
+ **doubao_app** `integer`  |  豆包次数
+ 
+ `usage.tool_usage.doubao_app`
+ 
+ 豆包助手工具调用次数。
+ 
+-
+-
+ **knowledge_search** `integer`  |  知识库次数
+ 
+ `usage.tool_usage.knowledge_search`
+ 
+ 知识库搜索工具调用次数。
+ 
+-
+-
+ **mcp** `integer`  |  MCP 次数
+ 
+ `usage.tool_usage.mcp`
+ 
+ MCP 工具调用次数。
+ 
+-
+-
+ **web_search** `integer`  |  搜索次数
+ 
+ `usage.tool_usage.web_search`
+ 
+ 联网搜索工具调用次数。
+ 
+-
+-
+-
+ **tool_usage_details** `object`  |  工具明细
+ 
+ `usage.tool_usage_details`
+ 
+ 工具调用用量明细。
+ 
+-
+ **doubao_app** `object`  |  豆包明细
+ 
+ `usage.tool_usage_details.doubao_app`
+ 
+ 豆包助手工具用量明细。
+ 
+-
+-
+ **knowledge_search** `object`  |  知识库明细
+ 
+ `usage.tool_usage_details.knowledge_search`
+ 
+ 知识库搜索工具用量明细。
+ 
+-
+-
+ **mcp** `object`  |  MCP 明细
+ 
+ `usage.tool_usage_details.mcp`
+ 
+ MCP 工具用量明细。
+ 
+-
+-
+ **web_search** `object`  |  搜索明细
+ 
+ `usage.tool_usage_details.web_search`
+ 
+ 联网搜索工具用量明细。
+ 
+-
+-
+-
+-&nbsp;
+-
+-<span id=".cmVzcG9uc2Ut55Sf5ZG95ZGo5pyf5LqL5Lu244CC"></span>
+ ### Response 生命周期事件。
+ 
+-字段结构详见 [Response 生命周期](https://ark.volcengine.com/region:cn-beijing/docs/ark/response-lifecycle)。
+-
+-<span id=".6K-t6Z-z6L2s5YaZ5LiO6ZSZ6K-v5LqL5Lu244CC"></span>
++字段结构详见 [Response 生命周期](https://ark.volcengine.com/region:cn-beijing/docs/response-lifecycle)。
++
+ ### 语音转写与错误事件。
+ 
+-字段结构详见 [语音转写与错误事件](https://ark.volcengine.com/region:cn-beijing/docs/ark/audio-and-errors)。
+-
+-<span id=".b3V0cHV0LWl0ZW0t5LiO5paH5pys5Zue562U44CC"></span>
++字段结构详见 [语音转写与错误事件](https://ark.volcengine.com/region:cn-beijing/docs/audio-and-errors)。
++
+ ### Output Item 与文本回答。
+ 
+-字段结构详见 [Output Item 与文本回答](https://ark.volcengine.com/region:cn-beijing/docs/ark/output-and-text)。
+-
+-<span id=".5bel5YW36LCD55So5LqL5Lu244CC"></span>
++字段结构详见 [Output Item 与文本回答](https://ark.volcengine.com/region:cn-beijing/docs/output-and-text)。
++
+ ### 工具调用事件。
+ 
+-字段结构详见 [工具调用事件](https://ark.volcengine.com/region:cn-beijing/docs/ark/streaming-responses-tools)。
++字段结构详见 [工具调用事件](https://ark.volcengine.com/region:cn-beijing/docs/streaming-responses-tools)。

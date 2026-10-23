@@ -1,0 +1,414 @@
+--- reviewed/volcengine-ark/ark-model-deprecation-notice
++++ current/volcengine-ark/ark-model-deprecation-notice
+@@ -6,85 +6,59 @@
+ 
+ > * [模型下线公告 2024](https://ark.volcengine.com/region:cn-beijing/docs/ark/model-deprecation-announcement-2024)
+ 
+-
+-<span id="tenth-model-deprecation"></span>
+ # 第十批模型下线说明
+ 
+-<span id="tenth-deprecation-plan"></span>
+-## 下线计划
+-
+-
+-<span aceTableMode="list" aceTableWidth="4,4,4"></span>
++## 下线计划
++
+ |节点 |时间 |动作&影响 |
+ |---|---|---|
+ |**启动&通知** |2026\-9\-22 10:00:00（UTC+8） |方舟逐步下调模型配额。 |
+ |**EOM**<br><br>模型停止新购 |2026\-9\-24 10:00:00（UTC+8） |用户无法新增接入点等，详细说明见[1.模型停止新购(EOM)](https://ark.volcengine.com/region:cn-beijing/docs/ark/model-deprecation-notice#9665a999)。<br><br>> 建议提前切换至对应的替换模型，并测试验证新模型对业务的影响。 |
+-|**EOS**<br><br>模型服务下线 |**2026\-11\-24 14:00**（UTC+8）<br><br><div data-tips="true" data-tips-type="warning" data-tips-is-title="true">注意</div><br><br><br><div data-tips="true" data-tips-type="warning"><strong>doubao\-seed\-2\-0\-lite\-260215 及 doubao\-seed\-2\-0\-mini\-260215</strong> 模型的 EOS 时间：<strong>2026\-10\-22 14:00</strong>（UTC+8）。到期未迁移，系统会自动迁移到下方表格中给到的建议迁移模型或直接关停。建议提前测试验证新模型对业务的影响。</div><br> |模型正式下线，残留接入点将自动替换为新模型或直接关停（详见下方模型列表），详细说明[2.模型下线 (EOS)](https://ark.volcengine.com/region:cn-beijing/docs/ark/model-deprecation-notice#b933be49)。 |
+-
+-
+-<span id="tenth-deprecated-models"></span>
+-## 下线模型
+-
+-<div data-tips="true" data-tips-type="warning" data-tips-is-title="true">注意</div>
+-
+-
+-
+-* <div data-tips="true" data-tips-type="warning">不同模型/版本支持的能力、API 参数、单价、任务中实际表现存在差异，迁移前请务必仔细阅读模型介绍，并进行必要评测，比较迁移前后模型的表现。</div>
+-
+-
+-* <div data-tips="true" data-tips-type="warning">embedding 模型迁移需要先对存量的知识库进行重建，再进行迁移操作。不同于其他基础模型，embedding 模型仅有EOM阶段，不涉及EOS阶段。即待下线的embedding 模型会在「EOM时间」停止新增接入点，但不影响存量服务的正常使用。</div>
+-
+-
+-
+-
+-<span aceTableMode="list" aceTableWidth="1,2"></span>
+-|**模型 ID** |**建议迁移模型**<br><br>> 推荐迁移最新版本模型，下表随模型迭代动态更新 |
+-|---|---|
+-|doubao\-seed\-2\-0\-lite\-260215 |doubao\-seed\-2\-1\-lite\-260915 |
+-|doubao\-seed\-2\-0\-mini\-260215 |doubao\-seed\-2\-0\-mini\-260428 |
+-|doubao\-seed\-2\-0\-pro\-260215 |doubao\-seed\-2\-1\-lite\-260915 |
+-|doubao\-embedding\-vision\-250615 |doubao\-embedding\-vision\-251215 |
+-|doubao\-seedance\-1\-0\-pro\-250528 |doubao\-seedance\-2\-0\-mini\-260615 |
+-|doubao\-seedance\-1\-0\-pro\-fast\-251015 |doubao\-seedance\-2\-0\-mini\-260615 |
+-|doubao\-seed\-2\-0\-code\-preview\-260215 |doubao\-seed\-evolving |
+-|doubao\-seedream\-4\-0\-250828 |doubao\-seedream\-4\-0\-20260415 |
+-|doubao\-seedream\-4\-5\-251128 |doubao\-seedream\-5\-0\-pro\-260628 |
+-|doubao\-seedream\-5\-0\-lite\-260128 / doubao\-seedream\-5\-0\-260128 |doubao\-seedream\-5\-0\-pro\-260628 |
+-|glm\-5\-1\-260428 |doubao\-seed\-evolving |
+-|deepseek\-v4\-pro\-260425 |deepseek\-v4\-1\-flash\-260910 |
+-
+-
+-<span id="2a6f0c3d"></span>
++|**EOS**<br><br>模型服务下线 |**2026\-11\-24 14:00**（UTC+8）<br><br>> **注意**<br><br><br>> **doubao\-seed\-2\-0\-lite\-260215 及 doubao\-seed\-2\-0\-mini\-260215** 模型的 EOS 时间：**2026\-10\-22 14:00**（UTC+8）。到期未迁移，系统会自动迁移到下方表格中给到的建议迁移模型或直接关停。建议提前测试验证新模型对业务的影响。<br> |模型正式下线，残留接入点将自动替换为新模型或直接关停（详见下方模型列表），详细说明[2.模型下线 (EOS)](https://ark.volcengine.com/region:cn-beijing/docs/ark/model-deprecation-notice#b933be49)。 |
++
++## 下线模型
++
++> **注意**
++
++* > 不同模型/版本支持的能力、API 参数、单价、任务中实际表现存在差异，迁移前请务必仔细阅读模型介绍，并进行必要评测，比较迁移前后模型的表现。
++
++* > embedding 模型迁移需要先对存量的知识库进行重建，再进行迁移操作。不同于其他基础模型，embedding 模型仅有EOM阶段，不涉及EOS阶段。即待下线的embedding 模型会在「EOM时间」停止新增接入点，但不影响存量服务的正常使用。
++
++* > 生图生视频模型不会自动迁移到新模型。请提前使用新模型进行接入点进行使用，避免影响业务。
++
++|**模型 ID** |**建议迁移模型**<br><br>> 推荐迁移最新版本模型，下表随模型迭代动态更新 |**到期未迁移，系统替换模型** |
++|---|---|---|
++|doubao\-seed\-2\-0\-lite\-260215 |doubao\-seed\-2\-1\-lite\-260915 |doubao\-seed\-2\-0\-lite\-260428 |
++|doubao\-seed\-2\-0\-mini\-260215 |doubao\-seed\-2\-0\-mini\-260428 |doubao\-seed\-2\-0\-mini\-260428 |
++|doubao\-seed\-2\-0\-pro\-260215 |doubao\-seed\-2\-1\-lite\-260915 |具体替换模型在服务下线前确定并更新 |
++|doubao\-embedding\-vision\-250615 |doubao\-embedding\-vision\-251215 |不强制切换 |
++|doubao\-seedance\-1\-0\-pro\-250528 |doubao\-seedance\-2\-0\-mini\-260615 |关停<br><br>> **说明**<br><br><br>> 建议提前切换至对应的替换模型，并测试验证新模型对业务的影响。<br> |
++|doubao\-seedance\-1\-0\-pro\-fast\-251015 |doubao\-seedance\-2\-0\-mini\-260615 |关停<br><br>> **说明**<br><br><br>> 建议提前切换至对应的替换模型，并测试验证新模型对业务的影响。<br> |
++|doubao\-seed\-2\-0\-code\-preview\-260215 |doubao\-seed\-evolving |具体替换模型在服务下线前确定并更新 |
++|doubao\-seedream\-4\-0\-250828 |doubao\-seedream\-4\-0\-20260415 |具体替换模型在服务下线前确定并更新 |
++|doubao\-seedream\-4\-5\-251128 |doubao\-seedream\-5\-0\-pro\-260628 |关停<br><br>> **说明**<br><br><br>> 建议提前切换至对应的替换模型，并测试验证新模型对业务的影响。<br> |
++|doubao\-seedream\-5\-0\-lite\-260128 / doubao\-seedream\-5\-0\-260128 |doubao\-seedream\-5\-0\-pro\-260628 |关停<br><br>> **说明**<br><br><br>> 建议提前切换至对应的替换模型，并测试验证新模型对业务的影响。<br> |
++|glm\-5\-1\-260428 |doubao\-seed\-evolving |具体替换模型在服务下线前确定并更新 |
++|deepseek\-v4\-pro\-260425 |deepseek\-v4\-1\-flash\-260910 |具体替换模型在服务下线前确定并更新 |
++
+ # 第九批模型下线说明
+ 
+-<span id="e9f3a12b"></span>
+-## 下线计划
+-
+-
+-<span aceTableMode="list" aceTableWidth="4,4,4"></span>
++## 下线计划
++
+ |节点 |时间 |动作&影响 |
+ |---|---|---|
+ |**启动&通知** |2026\-7\-3 10:00:00（UTC+8） |方舟逐步下调模型配额。 |
+ |**EOM**<br><br>模型停止新购 |2026\-7\-10 10:00:00（UTC+8） |用户无法新增接入点等，详细说明见[1.模型停止新购(EOM)](https://ark.volcengine.com/region:cn-beijing/docs/ark/model-deprecation-notice#9665a999)。<br><br>> 建议提前切换至对应的替换模型，并测试验证新模型对业务的影响。 |
+-|**EOS**<br><br>模型服务下线 |**2026\-09\-21 14:00**（UTC+8）<br><br><div data-tips="true" data-tips-type="warning" data-tips-is-title="true">注意</div><br><br><br><div data-tips="true" data-tips-type="warning"><strong>deepseek\-v3\-2\-251201</strong> 模型的 EOS 时间：<strong>2026\-07\-30 14:00</strong>（UTC+8）。到期未迁移，系统会自动迁移到下方表格中给到的建议迁移模型或直接关停。建议提前测试验证新模型对业务的影响。</div><br> |模型正式下线，残留接入点将自动替换为新模型或直接关停（详见下方模型列表），详细说明[2.模型下线 (EOS)](https://ark.volcengine.com/region:cn-beijing/docs/ark/model-deprecation-notice#b933be49)。 |
+-
+-
+-<span id="b1c7d8e4"></span>
+-## 下线模型
+-
+-<div data-tips="true" data-tips-type="warning" data-tips-is-title="true">注意</div>
+-
+-
+-
+-* <div data-tips="true" data-tips-type="warning">若业务使用了 <strong>Bot API</strong> 或 <strong>Context API</strong>，请先按文档进行改造迁移至 <strong>Responses API</strong>，否则模型下线后会出现调用报错。表格中已对支持 <strong>Bot API</strong>、<strong>Context API</strong> 的模型进行标注，迁移教程参见<a href="https://ark.volcengine.com/region:cn-beijing/docs/ark/responses-api-migration">迁移至 Responses API</a>。</div>
+-
+-
+-* <div data-tips="true" data-tips-type="warning">不同模型/版本支持的能力、API 参数、单价、任务中实际表现存在差异，迁移前请务必仔细阅读模型介绍，并进行必要评测，比较迁移前后模型的表现。</div>
+-
+-
+-
+-
+-<span aceTableMode="list" aceTableWidth="4,4,4"></span>
++|**EOS**<br><br>模型服务下线 |**2026\-09\-21 14:00**（UTC+8）<br><br>> **注意**<br><br><br>> **deepseek\-v3\-2\-251201** 模型的 EOS 时间：**2026\-07\-30 14:00**（UTC+8）。到期未迁移，系统会自动迁移到下方表格中给到的建议迁移模型或直接关停。建议提前测试验证新模型对业务的影响。<br> |模型正式下线，残留接入点将自动替换为新模型或直接关停（详见下方模型列表），详细说明[2.模型下线 (EOS)](https://ark.volcengine.com/region:cn-beijing/docs/ark/model-deprecation-notice#b933be49)。 |
++
++## 下线模型
++
++> **注意**
++
++* > 若业务使用了 **Bot API** 或 **Context API**，请先按文档进行改造迁移至 **Responses API**，否则模型下线后会出现调用报错。表格中已对支持 **Bot API**、**Context API** 的模型进行标注，迁移教程参见[迁移至 Responses API](https://ark.volcengine.com/region:cn-beijing/docs/ark/responses-api-migration)。
++
++* > 不同模型/版本支持的能力、API 参数、单价、任务中实际表现存在差异，迁移前请务必仔细阅读模型介绍，并进行必要评测，比较迁移前后模型的表现。
++
+ |**模型 ID** |**建议迁移模型**<br><br>> 推荐迁移最新版本模型，下表随模型迭代动态更新 |**到期未迁移，系统替换模型** |
+ |---|---|---|
+ |kimi\-k2\-5\-260127 |doubao\-seed\-evolving |doubao\-seed\-evolving |
+@@ -102,35 +76,24 @@
+ |doubao\-1\-5\-vision\-pro\-32k\-250115 `支持 Bot API` |doubao\-seed\-2\-0\-lite\-260428 |doubao\-seed\-2\-0\-lite\-260428 |
+ |doubao\-1\-5\-pro\-32k\-250115 `支持 Bot API, Context API` |doubao\-seed\-2\-0\-lite\-260428 |doubao\-seed\-2\-0\-lite\-260428 |
+ |doubao\-1\-5\-pro\-32k\-character\-250715 `支持 Bot API, Context API` |doubao\-seed\-character\-260628 |doubao\-seed\-character\-260628 |
+-|doubao\-seedance\-1\-5\-pro\-251215<br><br><div data-tips="true" data-tips-type="warning" data-tips-is-title="true">注意</div><br><br><br><div data-tips="true" data-tips-type="warning"><strong>doubao\-seedance\-1\-5\-pro\-251215</strong> 模型到 2026\-09\-21 14:00（UTC+8）后<strong>会直接关停</strong>，不会自动迁移到新模型。请提前切换模型，避免影响业务。</div><br> |doubao\-seedance\-2\-0\-mini\-260615 |关停 |
+-
+-
+-<span id="857a929c"></span>
++|doubao\-seedance\-1\-5\-pro\-251215<br><br>> **注意**<br><br><br>> **doubao\-seedance\-1\-5\-pro\-251215** 模型到 2026\-09\-21 14:00（UTC+8）后**会直接关停**，不会自动迁移到新模型。请提前切换模型，避免影响业务。<br> |doubao\-seedance\-2\-0\-mini\-260615 |关停 |
++
+ # 第八批模型下线说明
+ 
+-<span id="03e45060"></span>
+-## 下线计划
+-
+-
+-<span aceTableMode="list" aceTableWidth="4,4,4"></span>
++## 下线计划
++
+ |节点 |时间 |动作&影响 |
+ |---|---|---|
+ |**启动&通知** |2026\-4\-3 10:00:00（UTC+8） |方舟逐步下调模型配额。 |
+ |**EOM**<br><br>模型停止新购 |2026\-4\-9 10:00:00（UTC+8） |用户无法新增接入点等，详细说明见[1.模型停止新购(EOM)](https://ark.volcengine.com/region:cn-beijing/docs/ark/model-deprecation-notice#9665a999)。<br><br>> 建议提前切换至对应的替换模型，并测试验证新模型对业务的影响。 |
+ |**EOS**<br><br>模型服务下线 |**2026\-05\-11 14:00**（UTC+8） |模型正式下线并残留接入点自动替换为新模型，详细说明[2.模型下线 (EOS)](https://ark.volcengine.com/region:cn-beijing/docs/ark/model-deprecation-notice#b933be49)。 |
+ 
+-
+-<span id="d9685a0a"></span>
+-## 下线模型
+-
+-<div data-tips="true" data-tips-type="warning" data-tips-is-title="true">注意</div>
+-
+-
+-<div data-tips="true" data-tips-type="warning">不同模型/版本支持的能力、API 参数、单价、任务中实际表现存在差异，迁移前请务必仔细阅读模型介绍，并进行必要评测，比较迁移前后模型的表现。</div>
+-
+-
+-
+-<span aceTableMode="list" aceTableWidth="4,4,4"></span>
++## 下线模型
++
++> **注意**
++
++> 不同模型/版本支持的能力、API 参数、单价、任务中实际表现存在差异，迁移前请务必仔细阅读模型介绍，并进行必要评测，比较迁移前后模型的表现。
++
+ |**模型 ID** |**建议迁移模型**<br><br>> 推荐迁移最新版本模型，下表随模型迭代动态更新 |**到期未迁移，系统替换模型** |
+ |---|---|---|
+ |deepseek\-r1\-250528 |doubao\-seed\-2\-0\-lite\-260215 |doubao\-seed\-2\-0\-lite\-260215 |
+@@ -143,36 +106,24 @@
+ |doubao\-seedance\-1\-0\-lite\-t2v\-250428 |doubao\-seedance\-2\-0\-fast\-260128 |doubao\-seedance\-2\-0\-fast\-260128 |
+ |doubao\-seedream\-3\-0\-t2i\-250415 |doubao\-seedream\-5\-0\-lite\-260128 |doubao\-seedream\-5\-0\-lite\-260128 |
+ 
+-
+-<span id="f7d075f6"></span>
+ # 第七批模型下线说明
+ 
+-
+ 详细信息
+ 
+-<span id="b2581172"></span>
+-## 下线计划
+-
+-
+-<span aceTableMode="list" aceTableWidth="4,4,4"></span>
++## 下线计划
++
+ |节点 |时间 |**具体动作&影响** |
+ |---|---|---|
+ |**启动&通知** |2026\-3\-17 10:00:00（UTC+8） |方舟逐步下调模型配额。 |
+ |**EOM**<br><br>模型停止新购 |2026\-3\-18 10:00:00（UTC+8） |用户无法新增接入点。<br><br>> 建议提前切换至对应的替换模型，并测试验证新模型对业务的影响。 |
+ |**EOS**<br><br>模型服务下线 |**2026\-03\-24 14:00**（UTC+8） |模型正式下线并残留接入点自动替换为新模型。 |
+ 
+-
+-<span id="b3279e56"></span>
+-## 下线模型
+-
+-<div data-tips="true" data-tips-type="warning" data-tips-is-title="true">注意</div>
+-
+-
+-<div data-tips="true" data-tips-type="warning">不同模型/版本支持的能力、API 参数、单价、任务中实际表现存在差异，迁移前请务必仔细阅读模型介绍，并进行必要评测，比较迁移前后模型的表现。</div>
+-
+-
+-
+-<span aceTableMode="list" aceTableWidth="5,5"></span>
++## 下线模型
++
++> **注意**
++
++> 不同模型/版本支持的能力、API 参数、单价、任务中实际表现存在差异，迁移前请务必仔细阅读模型介绍，并进行必要评测，比较迁移前后模型的表现。
++
+ |**模型 ID** |**到期未迁移，系统替换模型** |
+ |---|---|
+ |gpt\-oss\-120b\-250805 |doubao\-seed\-2\-0\-mini\-260215 |
+@@ -180,44 +131,26 @@
+ |doubao\-lite\-4k\-browsing\-intent\-240828 |doubao\-seed\-2\-0\-mini\-260215 |
+ |doubao\-seed3d\-1\-0\-250928 |关停<br><br>> 请提前切换模型，避免影响业务。 |
+ 
+-
+-
+-&nbsp;
+-
+-<span id="fcd15f42"></span>
+ # 第六批模型下线说明
+ 
+-
+ 详细信息
+ 
+-<span id="47c0ab00"></span>
+-## 下线计划
+-
+-
+-<span aceTableMode="list" aceTableWidth="4,4,4"></span>
++## 下线计划
++
+ |节点 |时间 |**具体动作&影响** |
+ |---|---|---|
+ |**启动&通知** |2025\-12\-19 10:00:00（UTC+8） |方舟逐步下调模型配额。 |
+ |**EOM**<br><br>模型停止新购 |2025\-12\-26 10:00:00（UTC+8） |用户无法新增接入点。<br><br>> 建议提前切换至对应的替换模型，并测试验证新模型对业务的影响。 |
+ |**EOS**<br><br>模型服务下线 |**2026\-03\-31 14:00**（UTC+8） |模型正式下线并残留接入点自动替换为新模型。 |
+ 
+-
+-<span id="04775cf9"></span>
+-## 下线模型
+-
+-<div data-tips="true" data-tips-type="warning" data-tips-is-title="true">注意</div>
+-
+-
+-
+-* <div data-tips="true" data-tips-type="warning">不同模型/版本支持的能力、API 参数、单价、任务中实际表现存在差异，迁移前请务必仔细阅读模型介绍，并进行必要评测，比较迁移前后模型的表现。</div>
+-
+-
+-* <div data-tips="true" data-tips-type="warning">embedding 模型迁移需要先对存量的知识库进行重建，再进行迁移操作。不同于其他基础模型，embedding 模型仅有EOM阶段，不涉及EOS阶段。即待下线的embedding 模型会在「EOM时间」停止新增接入点，但不影响存量服务的正常使用。</div>
+-
+-
+-
+-
+-<span aceTableMode="list" aceTableWidth="5,5,5"></span>
++## 下线模型
++
++> **注意**
++
++* > 不同模型/版本支持的能力、API 参数、单价、任务中实际表现存在差异，迁移前请务必仔细阅读模型介绍，并进行必要评测，比较迁移前后模型的表现。
++
++* > embedding 模型迁移需要先对存量的知识库进行重建，再进行迁移操作。不同于其他基础模型，embedding 模型仅有EOM阶段，不涉及EOS阶段。即待下线的embedding 模型会在「EOM时间」停止新增接入点，但不影响存量服务的正常使用。
++
+ |**模型 ID** |**建议迁移模型**<br><br>> 推荐迁移最新版本模型，下表随模型迭代动态更新 |**到期未迁移，系统替换模型** |
+ |---|---|---|
+ |doubao\-seed\-1\-6\-thinking\-250615 |doubao\-seed\-2\-0\-lite\-260215 |doubao\-seed\-2\-0\-lite\-260215 |
+@@ -239,16 +172,10 @@
+ |kimi\-k2\-thinking\-251104 |doubao\-seed\-2\-0\-lite\-260215 |doubao\-seed\-2\-0\-lite\-260215 |
+ |doubao\-clasi\-s2t\-241215 |关停<br><br>> 请提前切换模型，避免影响业务。 |关停<br><br>> 请提前切换模型，避免影响业务。 |
+ 
+-
+-
+-&nbsp;
+-
+-<span id="5b57f821"></span>
+ # 下线流程
+ 
+ 一般情况下，每个版本的模型生命周期为3~6个月，即在上线后3\-6个月后，模型会正式下线并停止服务。在停止服务前，我们会为开发者预留一定的时间进行新版本模型的效果测试，避免影响业务。
+ 
+-
+ 1. **确定旧版本模型下线计划**，通过短信、站内信、平台公告等多种方式发布通知。
+ 
+ 2. 自正式通知日（即「通知时间」）起，逐步下调模型的使用额度（即下调RPM和TPM的配额）。
+@@ -257,16 +184,12 @@
+ 
+ 4. 至模型下线时间（即「EOS 时间」）时，**模型正式下线并停止服务**，存量的模型推理服务将停止服务（部分模型会自动切换至新版本，部分模型则直接关停，详见下文节点说明及各批次说明）。
+ 
+-
+-<span id="deprecation-notes"></span>
+ # 节点说明
+ 
+-<span id="9665a999"></span>
+ ## **1.模型停止新购(EOM)**
+ 
+ EOM：End of Marketing，旧版模型停止新购，无法新购/新建/开通旧版模型服务。
+ 
+-
+ * **在线推理**：不可再新建待下线模型的推理服务接入点，仅支持切换在线推理服务接入点指向的模型版本。
+ 
+ * **精调任务**：不可新建基于待下线模型的精调任务。
+@@ -279,77 +202,51 @@
+ 
+ * 逐步下调配额：模型会逐步下调已创建推理服务接入点使用配额，直到完全下线。
+ 
+-
+-<div data-tips="true" data-tips-type="tip" data-tips-is-title="true">说明</div>
+-
+-
+-
+-* <div data-tips="true" data-tips-type="tip">对于自定义推理接入点</div>
+-
+-
+-   * <div data-tips="true" data-tips-type="tip">若您选择在控制台手动切换，请确保在切换前已在开通管理模块开通替代模型，否则切换将报错，但不影响线上服务。</div>
+-
+-
+-   * <div data-tips="true" data-tips-type="tip">若您选择平台自动切换，请确保下线日前在开通管理模块开通替代模型，否则会出现调用报错，<strong>可能影响线上服务</strong>。</div>
+-
+-
+-* <div data-tips="true" data-tips-type="tip">对于预置推理接入点</div>
+-
+-
+-   * <div data-tips="true" data-tips-type="tip">到期将直接关停，不自动切换，也不支持在控制台手动切换。请您在模型下线前，及时做好相关业务调整，以免影响正常使用。</div>
+-
+-
+-
+-<span id="b933be49"></span>
++> **说明**
++
++* > 对于自定义推理接入点
++
++   * > 若您选择在控制台手动切换，请确保在切换前已在开通管理模块开通替代模型，否则切换将报错，但不影响线上服务。
++
++   * > 若您选择平台自动切换，请确保下线日前在开通管理模块开通替代模型，否则会出现调用报错，**可能影响线上服务**。
++
++* > 对于预置推理接入点
++
++   * > 到期将直接关停，不自动切换，也不支持在控制台手动切换。请您在模型下线前，及时做好相关业务调整，以免影响正常使用。
++
+ ## **2.模型下线 (EOS)**
+ 
+ EOS：End of Service & Support，模型停止服务，模型服务下线。
+ 
+-
+ * 精调模型：模型下线当日停止服务，无法调用。
+ 
+ * 非精调模型：模型下线当日系统将自动切换到新模型服务或停止服务，详见下文对应批次的模型下线说明；若自动切换的模型在正式切换时刻有最新版本，会变更至最新版本。
+ 
+-
+-<div data-tips="true" data-tips-type="tip" data-tips-is-title="true">说明</div>
+-
+-
+-
+-* <div data-tips="true" data-tips-type="tip">若开启了安心体验，安心体验接入点将在模型下线当日直接关停。</div>
+-
+-
+-* <div data-tips="true" data-tips-type="tip">若配置了用量上限，相关接入点将在模型下线当日直接关停。</div>
+-
+-
+-* <div data-tips="true" data-tips-type="tip">若下线日前未手动迁移，系统自动迁移的模型对比原模型可能会有价格波动，请关注价格变化，对比价格，以便合理规划使用成本。</div>
+-
+-
+-
+-<span id="model-switching-notes"></span>
++> **说明**
++
++* > 若开启了安心体验，安心体验接入点将在模型下线当日直接关停。
++
++* > 若配置了用量上限，相关接入点将在模型下线当日直接关停。
++
++* > 若下线日前未手动迁移，系统自动迁移的模型对比原模型可能会有价格波动，请关注价格变化，对比价格，以便合理规划使用成本。
++
+ # 切换模型步骤
+ 
+ 模型切换涉及到不同场景的切换，包括同模型不同版本、不同模型迁移，精调模型服务迁移；以下是针对不同场景的迁移指引。
+ 
+-<span id="24dcd27c"></span>
+ ## 场景：基础模型切换
+ 
+ 平台提供**推理服务接入点平滑切换能力**。 在方舟平台的在线推理页面，修改推理服务接入点对应的模型版本（暂不支持精调模型及模型单元的版本切换）。可实现模型版本的平滑切换，支持更新模型版本。
+ 
+-<div data-tips="true" data-tips-type="warning" data-tips-is-title="true">注意</div>
+-
+-
+-<div data-tips="true" data-tips-type="warning">不同模型/版本支持的能力、API 参数、单价、任务中实际表现存在差异，迁移前请务必仔细阅读模型介绍，并进行必要评测，比较迁移前后模型的表现。</div>
+-
+-
+-
+-<span aceTableMode="list" aceTableWidth="4,4"></span>
++> **注意**
++
++> 不同模型/版本支持的能力、API 参数、单价、任务中实际表现存在差异，迁移前请务必仔细阅读模型介绍，并进行必要评测，比较迁移前后模型的表现。
++
+ |操作步骤 |图示 |
+ |---|---|
+-|打开 [在线推理](https://ark.volcengine.com/region:cn-beijing/endpoint)\>**推理接入点详情页，**  在【选择模型】页面，选择切换的模型版本；完成后点击确定。 |<span>![图片](https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/5fbb0a5e5dad47ff8adabe722694586a~tplv-goo7wpa0wc-image.image) </span> <span>![图片](https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/4e2625c9486a4553b797f5b3e7a23fbd~tplv-goo7wpa0wc-image.image) </span> |
+-|核对**推理服务接入点的详情页**中模型版本；完成平滑切换。<br><br>**说明**<br><br><br>* 切换时间：模型版本迁移的过程不超过1小时<br><br>* 取消切换：点击取消切换撤回模型迁移，请求流量按比例逐步切换至原模型版本<br><br>* 切换和取消切换过程按流量比例进行切换，不会影响业务正常使用 |<span>![图片](https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/08cde21aa80342cd9bd5a102eec7f68c~tplv-goo7wpa0wc-image.image) </span> |
+-
+-
+-<span id="a009653b"></span>
++|打开 [在线推理](https://ark.volcengine.com/region:cn-beijing/endpoint)\>**推理接入点详情页，**  在【选择模型】页面，选择切换的模型版本；完成后点击确定。 |![图片](https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/5fbb0a5e5dad47ff8adabe722694586a~tplv-goo7wpa0wc-image.image) ![图片](https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/4e2625c9486a4553b797f5b3e7a23fbd~tplv-goo7wpa0wc-image.image) |
++|核对**推理服务接入点的详情页**中模型版本；完成平滑切换。<br><br>**说明**<br><br><br>* 切换时间：模型版本迁移的过程不超过1小时<br><br>* 取消切换：点击取消切换撤回模型迁移，请求流量按比例逐步切换至原模型版本<br><br>* 切换和取消切换过程按流量比例进行切换，不会影响业务正常使用 |![图片](https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/08cde21aa80342cd9bd5a102eec7f68c~tplv-goo7wpa0wc-image.image) |
++
+ ## 场景：精调模型切换
+ 
+ 由于精调模型依赖基座模型，如果需要变更精调模型对应的基座模型，需要在新的模型版本上再次 [精调模型](https://ark.volcengine.com/region:cn-beijing/docs/ark/fine-tuning-overview)，并验证效果达到预期后，再创建新的推理接入点，完成相应的代码变更，实现迁移。

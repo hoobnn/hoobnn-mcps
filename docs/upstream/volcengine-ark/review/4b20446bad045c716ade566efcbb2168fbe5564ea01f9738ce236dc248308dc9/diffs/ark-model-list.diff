@@ -1,0 +1,583 @@
+--- reviewed/volcengine-ark/ark-model-list
++++ current/volcengine-ark/ark-model-list
+@@ -1,203 +1,150 @@
+ 方舟提供多种模型供您使用。您可浏览所有模型，比较它们的能力。
+ 
+-<span id="b4dabf9a"></span>
+ # 模型推荐
+ 
+-
+-<columns>
+-<columnsItem zoneid="j0gUR3EZgB">
+-
+-
+-<card mode="container" href="https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seedance-2-5" img="https://arkdocs.tos-cn-beijing.volces.com/images/get-started/banner_video_generation.png" >
+-
+-**Doubao Seedance 2.5**
+-
+-豆包最强视频生成模型
+-
+-30 秒超长叙事，全模态参考扩容
+-
+-</card>
+-
+-
+-
+-</columnsItem>
+-<columnsItem zoneid="lPuFXdAZvX">
+-
+-
+-<card mode="container" href="https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-evolving" img="https://arkdocs.tos-cn-beijing.volces.com/images/get-started/doubao-seed-1.6-vision.png" >
+-
+-**Doubao Seed Evolving**
++[Doubao Seedance 2.5](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seedance-2-5)
++
++![Doubao Seedance 2.5](https://arkdocs.tos-cn-beijing.volces.com/images/get-started/banner_video_generation.png)
++
++豆包高性能视频生成模型
++
++4~30 秒视频生成，全模态参考输入
++
++[Doubao Seed Evolving](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-evolving)
++
++![Doubao Seed Evolving](https://arkdocs.tos-cn-beijing.volces.com/images/get-started/doubao-seed-1.6-vision.png)
+ 
+ Seed 最新 Coding&Agent 模型
+ 
+ 周级迭代，持续进化 Coding 与 Agent 能力
+ 
+-</card>
+-
+-
+-
+-</columnsItem>
+-<columnsItem zoneid="UvVPl5kWsL">
+-
+-
+-<card mode="container" href="https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seedream-5-0-pro" img="https://arkdocs.tos-cn-beijing.volces.com/images/get-started/banner_image_generation.png" >
+-
+-**Doubao Seedream 5.0 pro**
++[Doubao Seedream 5.0 pro](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seedream-5-0-pro)
++
++![Doubao Seedream 5.0 pro](https://arkdocs.tos-cn-beijing.volces.com/images/get-started/banner_image_generation.png)
+ 
+ 最新图像创作模型
+ 
+ 编辑更可控、生产更落地、效果更自然
+ 
+-</card>
+-
+-
+-
+-</columnsItem>
+-</columns>
+-
+-
+-<span id="32e9e053"></span>
+ # 文本生成能力
+ 
+-教程: [文本生成](https://ark.volcengine.com/region:cn-beijing/docs/ark/text-generation)、[深度思考](https://ark.volcengine.com/region:cn-beijing/docs/ark/deep-thinking) | API: [Responses API](https://ark.volcengine.com/region:cn-beijing/docs/ark/create-model-responses-api)、[Chat API](https://ark.volcengine.com/region:cn-beijing/docs/ark/chat-api)
+-
+-<div data-tips="true" data-tips-type="warning" data-tips-is-title="true">注意</div>
+-
+-
+-<div data-tips="true" data-tips-type="warning">本章节列出方舟平台所有支持文本生成能力的大语言模型。其中带"深度思考"能力标签的模型，默认调用即启用深度思考；如需仅执行文本生成任务，可通过调用参数关闭深度思考（Chat API 传入 <code>thinking.type=disabled</code>，Responses API 传入 <code>reasoning.effort=minimal</code>）后使用，参数详情参见<a href="https://ark.volcengine.com/region:cn-beijing/docs/ark/deep-thinking">深度思考</a>。未带"深度思考"能力标签的模型（如 doubao\-seed\-character\-251128）本身不支持深度思考，直接调用即可。</div>
+-
+-
+-<span id="5fd8d8b1"></span>
+-## 推荐模型
+-
+-
+-<span aceTableMode="list" aceTableWidth="3,2,3,2"></span>
+-|模型 ID (Model ID) |**能力支持** |**长度限制（token）**  |限流<br><br>> 非刚性保障，受平台负载/调用方式影响，详见 [文档](https://ark.volcengine.com/region:cn-beijing/docs/ark/traffic-burst-handling-best-practices#263ca129) |
+-|---|---|---|---|
+-|[doubao-seed-evolving](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-evolving)<br><br>> 快速迭代模型 |深度思考<br><br>文本生成<br><br>多模态理解<br><br>GUI 任务处理<br><br>工具调用<br><br>结构化输出 |上下文窗口: 1024k<br><br>最大输入: 1024k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/ark/text-generation#3821b26a): 256k<br><br>最大思维链: 256k |最大 RPM: 500<br><br>最大 TPM: 1000000 |
+-|[doubao-seed-2-1-pro-260915](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-1-pro) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>GUI 任务处理<br><br>工具调用<br><br>结构化输出 |上下文窗口: 1024k<br><br>最大输入: 1024k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/ark/text-generation#3821b26a): 256k<br><br>最大思维链: 256k |最大 RPM: 500<br><br>最大 TPM: 1000000 |
+-|[doubao-seed-2-1-lite-260915](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-1-lite) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>GUI 任务处理<br><br>工具调用<br><br>结构化输出 |上下文窗口: 1024k<br><br>最大输入: 1024k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/ark/text-generation#3821b26a): 256k<br><br>最大思维链: 256k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
+-|[doubao-seed-2-1-turbo-260628](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-1-turbo) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>GUI 任务处理<br><br>工具调用<br><br>结构化输出 |上下文窗口: 256k<br><br>最大输入: 256k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/ark/text-generation#3821b26a): 256k<br><br>最大思维链: 256k |最大 RPM: 500<br><br>最大 TPM: 1000000 |
+-
+-
+-<span id="af1b9bf4"></span>
+-## **往期模型**
+-
+-
+-<span aceTableMode="list" aceTableWidth="3,2,3,2"></span>
+-|模型 ID (Model ID) |**能力支持** |**长度限制（token）**  |限流<br><br>> 非刚性保障，受平台负载/调用方式影响，详见 [文档](https://ark.volcengine.com/region:cn-beijing/docs/ark/traffic-burst-handling-best-practices#263ca129) |
+-|---|---|---|---|
+-|[doubao-seed-2-1-pro-260628](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-1-pro) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>GUI 任务处理<br><br>工具调用<br><br>结构化输出（推荐使用 `json_schema` 模式） |上下文窗口: 256k<br><br>最大输入: 256k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/ark/text-generation#3821b26a): 256k<br><br>最大思维链: 256k |最大 RPM: 500<br><br>最大 TPM: 1000000 |
+-|[doubao-seed-2-0-lite-260428](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-0-lite) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>GUI 任务处理<br><br>工具调用<br><br>结构化输出（推荐使用 `json_schema` 模式） |上下文窗口: 256k<br><br>最大输入: 224k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/ark/text-generation#3821b26a): 128k<br><br>最大思维链: 128k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
+-|[doubao-seed-2-0-mini-260428](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-0-mini) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>GUI 任务处理<br><br>工具调用<br><br>结构化输出 |上下文窗口: 256k<br><br>最大输入: 224k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/ark/text-generation#3821b26a): 128k<br><br>最大思维链: 128k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
+-|[doubao-seed-2-0-pro-260215](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-0-pro) `即将下线` |深度思考<br><br>文本生成<br><br>多模态理解<br><br>GUI 任务处理<br><br>工具调用<br><br>结构化输出 |上下文窗口: 256k<br><br>最大输入: 224k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/ark/text-generation#3821b26a): 128k<br><br>最大思维链: 128k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
+-|[doubao-seed-2-0-lite-260215](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-0-lite) `即将下线` |深度思考<br><br>文本生成<br><br>多模态理解<br><br>GUI 任务处理<br><br>工具调用<br><br>结构化输出 |上下文窗口: 256k<br><br>最大输入: 224k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/ark/text-generation#3821b26a): 128k<br><br>最大思维链: 128k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
+-|[doubao-seed-2-0-mini-260215](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-0-mini) `即将下线` |深度思考<br><br>文本生成<br><br>多模态理解<br><br>GUI 任务处理<br><br>工具调用<br><br>结构化输出 |上下文窗口: 256k<br><br>最大输入: 224k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/ark/text-generation#3821b26a): 128k<br><br>最大思维链: 128k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
+-|[doubao-seed-2-0-code-preview-260215](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-0-code) `即将下线` |深度思考<br><br>文本生成<br><br>多模态理解<br><br>工具调用 |上下文窗口: 256k<br><br>最大输入: 224k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/ark/text-generation#3821b26a): 128k<br><br>最大思维链: 128k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
+-|[doubao-seed-character-260628](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-character&_vtm_=a106466.b106468.0_0.0_0.0.1961_7630866813484467762&projectName=default) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>工具调用<br><br>结构化输出（推荐使用 `json_schema` 模式） |上下文窗口: 128k<br><br>最大输入: 96k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/ark/text-generation#3821b26a): 32k<br><br>最大思维链: 128k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
+-|[doubao-seed-character-251128](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-character) |文本生成<br><br>工具调用 |上下文窗口: 128k<br><br>最大输入: 96k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/ark/text-generation#3821b26a): 32k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
+-|[doubao-seed-translation-250915](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-translation) |文本生成<br><br>> 翻译增强 |上下文窗口: 4k<br><br>最大输入: 1k<br><br>[最大回答(默认 3k)](https://ark.volcengine.com/region:cn-beijing/docs/ark/text-generation#3821b26a): 3k<br><br>最大思维链: \- |最大 RPM: 5000<br><br>500000 TPM |
+-|[glm-5-3-flash-260828](https://ark.volcengine.com/region:cn-beijing/model/detail?name=glm-5-3-flash) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>工具调用 |上下文窗口: 1024k<br><br>最大输入: 1024k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/ark/text-generation#3821b26a): 128k<br><br>最大思维链: 128k |最大 RPM: 500<br><br>最大 TPM: 1000000 |
+-|[glm-5-2-260617](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=glm-5-2) |深度思考<br><br>文本生成<br><br>工具调用 |上下文窗口: 1024k<br><br>最大输入: 1024k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/ark/text-generation#3821b26a): 128k<br><br>最大思维链: 128k |最大 RPM: 500<br><br>最大 TPM: 1000000 |
+-|[deepseek-v4-1-flash-260910](https://ark.volcengine.com/region:cn-beijing/model/detail?name=deepseek-v4-1-flash) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>工具调用<br><br>结构化输出 |上下文窗口: 1024k<br><br>最大输入: 1024k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/ark/text-generation#3821b26a): 384k<br><br>最大思维链: 384k |最大 RPM: 500<br><br>最大 TPM: 1000000 |
+-|[deepseek-v4-pro-ga-260813](https://ark.volcengine.com/region:cn-beijing/model/detail?name=deepseek-v4-pro-ga) |深度思考<br><br>文本生成<br><br>工具调用<br><br>结构化输出 |上下文窗口: 1024k<br><br>最大输入: 1024k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/ark/text-generation#3821b26a): 384k<br><br>最大思维链: 128k |最大 RPM: 500<br><br>最大 TPM: 1000000 |
+-|[deepseek-v4-flash-ga-260731](https://ark.volcengine.com/region:cn-beijing/model/detail?name=deepseek-v4-flash-ga) |深度思考<br><br>文本生成<br><br>工具调用<br><br>结构化输出 |上下文窗口: 1024k<br><br>最大输入: 1024k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/ark/text-generation#3821b26a): 384k<br><br>最大思维链: 128k |最大 RPM: 500<br><br>最大 TPM: 1000000 |
+-|[deepseek-v4-pro-260425](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=deepseek-v4-pro) `即将下线` |深度思考<br><br>文本生成<br><br>工具调用 |上下文窗口: 1024k<br><br>最大输入: 1024k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/ark/text-generation#3821b26a): 384k<br><br>最大思维链: 128k |最大 RPM: 15000<br><br>最大 TPM: 1500000 |
+-
+-
+-<span id="76df97c8"></span>
++教程: [文本生成](https://ark.volcengine.com/region:cn-beijing/docs/text-generation)、[深度思考](https://ark.volcengine.com/region:cn-beijing/docs/deep-thinking) | API: [Responses API](https://ark.volcengine.com/region:cn-beijing/docs/create-model-responses-api)、[Chat API](https://ark.volcengine.com/region:cn-beijing/docs/chat-api)
++
++> **注意**
++
++> 本章节列出方舟平台所有支持文本生成能力的大语言模型。其中带"深度思考"能力标签的模型，默认调用即启用深度思考；如需仅执行文本生成任务，可通过调用参数关闭深度思考（Chat API 传入 `thinking.type=disabled`，Responses API 传入 `reasoning.effort=minimal`）后使用，参数详情参见[深度思考](https://ark.volcengine.com/region:cn-beijing/docs/deep-thinking)。未带"深度思考"能力标签的模型（如 doubao\-seed\-character\-251128）本身不支持深度思考，直接调用即可。
++
++## 推荐模型
++
++|模型 ID (Model ID) |**能力支持** |**长度限制（token）**  |限流<br><br>> 非刚性保障，受平台负载/调用方式影响，详见 [文档](https://ark.volcengine.com/region:cn-beijing/docs/traffic-burst-handling-best-practices#263ca129) |
++|---|---|---|---|
++|[doubao-seed-evolving](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-evolving)<br><br>> 快速迭代模型 |深度思考<br><br>文本生成<br><br>多模态理解<br><br>GUI 任务处理<br><br>工具调用<br><br>结构化输出 |上下文窗口: 1024k<br><br>最大输入: 1024k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 256k<br><br>最大思维链: 256k |最大 RPM: 500<br><br>最大 TPM: 1000000 |
++|[doubao-seed-2-1-pro-260915](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-1-pro) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>GUI 任务处理<br><br>工具调用<br><br>结构化输出 |上下文窗口: 1024k<br><br>最大输入: 1024k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 256k<br><br>最大思维链: 256k |最大 RPM: 500<br><br>最大 TPM: 1000000 |
++|[doubao-seed-2-1-lite-260915](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-1-lite) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>GUI 任务处理<br><br>工具调用<br><br>结构化输出 |上下文窗口: 1024k<br><br>最大输入: 1024k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 256k<br><br>最大思维链: 256k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
++|[doubao-seed-2-1-turbo-260628](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-1-turbo) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>GUI 任务处理<br><br>工具调用<br><br>结构化输出 |上下文窗口: 256k<br><br>最大输入: 256k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 256k<br><br>最大思维链: 256k |最大 RPM: 500<br><br>最大 TPM: 1000000 |
++
++## **其他模型**
++
++|模型 ID (Model ID) |**能力支持** |**长度限制（token）**  |限流<br><br>> 非刚性保障，受平台负载/调用方式影响，详见 [文档](https://ark.volcengine.com/region:cn-beijing/docs/traffic-burst-handling-best-practices#263ca129) |
++|---|---|---|---|
++|[doubao-seed-2-1-pro-260628](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-1-pro) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>GUI 任务处理<br><br>工具调用<br><br>结构化输出（推荐使用 `json_schema` 模式） |上下文窗口: 256k<br><br>最大输入: 256k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 256k<br><br>最大思维链: 256k |最大 RPM: 500<br><br>最大 TPM: 1000000 |
++|[doubao-seed-2-0-lite-260428](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-0-lite) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>GUI 任务处理<br><br>工具调用<br><br>结构化输出（推荐使用 `json_schema` 模式） |上下文窗口: 256k<br><br>最大输入: 224k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 128k<br><br>最大思维链: 128k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
++|[doubao-seed-2-0-mini-260428](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-0-mini) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>GUI 任务处理<br><br>工具调用<br><br>结构化输出 |上下文窗口: 256k<br><br>最大输入: 224k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 128k<br><br>最大思维链: 128k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
++|[doubao-seed-2-0-pro-260215](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-0-pro) `即将下线` |深度思考<br><br>文本生成<br><br>多模态理解<br><br>GUI 任务处理<br><br>工具调用<br><br>结构化输出 |上下文窗口: 256k<br><br>最大输入: 224k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 128k<br><br>最大思维链: 128k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
++|[doubao-seed-2-0-lite-260215](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-0-lite) `即将下线` |深度思考<br><br>文本生成<br><br>多模态理解<br><br>GUI 任务处理<br><br>工具调用<br><br>结构化输出 |上下文窗口: 256k<br><br>最大输入: 224k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 128k<br><br>最大思维链: 128k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
++|[doubao-seed-2-0-mini-260215](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-0-mini) `即将下线` |深度思考<br><br>文本生成<br><br>多模态理解<br><br>GUI 任务处理<br><br>工具调用<br><br>结构化输出 |上下文窗口: 256k<br><br>最大输入: 224k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 128k<br><br>最大思维链: 128k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
++|[doubao-seed-2-0-code-preview-260215](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-0-code) `即将下线` |深度思考<br><br>文本生成<br><br>多模态理解<br><br>工具调用 |上下文窗口: 256k<br><br>最大输入: 224k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 128k<br><br>最大思维链: 128k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
++|[doubao-seed-character-260628](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-character&_vtm_=a106466.b106468.0_0.0_0.0.1961_7630866813484467762&projectName=default) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>工具调用<br><br>结构化输出（推荐使用 `json_schema` 模式） |上下文窗口: 128k<br><br>最大输入: 96k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 32k<br><br>最大思维链: 128k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
++|[doubao-seed-character-251128](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-character) |文本生成<br><br>工具调用 |上下文窗口: 128k<br><br>最大输入: 96k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 32k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
++|[doubao-seed-translation-250915](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-translation) |文本生成<br><br>> 翻译增强 |上下文窗口: 4k<br><br>最大输入: 1k<br><br>[最大回答(默认 3k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 3k<br><br>最大思维链: \- |最大 RPM: 5000<br><br>500000 TPM |
++|[glm-5-3-flash-260828](https://ark.volcengine.com/region:cn-beijing/model/detail?name=glm-5-3-flash) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>工具调用 |上下文窗口: 1024k<br><br>最大输入: 1024k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 128k<br><br>最大思维链: 128k |最大 RPM: 500<br><br>最大 TPM: 1000000 |
++|[glm-5-2-260617](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=glm-5-2) |深度思考<br><br>文本生成<br><br>工具调用 |上下文窗口: 1024k<br><br>最大输入: 1024k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 128k<br><br>最大思维链: 128k |最大 RPM: 500<br><br>最大 TPM: 1000000 |
++|[deepseek-v4-1-flash-261017](https://ark.volcengine.com/region:cn-beijing/model/detail?name=deepseek-v4-1-flash) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>工具调用<br><br>结构化输出 |上下文窗口: 1024k<br><br>最大输入: 1024k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 384k<br><br>最大思维链: 384k |最大 RPM: 500<br><br>最大 TPM: 1000000 |
++|[deepseek-v4-1-flash-260910](https://ark.volcengine.com/region:cn-beijing/model/detail?name=deepseek-v4-1-flash) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>工具调用<br><br>结构化输出 |上下文窗口: 1024k<br><br>最大输入: 1024k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 384k<br><br>最大思维链: 384k |最大 RPM: 500<br><br>最大 TPM: 1000000 |
++|[deepseek-v4-1-flash-economy-261017](https://ark.volcengine.com/region:cn-beijing/model/detail?name=deepseek-v4-1-flash-economy) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>工具调用<br><br>结构化输出 |上下文窗口: 1024k<br><br>最大输入: 1024k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 384k<br><br>最大思维链: 384k |最大 RPM: 500<br><br>最大 TPM: 1000000 |
++|[deepseek-v4-pro-ga-260813](https://ark.volcengine.com/region:cn-beijing/model/detail?name=deepseek-v4-pro-ga) |深度思考<br><br>文本生成<br><br>工具调用<br><br>结构化输出 |上下文窗口: 1024k<br><br>最大输入: 1024k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 384k<br><br>最大思维链: 128k |最大 RPM: 500<br><br>最大 TPM: 1000000 |
++|[deepseek-v4-flash-ga-260731](https://ark.volcengine.com/region:cn-beijing/model/detail?name=deepseek-v4-flash-ga) |深度思考<br><br>文本生成<br><br>工具调用<br><br>结构化输出 |上下文窗口: 1024k<br><br>最大输入: 1024k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 384k<br><br>最大思维链: 128k |最大 RPM: 500<br><br>最大 TPM: 1000000 |
++|[deepseek-v4-pro-260425](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=deepseek-v4-pro) `即将下线` |深度思考<br><br>文本生成<br><br>工具调用 |上下文窗口: 1024k<br><br>最大输入: 1024k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 384k<br><br>最大思维链: 128k |最大 RPM: 15000<br><br>最大 TPM: 1500000 |
++
+ # 视觉理解能力
+ 
+-教程: [图片理解](https://ark.volcengine.com/region:cn-beijing/docs/ark/image-understanding)、 [视频理解](https://ark.volcengine.com/region:cn-beijing/docs/ark/video-understanding)、[文档理解](https://ark.volcengine.com/region:cn-beijing/docs/ark/document-understanding) | API: [Responses API](https://ark.volcengine.com/region:cn-beijing/docs/ark/create-model-responses-api)、[Chat API](https://ark.volcengine.com/region:cn-beijing/docs/ark/chat-api)
+-
+-<span id="a33eb670"></span>
+-## 推荐模型
+-
+-
+-<span aceTableMode="list" aceTableWidth="3,2,3,2"></span>
++教程: [图片理解](https://ark.volcengine.com/region:cn-beijing/docs/image-understanding)、 [视频理解](https://ark.volcengine.com/region:cn-beijing/docs/video-understanding)、[文档理解](https://ark.volcengine.com/region:cn-beijing/docs/document-understanding) | API: [Responses API](https://ark.volcengine.com/region:cn-beijing/docs/create-model-responses-api)、[Chat API](https://ark.volcengine.com/region:cn-beijing/docs/chat-api)
++
++## 推荐模型
++
+ |模型 ID (Model ID) |**能力支持** |**长度限制（token）**  |限流 |
+ |---|---|---|---|
+-|[doubao-seed-evolving](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-evolving)<br><br>> 快速迭代模型 |深度思考<br><br>文本生成<br><br>多模态理解<br><br>GUI 任务处理<br><br>工具调用<br><br>结构化输出 |上下文窗口: 1024k<br><br>最大输入: 1024k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/ark/text-generation#3821b26a): 256k<br><br>最大思维链: 256k |最大 RPM: 500<br><br>最大 TPM: 1000000 |
+-|[doubao-seed-2-1-pro-260915](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-1-pro) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>GUI 任务处理<br><br>工具调用<br><br>结构化输出 |上下文窗口: 1024k<br><br>最大输入: 1024k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/ark/text-generation#3821b26a): 256k<br><br>最大思维链: 256k |最大 RPM: 500<br><br>最大 TPM: 1000000 |
+-|[doubao-seed-2-1-lite-260915](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-1-lite) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>GUI 任务处理<br><br>工具调用<br><br>结构化输出 |上下文窗口: 1024k<br><br>最大输入: 1024k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/ark/text-generation#3821b26a): 256k<br><br>最大思维链: 256k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
+-|[doubao-seed-2-1-turbo-260628](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-1-turbo) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>GUI 任务处理<br><br>工具调用<br><br>结构化输出 |上下文窗口: 256k<br><br>最大输入: 256k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/ark/text-generation#3821b26a): 256k<br><br>最大思维链: 256k |最大 RPM: 500<br><br>最大 TPM: 1000000 |
+-
+-
+-<span id="d6041866"></span>
+-## **往期模型**
+-
+-
+-<span aceTableMode="list" aceTableWidth="3,2,3,2"></span>
+-|模型 ID (Model ID) |**能力支持** |长度限制（token） |限流<br><br>> 非刚性保障，受平台负载/调用方式影响，详见 [文档](https://ark.volcengine.com/region:cn-beijing/docs/ark/traffic-burst-handling-best-practices#263ca129) |
+-|---|---|---|---|
+-|[doubao-seed-2-1-pro-260628](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-1-pro) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>GUI 任务处理<br><br>工具调用<br><br>结构化输出（推荐使用 `json_schema` 模式） |上下文窗口: 256k<br><br>最大输入: 256k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/ark/text-generation#3821b26a): 256k<br><br>最大思维链: 256k |最大 RPM: 500<br><br>最大 TPM: 1000000 |
+-|[doubao-seed-2-0-lite-260428](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-0-lite) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>GUI 任务处理<br><br>工具调用<br><br>结构化输出（推荐使用 `json_schema` 模式） |上下文窗口: 256k<br><br>最大输入: 224k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/ark/text-generation#3821b26a): 128k<br><br>最大思维链: 128k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
+-|[doubao-seed-2-0-mini-260428](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-0-mini) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>GUI 任务处理<br><br>工具调用<br><br>结构化输出 |上下文窗口: 256k<br><br>最大输入: 224k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/ark/text-generation#3821b26a): 128k<br><br>最大思维链: 128k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
+-|[doubao-seed-2-0-pro-260215](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-0-pro) `即将下线` |深度思考<br><br>文本生成<br><br>多模态理解<br><br>视觉定位<br><br>GUI 任务处理<br><br>工具调用<br><br>结构化输出 |上下文窗口: 256k<br><br>最大输入: 224k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/ark/text-generation#3821b26a): 128k<br><br>最大思维链: 128k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
+-|[doubao-seed-2-0-lite-260215](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-0-lite) `即将下线` |深度思考<br><br>文本生成<br><br>多模态理解<br><br>视觉定位<br><br>GUI 任务处理<br><br>工具调用<br><br>结构化输出 |上下文窗口: 256k<br><br>最大输入: 224k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/ark/text-generation#3821b26a): 128k<br><br>最大思维链: 128k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
+-|[doubao-seed-2-0-mini-260215](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-0-mini) `即将下线` |深度思考<br><br>文本生成<br><br>多模态理解<br><br>视觉定位<br><br>GUI 任务处理<br><br>工具调用<br><br>结构化输出 |上下文窗口: 256k<br><br>最大输入: 224k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/ark/text-generation#3821b26a): 128k<br><br>最大思维链: 128k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
+-|[doubao-seed-2-0-code-preview-260215](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-0-code) `即将下线` |深度思考<br><br>文本生成<br><br>多模态理解<br><br>视觉定位<br><br>工具调用 |上下文窗口: 256k<br><br>最大输入: 224k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/ark/text-generation#3821b26a): 128k<br><br>最大思维链: 128k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
+-|[doubao-seed-character-260628](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-character&_vtm_=a106466.b106468.0_0.0_0.0.1961_7630866813484467762&projectName=default) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>工具调用<br><br>结构化输出（推荐使用 `json_schema` 模式） |上下文窗口: 128k<br><br>最大输入: 96k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/ark/text-generation#3821b26a): 32k<br><br>最大思维链: 128k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
+-|[glm-5-3-flash-260828](https://ark.volcengine.com/region:cn-beijing/model/detail?name=glm-5-3-flash) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>工具调用 |上下文窗口: 1024k<br><br>最大输入: 1024k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/ark/text-generation#3821b26a): 128k<br><br>最大思维链: 128k |最大 RPM: 500<br><br>最大 TPM: 1000000 |
+-|[deepseek-v4-1-flash-260910](https://ark.volcengine.com/region:cn-beijing/model/detail?name=deepseek-v4-1-flash) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>工具调用<br><br>结构化输出 |上下文窗口: 1024k<br><br>最大输入: 1024k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/ark/text-generation#3821b26a): 384k<br><br>最大思维链: 384k |最大 RPM: 500<br><br>最大 TPM: 1000000 |
+-
+-
+-<span id="9619c0ba"></span>
++|[doubao-seed-evolving](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-evolving)<br><br>> 快速迭代模型 |深度思考<br><br>文本生成<br><br>多模态理解<br><br>GUI 任务处理<br><br>工具调用<br><br>结构化输出 |上下文窗口: 1024k<br><br>最大输入: 1024k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 256k<br><br>最大思维链: 256k |最大 RPM: 500<br><br>最大 TPM: 1000000 |
++|[doubao-seed-2-1-pro-260915](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-1-pro) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>GUI 任务处理<br><br>工具调用<br><br>结构化输出 |上下文窗口: 1024k<br><br>最大输入: 1024k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 256k<br><br>最大思维链: 256k |最大 RPM: 500<br><br>最大 TPM: 1000000 |
++|[doubao-seed-2-1-lite-260915](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-1-lite) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>GUI 任务处理<br><br>工具调用<br><br>结构化输出 |上下文窗口: 1024k<br><br>最大输入: 1024k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 256k<br><br>最大思维链: 256k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
++|[doubao-seed-2-1-turbo-260628](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-1-turbo) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>GUI 任务处理<br><br>工具调用<br><br>结构化输出 |上下文窗口: 256k<br><br>最大输入: 256k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 256k<br><br>最大思维链: 256k |最大 RPM: 500<br><br>最大 TPM: 1000000 |
++
++## **其他模型**
++
++|模型 ID (Model ID) |**能力支持** |长度限制（token） |限流<br><br>> 非刚性保障，受平台负载/调用方式影响，详见 [文档](https://ark.volcengine.com/region:cn-beijing/docs/traffic-burst-handling-best-practices#263ca129) |
++|---|---|---|---|
++|[doubao-seed-2-1-pro-260628](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-1-pro) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>GUI 任务处理<br><br>工具调用<br><br>结构化输出（推荐使用 `json_schema` 模式） |上下文窗口: 256k<br><br>最大输入: 256k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 256k<br><br>最大思维链: 256k |最大 RPM: 500<br><br>最大 TPM: 1000000 |
++|[doubao-seed-2-0-lite-260428](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-0-lite) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>GUI 任务处理<br><br>工具调用<br><br>结构化输出（推荐使用 `json_schema` 模式） |上下文窗口: 256k<br><br>最大输入: 224k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 128k<br><br>最大思维链: 128k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
++|[doubao-seed-2-0-mini-260428](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-0-mini) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>GUI 任务处理<br><br>工具调用<br><br>结构化输出 |上下文窗口: 256k<br><br>最大输入: 224k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 128k<br><br>最大思维链: 128k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
++|[doubao-seed-2-0-pro-260215](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-0-pro) `即将下线` |深度思考<br><br>文本生成<br><br>多模态理解<br><br>视觉定位<br><br>GUI 任务处理<br><br>工具调用<br><br>结构化输出 |上下文窗口: 256k<br><br>最大输入: 224k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 128k<br><br>最大思维链: 128k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
++|[doubao-seed-2-0-lite-260215](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-0-lite) `即将下线` |深度思考<br><br>文本生成<br><br>多模态理解<br><br>视觉定位<br><br>GUI 任务处理<br><br>工具调用<br><br>结构化输出 |上下文窗口: 256k<br><br>最大输入: 224k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 128k<br><br>最大思维链: 128k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
++|[doubao-seed-2-0-mini-260215](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-0-mini) `即将下线` |深度思考<br><br>文本生成<br><br>多模态理解<br><br>视觉定位<br><br>GUI 任务处理<br><br>工具调用<br><br>结构化输出 |上下文窗口: 256k<br><br>最大输入: 224k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 128k<br><br>最大思维链: 128k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
++|[doubao-seed-2-0-code-preview-260215](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-0-code) `即将下线` |深度思考<br><br>文本生成<br><br>多模态理解<br><br>视觉定位<br><br>工具调用 |上下文窗口: 256k<br><br>最大输入: 224k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 128k<br><br>最大思维链: 128k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
++|[doubao-seed-character-260628](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-character&_vtm_=a106466.b106468.0_0.0_0.0.1961_7630866813484467762&projectName=default) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>工具调用<br><br>结构化输出（推荐使用 `json_schema` 模式） |上下文窗口: 128k<br><br>最大输入: 96k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 32k<br><br>最大思维链: 128k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
++|[glm-5-3-flash-260828](https://ark.volcengine.com/region:cn-beijing/model/detail?name=glm-5-3-flash) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>工具调用 |上下文窗口: 1024k<br><br>最大输入: 1024k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 128k<br><br>最大思维链: 128k |最大 RPM: 500<br><br>最大 TPM: 1000000 |
++|[deepseek-v4-1-flash-261017](https://ark.volcengine.com/region:cn-beijing/model/detail?name=deepseek-v4-1-flash) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>工具调用<br><br>结构化输出 |上下文窗口: 1024k<br><br>最大输入: 1024k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 384k<br><br>最大思维链: 384k |最大 RPM: 500<br><br>最大 TPM: 1000000 |
++|[deepseek-v4-1-flash-260910](https://ark.volcengine.com/region:cn-beijing/model/detail?name=deepseek-v4-1-flash) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>工具调用<br><br>结构化输出 |上下文窗口: 1024k<br><br>最大输入: 1024k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 384k<br><br>最大思维链: 384k |最大 RPM: 500<br><br>最大 TPM: 1000000 |
++|[deepseek-v4-1-flash-economy-261017](https://ark.volcengine.com/region:cn-beijing/model/detail?name=deepseek-v4-1-flash-economy) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>工具调用<br><br>结构化输出 |上下文窗口: 1024k<br><br>最大输入: 1024k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 384k<br><br>最大思维链: 384k |最大 RPM: 500<br><br>最大 TPM: 1000000 |
++
+ # 音频理解能力
+ 
+-教程: [音频理解](https://ark.volcengine.com/region:cn-beijing/docs/ark/audio-understanding) | API: [Responses API](https://ark.volcengine.com/region:cn-beijing/docs/ark/create-model-responses-api)、[Chat API](https://ark.volcengine.com/region:cn-beijing/docs/ark/chat-api)
+-
+-<span id="7f07256a"></span>
+-## 推荐模型
+-
+-
+-<span aceTableMode="list" aceTableWidth="3,2,3,2"></span>
+-|模型 ID (Model ID) |**能力支持** |**长度限制（token）**  |限流<br><br>> 非刚性保障，受平台负载/调用方式影响，详见 [文档](https://ark.volcengine.com/region:cn-beijing/docs/ark/traffic-burst-handling-best-practices#263ca129) |
+-|---|---|---|---|
+-|[doubao-seed-2-1-lite-260915](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-1-lite) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>工具调用<br><br>结构化输出 |上下文窗口: 1024k<br><br>最大输入: 1024k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/ark/text-generation#3821b26a): 256k<br><br>最大思维链: 256k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
+-|[doubao-seed-2-0-lite-260428](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-0-lite) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>工具调用<br><br>结构化输出（推荐使用 `json_schema` 模式） |上下文窗口: 256k<br><br>最大输入: 224k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/ark/text-generation#3821b26a): 128k<br><br>最大思维链: 128k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
+-|[doubao-seed-2-0-mini-260428](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-0-mini) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>工具调用<br><br>结构化输出 |上下文窗口: 256k<br><br>最大输入: 224k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/ark/text-generation#3821b26a): 128k<br><br>最大思维链: 128k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
+-
+-
+-<span id="42df3eb4"></span>
++教程: [音频理解](https://ark.volcengine.com/region:cn-beijing/docs/audio-understanding) | API: [Responses API](https://ark.volcengine.com/region:cn-beijing/docs/create-model-responses-api)、[Chat API](https://ark.volcengine.com/region:cn-beijing/docs/chat-api)
++
++## 推荐模型
++
++|模型 ID (Model ID) |**能力支持** |**长度限制（token）**  |限流<br><br>> 非刚性保障，受平台负载/调用方式影响，详见 [文档](https://ark.volcengine.com/region:cn-beijing/docs/traffic-burst-handling-best-practices#263ca129) |
++|---|---|---|---|
++|[doubao-seed-2-1-lite-260915](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-1-lite) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>工具调用<br><br>结构化输出 |上下文窗口: 1024k<br><br>最大输入: 1024k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 256k<br><br>最大思维链: 256k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
++|[doubao-seed-2-0-lite-260428](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-0-lite) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>工具调用<br><br>结构化输出（推荐使用 `json_schema` 模式） |上下文窗口: 256k<br><br>最大输入: 224k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 128k<br><br>最大思维链: 128k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
++|[doubao-seed-2-0-mini-260428](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-0-mini) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>工具调用<br><br>结构化输出 |上下文窗口: 256k<br><br>最大输入: 224k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 128k<br><br>最大思维链: 128k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
++
++# 决策评估能力（beta）
++
++教程: [决策评估（beta）](https://ark.volcengine.com/region:cn-beijing/docs/decision-model) | API: [System One API（beta）](https://ark.volcengine.com/region:cn-beijing/docs/system-one-api)
++
++## 推荐模型
++
++|模型 ID (Model ID) |**能力支持** |**长度限制（token）**  |限流<br><br>> 非刚性保障，受平台负载/调用方式影响，详见 [文档](https://ark.volcengine.com/region:cn-beijing/docs/traffic-burst-handling-best-practices#263ca129) |
++|---|---|---|---|
++|[doubao-seed-2-1-lite-260915](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-1-lite) |决策评估<br><br>多模态理解 |上下文窗口: 128k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
++
+ # GUI 任务处理能力
+ 
+-教程: [GUI Agent 能力](https://ark.volcengine.com/region:cn-beijing/docs/ark/gui-task-processing) | API: [Responses API](https://ark.volcengine.com/region:cn-beijing/docs/ark/create-model-responses-api)、[Chat API](https://ark.volcengine.com/region:cn-beijing/docs/ark/chat-api)
+-
+-<span id="99f6f6b8"></span>
+-## 推荐模型
+-
+-
+-<span aceTableMode="list" aceTableWidth="3,2,3,2"></span>
+-|模型 ID (Model ID) |**能力支持** |**长度限制（token）**  |限流<br><br>> 非刚性保障，受平台负载/调用方式影响，详见 [文档](https://ark.volcengine.com/region:cn-beijing/docs/ark/traffic-burst-handling-best-practices#263ca129) |
+-|---|---|---|---|
+-|[doubao-seed-evolving](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-evolving)<br><br>> 快速迭代模型 |深度思考<br><br>文本生成<br><br>多模态理解<br><br>GUI 任务处理<br><br>工具调用<br><br>结构化输出 |上下文窗口: 1024k<br><br>最大输入: 1024k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/ark/text-generation#3821b26a): 256k<br><br>最大思维链: 256k |最大 RPM: 500<br><br>最大 TPM: 1000000 |
+-|[doubao-seed-2-1-pro-260915](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-1-pro) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>GUI 任务处理<br><br>工具调用<br><br>结构化输出 |上下文窗口: 1024k<br><br>最大输入: 1024k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/ark/text-generation#3821b26a): 256k<br><br>最大思维链: 256k |最大 RPM: 500<br><br>最大 TPM: 1000000 |
+-|[doubao-seed-2-1-lite-260915](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-1-lite) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>GUI 任务处理<br><br>工具调用<br><br>结构化输出 |上下文窗口: 1024k<br><br>最大输入: 1024k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/ark/text-generation#3821b26a): 256k<br><br>最大思维链: 256k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
+-|[doubao-seed-2-1-turbo-260628](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-1-turbo) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>GUI 任务处理<br><br>工具调用<br><br>结构化输出 |上下文窗口: 256k<br><br>最大输入: 256k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/ark/text-generation#3821b26a): 256k<br><br>最大思维链: 256k |最大 RPM: 500<br><br>最大 TPM: 1000000 |
+-
+-
+-<span id="4e7f2a3b"></span>
+-## 往期模型
+-
+-
+-<span aceTableMode="list" aceTableWidth="3,2,3,2"></span>
+-|模型 ID (Model ID) |**能力支持** |长度限制（token） |限流<br><br>> 非刚性保障，受平台负载/调用方式影响，详见 [文档](https://ark.volcengine.com/region:cn-beijing/docs/ark/traffic-burst-handling-best-practices#263ca129) |
+-|---|---|---|---|
+-|[doubao-seed-2-1-pro-260628](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-1-pro) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>GUI 任务处理<br><br>工具调用<br><br>结构化输出（推荐使用 `json_schema` 模式） |上下文窗口: 256k<br><br>最大输入: 256k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/ark/text-generation#3821b26a): 256k<br><br>最大思维链: 256k |最大 RPM: 500<br><br>最大 TPM: 1000000 |
+-|[doubao-seed-2-0-lite-260428](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-0-lite) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>GUI 任务处理<br><br>工具调用<br><br>结构化输出（推荐使用 `json_schema` 模式） |上下文窗口: 256k<br><br>最大输入: 224k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/ark/text-generation#3821b26a): 128k<br><br>最大思维链: 128k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
+-|[doubao-seed-2-0-mini-260428](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-0-mini) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>GUI 任务处理<br><br>工具调用<br><br>结构化输出 |上下文窗口: 256k<br><br>最大输入: 224k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/ark/text-generation#3821b26a): 128k<br><br>最大思维链: 128k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
+-|[doubao-seed-2-0-pro-260215](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-0-pro) `即将下线` |深度思考<br><br>文本生成<br><br>多模态理解<br><br>GUI 任务处理<br><br>工具调用<br><br>结构化输出 |上下文窗口: 256k<br><br>最大输入: 224k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/ark/text-generation#3821b26a): 128k<br><br>最大思维链: 128k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
+-|[doubao-seed-2-0-lite-260215](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-0-lite) `即将下线` |深度思考<br><br>文本生成<br><br>多模态理解<br><br>GUI 任务处理<br><br>工具调用<br><br>结构化输出 |上下文窗口: 256k<br><br>最大输入: 224k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/ark/text-generation#3821b26a): 128k<br><br>最大思维链: 128k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
+-|[doubao-seed-2-0-mini-260215](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-0-mini) `即将下线` |深度思考<br><br>文本生成<br><br>多模态理解<br><br>GUI 任务处理<br><br>工具调用<br><br>结构化输出 |上下文窗口: 256k<br><br>最大输入: 224k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/ark/text-generation#3821b26a): 128k<br><br>最大思维链: 128k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
+-
+-
+-<span id="f44ceef7"></span>
++教程: [GUI Agent 能力](https://ark.volcengine.com/region:cn-beijing/docs/gui-task-processing) | API: [Responses API](https://ark.volcengine.com/region:cn-beijing/docs/create-model-responses-api)、[Chat API](https://ark.volcengine.com/region:cn-beijing/docs/chat-api)
++
++## 推荐模型
++
++|模型 ID (Model ID) |**能力支持** |**长度限制（token）**  |限流<br><br>> 非刚性保障，受平台负载/调用方式影响，详见 [文档](https://ark.volcengine.com/region:cn-beijing/docs/traffic-burst-handling-best-practices#263ca129) |
++|---|---|---|---|
++|[doubao-seed-evolving](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-evolving)<br><br>> 快速迭代模型 |深度思考<br><br>文本生成<br><br>多模态理解<br><br>GUI 任务处理<br><br>工具调用<br><br>结构化输出 |上下文窗口: 1024k<br><br>最大输入: 1024k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 256k<br><br>最大思维链: 256k |最大 RPM: 500<br><br>最大 TPM: 1000000 |
++|[doubao-seed-2-1-pro-260915](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-1-pro) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>GUI 任务处理<br><br>工具调用<br><br>结构化输出 |上下文窗口: 1024k<br><br>最大输入: 1024k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 256k<br><br>最大思维链: 256k |最大 RPM: 500<br><br>最大 TPM: 1000000 |
++|[doubao-seed-2-1-lite-260915](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-1-lite) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>GUI 任务处理<br><br>工具调用<br><br>结构化输出 |上下文窗口: 1024k<br><br>最大输入: 1024k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 256k<br><br>最大思维链: 256k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
++|[doubao-seed-2-1-turbo-260628](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-1-turbo) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>GUI 任务处理<br><br>工具调用<br><br>结构化输出 |上下文窗口: 256k<br><br>最大输入: 256k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 256k<br><br>最大思维链: 256k |最大 RPM: 500<br><br>最大 TPM: 1000000 |
++
++## 其他模型
++
++|模型 ID (Model ID) |**能力支持** |长度限制（token） |限流<br><br>> 非刚性保障，受平台负载/调用方式影响，详见 [文档](https://ark.volcengine.com/region:cn-beijing/docs/traffic-burst-handling-best-practices#263ca129) |
++|---|---|---|---|
++|[doubao-seed-2-1-pro-260628](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-1-pro) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>GUI 任务处理<br><br>工具调用<br><br>结构化输出（推荐使用 `json_schema` 模式） |上下文窗口: 256k<br><br>最大输入: 256k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 256k<br><br>最大思维链: 256k |最大 RPM: 500<br><br>最大 TPM: 1000000 |
++|[doubao-seed-2-0-lite-260428](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-0-lite) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>GUI 任务处理<br><br>工具调用<br><br>结构化输出（推荐使用 `json_schema` 模式） |上下文窗口: 256k<br><br>最大输入: 224k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 128k<br><br>最大思维链: 128k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
++|[doubao-seed-2-0-mini-260428](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-0-mini) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>GUI 任务处理<br><br>工具调用<br><br>结构化输出 |上下文窗口: 256k<br><br>最大输入: 224k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 128k<br><br>最大思维链: 128k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
++|[doubao-seed-2-0-pro-260215](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-0-pro) `即将下线` |深度思考<br><br>文本生成<br><br>多模态理解<br><br>GUI 任务处理<br><br>工具调用<br><br>结构化输出 |上下文窗口: 256k<br><br>最大输入: 224k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 128k<br><br>最大思维链: 128k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
++|[doubao-seed-2-0-lite-260215](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-0-lite) `即将下线` |深度思考<br><br>文本生成<br><br>多模态理解<br><br>GUI 任务处理<br><br>工具调用<br><br>结构化输出 |上下文窗口: 256k<br><br>最大输入: 224k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 128k<br><br>最大思维链: 128k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
++|[doubao-seed-2-0-mini-260215](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-0-mini) `即将下线` |深度思考<br><br>文本生成<br><br>多模态理解<br><br>GUI 任务处理<br><br>工具调用<br><br>结构化输出 |上下文窗口: 256k<br><br>最大输入: 224k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 128k<br><br>最大思维链: 128k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
++
+ # 工具调用能力
+ 
+-
+-<span aceTableMode="list" aceTableWidth="2,2,1,1,1,1,1"></span>
+-|**模型 ID（Model ID）**  |**函数调用**<br><br>[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/ark/create-model-responses-api) & [Chat API](https://ark.volcengine.com/region:cn-beijing/docs/ark/chat-api) |**知识库**<br><br>[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/ark/create-model-responses-api) |**MCP**<br><br>[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/ark/create-model-responses-api) |**联网内容插件**<br><br>[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/ark/create-model-responses-api) |**图像处理**<br><br>[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/ark/create-model-responses-api) |**豆包助手**<br><br>[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/ark/create-model-responses-api) |
++|**模型 ID（Model ID）**  |**函数调用**<br><br>[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/create-model-responses-api) & [Chat API](https://ark.volcengine.com/region:cn-beijing/docs/chat-api) |**知识库**<br><br>[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/create-model-responses-api) |**MCP**<br><br>[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/create-model-responses-api) |**联网内容插件**<br><br>[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/create-model-responses-api) |**图像处理**<br><br>[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/create-model-responses-api) |**豆包助手**<br><br>[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/create-model-responses-api) |
+ |---|---|---|---|---|---|---|
+ |[doubao-seed-evolving](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-evolving)<br><br>快速迭代模型 |✓ |✓ |✓ |✓ |✓ |✓ |
+ |[doubao-seed-2-1-pro-260915](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-1-pro) |✓ |✓ |✓ |✓ |✓ |✓ |
+@@ -214,117 +161,97 @@
+ |[doubao-seed-character-251128](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-character) |✓ |✗ |✗ |✗ |✗ |✗ |
+ |[glm-5-3-flash-260828](https://ark.volcengine.com/region:cn-beijing/model/detail?name=glm-5-3-flash) |✓ |✓ |✓ |✓ |✗ |✗ |
+ |[glm-5-2-260617](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=glm-5-2) |✓ |✓ |✓ |✓ |✗ |✗ |
++|[deepseek-v4-1-flash-261017](https://ark.volcengine.com/region:cn-beijing/model/detail?name=deepseek-v4-1-flash) |✓ |✓ |✓ |✓ |✗ |✗ |
+ |[deepseek-v4-1-flash-260910](https://ark.volcengine.com/region:cn-beijing/model/detail?name=deepseek-v4-1-flash) |✓ |✓ |✓ |✓ |✗ |✗ |
++|[deepseek-v4-1-flash-economy-261017](https://ark.volcengine.com/region:cn-beijing/model/detail?name=deepseek-v4-1-flash-economy) |✓ |✓ |✓ |✓ |✗ |✗ |
+ |[deepseek-v4-pro-ga-260813](https://ark.volcengine.com/region:cn-beijing/model/detail?name=deepseek-v4-pro-ga) |✓ |✓ |✓ |✓ |✗ |✗ |
+ |[deepseek-v4-flash-ga-260731](https://ark.volcengine.com/region:cn-beijing/model/detail?name=deepseek-v4-flash-ga) |✓ |✓ |✓ |✓ |✗ |✗ |
+ |[deepseek-v4-pro-260425](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=deepseek-v4-pro) `即将下线` |✓ |✓ |✓ |✓ |✗ |✗ |
+ 
+-
+ 相关教程：
+ 
+-
+-* [Function Calling（函数调用）](https://ark.volcengine.com/region:cn-beijing/docs/ark/function-calling)
+-
+-* [私域知识库搜索 Knowledge Search](https://ark.volcengine.com/region:cn-beijing/docs/ark/knowledge-search)
+-
+-* [云部署 MCP / Remote MCP](https://ark.volcengine.com/region:cn-beijing/docs/ark/mcp-remote-mcp)
+-
+-* [联网搜索工具](https://ark.volcengine.com/region:cn-beijing/docs/ark/web-search)
+-
+-* [图像处理 Image Process](https://ark.volcengine.com/region:cn-beijing/docs/ark/image-process)
+-
+-* [豆包助手 API](https://ark.volcengine.com/region:cn-beijing/docs/ark/doubao-assistant)（Beta）
+-
+-    &nbsp;
+-
+-
+-<span id=".5LiK5LiL5paH57yT5a2Y6IO95Yqb"></span>
++* [Function Calling（函数调用）](https://ark.volcengine.com/region:cn-beijing/docs/function-calling)
++
++* [私域知识库搜索 Knowledge Search](https://ark.volcengine.com/region:cn-beijing/docs/knowledge-search)
++
++* [云部署 MCP / Remote MCP](https://ark.volcengine.com/region:cn-beijing/docs/mcp-remote-mcp)
++
++* [联网搜索工具](https://ark.volcengine.com/region:cn-beijing/docs/web-search)
++
++* [图像处理 Image Process](https://ark.volcengine.com/region:cn-beijing/docs/image-process)
++
++* [豆包助手 API](https://ark.volcengine.com/region:cn-beijing/docs/doubao-assistant)（Beta）
++
+ # 上下文缓存能力
+ 
+-介绍: [上下文缓存](https://ark.volcengine.com/region:cn-beijing/docs/ark/context-cache) | API: [Responses API](https://ark.volcengine.com/region:cn-beijing/docs/ark/create-model-responses-api) 、 [Context Create API](https://ark.volcengine.com/region:cn-beijing/docs/ark/create-context-cache-api)、[Chat API](https://ark.volcengine.com/region:cn-beijing/docs/ark/chat-api)、[Batch API](https://ark.volcengine.com/region:cn-beijing/docs/ark/batch-inference-api-reference)
+-
+-<span id="8a26d5c8"></span>
+-## 推荐模型
+-
+-
+-<span aceTableMode="list" aceTableWidth="3,2,3"></span>
++介绍: [上下文缓存](https://ark.volcengine.com/region:cn-beijing/docs/context-cache) | API: [Responses API](https://ark.volcengine.com/region:cn-beijing/docs/create-model-responses-api) 、 [Context Create API](https://ark.volcengine.com/region:cn-beijing/docs/create-context-cache-api)、[Chat API](https://ark.volcengine.com/region:cn-beijing/docs/chat-api)、[Batch API](https://ark.volcengine.com/region:cn-beijing/docs/create-batch-inference-job-api)
++
++## 推荐模型
++
+ |模型ID（Model ID） |隐式缓存 |显式缓存 |
+ |---|---|---|
+-|[doubao-seed-evolving](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-evolving)<br><br>> 快速迭代模型 |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/ark/create-model-responses-api)<br><br>[Chat API](https://ark.volcengine.com/region:cn-beijing/docs/ark/chat-api) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/ark/create-model-responses-api)<br><br>前缀缓存<br><br>Session缓存 |
+-|[doubao-seed-2-1-pro-260915](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-1-pro) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/ark/create-model-responses-api)<br><br>[Chat API](https://ark.volcengine.com/region:cn-beijing/docs/ark/chat-api) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/ark/create-model-responses-api)<br><br>前缀缓存<br><br>Session缓存 |
+-|[doubao-seed-2-1-lite-260915](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-1-lite) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/ark/create-model-responses-api)<br><br>[Chat API](https://ark.volcengine.com/region:cn-beijing/docs/ark/chat-api) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/ark/create-model-responses-api)<br><br>前缀缓存<br><br>Session缓存 |
+-|[doubao-seed-2-1-turbo-260628](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-1-turbo) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/ark/create-model-responses-api)<br><br>[Chat API](https://ark.volcengine.com/region:cn-beijing/docs/ark/chat-api) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/ark/create-model-responses-api)<br><br>前缀缓存<br><br>Session缓存 |
+-
+-
+-<span id="45477f0f"></span>
+-## 往期模型
+-
+-
+-<span aceTableMode="list" aceTableWidth="3,2,3"></span>
++|[doubao-seed-evolving](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-evolving)<br><br>> 快速迭代模型 |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/create-model-responses-api)<br><br>[Chat API](https://ark.volcengine.com/region:cn-beijing/docs/chat-api) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/create-model-responses-api)<br><br>前缀缓存<br><br>Session缓存 |
++|[doubao-seed-2-1-pro-260915](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-1-pro) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/create-model-responses-api)<br><br>[Chat API](https://ark.volcengine.com/region:cn-beijing/docs/chat-api) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/create-model-responses-api)<br><br>前缀缓存<br><br>Session缓存 |
++|[doubao-seed-2-1-lite-260915](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-1-lite) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/create-model-responses-api)<br><br>[Chat API](https://ark.volcengine.com/region:cn-beijing/docs/chat-api) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/create-model-responses-api)<br><br>前缀缓存<br><br>Session缓存 |
++|[doubao-seed-2-1-turbo-260628](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-1-turbo) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/create-model-responses-api)<br><br>[Chat API](https://ark.volcengine.com/region:cn-beijing/docs/chat-api) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/create-model-responses-api)<br><br>前缀缓存<br><br>Session缓存 |
++
++## 其他模型
++
+ |模型ID（Model ID） |隐式缓存 |显式缓存 |
+ |---|---|---|
+-|[doubao-seed-2-1-pro-260628](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-1-pro) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/ark/create-model-responses-api)<br><br>[Chat API](https://ark.volcengine.com/region:cn-beijing/docs/ark/chat-api) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/ark/create-model-responses-api)<br><br>前缀缓存<br><br>Session缓存 |
+-|[doubao-seed-2-0-lite-260428](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-0-lite) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/ark/create-model-responses-api)<br><br>[Chat API](https://ark.volcengine.com/region:cn-beijing/docs/ark/chat-api) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/ark/create-model-responses-api)<br><br>前缀缓存<br><br>Session缓存 |
+-|[doubao-seed-2-0-mini-260428](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-0-mini) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/ark/create-model-responses-api)<br><br>[Chat API](https://ark.volcengine.com/region:cn-beijing/docs/ark/chat-api) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/ark/create-model-responses-api)<br><br>前缀缓存<br><br>Session缓存 |
+-|[doubao-seed-2-0-pro-260215](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-0-pro) `即将下线` |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/ark/create-model-responses-api)<br><br>[Chat API](https://ark.volcengine.com/region:cn-beijing/docs/ark/chat-api) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/ark/create-model-responses-api)<br><br>前缀缓存<br><br>Session缓存 |
+-|[doubao-seed-2-0-lite-260215](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-0-lite) `即将下线` |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/ark/create-model-responses-api)<br><br>[Chat API](https://ark.volcengine.com/region:cn-beijing/docs/ark/chat-api) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/ark/create-model-responses-api)<br><br>前缀缓存<br><br>Session缓存 |
+-|[doubao-seed-2-0-mini-260215](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-0-mini) `即将下线` |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/ark/create-model-responses-api)<br><br>[Chat API](https://ark.volcengine.com/region:cn-beijing/docs/ark/chat-api) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/ark/create-model-responses-api)<br><br>前缀缓存<br><br>Session缓存 |
+-|[doubao-seed-2-0-code-preview-260215](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-0-code) `即将下线` |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/ark/create-model-responses-api)<br><br>[Chat API](https://ark.volcengine.com/region:cn-beijing/docs/ark/chat-api) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/ark/create-model-responses-api)<br><br>前缀缓存<br><br>Session缓存 |
+-|[doubao-seed-character-260628](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-character&_vtm_=a106466.b106468.0_0.0_0.0.1961_7630866813484467762&projectName=default) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/ark/create-model-responses-api)<br><br>[Chat API](https://ark.volcengine.com/region:cn-beijing/docs/ark/chat-api) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/ark/create-model-responses-api)<br><br>前缀缓存<br><br>Session缓存 |
+-|[doubao-seed-character-251128](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-character) |– |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/ark/create-model-responses-api)<br><br>前缀缓存<br><br>Session缓存 |
+-|[glm-5-3-flash-260828](https://ark.volcengine.com/region:cn-beijing/model/detail?name=glm-5-3-flash) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/ark/create-model-responses-api)<br><br>[Chat API](https://ark.volcengine.com/region:cn-beijing/docs/ark/chat-api) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/ark/create-model-responses-api)<br><br>前缀缓存<br><br>Session缓存 |
+-|[glm-5-2-260617](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=glm-5-2) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/ark/create-model-responses-api)<br><br>[Chat API](https://ark.volcengine.com/region:cn-beijing/docs/ark/chat-api) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/ark/create-model-responses-api)<br><br>前缀缓存<br><br>Session缓存 |
+-|[deepseek-v4-1-flash-260910](https://ark.volcengine.com/region:cn-beijing/model/detail?name=deepseek-v4-1-flash) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/ark/create-model-responses-api)<br><br>[Chat API](https://ark.volcengine.com/region:cn-beijing/docs/ark/chat-api) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/ark/create-model-responses-api)<br><br>前缀缓存<br><br>Session缓存 |
+-|[deepseek-v4-pro-ga-260813](https://ark.volcengine.com/region:cn-beijing/model/detail?name=deepseek-v4-pro-ga) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/ark/create-model-responses-api)<br><br>[Chat API](https://ark.volcengine.com/region:cn-beijing/docs/ark/chat-api) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/ark/create-model-responses-api)<br><br>前缀缓存<br><br>Session缓存 |
+-|[deepseek-v4-flash-ga-260731](https://ark.volcengine.com/region:cn-beijing/model/detail?name=deepseek-v4-flash-ga) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/ark/create-model-responses-api)<br><br>[Chat API](https://ark.volcengine.com/region:cn-beijing/docs/ark/chat-api) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/ark/create-model-responses-api)<br><br>前缀缓存<br><br>Session缓存 |
+-|[deepseek-v4-pro-260425](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=deepseek-v4-pro) `即将下线` |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/ark/create-model-responses-api)<br><br>[Chat API](https://ark.volcengine.com/region:cn-beijing/docs/ark/chat-api) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/ark/create-model-responses-api)<br><br>前缀缓存<br><br>Session缓存 |
+-
+-
+-<span id="86588b72"></span>
++|[doubao-seed-2-1-pro-260628](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-1-pro) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/create-model-responses-api)<br><br>[Chat API](https://ark.volcengine.com/region:cn-beijing/docs/chat-api) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/create-model-responses-api)<br><br>前缀缓存<br><br>Session缓存 |
++|[doubao-seed-2-0-lite-260428](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-0-lite) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/create-model-responses-api)<br><br>[Chat API](https://ark.volcengine.com/region:cn-beijing/docs/chat-api) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/create-model-responses-api)<br><br>前缀缓存<br><br>Session缓存 |
++|[doubao-seed-2-0-mini-260428](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-0-mini) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/create-model-responses-api)<br><br>[Chat API](https://ark.volcengine.com/region:cn-beijing/docs/chat-api) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/create-model-responses-api)<br><br>前缀缓存<br><br>Session缓存 |
++|[doubao-seed-2-0-pro-260215](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-0-pro) `即将下线` |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/create-model-responses-api)<br><br>[Chat API](https://ark.volcengine.com/region:cn-beijing/docs/chat-api) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/create-model-responses-api)<br><br>前缀缓存<br><br>Session缓存 |
++|[doubao-seed-2-0-lite-260215](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-0-lite) `即将下线` |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/create-model-responses-api)<br><br>[Chat API](https://ark.volcengine.com/region:cn-beijing/docs/chat-api) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/create-model-responses-api)<br><br>前缀缓存<br><br>Session缓存 |
++|[doubao-seed-2-0-mini-260215](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-0-mini) `即将下线` |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/create-model-responses-api)<br><br>[Chat API](https://ark.volcengine.com/region:cn-beijing/docs/chat-api) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/create-model-responses-api)<br><br>前缀缓存<br><br>Session缓存 |
++|[doubao-seed-2-0-code-preview-260215](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-0-code) `即将下线` |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/create-model-responses-api)<br><br>[Chat API](https://ark.volcengine.com/region:cn-beijing/docs/chat-api) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/create-model-responses-api)<br><br>前缀缓存<br><br>Session缓存 |
++|[doubao-seed-character-260628](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-character&_vtm_=a106466.b106468.0_0.0_0.0.1961_7630866813484467762&projectName=default) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/create-model-responses-api)<br><br>[Chat API](https://ark.volcengine.com/region:cn-beijing/docs/chat-api) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/create-model-responses-api)<br><br>前缀缓存<br><br>Session缓存 |
++|[doubao-seed-character-251128](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-character) |– |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/create-model-responses-api)<br><br>前缀缓存<br><br>Session缓存 |
++|[glm-5-3-flash-260828](https://ark.volcengine.com/region:cn-beijing/model/detail?name=glm-5-3-flash) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/create-model-responses-api)<br><br>[Chat API](https://ark.volcengine.com/region:cn-beijing/docs/chat-api) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/create-model-responses-api)<br><br>前缀缓存<br><br>Session缓存 |
++|[glm-5-2-260617](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=glm-5-2) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/create-model-responses-api)<br><br>[Chat API](https://ark.volcengine.com/region:cn-beijing/docs/chat-api) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/create-model-responses-api)<br><br>前缀缓存<br><br>Session缓存 |
++|[deepseek-v4-1-flash-261017](https://ark.volcengine.com/region:cn-beijing/model/detail?name=deepseek-v4-1-flash) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/create-model-responses-api)<br><br>[Chat API](https://ark.volcengine.com/region:cn-beijing/docs/chat-api) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/create-model-responses-api)<br><br>前缀缓存<br><br>Session缓存 |
++|[deepseek-v4-1-flash-260910](https://ark.volcengine.com/region:cn-beijing/model/detail?name=deepseek-v4-1-flash) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/create-model-responses-api)<br><br>[Chat API](https://ark.volcengine.com/region:cn-beijing/docs/chat-api) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/create-model-responses-api)<br><br>前缀缓存<br><br>Session缓存 |
++|[deepseek-v4-1-flash-economy-261017](https://ark.volcengine.com/region:cn-beijing/model/detail?name=deepseek-v4-1-flash-economy) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/create-model-responses-api)<br><br>[Chat API](https://ark.volcengine.com/region:cn-beijing/docs/chat-api) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/create-model-responses-api)<br><br>前缀缓存<br><br>Session缓存 |
++|[deepseek-v4-pro-ga-260813](https://ark.volcengine.com/region:cn-beijing/model/detail?name=deepseek-v4-pro-ga) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/create-model-responses-api)<br><br>[Chat API](https://ark.volcengine.com/region:cn-beijing/docs/chat-api) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/create-model-responses-api)<br><br>前缀缓存<br><br>Session缓存 |
++|[deepseek-v4-flash-ga-260731](https://ark.volcengine.com/region:cn-beijing/model/detail?name=deepseek-v4-flash-ga) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/create-model-responses-api)<br><br>[Chat API](https://ark.volcengine.com/region:cn-beijing/docs/chat-api) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/create-model-responses-api)<br><br>前缀缓存<br><br>Session缓存 |
++|[deepseek-v4-pro-260425](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=deepseek-v4-pro) `即将下线` |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/create-model-responses-api)<br><br>[Chat API](https://ark.volcengine.com/region:cn-beijing/docs/chat-api) |[Responses API](https://ark.volcengine.com/region:cn-beijing/docs/create-model-responses-api)<br><br>前缀缓存<br><br>Session缓存 |
++
+ # 结构化输出能力（beta）
+ 
+-介绍: [结构化输出(beta)](https://ark.volcengine.com/region:cn-beijing/docs/ark/structured-output-beta) | API: [Responses API](https://ark.volcengine.com/region:cn-beijing/docs/ark/create-model-responses-api)、[Chat API](https://ark.volcengine.com/region:cn-beijing/docs/ark/chat-api)
+-
+-<span id="79e2b6f0"></span>
+-## 推荐模型
+-
+-
+-<span aceTableMode="list" aceTableWidth="3,2,3,2"></span>
+-|模型 ID (Model ID) |能力支持 |**长度限制（token）**  |限流<br><br>> 非刚性保障，受平台负载/调用方式影响，详见 [文档](https://ark.volcengine.com/region:cn-beijing/docs/ark/traffic-burst-handling-best-practices#263ca129) |
+-|---|---|---|---|
+-|[doubao-seed-evolving](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-evolving)<br><br>> 快速迭代模型 |深度思考<br><br>文本生成<br><br>多模态理解<br><br>工具调用<br><br>结构化输出 |上下文窗口: 1024k<br><br>最大输入: 1024k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/ark/text-generation#3821b26a): 256k<br><br>最大思维链: 256k |最大 RPM: 500<br><br>最大 TPM: 1000000 |
+-|[doubao-seed-2-1-pro-260915](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-1-pro) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>工具调用<br><br>结构化输出 |上下文窗口: 1024k<br><br>最大输入: 1024k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/ark/text-generation#3821b26a): 256k<br><br>最大思维链: 256k |最大 RPM: 500<br><br>最大 TPM: 1000000 |
+-|[doubao-seed-2-1-lite-260915](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-1-lite) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>工具调用<br><br>结构化输出 |上下文窗口: 1024k<br><br>最大输入: 1024k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/ark/text-generation#3821b26a): 256k<br><br>最大思维链: 256k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
+-|[doubao-seed-2-1-turbo-260628](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-1-turbo) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>工具调用<br><br>结构化输出 |上下文窗口: 256k<br><br>最大输入: 256k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/ark/text-generation#3821b26a): 256k<br><br>最大思维链: 256k |最大 RPM: 500<br><br>最大 TPM: 1000000 |
+-
+-
+-<span id="b0d6f164"></span>
+-## 往期模型
+-
+-
+-<span aceTableMode="list" aceTableWidth="3,2,3,2"></span>
+-|模型 ID (Model ID) |能力支持 |**长度限制（token）**  |限流<br><br>> 非刚性保障，受平台负载/调用方式影响，详见 [文档](https://ark.volcengine.com/region:cn-beijing/docs/ark/traffic-burst-handling-best-practices#263ca129) |
+-|---|---|---|---|
+-|[doubao-seed-2-1-pro-260628](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-1-pro) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>工具调用<br><br>结构化输出（推荐使用 `json_schema` 模式） |上下文窗口: 256k<br><br>最大输入: 256k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/ark/text-generation#3821b26a): 256k<br><br>最大思维链: 256k |最大 RPM: 500<br><br>最大 TPM: 1000000 |
+-|[doubao-seed-2-0-lite-260428](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-0-lite) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>工具调用<br><br>结构化输出（推荐使用 `json_schema` 模式） |上下文窗口: 256k<br><br>最大输入: 224k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/ark/text-generation#3821b26a): 128k<br><br>最大思维链: 128k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
+-|[doubao-seed-2-0-mini-260428](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-0-mini) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>工具调用<br><br>结构化输出 |上下文窗口: 256k<br><br>最大输入: 224k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/ark/text-generation#3821b26a): 128k<br><br>最大思维链: 128k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
+-|[doubao-seed-2-0-pro-260215](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-0-pro) `即将下线` |深度思考<br><br>文本生成<br><br>多模态理解<br><br>工具调用<br><br>结构化输出 |上下文窗口: 256k<br><br>最大输入: 224k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/ark/text-generation#3821b26a): 128k<br><br>最大思维链: 128k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
+-|[doubao-seed-2-0-lite-260215](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-0-lite) `即将下线` |深度思考<br><br>文本生成<br><br>多模态理解<br><br>工具调用<br><br>结构化输出 |上下文窗口: 256k<br><br>最大输入: 224k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/ark/text-generation#3821b26a): 128k<br><br>最大思维链: 128k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
+-|[doubao-seed-2-0-mini-260215](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-0-mini) `即将下线` |深度思考<br><br>文本生成<br><br>多模态理解<br><br>工具调用<br><br>结构化输出 |上下文窗口: 256k<br><br>最大输入: 224k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/ark/text-generation#3821b26a): 128k<br><br>最大思维链: 128k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
+-|[doubao-seed-character-260628](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-character&_vtm_=a106466.b106468.0_0.0_0.0.1961_7630866813484467762&projectName=default) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>工具调用<br><br>结构化输出（推荐使用 `json_schema` 模式） |上下文窗口: 128k<br><br>最大输入: 96k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/ark/text-generation#3821b26a): 32k<br><br>最大思维链: 128k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
+-|[deepseek-v4-1-flash-260910](https://ark.volcengine.com/region:cn-beijing/model/detail?name=deepseek-v4-1-flash) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>工具调用<br><br>结构化输出 |上下文窗口: 1024k<br><br>最大输入: 1024k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/ark/text-generation#3821b26a): 384k<br><br>最大思维链: 384k |最大 RPM: 500<br><br>最大 TPM: 1000000 |
+-|[deepseek-v4-pro-ga-260813](https://ark.volcengine.com/region:cn-beijing/model/detail?name=deepseek-v4-pro-ga) |深度思考<br><br>文本生成<br><br>工具调用<br><br>结构化输出 |上下文窗口: 1024k<br><br>最大输入: 1024k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/ark/text-generation#3821b26a): 384k<br><br>最大思维链: 128k |最大 RPM: 500<br><br>最大 TPM: 1000000 |
+-|[deepseek-v4-flash-ga-260731](https://ark.volcengine.com/region:cn-beijing/model/detail?name=deepseek-v4-flash-ga) |深度思考<br><br>文本生成<br><br>工具调用<br><br>结构化输出 |上下文窗口: 1024k<br><br>最大输入: 1024k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/ark/text-generation#3821b26a): 384k<br><br>最大思维链: 128k |最大 RPM: 500<br><br>最大 TPM: 1000000 |
+-
+-
+-<span id="7571da3f"></span>
++介绍: [结构化输出(beta)](https://ark.volcengine.com/region:cn-beijing/docs/structured-output-beta) | API: [Responses API](https://ark.volcengine.com/region:cn-beijing/docs/create-model-responses-api)、[Chat API](https://ark.volcengine.com/region:cn-beijing/docs/chat-api)
++
++## 推荐模型
++
++|模型 ID (Model ID) |能力支持 |**长度限制（token）**  |限流<br><br>> 非刚性保障，受平台负载/调用方式影响，详见 [文档](https://ark.volcengine.com/region:cn-beijing/docs/traffic-burst-handling-best-practices#263ca129) |
++|---|---|---|---|
++|[doubao-seed-evolving](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-evolving)<br><br>> 快速迭代模型 |深度思考<br><br>文本生成<br><br>多模态理解<br><br>工具调用<br><br>结构化输出 |上下文窗口: 1024k<br><br>最大输入: 1024k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 256k<br><br>最大思维链: 256k |最大 RPM: 500<br><br>最大 TPM: 1000000 |
++|[doubao-seed-2-1-pro-260915](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-1-pro) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>工具调用<br><br>结构化输出 |上下文窗口: 1024k<br><br>最大输入: 1024k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 256k<br><br>最大思维链: 256k |最大 RPM: 500<br><br>最大 TPM: 1000000 |
++|[doubao-seed-2-1-lite-260915](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-1-lite) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>工具调用<br><br>结构化输出 |上下文窗口: 1024k<br><br>最大输入: 1024k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 256k<br><br>最大思维链: 256k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
++|[doubao-seed-2-1-turbo-260628](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-1-turbo) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>工具调用<br><br>结构化输出 |上下文窗口: 256k<br><br>最大输入: 256k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 256k<br><br>最大思维链: 256k |最大 RPM: 500<br><br>最大 TPM: 1000000 |
++
++## 其他模型
++
++|模型 ID (Model ID) |能力支持 |**长度限制（token）**  |限流<br><br>> 非刚性保障，受平台负载/调用方式影响，详见 [文档](https://ark.volcengine.com/region:cn-beijing/docs/traffic-burst-handling-best-practices#263ca129) |
++|---|---|---|---|
++|[doubao-seed-2-1-pro-260628](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-1-pro) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>工具调用<br><br>结构化输出（推荐使用 `json_schema` 模式） |上下文窗口: 256k<br><br>最大输入: 256k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 256k<br><br>最大思维链: 256k |最大 RPM: 500<br><br>最大 TPM: 1000000 |
++|[doubao-seed-2-0-lite-260428](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-0-lite) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>工具调用<br><br>结构化输出（推荐使用 `json_schema` 模式） |上下文窗口: 256k<br><br>最大输入: 224k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 128k<br><br>最大思维链: 128k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
++|[doubao-seed-2-0-mini-260428](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-0-mini) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>工具调用<br><br>结构化输出 |上下文窗口: 256k<br><br>最大输入: 224k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 128k<br><br>最大思维链: 128k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
++|[doubao-seed-2-0-pro-260215](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-0-pro) `即将下线` |深度思考<br><br>文本生成<br><br>多模态理解<br><br>工具调用<br><br>结构化输出 |上下文窗口: 256k<br><br>最大输入: 224k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 128k<br><br>最大思维链: 128k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
++|[doubao-seed-2-0-lite-260215](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-0-lite) `即将下线` |深度思考<br><br>文本生成<br><br>多模态理解<br><br>工具调用<br><br>结构化输出 |上下文窗口: 256k<br><br>最大输入: 224k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 128k<br><br>最大思维链: 128k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
++|[doubao-seed-2-0-mini-260215](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-2-0-mini) `即将下线` |深度思考<br><br>文本生成<br><br>多模态理解<br><br>工具调用<br><br>结构化输出 |上下文窗口: 256k<br><br>最大输入: 224k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 128k<br><br>最大思维链: 128k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
++|[doubao-seed-character-260628](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed-character&_vtm_=a106466.b106468.0_0.0_0.0.1961_7630866813484467762&projectName=default) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>工具调用<br><br>结构化输出（推荐使用 `json_schema` 模式） |上下文窗口: 128k<br><br>最大输入: 96k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 32k<br><br>最大思维链: 128k |最大 RPM: 30000<br><br>最大 TPM: 5000000 |
++|[deepseek-v4-1-flash-261017](https://ark.volcengine.com/region:cn-beijing/model/detail?name=deepseek-v4-1-flash) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>工具调用<br><br>结构化输出 |上下文窗口: 1024k<br><br>最大输入: 1024k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 384k<br><br>最大思维链: 384k |最大 RPM: 500<br><br>最大 TPM: 1000000 |
++|[deepseek-v4-1-flash-260910](https://ark.volcengine.com/region:cn-beijing/model/detail?name=deepseek-v4-1-flash) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>工具调用<br><br>结构化输出 |上下文窗口: 1024k<br><br>最大输入: 1024k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 384k<br><br>最大思维链: 384k |最大 RPM: 500<br><br>最大 TPM: 1000000 |
++|[deepseek-v4-1-flash-economy-261017](https://ark.volcengine.com/region:cn-beijing/model/detail?name=deepseek-v4-1-flash-economy) |深度思考<br><br>文本生成<br><br>多模态理解<br><br>工具调用<br><br>结构化输出 |上下文窗口: 1024k<br><br>最大输入: 1024k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 384k<br><br>最大思维链: 384k |最大 RPM: 500<br><br>最大 TPM: 1000000 |
++|[deepseek-v4-pro-ga-260813](https://ark.volcengine.com/region:cn-beijing/model/detail?name=deepseek-v4-pro-ga) |深度思考<br><br>文本生成<br><br>工具调用<br><br>结构化输出 |上下文窗口: 1024k<br><br>最大输入: 1024k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 384k<br><br>最大思维链: 128k |最大 RPM: 500<br><br>最大 TPM: 1000000 |
++|[deepseek-v4-flash-ga-260731](https://ark.volcengine.com/region:cn-beijing/model/detail?name=deepseek-v4-flash-ga) |深度思考<br><br>文本生成<br><br>工具调用<br><br>结构化输出 |上下文窗口: 1024k<br><br>最大输入: 1024k<br><br>[最大回答(默认 4k)](https://ark.volcengine.com/region:cn-beijing/docs/text-generation#3821b26a): 384k<br><br>最大思维链: 128k |最大 RPM: 500<br><br>最大 TPM: 1000000 |
++
+ # 视频生成能力
+ 
+-教程: [Doubao Seedance 2.0 系列教程](https://ark.volcengine.com/region:cn-beijing/docs/ark/seedance-2-0) | API: [Video Generation API](https://ark.volcengine.com/region:cn-beijing/docs/ark/create-video-generation-task-api)
+-
+-
+-<span aceTableMode="list" aceTableWidth="2,3,3,3,3"></span>
+-|**模型 ID（Model ID）**  |**模型能力** |**输出视频格式** |在线推理限流<br><br>> 非刚性保障，受平台负载/调用方式影响，详见 [文档](https://ark.volcengine.com/region:cn-beijing/docs/ark/traffic-burst-handling-best-practices#263ca129) |离线推理限流<br><br>> 非刚性保障，受平台负载/调用方式影响，详见 [文档](https://ark.volcengine.com/region:cn-beijing/docs/ark/traffic-burst-handling-best-practices#263ca129) |
++教程: [Doubao Seedance 2.0 系列教程](https://ark.volcengine.com/region:cn-beijing/docs/seedance-2-0) | API: [Video Generation API](https://ark.volcengine.com/region:cn-beijing/docs/create-video-generation-task-api)
++
++|**模型 ID（Model ID）**  |**模型能力** |**输出视频格式** |在线推理限流<br><br>> 非刚性保障，受平台负载/调用方式影响，详见 [文档](https://ark.volcengine.com/region:cn-beijing/docs/traffic-burst-handling-best-practices#263ca129) |离线推理限流<br><br>> 非刚性保障，受平台负载/调用方式影响，详见 [文档](https://ark.volcengine.com/region:cn-beijing/docs/traffic-burst-handling-best-practices#263ca129) |
+ |---|---|---|---|---|
+ |[doubao-seedance-2-5-260628](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seedance-2-5) |* 全模态参考生视频<br><br>   * 参考生视频<br><br>   * 编辑视频<br><br>   * 延长视频<br><br>* 首尾帧生视频<br><br>* 首帧生视频<br><br>* 文生视频 |* 分辨率:<br><br>   * 480p（8bit 位深）<br><br>   * 720p（8bit 位深）<br><br>   * 1080p（10bit 位深）<br><br>* 帧率: 24 fps<br><br>* 时长: 4~30 秒<br><br>* 视频格式: mp4, mov |* 最大 RPM:<br><br>   * 企业用户: 600<br><br>   * 个人用户: 180<br><br>* 最大并发:<br><br>   * 企业用户: 10<br><br>   * 个人用户: 3 |* 暂不支持 |
+ |[doubao-seedance-2-0-260128](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seedance-2-0&projectName=default) |* 全模态参考生视频<br><br>   * 参考生视频<br><br>   * 编辑视频<br><br>   * 延长视频<br><br>* 首尾帧生视频<br><br>* 首帧生视频<br><br>* 文生视频 |* 分辨率:<br><br>   * 480p（8bit 位深）<br><br>   * 720p（8bit 位深）<br><br>   * 1080p（8bit 位深）<br><br>   * 4k（10bit 位深）<br><br>* 帧率: 24 fps<br><br>* 时长: 4~15 秒<br><br>* 视频格式: mp4 |非 4k 分辨率：<br><br><br>* 最大 RPM:<br><br>   * 企业用户: 600<br><br>   * 个人用户: 180<br><br>* 最大并发:<br><br>   * 企业用户: 10<br><br>   * 个人用户: 3<br><br>   * 个人用户: 3<br><br><br>4k 分辨率：<br><br><br>* 最大 RPM<br><br>   * 企业用户：15<br><br>   * 个人用户：15<br><br>* 最大并发<br><br>   * 企业用户：1<br><br>   * 个人用户：1 |* 暂不支持 |
+@@ -333,18 +260,13 @@
+ |[doubao-seedance-1-0-pro-250528](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seedance-1-0-pro&projectName=default) `即将下线` |* 首尾帧生视频<br><br>* 首帧生视频<br><br>* 文生视频 |分辨率:<br><br>480p, 720p, 1080p<br><br>帧率: 24 fps<br><br>时长: 2~12 秒<br><br>视频格式: mp4 |* 最大 RPM: 600<br><br>* 最大并发: 10 |* 最大 TPD: 5000亿 |
+ |[doubao-seedance-1-0-pro-fast-251015](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seedance-1-0-pro-fast&projectName=default) `即将下线` |* 首帧生视频<br><br>* 文生视频 |分辨率:<br><br>480p, 720p, 1080p<br><br>帧率: 24 fps<br><br>时长: 2~12 秒<br><br>视频格式: mp4 |* 最大 RPM: 600<br><br>* 最大并发: 10 |* 最大 TPD: 5000亿 |
+ 
+-
+-<span id="9df4d9fd"></span>
+ # 图片生成能力
+ 
+-教程: [Doubao Seedream 4.0-5.0 教程](https://ark.volcengine.com/region:cn-beijing/docs/ark/seedream-4-0-5-0) | API: [Image generation API](https://ark.volcengine.com/region:cn-beijing/docs/ark/image-generation-api)
+-
+-<span id="b8c9fd67"></span>
+-## 推荐模型
+-
+-
+-<span aceTableMode="list" aceTableWidth="3,2,3"></span>
+-|模型 ID (Model ID) |**能力支持** |限流<br><br>> 非刚性保障，受平台负载/调用方式影响，详见 [文档](https://ark.volcengine.com/region:cn-beijing/docs/ark/traffic-burst-handling-best-practices#263ca129)<br><br>> **最大 IPM**<br><br>> 张 / 分钟 |
++教程: [Doubao Seedream 4.0-5.0 教程](https://ark.volcengine.com/region:cn-beijing/docs/seedream-4-0-5-0) | API: [Image generation API](https://ark.volcengine.com/region:cn-beijing/docs/image-generation-api)
++
++## 推荐模型
++
++|模型 ID (Model ID) |**能力支持** |限流<br><br>> 非刚性保障，受平台负载/调用方式影响，详见 [文档](https://ark.volcengine.com/region:cn-beijing/docs/traffic-burst-handling-best-practices#263ca129)<br><br>> **最大 IPM**<br><br>> 张 / 分钟 |
+ |---|---|---|
+ |[doubao-seedream-5-0-pro-260628](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seedream-5-0-pro) |图层拆分<br><br>单图生成<br><br><br>* 文生图<br><br>* 单张图生图<br><br>* 多参考图生图 |500 |
+ |[doubao-seedream-5-0-flash-260915](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seedream-5-0-flash) |图层拆分<br><br>单图生成<br><br><br>* 文生图<br><br>* 单张图生图<br><br>* 多参考图生图 |500 |
+@@ -352,29 +274,21 @@
+ |[doubao-seedream-4-5-251128](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seedream-4-5) `即将下线` |单图生成<br><br><br>* 文生图<br><br>* 单张图生图<br><br>* 多参考图生图<br><br><br>组图生成<br><br><br>* 文生组图<br><br>* 单张图生组图<br><br>* 多参考图生组图 |500 |
+ |[doubao-seedream-4-0-250828](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seedream-4-0) `即将下线` |单图生成<br><br><br>* 文生图<br><br>* 单张图生图<br><br>* 多参考图生图<br><br><br>组图生成<br><br><br>* 文生组图<br><br>* 单张图生组图<br><br>* 多参考图生组图 |500 |
+ 
+-
+-<span id="21b9a17a"></span>
+ # 3D生成能力
+ 
+-教程: [3D 生成](https://ark.volcengine.com/region:cn-beijing/docs/ark/3d-generation) | API: [3D生成 API](https://ark.volcengine.com/region:cn-beijing/docs/ark/3d-generation-api)
+-
+-
+-<span aceTableMode="list" aceTableWidth="3,2,2,2,1"></span>
+-|**模型 ID (Model ID)**  |**能力支持** |**产物规格** |**限流**<br><br>> **非刚性保障，受平台负载/调用方式影响，详见 ** [文档](https://ark.volcengine.com/region:cn-beijing/docs/ark/traffic-burst-handling-best-practices#263ca129) |**免费额度**<br><br>（token） |
++教程: [3D 生成](https://ark.volcengine.com/region:cn-beijing/docs/3d-generation) | API: [3D生成 API](https://ark.volcengine.com/region:cn-beijing/docs/create-3d-generation-task-api)
++
++|**模型 ID (Model ID)**  |**能力支持** |**产物规格** |**限流**<br><br>> **非刚性保障，受平台负载/调用方式影响，详见 ** [文档](https://ark.volcengine.com/region:cn-beijing/docs/traffic-burst-handling-best-practices#263ca129) |**免费额度**<br><br>（token） |
+ |---|---|---|---|---|
+-|[doubao-seed3d-2-0-260328](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed3d-2-0) |图生3D<br><br><br>* 生成带纹理和 PBR 材质的3D文件 |产物面数<br><br><br>* 100000<br><br>* 500000<br><br>* 1000000<br><br>   产物格式<br><br>* glb, obj, usd, usdz |最大 RPM: 300<br><br>最大并发: 5 |200万 |
+-|[hyper3d-gen2-260112](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=hyper3d-gen2) |文生3D、图生3D<br><br><br>* 白模<br><br>* 带纹理模型<br><br>* PBR 材质模型<br><br>* 带纹理 + PBR 材质模型 |产物面数<br><br><br>* 三角面模型：[500, 1,000,000]<br><br>* 四边面模型：[1,000, 200,000]产物格式<br><br>* glb, obj, stl, fbx, usdz |最大 RPM: 60<br><br>最大并发: 3 |15万 |
+-|[hitem3d-2-0-251223](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=hitem3d-2-0) |图生3D<br><br><br>* 标准白模<br><br>* 标准纹理模型<br><br>* 高精白模<br><br>* 高精纹理模型 |产物面数<br><br><br>* [100000, 2000000]产物格式<br><br><br>产物分辨率<br><br><br>* glb, obj, stl, fbx, usdz<br><br>* 1536、1536 pro |最大 RPM: 600<br><br>最大并发: 30 |50万 |
+-
+-
+-<span id="0ee80bb9"></span>
++|[doubao-seed3d-2-0-260328](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-seed3d-2-0) |图生3D<br><br><br>* 生成带纹理和 PBR 材质的3D文件 |产物面数<br><br><br>* 100000<br><br>* 500000<br><br>* 1000000<br><br><br>产物格式<br><br><br>* glb, obj, usd, usdz |最大 RPM: 300<br><br>最大并发: 5 |200万 |
++|[hyper3d-gen2-260112](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=hyper3d-gen2) |文生3D、图生3D<br><br><br>* 白模<br><br>* 带纹理模型<br><br>* PBR 材质模型<br><br>* 带纹理 + PBR 材质模型 |产物面数<br><br><br>* 三角面模型：[500, 1,000,000]<br><br>* 四边面模型：[1,000, 200,000]<br><br><br>产物格式<br><br><br>* glb, obj, stl, fbx, usdz |最大 RPM: 60<br><br>最大并发: 3 |15万 |
++|[hitem3d-2-0-251223](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=hitem3d-2-0) |图生3D<br><br><br>* 标准白模<br><br>* 标准纹理模型<br><br>* 高精白模<br><br>* 高精纹理模型 |产物面数<br><br><br>* [100000, 2000000]<br><br><br>产物格式<br><br><br>* glb, obj, stl, fbx, usdz<br><br><br>产物分辨率<br><br><br>* 1536、1536 pro |最大 RPM: 600<br><br>最大并发: 30 |50万 |
++
+ # 向量化能力
+ 
+-教程: [向量化](https://ark.volcengine.com/region:cn-beijing/docs/ark/vectorization) | API: [Embeddings Multimodal API](https://ark.volcengine.com/region:cn-beijing/docs/ark/multimodal-vectorization-api)
+-
+-
+-<span aceTableMode="list" aceTableWidth="3,2,1,2,2"></span>
+-|模型 ID (Model ID) |**能力支持** |**上下文窗口** |**最高向量维度** |限流<br><br>> 非刚性保障，受平台负载/调用方式影响，详见 [文档](https://ark.volcengine.com/region:cn-beijing/docs/ark/traffic-burst-handling-best-practices#263ca129) |
++教程: [向量化](https://ark.volcengine.com/region:cn-beijing/docs/vectorization) | API: [Embeddings Multimodal API](https://ark.volcengine.com/region:cn-beijing/docs/multimodal-vectorization-api)
++
++|模型 ID (Model ID) |**能力支持** |**上下文窗口** |**最高向量维度** |限流<br><br>> 非刚性保障，受平台负载/调用方式影响，详见 [文档](https://ark.volcengine.com/region:cn-beijing/docs/traffic-burst-handling-best-practices#263ca129) |
+ |---|---|---|---|---|
+ |[doubao-embedding-vision-251215](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-embedding-vision) |多模态向量化<br><br>> 支持 视频、文本、图片输入 |128k |2048<br><br>> 支持1024降维使用 |最大 RPM: 15000<br><br>最大 TPM: 1200000 |
+ |[doubao-embedding-vision-250615](https://ark.volcengine.com/region:cn-beijing/model/detail?Id=doubao-embedding-vision) `即将下线` |多模态向量化<br><br>> 支持 视频、文本、图片输入 |128k |2048<br><br>> 支持1024降维使用 |最大 RPM: 15000<br><br>最大 TPM: 1200000 |
