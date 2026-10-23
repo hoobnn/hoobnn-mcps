@@ -61,11 +61,13 @@ uv tool install hoobnn-minimax-mcp
 - `text_to_image`：`image-01` / `image-01-live`，支持人物参考及部分生成失败报告。
 - `music_generation`：`music-3.0` / `music-2.6` 歌曲或纯音乐。官方 2026-08-20 公告已停止免费音乐接口，付费接口仅历史付费用户继续使用；不承诺当前账号权限。
 
+2026-10-23 已复核全部 14 个官方接口页：H3 / H3-Max、Context-IR 和再生成的请求契约未变。音乐模型说明删去部分资格短语，但停服公告仍在，不能据此认定免费接口或新账号已恢复开放。完整差异与本地验收见 [契约复核](../../docs/minimax-contracts.md#2026-10-23-文档更新审查)。
+
 工具名尽量沿用官方 MCP，但不是所有旧参数的原样替代：视频只实现 H3 V2，不接受旧 Hailuo V1 模型/任务；`first_frame_image` 改为 `first_frame`，`async_mode` 改为默认异步的 `wait`。`voice_clone` 的 URL 下载参数 `is_url` 改为本地 `file` 或预上传 `file_id`。不实现本机扬声器 `play_audio`、语言模型、ASR、WebSocket 流式和异步长文本语音。
 
 ## 官方来源与验证
 
-以 [中国站接口概览](https://platform.minimax.cn/docs/api-reference/api-overview) 和各接口 OpenAPI 正文为准，核对日期 2026-10-11。来源映射见仓库 `docs/audits/minimax-sources.json`，差异及限制见 `docs/minimax-contracts.md`。
+以 [中国站接口概览](https://platform.minimax.cn/docs/api-reference/api-overview) 和各接口 OpenAPI 正文为准，首次核对日期 2026-10-11，最近复核 2026-10-23。来源映射见仓库 `docs/audits/minimax-sources.json`，差异及限制见 `docs/minimax-contracts.md`。
 
 离线测试覆盖 V2 请求、任务状态、下载恢复、旧媒体响应、V1/V2 错误和真实 MCP stdio。没有进行付费云端生成，也不把离线通过当成账号权限或成片质量验收。
 
