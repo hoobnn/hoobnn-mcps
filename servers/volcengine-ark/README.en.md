@@ -28,6 +28,14 @@ Formerly `seedream-mcp` (that name is taken on PyPI by someone else). Renamed in
 
 All three models support text-to-image and single / multi-image reference generation. Parameter combinations a model does not support fail locally, without sending a request.
 
+### lite retirement and migration
+
+The [official deprecation notice](https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh) schedules `doubao-seedream-5-0-260128` / `doubao-seedream-5-0-lite-260128` to **shut down at 2026-11-24 14:00 (UTC+8), without automatic migration**.
+
+`model="lite"` keeps its original model and capabilities. Before the deadline, generation results and job records include `model_lifecycle` with the deadline, replacement model and capability differences; `list_capabilities` exposes the same information. At and after the deadline, new generation with the alias or either full ID fails locally with `error_code="model_retired"`, before creating a job or sending a request. Existing results remain available for delivery through `get_job` / `recover_job`. Opaque Endpoint IDs remain provider-validated because their underlying model cannot be identified locally.
+
+For ordinary image generation, explicitly select `pro` (the officially recommended model) or `flash`, reduce references to at most 10, and use 1K / 1.5K / 2K or the corresponding valid pixel range. **No equivalent replacement has been verified for image sets, web search or 3K / 4K.** These options are unsupported by pro/flash, so changing the alias would not preserve their behavior.
+
 ## Install
 
 ```bash
@@ -75,13 +83,17 @@ The standard 2.0 model supports 4k; fast / mini only 480p / 720p. For video edit
 
 `parameters` accepts official top-level options such as `draft`, `return_last_frame` and `output_format`; it cannot override the model or the input media.
 
+`draft=true` requires `resolution="480p"`. Draft task IDs expire 7 days after `created_at`. This tool can create and query Draft videos, but does not support promoting one through `content.draft_task`; passing `parameters` alone cannot enable that flow.
+
 ### Chat and retrieval
 
 `chat` defaults to `pro`, which is `doubao-seed-2-1-pro-260628`; you can also specify a model explicitly. This is not the same as the pro alias in the image tool.
 
 `images` accepts local images; `videos` must be public URLs. Without search, the Chat API is used; with `web_search` on or a `previous_response_id` given, the Responses API is used.
 
-Multi-turn history uses the Chat message structure, and Responses converts the current turn's multimodal content; `response_id` and source annotations are kept, and the full response is available on demand with `include_response=true`. `parameters` passes through advanced options the model supports; tool calls returned by the model are not executed.
+Multi-turn history uses the Chat message structure. Responses converts a copy, explicitly adding `type="message"` to assistant messages containing `output_text`, without modifying the caller's history. `response_id` and source annotations are kept, and the full response is available on demand with `include_response=true`. `thinking=true/false` maps to `enabled/disabled`; the 2026-10-22 Chat/Responses API no longer lists `thinking.type="auto"`. `parameters` passes through advanced options the model supports; tool calls returned by the model are not executed. Enable the relevant search component before using web search.
+
+The newly listed `deepseek-v4-1-flash-261017` and `deepseek-v4-1-flash-economy-261017` can be selected explicitly by full model ID; the `pro` default stays unchanged. This describes payload support, not verified account access or cloud behavior. The newly listed System One API (beta) for decision evaluation is a separate API and is not integrated by this tool.
 
 The embedding tool requires an explicit model: `texts` is a list of strings; `contents` is the official typed array, for example:
 
@@ -117,7 +129,7 @@ Shared connection pooling, overall timeouts, tool groups, error semantics and mi
 
 ## Official API verification
 
-Per-tool mapping, model versions, parameter differences and programmatically fetchable official sources are in the [Volcengine Ark API audit](https://github.com/hoobnn/hoobnn-mcps/blob/main/docs/audits/volcengine-ark.md). Local validation is based on the 2026-10-10 official documentation snapshot; account permissions and actual cloud generation are still unverified.
+Per-tool mapping, model versions, parameter differences and programmatically fetchable official sources are in the [Volcengine Ark API audit](https://github.com/hoobnn/hoobnn-mcps/blob/main/docs/audits/volcengine-ark.md). All 17 official sources were refreshed on 2026-10-23; offline regressions cover Responses history, the lite retirement boundary and recovery. Account permissions and actual cloud generation remain unverified.
 
 ## License
 

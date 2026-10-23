@@ -1,0 +1,145 @@
+--- reviewed/volcengine-ark/ark-web-search
++++ current/volcengine-ark/ark-web-search
+@@ -23,9 +23,11 @@
+ <span id="enable-component"></span>
+ ## 开通组件
+ 
++无论您选择使用哪一种联网搜索工具，都必须先开通相应的组件。
++
+ 
+ <Tabs>
+-<Tab zoneid="dd7RgeJrnK" title="豆包搜索 Custom 版">
++<Tab zoneid="c9yI8UjUnu" title="豆包搜索 Custom 版">
+ <TabTitle>豆包搜索 Custom 版</TabTitle>
+ 
+ 1. 登录方舟控制台，打开[应用组件库 > 豆包搜索](https://ark.volcengine.com/region:cn-beijing/openManagement?advancedActiveKey=component&tab=DoubaoSearch)标签页。
+@@ -34,7 +36,7 @@
+ 
+ 
+ </Tab>
+-<Tab zoneid="RUayTlAKAu" title="联网内容插件">
++<Tab zoneid="Y4A1LND4wF" title="联网内容插件">
+ <TabTitle>联网内容插件</TabTitle>
+ 
+ 1. 登录方舟控制台，打开[应用组件库 > 应用组件](https://ark.volcengine.com/region:cn-beijing/openManagement?advancedActiveKey=component&tab=DoubaoSearch)标签页。
+@@ -55,6 +57,12 @@
+ <div data-tips="true" data-tips-type="tip">方舟平台的新用户？获取 API Key 及 开通模型等准备工作，请参见 <a href="https://ark.volcengine.com/region:cn-beijing/docs/ark/quick-start">快速入门</a>。</div>
+ 
+ 
++<div data-tips="true" data-tips-type="warning" data-tips-is-title="true">注意</div>
++
++
++<div data-tips="true" data-tips-type="warning">调用工具之前，请确认您已经按照本文说明开通相应的组件，否则调用时将会产生错误。</div>
++
++
+ <span id=".6LGG5YyF5pCc57SiLWN1c3RvbS3niYg="></span>
+ ### 豆包搜索 Custom 版
+ 
+@@ -62,7 +70,7 @@
+ 
+ 
+ <Tabs>
+-<Tab zoneid="IM9DdW00IV" title="Responses API（OpenAI Responses 协议）">
++<Tab zoneid="hnHH6Y3If6" title="Responses API（OpenAI Responses 协议）">
+ <TabTitle>Responses API（OpenAI Responses 协议）</TabTitle>
+ 
+ ```Bash
+@@ -95,7 +103,7 @@
+ 
+ 
+ </Tab>
+-<Tab zoneid="UxTtkTYUWE" title="Messages API（Anthropic Messages 协议）">
++<Tab zoneid="hv3RzpJXIB" title="Messages API（Anthropic Messages 协议）">
+ <TabTitle>Messages API（Anthropic Messages 协议）</TabTitle>
+ 
+ ```Bash
+@@ -131,7 +139,7 @@
+ 
+ 
+ <Tabs>
+-<Tab zoneid="oJOEXhgoHj" title="Responses API">
++<Tab zoneid="DDRqmts4WH" title="Responses API">
+ <TabTitle>Responses API</TabTitle>
+ 
+ ```Plain Text
+@@ -207,7 +215,7 @@
+ 
+ 
+ </Tab>
+-<Tab zoneid="zknU04Cgqn" title="Messages API">
++<Tab zoneid="VxUGkglFgE" title="Messages API">
+ <TabTitle>Messages API</TabTitle>
+ 
+ ```JSON
+@@ -280,7 +288,7 @@
+ 
+ 
+ <Tabs>
+-<Tab zoneid="hkQdA8YlOx" title="cURL">
++<Tab zoneid="qltB3tOJIA" title="cURL">
+ <TabTitle>cURL</TabTitle>
+ 
+ ```Bash
+@@ -313,7 +321,7 @@
+ 
+ 
+ </Tab>
+-<Tab zoneid="y5rJxYlMDq" title="Python SDK">
++<Tab zoneid="uR4JhPcYIn" title="Python SDK">
+ <TabTitle>Python SDK</TabTitle>
+ 
+ ```Python
+@@ -346,7 +354,7 @@
+ 
+ 
+ </Tab>
+-<Tab zoneid="BdTgpq8Pu3" title="Java SDK">
++<Tab zoneid="fOf1VzfrY0" title="Java SDK">
+ <TabTitle>Java SDK</TabTitle>
+ 
+ ```Java
+@@ -399,7 +407,7 @@
+ 
+ 
+ </Tab>
+-<Tab zoneid="vvSJPe2kKd" title="Go SDK">
++<Tab zoneid="OIu8PY49vo" title="Go SDK">
+ <TabTitle>Go SDK</TabTitle>
+ 
+ ```Go
+@@ -480,7 +488,7 @@
+ 
+ 
+ <Tabs>
+-<Tab zoneid="ZNbNsOrXCt" title="豆包搜索 Custom 版">
++<Tab zoneid="NUnmZkVamZ" title="豆包搜索 Custom 版">
+ <TabTitle>豆包搜索 Custom 版</TabTitle>
+ 
+ **Responses API（兼容 OpenAI Responses 接口协议）**
+@@ -520,7 +528,7 @@
+ 
+ 
+ </Tab>
+-<Tab zoneid="dcNygjFhNc" title="联网内容插件">
++<Tab zoneid="CSNc23ixMj" title="联网内容插件">
+ <TabTitle>联网内容插件</TabTitle>
+ 
+ 详情请参见[创建 Responses 模型请求](https://ark.volcengine.com/region:cn-beijing/docs/ark/create-model-responses-api)。
+@@ -542,7 +550,7 @@
+ 
+ 
+ <Tabs>
+-<Tab zoneid="HzFqczB3Xr" title="Claude Code">
++<Tab zoneid="HNt6rgbNHx" title="Claude Code">
+ <TabTitle>Claude Code</TabTitle>
+ 
+ Claude Code 通过兼容 Anthropic Messages 接口协议的服务调用豆包搜索能力。完成接入配置后，在 Claude Code 中对话时，如果模型判断您的问题需要通过搜索功能才能回答，那么模型会调用 Web Search 工具进行搜索。完整的配置和使用方法参见[在 Claude Code 中使用 Web Search 工具](https://ark.volcengine.com/region:cn-beijing/docs/ark/integrate-third-party-tools#web-search-claude-code)。
+@@ -557,7 +565,7 @@
+ 
+ 
+ </Tab>
+-<Tab zoneid="wUMc6ir4wF" title="Codex">
++<Tab zoneid="gyT7amKlWF" title="Codex">
+ <TabTitle>Codex</TabTitle>
+ 
+ Codex 通过兼容 OpenAI Responses API 接口协议的服务调用豆包搜索能力。完成接入配置后，在 Codex 中对话时，如果模型判断您的问题需要通过搜索功能才能回答，那么模型会调用 Web Search 工具进行搜索。完整的配置和使用方法参见[在 Codex 中使用 Web Search 工具](https://ark.volcengine.com/region:cn-beijing/docs/ark/integrate-third-party-tools#web-search-codex)。

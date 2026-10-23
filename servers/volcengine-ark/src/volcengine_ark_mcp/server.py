@@ -53,6 +53,8 @@ def generate_image(
     - model="flash"：Seedream 5.0 flash，支持 pro 的拆层/透明/编辑能力，但不支持 fast 提示词优化。
     - model="lite"：只有 lite 支持 group（组图，生成 N 张相互关联的图）、web_search（联网搜索）、3K / 4K。
       最多 14 张参考图，参考图数加 group 不超过 15。
+      将于 2026-11-24 14:00 (UTC+8) 关停；之前返回 model_lifecycle 提示，到期后本地拒绝新生成。
+      不自动替换模型；普通生图可显式改用 pro/flash，组图、搜索、3K/4K 暂无已核实的等价替代。
     也可以直接传完整的模型 ID 或 Endpoint ID；已识别模型仍检查能力，无法识别的 Endpoint 由服务端校验。
 
     参数：
@@ -99,6 +101,7 @@ def generate_video(
     支持文生、首帧、首尾帧、多模态参考；2.5 可在 prompt 明确写视频编辑或延长意图，编辑须 duration=-1、ratio=adaptive。
     图片支持本地路径/URL，参考视频和音频须公网 URL 或 asset://ID；本工具不上传本地视频/音频。
     具体素材数量、时长、分辨率由模型校验。parameters 透传官方顶层选项，如 draft、return_last_frame、output_format、omni_reference_task_type。
+    draft=true 须用 480p，Draft ID 有效 7 天；本工具尚不支持 content.draft_task 转正式成片。
     2.5时长4–30秒，2.0系列4–15秒（均支持-1）；首尾帧与参考素材互斥。mini/fast最高720p，2.0支持4k。
     seed/frames仅支持1.0系列；2.5 edit任务可显式传omni_reference_task_type=edit以提前校验。
     wait=0 默认只提交，1–90 秒可轮询，返回 task_id/job_id；之后用 get_job 查进度并在完成时自动下载，下载失败用 recover_job 补。
@@ -117,10 +120,10 @@ def chat(prompt: str, model: str = "pro", system: str | None = None, history: li
          images: list[str] | None = None, videos: list[str] | None = None, thinking: bool | None = None,
          max_tokens: int | None = None, temperature: float | None = None, json_mode: bool = False,
          web_search: bool = False, previous_response_id: str | None = None, parameters: dict | None = None) -> dict:
-    """调用方舟语言/多模态模型，pro=豆包Seed 2.1 pro；其他模型传完整ID。千问及 DeepSeek、Kimi、GLM 等用 ali-bailian 的 chat。
+    """调用方舟语言/多模态模型，pro=豆包Seed 2.1 pro；其他方舟模型（含目录中的 DeepSeek）传完整ID。不同平台的型号与权限不可通用。
     images支持本地图片或URL，videos为公网URL。history用Chat消息格式，工具不保存对话。
     web_search=true或传previous_response_id时使用Responses API，保留sources和response_id；否则走Chat API。
-    thinking控制深度思考；json_mode要求提示词明确JSON结构；parameters透传模型支持的高级字段。
+    thinking=true/false映射enabled/disabled；最新API不再列出auto。json_mode要求提示词明确JSON结构；parameters透传模型支持的高级字段。
     返回content、reasoning、usage；include_response=true可取完整response。按token与搜索调用计费，模型和搜索服务须已开通；尚未完成云端验证。
     """
     return products.chat(prompt, model, system, history, images, videos, thinking, max_tokens,
@@ -173,6 +176,7 @@ def list_capabilities() -> dict:
                       "language": ["chat"], "embedding": ["embed"], "jobs": ["list_jobs", "get_job", "recover_job"]},
             "video_models": products.VIDEO_MODELS, "chat_models": products.CHAT_MODELS,
             "image_models": ark.MODELS, "docs": products.DOCS,
+            "image_model_lifecycle": {"lite": ark.image_model_lifecycle(ark.MODELS["lite"])},
             "limits": ["模型权限及参数限制以账号与官方接口为准", "本地视频/音频不会自动上传",
                        "Seedance 2.5首帧/首尾帧ratio仅adaptive；显式edit任务duration省略或-1",
                        "恢复锁使用POSIX flock，面向macOS/Linux"]}

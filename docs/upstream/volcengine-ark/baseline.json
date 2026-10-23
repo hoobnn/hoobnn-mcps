@@ -1,6 +1,6 @@
 {
   "format_version": 1,
-  "reviewed_at": "2026-10-13T09:34:42.976384+00:00",
+  "reviewed_at": "2026-10-23T06:46:33.435176+00:00",
   "sources": [
     {
       "key": "volcengine-ark/ark-base-url-and-authentication",
@@ -48,8 +48,8 @@
       "tools": [
         "chat"
       ],
-      "sha256": "33c0da2eb1f4cd9f3641713c80453add80082cdcac65e65193a6266ba696520e",
-      "bytes": 63681,
+      "sha256": "35f2fecd7bd865c015786e2083fbfc4185c5a7cc243373c710bf4d1ada74afd0",
+      "bytes": 54644,
       "models": [
         "doubao",
         "doubao-seed-2-0-lite-260215",
@@ -62,7 +62,7 @@
       ],
       "doc_links": [],
       "title": "对话(Chat) API",
-      "updated_at": "2026-10-09T10:00:27Z",
+      "updated_at": "2026-10-22T11:38:16Z",
       "document_id": "1494384",
       "headers": {
         "ETag": null,
@@ -80,8 +80,8 @@
       "tools": [
         "chat"
       ],
-      "sha256": "060145f2982f2fabbc93381ee23e736b395d10a7580de342864fd90a3109264e",
-      "bytes": 129950,
+      "sha256": "52023767e466c8cb5a8300397fd4e283304ef3f505c26ca9efcc3159cb01a091",
+      "bytes": 114938,
       "models": [
         "Doubao",
         "doubao",
@@ -97,7 +97,7 @@
         "https://www.volcengine.com/docs/84313/1419289#filter-%E8%A1%A8%E8%BE%BE%E5%BC%8F"
       ],
       "title": "创建 Response",
-      "updated_at": "2026-10-09T06:36:34Z",
+      "updated_at": "2026-10-22T11:38:16Z",
       "document_id": "1569618",
       "headers": {
         "ETag": null,
@@ -115,8 +115,8 @@
       "tools": [
         "generate_video"
       ],
-      "sha256": "35cf3c3bbd8137a301e33878398a3653587a8ed26961952a41f4b72fbca45a22",
-      "bytes": 43946,
+      "sha256": "4ecdd7dfa6e29e35d42d3abc3bb60383a1a8f35599d28e7e423e764561146aa8",
+      "bytes": 36528,
       "models": [
         "Doubao",
         "Seedance",
@@ -127,7 +127,7 @@
       ],
       "doc_links": [],
       "title": "创建视频生成任务",
-      "updated_at": "2026-10-08T09:09:03Z",
+      "updated_at": "2026-10-20T02:28:50Z",
       "document_id": "1520757",
       "headers": {
         "ETag": null,
@@ -143,8 +143,8 @@
       "fetch_url": "https://www.volcengine.com/api/doc/getDocList?LibraryCode=ark",
       "kind": "guide",
       "tools": [],
-      "sha256": "92cc3c97346600744840a75fd1bb19b06ba77437bb2b2efe2a89ca011eb86ea1",
-      "bytes": 149358,
+      "sha256": "8202e80748a4bf274d2207389b1ca2b7fa749f0ef95d6bef509a09430a8b87f7",
+      "bytes": 150921,
       "models": [
         "Doubao",
         "Seedance",
@@ -159,7 +159,6 @@
         "doubao-work",
         "seedance",
         "seedance-1-0-pro-pro-fast",
-        "seedance-1-5-pro",
         "seedance-2-0",
         "seedance-2-0-model-resource-pack-rules",
         "seedance-2-0-prompt-guide",
@@ -177,7 +176,7 @@
       "endpoints": [],
       "doc_links": [],
       "title": "ark-document-index",
-      "documents": 825,
+      "documents": 833,
       "document_codes": [
         "2024-announcements",
         "2025-announcements",
@@ -311,6 +310,7 @@
         "agent-plan-personal-practice-education",
         "agent-plan-personal-practice-short-video",
         "agent-plan-personal-practices",
+        "agent-plan-personal-research-plan-overview",
         "agent-plan-personal-search",
         "agent-plan-personal-small-medium-invitation",
         "agent-plan-personal-subscription-voucher",
@@ -331,8 +331,7 @@
         "ai-suite",
         "ai-suite-arkcli",
         "ai-suite-arkexp",
-        "ai-suite-mcp",
-        "ai-suite-skills",
+        "ai-suite-document-access",
         "api-key",
         "api-keys",
         "api-reference",
@@ -348,7 +347,6 @@
         "ark-cli-command-reference",
         "ark-cli-managed-agents",
         "ark-document-skills",
-        "ark-md-test",
         "ark-runtime-sdk-migration",
         "arkclaw-service-rules",
         "asset-dashboard",
@@ -360,6 +358,7 @@
         "auth-and-configuration",
         "automated-evaluation",
         "avatar-library",
+        "background-tool-tasks",
         "backward-compatibility",
         "base-url-and-authentication",
         "batch-chat-api",
@@ -383,6 +382,7 @@
         "cancel-dream-api",
         "cancel-endpoint-rolling-api",
         "cancel-or-delete-video-generation-tasks-api",
+        "cancel-session-task-api",
         "canvas",
         "case-platform-v1-badcase-query-api",
         "case-platform-v1-badcase-report-api",
@@ -516,6 +516,7 @@
         "data-backflow-workflow",
         "dataset-introduction",
         "datasets",
+        "decision-model",
         "deep-thinking",
         "deepseek-v4-1-flash",
         "define-agent",
@@ -600,6 +601,8 @@
         "get-evaluation-result-api",
         "get-foundation-model-api",
         "get-foundation-model-version-api",
+        "get-inference-request-usage-api",
+        "get-inference-task-usage-api",
         "get-inference-usage-api",
         "get-memory-api",
         "get-memory-store-api",
@@ -615,6 +618,7 @@
         "get-seat-info-usage-api",
         "get-seat-usage-details-api",
         "get-session-api",
+        "get-session-task-api",
         "get-skill-api",
         "get-skill-version-api",
         "get-started",
@@ -655,7 +659,6 @@
         "install-and-upgrade-sdk",
         "integrate-third-party-tools",
         "intelligent-model-routing",
-        "json-document-md-content",
         "knowledge-base-index",
         "knowledge-base-plugin-data-structures",
         "knowledge-base-plugin-guide",
@@ -704,6 +707,7 @@
         "list-seat-afp-usage-api",
         "list-seat-info-usages-api",
         "list-seat-infos-api",
+        "list-session-tasks-api",
         "list-sessions-api",
         "list-skill-versions-api",
         "list-skills-api",
@@ -826,6 +830,7 @@
         "quick-start-code",
         "quick-start-console",
         "rag",
+        "read-docs-with-ai-agents",
         "real-person-actor-image-ai-creation-commitment",
         "real-person-ip-video-api",
         "record-work-heartbeat-api",
@@ -865,7 +870,6 @@
         "seed-prover-api",
         "seed3d-api",
         "seedance-1-0-pro-pro-fast",
-        "seedance-1-5-pro",
         "seedance-2-0",
         "seedance-2-0-model-resource-pack-rules",
         "seedance-2-0-prompt-guide",
@@ -888,6 +892,7 @@
         "session-event-stream",
         "session-events",
         "session-resources",
+        "session-tasks",
         "session-threads",
         "sessions",
         "sessions-events-reference-v2",
@@ -923,6 +928,8 @@
         "structured-output-beta",
         "subscription-package-service-terms-conditions",
         "supervised-fine-tuning-best-practices",
+        "system-one-api",
+        "system-one-api-reference",
         "tax-rates-and-invoices",
         "terminate-evaluation-job-api",
         "terminate-model-customization-job-api",
@@ -1022,8 +1029,8 @@
         "get_job",
         "recover_job"
       ],
-      "sha256": "bb8f03d20e3a52cdb89298e1edf978ee7866a3b0412527ab8d3cd974beeb8494",
-      "bytes": 6849,
+      "sha256": "4e9a35b5dd56720abb3b6de52595a12316032f4f0e89d185302d7a8dbdebfa55",
+      "bytes": 6413,
       "models": [
         "Seedance"
       ],
@@ -1034,7 +1041,7 @@
         "https://docs.volcengine.com/docs/TorchObjectStorage/Datasubscription-5?lang=zh"
       ],
       "title": "查询视频生成任务",
-      "updated_at": "2026-09-29T06:30:13Z",
+      "updated_at": "2026-10-20T02:28:50Z",
       "document_id": "1521309",
       "headers": {
         "ETag": null,
@@ -1053,8 +1060,8 @@
         "generate_image",
         "recover_job"
       ],
-      "sha256": "85311ced3a14239a5cc619ef5847490118f5eef075df551f95169e8d1af133a4",
-      "bytes": 35175,
+      "sha256": "7fb8038e10dd8e865bc062074050d02ec5699f7e19786671b9f9e7331873719a",
+      "bytes": 35169,
       "models": [
         "Doubao",
         "Seedream"
@@ -1066,7 +1073,7 @@
         "https://docs.volcengine.com/docs/TorchObjectStorage/Datasubscription-5?lang=zh"
       ],
       "title": "图片生成 API",
-      "updated_at": "2026-10-10T14:39:45Z",
+      "updated_at": "2026-10-14T07:35:19Z",
       "document_id": "1541523",
       "headers": {
         "ETag": null,
@@ -1087,8 +1094,8 @@
         "generate_image",
         "generate_video"
       ],
-      "sha256": "229a2455412be28643eda27bd1047dc3f3e10a0ceec561f1f4839699f06ea5d0",
-      "bytes": 22388,
+      "sha256": "dac82c9284debee2e6d2247046864ffb9a15a09d2401c201de10248ab4209fa4",
+      "bytes": 20095,
       "models": [
         "doubao",
         "seedance",
@@ -1097,7 +1104,7 @@
       "endpoints": [],
       "doc_links": [],
       "title": "模型下线公告",
-      "updated_at": "2026-10-09T09:49:07Z",
+      "updated_at": "2026-10-14T15:23:28Z",
       "document_id": "1350667",
       "headers": {
         "ETag": null,
@@ -1119,8 +1126,8 @@
         "generate_video",
         "list_capabilities"
       ],
-      "sha256": "90b6c78dcbd4a23929bbc5fdc86e7aa75b349a5f965a860a9f3440230a80eeb7",
-      "bytes": 60018,
+      "sha256": "bfde265cb1fe10b961af17a6d6e8d5ed6fd2af88a6dfa4e13212b6f233d378f2",
+      "bytes": 61996,
       "models": [
         "Doubao",
         "Seedance",
@@ -1159,7 +1166,7 @@
       "endpoints": [],
       "doc_links": [],
       "title": "模型列表",
-      "updated_at": "2026-10-09T09:49:07Z",
+      "updated_at": "2026-10-21T06:43:28Z",
       "document_id": "1330310",
       "headers": {
         "ETag": null,
@@ -1239,8 +1246,8 @@
         "get_job",
         "recover_job"
       ],
-      "sha256": "86cb1f0e980de84f24b6ff08d874459cc02c4c892ea3f9510047371482b21908",
-      "bytes": 152398,
+      "sha256": "6350ce4b06a12a33ec3b39f4ad642a8135a6a396308d91fbbb0ac7743fab4302",
+      "bytes": 149503,
       "models": [
         "Doubao",
         "Seedance",
@@ -1258,7 +1265,7 @@
         "https://docs.volcengine.com/docs/TorchObjectStorage/Datasubscription-5?lang=zh)）"
       ],
       "title": "Doubao Seedance 2.5 教程",
-      "updated_at": "2026-10-13T03:36:21Z",
+      "updated_at": "2026-10-19T15:25:34Z",
       "document_id": "2607688",
       "headers": {
         "ETag": null,
@@ -1420,8 +1427,8 @@
       "tools": [
         "chat"
       ],
-      "sha256": "a7f1ce8c35f763da8a12c746da84d682af9efda6c992e7d86b60d8f823e29bf7",
-      "bytes": 27467,
+      "sha256": "f6fc3357390d9d5793454e4e22f4a7b9e219c07d47ea4951478493e615d82397",
+      "bytes": 27817,
       "models": [
         "doubao",
         "doubao-seed-2-1-pro-260915"
@@ -1435,7 +1442,7 @@
         "https://docs.volcengine.com/docs/87772/2272951?lang=zh#yQ0Kqmsy"
       ],
       "title": "联网搜索工具",
-      "updated_at": "2026-10-09T06:36:34Z",
+      "updated_at": "2026-10-14T07:16:41Z",
       "document_id": "1756990",
       "headers": {
         "ETag": null,

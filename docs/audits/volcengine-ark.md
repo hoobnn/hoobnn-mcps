@@ -1,6 +1,6 @@
 # 火山方舟 MCP 官方接口审计
 
-核实时间：2026-10-10（Asia/Shanghai）。范围为 `servers/volcengine-ark` 全部业务工具、模型别名和恢复调用；未向生成、对话、向量接口发送真实请求。结果区分「官方正文确认」「差异已修正」「账号/实际运行无法确认」。官方目录、接口文档能证明公开契约，不能证明本账号模型权限、线上输出或计费结果。
+最近复核：2026-10-23（Asia/Shanghai）；首次完整审计为 2026-10-10。范围为 `servers/volcengine-ark` 全部业务工具、模型别名和恢复调用；本次重抓 17/17 官方来源并审查最新差异，未向生成、对话、向量接口发送真实请求。结果区分「官方正文确认」「差异已修正」「账号/实际运行无法确认」。官方目录、接口文档能证明公开契约，不能证明本账号模型权限、线上输出或计费结果。
 
 ## 完整工具与接口映射
 
@@ -23,12 +23,12 @@
 
 ## 模型别名与公开目录
 
-以下 ID 已逐项在[官方模型目录](https://docs.volcengine.com/docs/ark/model-list?lang=zh)及相应教程确认；目录正文更新时间为 `2026-10-09T09:49:07Z`。
+以下 ID 已逐项在[官方模型目录](https://docs.volcengine.com/docs/ark/model-list?lang=zh)及相应教程确认；最近复核目录正文更新时间为 `2026-10-21T06:43:28Z`。
 
 | 工具 / 别名 | 固定模型 ID | 状态 |
 |---|---|---|
 | 图片 `pro`（保留默认） | `doubao-seedream-5-0-pro-260628` | 官方仍列出。 |
-| 图片 `lite` | `doubao-seedream-5-0-260128` | 仍列出；目录标注相关lite旧版本即将下线，需跟踪公告，不能据此自动替换默认。 |
+| 图片 `lite` | `doubao-seedream-5-0-260128` | 2026-11-24 14:00（UTC+8）关停且不自动迁移；保留原映射，期限前提示、到期后本地拒绝新生成。普通生图可显式选pro/flash；组图、搜索、3K/4K无已核实的等价替代。 |
 | 图片 `flash`（本次补齐） | `doubao-seedream-5-0-flash-260915` | 最新目录及[pro/flash教程](https://docs.volcengine.com/docs/ark/seedream-5-0-pro?lang=zh)确认；无需修改现有默认。 |
 | 视频 `seedance`（保留默认） | `doubao-seedance-2-5-260628` | [2.5教程](https://docs.volcengine.com/docs/ark/seedance-2-5?lang=zh)确认。 |
 | 视频 `seedance-2` | `doubao-seedance-2-0-260128` | [2.0系列教程](https://docs.volcengine.com/docs/ark/seedance-2-0?lang=zh)确认。 |
@@ -69,7 +69,7 @@
 
 ### 对话、搜索与向量
 
-[Chat API](https://docs.volcengine.com/docs/ark/chat-api?lang=zh)与[Responses API](https://docs.volcengine.com/docs/ark/create-model-responses-api?lang=zh)的输入类型、thinking、JSON输出字段已匹配。thinking是enabled/disabled/auto，本工具bool只覆盖前两者，auto可经parameters配置。max_tokens/max_output_tokens含义不同，Responses计入回答+思维链，Chat随模型定义。temperature通常0–2，部分旧模型固定为1；目前依赖服务端模型校验。
+[Chat API](https://docs.volcengine.com/docs/ark/chat-api?lang=zh)与[Responses API](https://docs.volcengine.com/docs/ark/create-model-responses-api?lang=zh)的输入类型、thinking、JSON输出字段已匹配。2026-10-22 正文将 thinking.type 列为 enabled/disabled，已删除 auto 枚举；本工具 bool 映射这两个值，不再推荐通过 parameters 传 auto。正文枚举删除不能单独证明云端已经拒绝该值。max_tokens/max_output_tokens含义不同，Responses计入回答+思维链，Chat随模型定义。temperature通常0–2，部分旧模型固定为1；目前依赖服务端模型校验。
 
 [搜索指南](https://docs.volcengine.com/docs/ark/web-search?lang=zh)还包含扩展搜索工具；当前MCP只选择基础web_search，不等于全部Search/Agent能力。真实搜索是否执行、次数和结果来源仍需云端响应验证。
 
@@ -98,8 +98,30 @@
 - `ark-seedance-2-5`：示例素材迁移到 arkdocs 域名、体验中心链接更新、所有示例新增 `watermark: true`；Draft 转正式视频的 `resolution` 由「默认且仅支持 1080p」改为「必须传入，仅支持 1080p」。示例取值不改变 API 默认值，本工具始终显式发送 watermark；本工具不支持 `content.draft_task`（parameters 不能覆盖 content），且每次都发送 resolution，因此不受影响。
 - `ark-seedream-4-0-5-0`、`ark-seedream-5-0-pro`：示例改为 `watermark: true`、Python SDK 包名改为 `arkruntime`、Java 示例改用 FAST 提示词优化并注明 ark-runtime ≥0.6.0、素材迁移域名、提示块缩进调整；参考数量、尺寸档位、像素范围和 1.5K/1K 同价说明均未变。
 
+## 2026-10-23 上游正文复核（review/4b20446b…）
+
+本次 17/17 官方来源抓取成功、0 错误；相对上一份待审基线新增 8 项正文变化，与 2026-10-13 已核实基线相比累计 10 篇变化。已保留旧 review，并通过 `scripts/upstream_pr.stage` 单独更新方舟基线、最新 review 与内容寻址快照，没有接受其他平台基线。
+
+|变化 |实现与处理结果 |
+|---|---|
+|Responses 新要求 assistant 的 output_text 消息显式携带 type=message |已修复。转换深拷贝后的 history，同时支持 Chat text 转换和已传入 output_text 的历史；原始 history、普通 Chat 路径不变。 |
+|Chat/Responses 删除 thinking.type=auto 枚举，部分消息 content 与工具关联 ID 放宽为可选 |已修订说明；工具 bool 本来就映射 enabled/disabled。当前工具仍要求非空本轮 prompt，不因上游放宽消息要求而扩展其输入语义。 |
+|下线公告明确生图/生视频不自动迁移，并列出 Seedream lite 的关停结果 |保留 lite 原映射，期限前返回并保存 model_lifecycle 提示；自 2026-11-24 14:00（UTC+8）起，lite 别名和两个已知完整 ID 的新生成本地报 model_retired，不创建任务、不发请求。get_job/recover_job 仍可交付已有结果。 |
+|lite 推荐替代为 pro，但能力不等价 |中英 README 和工具说明列明迁移方法：普通生图显式改用 pro/flash，最多10张参考图且重新选择合法尺寸；组图、搜索、3K/4K没有已核实的等价替代，不静默替换别名。不透明 Endpoint ID 仍由服务端识别底层型号。 |
+|模型目录新增 deepseek-v4-1-flash-261017、deepseek-v4-1-flash-economy-261017 |已有完整模型 ID 路径可构造请求，补充文档与工具说明；未增加隐式别名或改变默认 chat pro（doubao-seed-2-1-pro-260628），该默认值不在本批下线范围。 |
+|视频 API 将 reference_video/reference_audio 的 role 标为必填；查询新增 expired、draft 字段 |已有提交构造始终携带 role；poll_video 已将 expired 视为失败终态，draft 保留在完整 response，不会丢失。无需改协议或改变任务状态语义。 |
+|Seedance 2.5 与创建 API 补充 Draft ID 自 created_at 起7天有效 |已补充中英 README 和工具说明。当前可创建480p Draft，尚未接入 content.draft_task 转正式成片，不把新增说明误报为已支持完整两步流程。教程其余差异为示例、素材和导出格式。 |
+|图片透明背景说明改写；联网搜索加强必须开通组件的提醒 |图片参数与限制未变，已有透明图预检保持；搜索前开通组件已在中英 README 说明。未发送权限探测或搜索请求。 |
+|目录新增 System One API（beta）决策评估、后台工具任务、会话任务等文档 |属于未接入的独立产品/接口，不改变本 MCP 现有端点；记录发现结果，不宣称已支持。删除的旧目录/测试页没有被 sources 或代码引用。 |
+
+截至本次复核，Base URL、Bearer API Key 鉴权、文本/多模态向量接口及 Seedream pro/flash 参数均无新契约变化。抓取 sources 仍覆盖现有工具，未将新增独立产品页冒充当前已实现能力。
+
+本轮新增 4 项行为回归：两种 Responses 路由的 assistant 历史类型及深层输入不变、普通 Chat 历史不变、lite 截止前保留组图/搜索/4K并持久化提示且跨截止仍可恢复、截止时刻及之后不产生生成请求或任务。包内 **33 项测试通过**；离线回归不证明云端是否已拒绝旧字段或账号能调用新增型号。
+
+另有 **18 项 upstream 文档链路测试通过**，全部来源的工具覆盖与共享源码漂移检查通过，17份基线快照解压后 SHA-256 与记录一致。独立 worktree 虚拟环境的真实 stdio 验证完成初始化、工具发现、帮助与错误语义、capability 输出 schema 及 lite 生命周期信息；导入路径确认属于本次 worktree，没有借主目录旧源码通过检查。
+
 ## 验证与未确认边界
 
-本次新增 `test_official_contracts.py`，验证官方限制映射、flash能力、参数覆盖后的预检、图片格式识别、JPEG尾帧名称；与既有jobs故障测试一起执行。离线测试不证明本账号权限、线上输出规格、搜索实际调用、云端费用或媒体质量。
+初审新增 `test_official_contracts.py`，验证官方限制映射、flash能力、参数覆盖后的预检、图片格式识别、JPEG尾帧名称；2026-10-23 的增量回归见上节，并与既有 jobs 故障测试一起执行。离线测试不证明本账号权限、线上输出规格、搜索实际调用、云端费用或媒体质量。
 
 仍需日后在明确授权的账号上验证：旧文本嵌入模型可用性、文本接口dimensions支持、Endpoint映射后的真实模型限制、输入远程素材格式与时长、最新版模型的真实Responses/搜索组合，以及图层/透明结果是否满足交付要求。本次未发任何真实付费请求。

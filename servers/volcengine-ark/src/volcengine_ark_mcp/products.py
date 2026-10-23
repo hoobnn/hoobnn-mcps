@@ -262,6 +262,9 @@ def chat(prompt, model, system=None, history=None, images=None, videos=None, thi
                     elif kind in ("image_url", "video_url"):
                         item["type"] = "input_image" if kind == "image_url" else "input_video"
                         item[kind] = item[kind]["url"]
+                if message.get("role") == "assistant" and any(
+                        item.get("type") == "output_text" for item in message["content"]):
+                    message["type"] = "message"
         body = {"model": model, "input": inputs, "stream": False}
         if previous_response_id:
             body["previous_response_id"] = previous_response_id
