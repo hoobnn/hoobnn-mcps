@@ -16,6 +16,8 @@
 
 原名 `seedream-mcp`（PyPI 上该名已被他人占用），0.4 起改名，不保留旧命令和 `SEEDREAM_*` 环境变量。
 
+`0.6.2` 修复 Responses 多轮 assistant 历史的消息类型；新增 Seedream lite 下线提示，并在官方截止时间后拒绝新生成。已有任务仍可恢复，不会自动替换成能力不同的模型。
+
 `0.6.0` 去掉 `query_video`：视频进度统一用 `get_job(job_id=...)` 或 `get_job(task_id=...)` 查询，完成时自动下载；`generate_image` 新增 `parameters`。这是不兼容变更。
 
 ## Seedream 图片生成

@@ -14,6 +14,8 @@
 
 豆包语音云 API 的 stdio MCP server。接口依据[官方目录](https://docs.volcengine.com/docs/DoubaoVoice/list?lang=zh)于 2026-10-10 核对。
 
+`0.5.0` 将播客默认通道改为 HTTP SSE，持久保存真实会话 ID、完整轮次与续传回执；需要历史通道时显式传 `transport="websocket"`。实时会话新增 `mode="seed"` 的图像 / 视频帧输入及取消播放状态，原 `legacy` 模式仍为默认。
+
 `0.4.0` 按用途重组工具：一件事只有一个入口，常用能力全部是具名参数，只剩 `speech_raw_request` 需要手写官方 JSON。默认暴露 18 个工具（原 29 个）；实时会话和管理接口改为按需启用。这是不兼容变更，旧工具名不保留别名，对照见下方[迁移](#从-03x-迁移)。
 
 | 工具 | 作用 | 接口 / 模型 |

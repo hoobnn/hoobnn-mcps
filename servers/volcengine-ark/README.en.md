@@ -16,6 +16,8 @@ An MCP server for Volcengine Ark: generate and edit images with Seedream 5.0, Se
 
 Formerly `seedream-mcp` (that name is taken on PyPI by someone else). Renamed in 0.4; the old command and the `SEEDREAM_*` environment variables are not kept.
 
+`0.6.2` fixes assistant history message types on the Responses path. It adds Seedream lite retirement notices and rejects new generation after the official deadline; existing tasks remain recoverable, with no automatic switch to a model with different capabilities.
+
 `0.6.0` removes `query_video`: check video progress with `get_job(job_id=...)` or `get_job(task_id=...)`, which downloads the result on completion; `generate_image` gains `parameters`. This is a breaking change.
 
 ## Seedream image generation

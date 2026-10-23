@@ -14,6 +14,8 @@ An MCP server for Doubao Speech.
 
 A stdio MCP server for the Doubao Speech cloud APIs. Endpoints were checked against the [official catalog](https://docs.volcengine.com/docs/DoubaoVoice/list?lang=zh) on 2026-10-10.
 
+`0.5.0` switches podcast generation to HTTP SSE by default, persisting the real session ID, complete rounds and resume receipts; pass `transport="websocket"` to use the historical path. Realtime sessions gain image / video-frame input and cancellation playback state through `mode="seed"`; `legacy` remains the default realtime mode.
+
 `0.4.0` reorganizes the tools by purpose: each task has a single entry point, common capabilities all use named parameters, and only `speech_raw_request` still needs hand-written official JSON. 18 tools are exposed by default (previously 29); realtime sessions and management APIs are now opt-in. This is a breaking change and old tool names have no aliases; see [migration](#migrating-from-03x) below for the mapping.
 
 | Tool | What it does | Endpoint / model |
