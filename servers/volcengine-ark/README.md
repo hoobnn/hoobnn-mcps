@@ -28,6 +28,14 @@
 
 三个模型都支持文生图和单图 / 多图参考生图。模型不支持的参数组合会在本地直接报错，不发请求。
 
+### lite 下线与迁移
+
+根据[官方下线公告](https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh)，`doubao-seedream-5-0-260128` / `doubao-seedream-5-0-lite-260128` 将于 **2026-11-24 14:00（UTC+8）关停，不会自动迁移**。
+
+`model="lite"` 保留原型号与能力；期限前生成结果和任务记录返回 `model_lifecycle`（下线时间、替代型号和能力差异），`list_capabilities` 也列出此信息。从该时刻起，别名及两个完整 ID 的新生成在本地返回 `error_code="model_retired"`，不发请求、不创建任务。已有结果仍可用 `get_job` / `recover_job` 补交付。无法识别的 Endpoint ID 由服务端判断其真实型号。
+
+普通生图可显式改用 `pro`（公告推荐型号）或 `flash`，将参考图减少到最多 10 张，尺寸改为 1K / 1.5K / 2K 或对应合法像素范围。**组图、联网搜索、3K / 4K 暂无已核实的等价替代**；pro/flash 不支持这些选项，不能通过更改别名保持原功能。
+
 ## 安装
 
 ```bash
@@ -75,13 +83,17 @@ uv tool install volcengine-ark-mcp
 
 `parameters` 可传官方顶层选项，如 `draft`、`return_last_frame`、`output_format`；不能覆盖模型和输入素材。
 
+`draft=true` 只支持 `resolution="480p"`，Draft 任务 ID 自 `created_at` 起有效 7 天。本工具可创建和查询 Draft，尚不支持通过 `content.draft_task` 转正式视频；该流程不能仅通过 `parameters` 接入。
+
 ### 对话与检索
 
 `chat` 默认 `pro` 为 `doubao-seed-2-1-pro-260628`，也可显式指定模型；与生图工具中的 pro 别名含义不同。
 
 `images` 支持本地图片，`videos` 须公开 URL。不开搜索时使用 Chat API；开启 `web_search` 或提供 `previous_response_id` 时使用 Responses API。
 
-多轮历史采用 Chat 消息结构，Responses 会转换本轮多模态内容；保留 `response_id`、来源注解；完整响应用 `include_response=true` 按需获取。`parameters` 透传模型支持的高级选项，不执行模型返回的工具调用。
+多轮历史采用 Chat 消息结构；Responses 在副本中转换内容，assistant 的 `output_text` 消息显式携带 `type="message"`，不会修改调用者的 history。保留 `response_id`、来源注解；完整响应用 `include_response=true` 按需获取。`thinking=true/false` 对应 `enabled/disabled`，2026-10-22 的 Chat/Responses API 已不再列出 `thinking.type="auto"`。`parameters` 透传模型支持的高级选项，不执行模型返回的工具调用。联网搜索前须开通相应搜索组件。
+
+可显式传入目录新增的 `deepseek-v4-1-flash-261017`、`deepseek-v4-1-flash-economy-261017`；默认 `pro` 保持不变。这仅表示请求支持完整模型 ID，不代表账号权限或云端结果已验证。目录新增的 System One API（beta）决策评估是独立接口，本工具尚未接入。
 
 向量工具须显式指定模型：`texts` 为文本列表；`contents` 为官方类型化数组，例如：
 
@@ -117,7 +129,7 @@ uv tool install volcengine-ark-mcp
 
 ## 官方接口核实
 
-逐工具映射、模型版本、参数差异和可程序化获取的官方文档来源见 [火山方舟接口审计](https://github.com/hoobnn/hoobnn-mcps/blob/main/docs/audits/volcengine-ark.md)。本地校验依据 2026-10-10 官方文档快照；账号权限及实际云端生成仍未验证。
+逐工具映射、模型版本、参数差异和可程序化获取的官方文档来源见 [火山方舟接口审计](https://github.com/hoobnn/hoobnn-mcps/blob/main/docs/audits/volcengine-ark.md)。2026-10-23 重抓 17/17 官方来源，完成 Responses 历史、lite 下线边界与恢复的离线回归；账号权限及实际云端生成仍未验证。
 
 ## 许可证
 

@@ -6,6 +6,7 @@ import os
 import re
 import urllib.error
 import urllib.request
+from datetime import datetime, timezone
 
 from . import transport
 from .mcp_runtime import merge_parameters
@@ -19,6 +20,24 @@ MODELS = {
 }
 MAX_REF = {"pro": 10, "flash": 10, "lite": 14}
 IMAGE_EXT = {"png", "jpeg", "jpg", "webp", "bmp", "tiff", "tif", "gif", "heic", "heif"}
+LITE_MODEL_IDS = {"doubao-seedream-5-0-260128", "doubao-seedream-5-0-lite-260128"}
+LITE_EOS = datetime(2026, 11, 24, 6, 0, tzinfo=timezone.utc)
+DEPRECATION_DOC = "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh"
+
+
+def image_model_lifecycle(model):
+    """Known public IDs only; an opaque Endpoint ID remains provider-validated."""
+    if model not in LITE_MODEL_IDS:
+        return None
+    retired = datetime.now(timezone.utc) >= LITE_EOS
+    return {"status": "retired" if retired else "deprecated", "eos_at": "2026-11-24T14:00:00+08:00",
+            "replacement_model": MODELS["pro"], "automatic_migration": False,
+            "capability_changes": ["pro/flash 不支持组图、联网搜索、3K/4K，且最多 10 张参考图"],
+            "notice": ("Seedream 5.0 lite 已于" if retired else "Seedream 5.0 lite 将于")
+                      + " 2026-11-24 14:00 (UTC+8) 关停，不会自动迁移。"
+                        "普通生图请显式改用 model=pro 或 flash，并调整能力与尺寸；"
+                        "组图、联网搜索、3K/4K 暂无已核实的等价替代。",
+            "docs": DEPRECATION_DOC}
 
 
 class InputError(ValueError):
@@ -30,7 +49,7 @@ def family(model):
         return "flash"
     if "seedream-5-0-pro" in model:
         return "pro"
-    if "seedream-5-0-26" in model:
+    if model in LITE_MODEL_IDS or "seedream-5-0-26" in model:
         return "lite"
     return None  # Endpoint ID 等无法识别的，跳过本地校验，交给服务端
 
@@ -158,6 +177,11 @@ def generate(o, out_dir, timeout=300, mode="local"):
     model = MODELS.get(o["model"], o["model"])
     result = {"ok": False, "model": model, "files": [], "layers": [], "usage": None,
               "errors": [], "error": None, "out_dir": None}
+    lifecycle = image_model_lifecycle(model)
+    if lifecycle:
+        result["model_lifecycle"] = lifecycle
+        if lifecycle["status"] == "retired":
+            return {**result, "error": lifecycle["notice"], "error_code": "model_retired", "retryable": False}
     try:
         err = check(o, family(model))
         body = None if err else build_body(o, model, mode)
@@ -172,6 +196,9 @@ def generate(o, out_dir, timeout=300, mode="local"):
                        summary={"size": o["size"], "group": o["group"], "layers": o["layers"],
                                 "output_format": o["output_format"] or ("png" if o["transparent"] else "jpeg")})
     with STORE.processing(job):
+        if lifecycle:
+            job["result"]["model_lifecycle"] = lifecycle
+            STORE.save(job)
         resp, err = post(body, timeout)
         if err:
             job.update(error=err, state="failed" if err.startswith(("HTTP 4", "未设置")) else "unknown")
