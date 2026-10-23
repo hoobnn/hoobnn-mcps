@@ -271,6 +271,29 @@ class OfficialContracts(unittest.TestCase):
                 self.assertEqual(recovered["usage"], expected)
                 self.assertEqual(request.call_count, 1)
 
+    def test_completed_legacy_tts_recovery_normalizes_usage_without_generation(self):
+        import wave
+        audio = self.root / "speech.wav"
+        with wave.open(str(audio), "wb") as output:
+            output.setnchannels(1)
+            output.setsampwidth(2)
+            output.setframerate(24000)
+            output.writeframes(b"\x00\x00" * 24)
+        model = "qwen-audio-3.1-tts-flash"
+        plan = {"options": tts(model=model, voice=model + "-me-1"), "chunks": [
+            {"text": "old", "state": "generated", "url": "https://example.test/old.wav", "usage": 5}]}
+        job = products.STORE.create("tts", model, self.root, "local", resume=plan)
+        job.update(state="delivered", usage={"characters": 5}, result={
+            "speech_file": str(audio), "speech_integrity": jobs.fingerprint(audio)})
+        products.STORE.save(job)
+        with patch.object(media, "request") as request, patch.object(jobs, "download") as download:
+            result = products.recover(job["job_id"])
+            self.assertTrue(result["ok"], result)
+            self.assertEqual(result["usage"], {"legacy_untyped": 5})
+            self.assertEqual(products.STORE.load(job["job_id"])["usage"], {"legacy_untyped": 5})
+            request.assert_not_called()
+            download.assert_not_called()
+
     def test_retired_asr_snapshots_rejected_and_current_id_sent(self):
         with patch.object(media, "request") as request:
             for model in ["qwen3-asr-flash-2025-09-08", "qwen3-asr-flash-2026-02-10", "qwen3-asr-flash-2025-09-08-us"]:

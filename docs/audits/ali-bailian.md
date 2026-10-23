@@ -147,4 +147,4 @@ curl --fail --location https://help.aliyun.com/zh/model-studio/list-models.md
 
 2026-10-13 语音迁移后，百炼包 **43 项离线测试通过**：新增复刻 / 设计请求体与本地校验、设计试听交付与恢复不重建、缺音色 ID 不重试、kind 旧值映射、SpeechSynthesizer 路由与请求体、指令长度及模型限制、ASR 下线快照拒绝等回归，全部 mock，无真实付费请求。
 
-2026-10-23更新后，百炼包 **50项离线测试通过**，上游文档/PR流程 **19项测试通过**；来源覆盖检查通过（全库143来源，本平台36来源）。新增回归覆盖本地录音与Data URI、url冲突/大小/格式、3.1-plus设计恢复/TTS路由、产品指令长度差异、按单位累加usage及旧任务恢复、MiniMax思考协议/本地拒绝、搜索统计保留、DeepSeek/Xiaomi候选提取。真实stdio发现19个工具，验证audio/url输入schema、互斥及非法Data URI拒绝和最新chat帮助；父/子进程均校验模块来自PR独占worktree，provider请求数为0。测试通过不表示新模型或地域云端验收。
+2026-10-23更新后，百炼包 **51项离线测试通过**，上游文档/PR流程 **19项测试通过**；来源覆盖检查通过（全库143来源，本平台36来源）。新增回归覆盖本地录音与Data URI、url冲突/大小/格式、3.1-plus设计恢复/TTS路由、产品指令长度差异、按单位累加usage及旧任务恢复（含已完整交付任务的提前返回路径）、MiniMax思考协议/本地拒绝、搜索统计保留、DeepSeek/Xiaomi候选提取。真实stdio发现19个工具，验证audio/url输入schema、互斥及非法Data URI拒绝和最新chat帮助；父/子进程均校验模块来自PR独占worktree，provider请求数为0。测试通过不表示新模型或地域云端验收。

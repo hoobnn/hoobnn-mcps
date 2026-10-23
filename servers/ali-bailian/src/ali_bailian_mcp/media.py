@@ -222,6 +222,8 @@ def resume_tts(job):
     if job["state"] == "delivered" and final:
         from .jobs import fingerprint
         if Path(final).is_file() and fingerprint(final) == job["result"].get("speech_integrity"):
+            job["usage"] = tts_usage(plan["chunks"])
+            STORE.save(job)
             return STORE.result(job)
     for i, chunk in enumerate(plan["chunks"]):
         if chunk["state"] == "unknown":
