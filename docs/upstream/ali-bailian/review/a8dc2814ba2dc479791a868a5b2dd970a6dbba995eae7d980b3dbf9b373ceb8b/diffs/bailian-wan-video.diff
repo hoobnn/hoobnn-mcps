@@ -1,0 +1,11 @@
+--- reviewed/ali-bailian/bailian-wan-video
++++ current/ali-bailian/bailian-wan-video
+@@ -745,7 +745,7 @@
+ 
+           <strong>video\_url</strong> `string`
+ 
+-          生成视频的URL地址。任务成功时返回。
++          生成视频的URL地址。任务成功时返回。视频格式为 MP4（H.264 编码）。
+ 
+           <strong>code</strong>`string`
+ 

@@ -1,0 +1,382 @@
+--- reviewed/ali-bailian/bailian-chat
++++ current/ali-bailian/bailian-chat
+@@ -162,7 +162,7 @@
+ 
+               <strong>video</strong>`array`
+ 
+-              输入的<strong>图片列表形式的视频信息</strong>。当`type`为`video`时是必选参数。使用方法请参见：[视频理解（Qwen-VL）](/zh/model-studio/vision#80dbf6ca8fh6s)、[视频理解（QVQ）](/zh/model-studio/visual-reasoning)或[视频理解（Qwen-Omni）](/zh/model-studio/qwen-omni)。
++              输入的<strong>图片列表形式的视频信息</strong>。当`type`为`video`时是必选参数。使用方法请参见：[视频理解（Qwen-VL、QVQ）](/zh/model-studio/vision#80dbf6ca8fh6s)或[视频理解（Qwen-Omni）](/zh/model-studio/qwen-omni)。
+ 
+               示例值：
+ 
+@@ -191,14 +191,14 @@
+ 
+               每秒抽帧数。取值范围为 \[0.1, 10]，默认值为2.0。
+ 
+-              > MiniMax/MiniMax-M3 的 fps 取值范围为 \[0.2, 5]，默认值为 1。
++              > MiniMax/MiniMax-M3.1-Flash 和 MiniMax/MiniMax-M3 的 fps 取值范围为 \[0.2, 5]，默认值为 1。
+ 
+               <Accordion title="功能说明">
+                 fps有两个功能：
+ 
+                 - 输入视频文件时，控制抽帧频率，每 `1/fps` 秒抽取一帧。
+ 
+-                  > 适用于 [Qwen-VL](/zh/model-studio/vision)、[MiniMax/MiniMax-M3](/zh/model-studio/minimax-api-by-minimax) 与[QVQ 模型](/zh/model-studio/visual-reasoning)。
++                  > 适用于 [Qwen-VL 与 QVQ](/zh/model-studio/vision)、[MiniMax/MiniMax-M3.1-Flash 和 MiniMax/MiniMax-M3](/zh/model-studio/minimax-api-by-minimax) 模型。
+                 - 告知模型相邻帧之间的时间间隔，帮助其更好地理解视频的时间动态。同时适用于输入视频文件与图像列表时。该功能同时支持视频文件和图像列表输入，适用于事件时间定位或分段内容摘要等场景。
+ 
+                   > 支持Qwen3.7、Qwen3.6、Qwen3.5、`Qwen3-VL`、`Qwen2.5-VL`、Qwen3.8-Omni-Flash、Qwen3.5-Omni与QVQ模型。
+@@ -440,6 +440,8 @@
+         temperature越高，生成的文本更多样，反之，生成的文本更确定。
+ 
+         取值范围： \[0, 2)
++
++        MiniMax/MiniMax-M3.1-Flash 和 MiniMax/MiniMax-M3 固定使用 `1.0`，不支持自定义；传入其他值时不会生效。
+ 
+         temperature与top\_p均可以控制生成文本的多样性，建议只设置其中一个值。更多说明，请参见[概述](/zh/model-studio/text-generation)。
+ 
+@@ -464,8 +466,8 @@
+           - GLM系列（阿里云直供）：glm-5.1、glm-5: 1.0；
+           - GLM系列（智谱直供）：ZHIPU/GLM-5.1、ZHIPU/GLM-5: 0.6；
+           - MiniMax系列（阿里云直供）：MiniMax-M2.5: 1.0；
+-          - MiniMax系列（稀宇科技直供）：MiniMax/MiniMax-M3、MiniMax/MiniMax-M2.7、MiniMax/MiniMax-M2.5、MiniMax/MiniMax-M2.1: 1.0。
+-          - MiMo系列（小米直供）：mimo-v2.5-pro: 1.0，范围 \[0, 1.5]。
++          - MiniMax系列（稀宇科技直供）：MiniMax/MiniMax-M3.1-Flash、MiniMax/MiniMax-M3、MiniMax/MiniMax-M2.7、MiniMax/MiniMax-M2.5、MiniMax/MiniMax-M2.1: 1.0。
++          - MiMo系列（小米直供）：mimo-v2.5-pro: 1.0，范围 \[0, 1.5]；xiaomi/mimo-v2.6-pro-ultraspeed: 1.0，不支持自定义，传入其他值时仍按 1.0 生效。
+         </Accordion>
+ 
+         > 不建议修改QVQ模型的默认temperature值 。
+@@ -477,6 +479,8 @@
+         top\_p越高，生成的文本更多样。反之，生成的文本更确定。
+ 
+         取值范围：（0,1.0]
++
++        MiniMax/MiniMax-M3.1-Flash 和 MiniMax/MiniMax-M3 固定使用 `0.95`，不支持自定义；传入其他值时不会生效。
+ 
+         temperature与top\_p均可以控制生成文本的多样性，建议只设置其中一个值。更多说明，请参见[概述](/zh/model-studio/text-generation)。
+ 
+@@ -507,9 +511,9 @@
+ 
+           MiniMax系列（阿里云直供）：MiniMax-M2.5: 0.95；
+ 
+-          MiniMax系列（稀宇科技直供）：MiniMax/MiniMax-M3: 0.95；MiniMax/MiniMax-M2.7、MiniMax/MiniMax-M2.5、MiniMax/MiniMax-M2.1: 0.9。
+-
+-          MiMo系列（小米直供）：xiaomi/mimo-v2.5-pro: 0.95，范围 \[0.01, 1.0]。
++          MiniMax系列（稀宇科技直供）：MiniMax/MiniMax-M3.1-Flash、MiniMax/MiniMax-M3: 0.95；MiniMax/MiniMax-M2.7、MiniMax/MiniMax-M2.5、MiniMax/MiniMax-M2.1: 0.9。
++
++          MiMo系列（小米直供）：xiaomi/mimo-v2.5-pro: 0.95，范围 \[0.01, 1.0]；xiaomi/mimo-v2.6-pro-ultraspeed: 0.95，不支持自定义，传入其他值时仍按 0.95 生效。
+         </Accordion>
+ 
+         > 不建议修改QVQ模型的默认 top\_p 值。
+@@ -651,15 +655,20 @@
+         - glm-5.2：不传入 `thinking_budget` 参数时，`max_tokens` 为模型回答与思维链内容之和的最大 Token 数，模型输出超过此值时生成将提前停止，返回的 `finish_reason` 为 `length`；传入 `thinking_budget` 参数时，`max_tokens` 仅为模型回答的最大 Token 数，思维链部分的 Token 数由 `thinking_budget` 单独控制。
+         - 其他模型：模型回答的最大 Token 数（不包含思维链）。若生成内容超过此值，生成将提前停止，返回的 `finish_reason` 为 `length`。
+ 
+-        默认值与最大值均为模型的最大输出长度。
++        GLM 模型的默认值与最大值如下表所示，其他模型的默认值与最大值均为模型的最大输出长度。
++
++| 供应方式  | 模型                                                                                             | 默认值   | 最大值    |
++| ----- | ---------------------------------------------------------------------------------------------- | ----- | ------ |
++| 阿里云直供 | glm-5.3、glm-5.2、glm-5.2-fast-preview、glm-5.1、glm-5                                             | 65536 | 131072 |
++| 智谱直供  | ZHIPU/GLM-5.3、ZHIPU/GLM-5.3-Flash、ZHIPU/GLM-5.3-FlashX、ZHIPU/GLM-5.2、ZHIPU/GLM-5.1、ZHIPU/GLM-5 | 65536 | 131072 |
+ 
+         <strong>max\_completion\_tokens</strong>`integer`（可选）
+ 
+         模型输出的最大长度，包含思维链和模型回答。模型输出超过此值时生成将提前停止，返回的 `finish_reason` 为 `length`。
+ 
+-        默认值与最大值均为模型的最大输出长度。
+-
+-        与 `max_tokens` 的区别：`max_completion_tokens` 限制模型完整输出（思维链 + 回答），而 `max_tokens` 仅限制回答部分。思考类模型推荐使用 `max_completion_tokens`。
++        GLM 模型的默认值与最大值见 `max_tokens` 参数中的表格，其他模型的默认值与最大值均为模型的最大输出长度。
++
++        与 `max_tokens` 的区别：`max_completion_tokens` 始终限制模型完整输出（思维链 + 回答）；`max_tokens` 的具体限制范围随模型及 `thinking_budget` 设置而异，见上文说明。思考类模型推荐使用 `max_completion_tokens`。
+ 
+         支持以下模型：
+ 
+@@ -667,11 +676,11 @@
+         - 千问 Plus：Qwen3.5-Plus 及之后的模型
+         - 千问 Flash：Qwen3.5-Flash 及之后的模型
+         - Kimi：kimi-k2.5 及其之后推出的Kimi模型
+-        - GLM：glm-5 及其之后推出的GLM系列模型
++        - GLM：上表所列的阿里云直供和智谱直供模型
+         - MiniMax：MiniMax-M2.5 及之后推出的MiniMax模型
+         - DeepSeek：deepseek-v4-pro 及之后推出的DeepSeek模型
+ 
+-        > 以上模型均不包含三方直供模型。
++        > 除上表所列的智谱直供 GLM 模型外，以上模型均不包含其他三方直供模型。
+ 
+         > 实际输出 Token 数与设置的 `max_completion_tokens` 值之间最多可能存在 10 个 Token 的误差。
+ 
+@@ -697,7 +706,7 @@
+ 
+         > `n=0` 等价于 `n=1`。
+ 
+-        > 仅支持 [Qwen3（非思考模式）](/zh/model-studio/deep-thinking)、qwen-plus-character 模型。
++        > 仅 [Qwen3（非思考模式）](/zh/model-studio/deep-thinking) 和 qwen-plus-character 支持将 `n` 设为大于 `1`。MiniMax/MiniMax-M3.1-Flash 和 MiniMax/MiniMax-M3 仅支持 `n=1`。
+ 
+         > 若传入 `tools` 参数， 请将`n` 设为 1。
+ 
+@@ -720,18 +729,27 @@
+ 
+         > 若不使用 OpenAI SDK，而是通过 HTTP（如 curl）方式直接调用，则无需 `extra_body`，直接将 `enable_thinking` 与 `model`、`messages` 等参数一样放在请求体（`body`）的顶层即可，例如 `"enable_thinking": true`。
+ 
+-        > 稀宇科技直供的MiniMax/MiniMax-M3 不使用此参数，请使用 `thinking` 参数。
++        > 稀宇科技直供的 MiniMax/MiniMax-M3.1-Flash 和 MiniMax/MiniMax-M3 不使用此参数，请使用 `thinking` 参数。
+ 
+         <strong>thinking</strong> `object` （可选）默认值为 `{"type":"adaptive"}`
+ 
+-        控制稀宇科技直供的MiniMax/MiniMax-M3 的思考模式。
++        控制稀宇科技直供 MiniMax 模型的思考模式。
+ 
+         `thinking.type` 可选值：
+ 
+-        - `adaptive`：自适应（默认），模型自主判断是否需要思考。
+-        - `disabled`：关闭思考，直接回答。
++        - `adaptive`：开启思考。MiniMax/MiniMax-M3.1-Flash 始终使用此模式；MiniMax/MiniMax-M3 默认使用此模式。
++        - `disabled`：关闭思考，仅 MiniMax/MiniMax-M3 支持。MiniMax/MiniMax-M3.1-Flash 设置此值时返回 400 错误。
+ 
+         > 该参数非OpenAI标准参数。通过 Python SDK调用时，请放入 <strong>extra\_body</strong> 对象中。配置方式为：`extra_body={"thinking": {"type": "adaptive"}}`。
++
++        <strong>reasoning\_split</strong> `boolean` （可选）
++
++        控制 MiniMax 思考内容的返回位置：
++
++        - `true`：通过 `reasoning_content` 字段单独返回。MiniMax/MiniMax-M3.1-Flash 仅支持此值。
++        - `false`：在 `content` 字段中以 `<think>` 标签返回。仅 MiniMax/MiniMax-M3 支持此值。
++
++        该参数非 OpenAI 标准参数。通过 Python SDK 调用时，请放入 `extra_body` 对象中，例如 `extra_body={"reasoning_split": True}`。
+ 
+         <strong>preserve\_thinking</strong> `boolean` （可选）默认值为 `false`
+ 
+@@ -763,6 +781,10 @@
+         <strong>reasoning\_effort</strong> `string` （可选）
+ 
+         控制模型的推理力度，不同模型支持的可选值和默认值不同。
++
++        <strong>MiniMax/MiniMax-M3.1-Flash</strong>（默认值为 `max`）
++
++        可选值按推理力度从低到高依次为 `low`、`medium`、`high`、`xhigh` 和 `max`。模型始终开启思考；设置 `none` 会返回 400 错误。
+ 
+         <strong>DeepSeek-V4、GLM 系列与 kimi/kimi-k3</strong>（默认值为 `high`）
+ 
+@@ -909,6 +931,8 @@
+ 
+         用于指定停止词。当模型生成的文本中出现 `stop` 指定的字符串或 `token_id` 时，生成将立即终止。
+ 
++        > MiniMax/MiniMax-M3.1-Flash 不支持此参数。传入后不会按指定停止词截断输出；请求可能仍成功且返回 `finish_reason: "stop"`，但这不表示指定停止词已生效。
++
+         可传入敏感词以控制模型的输出。
+ 
+         > stop为数组时，不可将`token_id`和字符串同时作为元素输入，比如不可以指定为`["你好",104307]`。
+@@ -947,6 +971,10 @@
+ 
+         工具选择策略。若需对某类问题强制指定工具调用方式（例如始终使用某工具或禁用所有工具），可设置此参数。
+ 
++        > MiniMax/MiniMax-M3.1-Flash 仅支持 `auto`。`none`、`required` 或指定函数名称等其他取值可能报错或不生效；指定函数名称不能保证模型调用该函数。
++
++        `deepseek-v4.1-flash-1017` 支持将 `tool_choice` 设为 `auto`、`none`、`required` 或指定函数名称。
++
+         可选值：
+ 
+         - `auto`
+@@ -969,6 +997,8 @@
+         <strong>parallel\_tool\_calls</strong> `boolean` （可选）默认值为 `false`
+ 
+         是否开启并行工具调用。相关文档：[并行工具调用](/zh/model-studio/qwen-function-calling#cb6b5c484bt4x)
++
++        > MiniMax/MiniMax-M3.1-Flash 不支持通过此参数控制工具调用的并行性。设置为 `false` 也不能保证串行调用，模型仍可能在一轮中返回多个 `tool_calls`。请按实际返回结果处理。
+ 
+         可选值：
+ 
+@@ -1028,6 +1058,19 @@
+         </Accordion>
+ 
+         > 该参数非OpenAI标准参数。通过 Python SDK调用时，请放入 <strong>extra\_body</strong> 对象中。配置方式为：`extra_body={"search_options": xxx}`。
++
++        <strong>include\_tool\_usage</strong> `boolean`（可选）默认值为 `false`
++
++        是否在响应的`usage`中返回联网搜索的调用统计。
++
++        可选值：
++
++        - `true`：在`usage`中返回`x_tools`字段。
++        - `false`：不返回。
++
++        > `x_tools`仅在本次请求实际触发了联网搜索时返回。若未开启`enable_search`，或模型自行判断无需联网搜索，即使将本参数设为`true`也不会返回该字段。
++
++        > 该参数非OpenAI标准参数。通过 Python SDK调用时，请放入 <strong>extra\_body</strong> 对象中。配置方式为：`extra_body={"include_tool_usage": True}`。
+ 
+         <strong>X-DashScope-DataInspection</strong>`string` （可选）
+ 
+@@ -2319,38 +2362,103 @@
+ 
+             使用[显式缓存](/zh/model-studio/context-cache#825f201c5fy6o)时，参数值为`ephemeral`，否则该参数不存在。
+           </Accordion>
++
++          <strong>x\_tools</strong> `object`（可选）
++
++          联网搜索的调用统计。仅当请求中`include_tool_usage`为`true`，且本次请求实际触发了联网搜索时返回。
++
++          <Accordion title="属性">
++            <strong>search</strong> `object`（可选）
++
++            联网搜索的调用统计。开启[联网搜索](/zh/model-studio/web-search)并实际触发检索时返回。
++
++            <Accordion title="属性">
++              <strong>count</strong> `integer`
++
++              本次请求中联网搜索的触发次数。使用`agent`搜索策略时，模型可进行多轮检索，该值可能大于 1。
++
++              该值在意图判定阶段即被置位，即使触发限流或检索未返回结果也会计数，不代表检索已实际完成，不作为计费或对账依据。详情请参见[账单次数与 count 字段不一致](/zh/model-studio/web-search#faq-search-billing-count-mismatch-title)。
++
++              <strong>strategy</strong> `string`
++
++              本次联网搜索实际使用的搜索量级策略，与请求中`search_options.search_strategy`的取值一致，如`turbo`、`max`、`agent`。
++            </Accordion>
++          </Accordion>
+         </Accordion>
+       </td>
+ 
+       <td style={{ verticalAlign: "top" }}>
+-        ```json expandable
+-        {
+-            "choices": [
+-                {
+-                    "message": {
+-                        "role": "assistant",
+-                        "content": "我是阿里云开发的一款超大规模语言模型，我叫千问。"
++        <Tabs>
++          <Tab title="基础响应">
++            ```json expandable
++            {
++                "choices": [
++                    {
++                        "message": {
++                            "role": "assistant",
++                            "content": "我是阿里云开发的一款超大规模语言模型，我叫千问。"
++                        },
++                        "finish_reason": "stop",
++                        "index": 0,
++                        "logprobs": null
++                    }
++                ],
++                "object": "chat.completion",
++                "usage": {
++                    "prompt_tokens": 3019,
++                    "completion_tokens": 104,
++                    "total_tokens": 3123,
++                    "prompt_tokens_details": {
++                        "cached_tokens": 2048
++                    }
++                },
++                "created": 1735120033,
++                "system_fingerprint": null,
++                "model": "qwen3.8-max",
++                "id": "chatcmpl-6ada9ed2-7f33-9de2-8bb0-78bd4035025a"
++            }
++            ```
++          </Tab>
++
++          <Tab title="联网搜索响应">
++            设置`include_tool_usage`为`true`并实际触发联网搜索时，`usage`中会增加`x_tools`字段：
++
++            ```json expandable
++            {
++                "id": "chatcmpl-4233d020-62cd-949f-94e2-444b97503856",
++                "object": "chat.completion",
++                "created": 1792037298,
++                "model": "qwen3.8-max",
++                "choices": [
++                    {
++                        "index": 0,
++                        "message": {
++                            "role": "assistant",
++                            "content": "杭州亚运会（第19届亚洲运动会）是在2023年举办的，具体举办时间为2023年9月23日至10月8日。"
++                        },
++                        "finish_reason": "stop",
++                        "logprobs": null
++                    }
++                ],
++                "usage": {
++                    "prompt_tokens": 1905,
++                    "total_tokens": 1987,
++                    "completion_tokens": 82,
++                    "prompt_tokens_details": {
++                        "cached_tokens": 0,
++                        "text_tokens": 1905
+                     },
+-                    "finish_reason": "stop",
+-                    "index": 0,
+-                    "logprobs": null
++                    "x_tools": {
++                        "search": {
++                            "count": 1,
++                            "strategy": "turbo"
++                        }
++                    }
+                 }
+-            ],
+-            "object": "chat.completion",
+-            "usage": {
+-                "prompt_tokens": 3019,
+-                "completion_tokens": 104,
+-                "total_tokens": 3123,
+-                "prompt_tokens_details": {
+-                    "cached_tokens": 2048
+-                }
+-            },
+-            "created": 1735120033,
+-            "system_fingerprint": null,
+-            "model": "qwen3.8-max",
+-            "id": "chatcmpl-6ada9ed2-7f33-9de2-8bb0-78bd4035025a"
+-        }
+-        ```
++            }
++            ```
++          </Tab>
++        </Tabs>
+       </td>
+     </tr>
+   </tbody>
+@@ -2606,6 +2714,28 @@
+             <strong>cache\_type</strong> `string`
+ 
+             缓存类型，固定为`ephemeral`。
++          </Accordion>
++
++          <strong>x\_tools</strong> `object`（可选）
++
++          联网搜索的调用统计。仅当请求中`include_tool_usage`为`true`，且本次请求实际触发了联网搜索时返回，随`usage`在最后一个 chunk 中显示。
++
++          <Accordion title="属性">
++            <strong>search</strong> `object`（可选）
++
++            联网搜索的调用统计。开启[联网搜索](/zh/model-studio/web-search)并实际触发检索时返回。
++
++            <Accordion title="属性">
++              <strong>count</strong> `integer`
++
++              本次请求中联网搜索的触发次数。使用`agent`搜索策略时，模型可进行多轮检索，该值可能大于 1。
++
++              该值在意图判定阶段即被置位，即使触发限流或检索未返回结果也会计数，不代表检索已实际完成，不作为计费或对账依据。详情请参见[账单次数与 count 字段不一致](/zh/model-studio/web-search#faq-search-billing-count-mismatch-title)。
++
++              <strong>strategy</strong> `string`
++
++              本次联网搜索实际使用的搜索量级策略，与请求中`search_options.search_strategy`的取值一致，如`turbo`、`max`、`agent`。
++            </Accordion>
+           </Accordion>
+         </Accordion>
+       </td>
+@@ -2623,6 +2753,12 @@
+         {"id":"chatcmpl-e30f5ae7-3063-93c4-90fe-beb5f900bd57","choices":[{"delta":{"content":"","function_call":null,"refusal":null,"role":null,"tool_calls":null},"finish_reason":"stop","index":0,"logprobs":null}],"created":1735113344,"model":"qwen3.8-max","object":"chat.completion.chunk","service_tier":null,"system_fingerprint":null,"usage":null}
+         {"id":"chatcmpl-e30f5ae7-3063-93c4-90fe-beb5f900bd57","choices":[],"created":1735113344,"model":"qwen3.8-max","object":"chat.completion.chunk","service_tier":null,"system_fingerprint":null,"usage":{"completion_tokens":17,"prompt_tokens":22,"total_tokens":39,"completion_tokens_details":null,"prompt_tokens_details":{"audio_tokens":null,"cached_tokens":0}}}
+         ```
++
++        设置`include_tool_usage`为`true`并实际触发联网搜索时，最后一个 chunk 的`usage`中会增加`x_tools`字段：
++
++        ```json
++        {"id":"chatcmpl-6076672d-ea69-9497-86bc-a5a9c9354662","object":"chat.completion.chunk","created":1792037303,"model":"qwen3.8-max","choices":[],"usage":{"prompt_tokens":1905,"total_tokens":1984,"completion_tokens":79,"prompt_tokens_details":{"cached_tokens":0,"text_tokens":1905},"x_tools":{"search":{"count":1,"strategy":"turbo"}}}}
++        ```
+       </td>
+     </tr>
+   </tbody>

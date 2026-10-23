@@ -1,0 +1,627 @@
+--- reviewed/ali-bailian/bailian-model-pricing
++++ current/ali-bailian/bailian-model-pricing
+@@ -82,34 +82,6 @@
+       </thead>
+ 
+       <tbody>
+-        <tr>
+-          <td style={{ verticalAlign: "top" }}>
+-            qwen3.8-max-prime
+-
+-            > 更多详情参考[优速模式（Prime）](/zh/model-studio/prime-mode)
+-          </td>
+-
+-          <td style={{ verticalAlign: "top" }}>
+-            非思考和思考模式
+-          </td>
+-
+-          <td style={{ verticalAlign: "top" }}>
+-            0\<Token≤1M
+-          </td>
+-
+-          <td style={{ verticalAlign: "top" }}>
+-            24元
+-          </td>
+-
+-          <td style={{ verticalAlign: "top" }}>
+-            72元
+-          </td>
+-
+-          <td style={{ verticalAlign: "top" }}>
+-            无免费额度
+-          </td>
+-        </tr>
+-
+         <tr>
+           <td style={{ verticalAlign: "top" }}>
+             qwen3.8-max
+@@ -9703,6 +9675,8 @@
+ 
+ 计费规则：按输入Token和输出Token计费。
+ 
++部分模型按峰谷价格计费（见下表标注的忙时、闲时单价）：忙时为北京时间 08:00 至 22:00，闲时为北京时间 22:00 至次日 08:00。
++
+ 影响计费的因素：若模型支持[Batch调用](/zh/model-studio/batch-interfaces-compatible-with-openai)，其输入和输出Token单价均按实时推理价格的50%计费。
+ 
+ <Note>
+@@ -9711,8 +9685,6 @@
+ 
+ <Note>
+   DeepSeek-V4-Flash-0731 已于 2026-08-17 00:00 起调整为峰谷定价模式，调整后单价可见下表，更多信息详见[DeepSeek-V4-Flash-0731 模型涨价通知](https://www.aliyun.com/notice/118555)。
+-
+-  其中，忙时为北京时间 8:00 - 22:00，闲时为北京时间 22:00 - 次日 8:00。
+ </Note>
+ 
+ <Tabs>
+@@ -9755,6 +9727,30 @@
+       <tbody>
+         <tr>
+           <td style={{ verticalAlign: "top" }}>
++            deepseek-v4.1-flash-1017
++
++            > [上下文缓存](/zh/model-studio/context-cache)享有折扣
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            忙时 2元
++
++            闲时 1元
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            忙时 8元
++
++            闲时 4元
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            100万Token
++          </td>
++        </tr>
++
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
+             deepseek-v4.1-flash
+ 
+             > [上下文缓存](/zh/model-studio/context-cache)享有折扣
+@@ -9911,6 +9907,30 @@
+       <tbody>
+         <tr>
+           <td style={{ verticalAlign: "top" }}>
++            deepseek-v4.1-flash-1017
++
++            > [上下文缓存](/zh/model-studio/context-cache)享有折扣
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            全球
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            忙时 2元
++
++            闲时 1元
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            忙时 8元
++
++            闲时 4元
++          </td>
++        </tr>
++
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
+             deepseek-v4.1-flash
+ 
+             > [上下文缓存](/zh/model-studio/context-cache)享有折扣
+@@ -10085,6 +10105,30 @@
+       <tbody>
+         <tr>
+           <td style={{ verticalAlign: "top" }}>
++            deepseek-v4.1-flash-1017
++
++            > [上下文缓存](/zh/model-studio/context-cache)享有折扣
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            国际
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            忙时 2.188元
++
++            闲时 1.094元
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            忙时 8.75元
++
++            闲时 4.375元
++          </td>
++        </tr>
++
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
+             deepseek-v4.1-flash
+ 
+             > [上下文缓存](/zh/model-studio/context-cache)享有折扣
+@@ -10215,6 +10259,30 @@
+       <tbody>
+         <tr>
+           <td style={{ verticalAlign: "top" }}>
++            deepseek-v4.1-flash-1017
++
++            > [上下文缓存](/zh/model-studio/context-cache)享有折扣
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            全球
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            忙时 2元
++
++            闲时 1元
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            忙时 8元
++
++            闲时 4元
++          </td>
++        </tr>
++
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
+             deepseek-v4.1-flash
+ 
+             > [上下文缓存](/zh/model-studio/context-cache)享有折扣
+@@ -10345,6 +10413,30 @@
+       <tbody>
+         <tr>
+           <td style={{ verticalAlign: "top" }}>
++            deepseek-v4.1-flash-1017
++
++            > [上下文缓存](/zh/model-studio/context-cache)享有折扣
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            全球
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            忙时 2元
++
++            闲时 1元
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            忙时 8元
++
++            闲时 4元
++          </td>
++        </tr>
++
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
+             deepseek-v4.1-flash
+ 
+             > [上下文缓存](/zh/model-studio/context-cache)享有折扣
+@@ -10476,6 +10568,68 @@
+             忙时 9.625元
+ 
+             闲时 4.813元
++          </td>
++        </tr>
++      </tbody>
++    </table>
++  </Tab>
++
++  <Tab title="中国香港">
++    <table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
++      <colgroup>
++        <col style={{ width: "25%" }} />
++
++        <col style={{ width: "25%" }} />
++
++        <col style={{ width: "25%" }} />
++
++        <col style={{ width: "25%" }} />
++      </colgroup>
++
++      <thead>
++        <tr>
++          <th style={{ verticalAlign: "top" }}>
++            <strong>模型 ID（Model ID）</strong>
++          </th>
++
++          <th style={{ verticalAlign: "top" }}>
++            <strong>服务部署范围</strong>
++          </th>
++
++          <th style={{ verticalAlign: "top" }}>
++            <strong>输入单价（每百万Token）</strong>
++          </th>
++
++          <th style={{ verticalAlign: "top" }}>
++            <strong>输出单价（每百万Token）</strong>
++
++            > <strong>思维链+回答</strong>
++          </th>
++        </tr>
++      </thead>
++
++      <tbody>
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
++            deepseek-v4.1-flash-1017
++
++            > [上下文缓存](/zh/model-studio/context-cache)享有折扣
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            全球
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            忙时 2元
++
++            闲时 1元
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            忙时 8元
++
++            闲时 4元
+           </td>
+         </tr>
+       </tbody>
+@@ -10934,6 +11088,32 @@
+         </tr>
+ 
+         <tr>
++          <td style={{ verticalAlign: "top" }}>
++            glm-5.3-prime
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            非思考和思考模式
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            不区分阶梯
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            16元
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            56元
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            无
++          </td>
++        </tr>
++
++        <tr>
+           <td rowSpan={2} style={{ verticalAlign: "top" }}>
+             glm-5.1
+           </td>
+@@ -11927,6 +12107,30 @@
+       <tbody>
+         <tr>
+           <td style={{ verticalAlign: "top" }}>
++            MiniMax/MiniMax-M3.1-Flash
++
++            > [上下文缓存](/zh/model-studio/context-cache)享有折扣
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            仅思考模式
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            1元
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            4元
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            无
++          </td>
++        </tr>
++
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
+             MiniMax/MiniMax-M3
+ 
+             > [上下文缓存](/zh/model-studio/context-cache)享有折扣
+@@ -11937,11 +12141,15 @@
+           </td>
+ 
+           <td style={{ verticalAlign: "top" }}>
+-            4.2元
+-          </td>
+-
+-          <td style={{ verticalAlign: "top" }}>
+-            16.8元
++            输入不超过 512k Token：2.1元
++
++            输入超过 512k Token：4.2元
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            输入不超过 512k Token：8.4元
++
++            输入超过 512k Token：16.8元
+           </td>
+ 
+           <td rowSpan={4} style={{ verticalAlign: "top" }}>
+@@ -12060,6 +12268,28 @@
+ 
+       <tbody>
+         <tr>
++          <td style={{ verticalAlign: "top" }}>
++            xiaomi/mimo-v2.6-pro-ultraspeed
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            0\<Token≤1M
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            30元
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            60元
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            无
++          </td>
++        </tr>
++
++        <tr>
+           <td rowSpan={2} style={{ verticalAlign: "top" }}>
+             xiaomi/mimo-v2.5-pro
+           </td>
+@@ -12237,66 +12467,6 @@
+   </Tab>
+ </Tabs>
+ 
+-### Unisound-云知声
+-
+-<Tabs>
+-  <Tab title="华北2（北京）">
+-    <table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
+-      <colgroup>
+-        <col style={{ width: "25.05%" }} />
+-
+-        <col style={{ width: "25.05%" }} />
+-
+-        <col style={{ width: "25.05%" }} />
+-
+-        <col style={{ width: "24.85%" }} />
+-      </colgroup>
+-
+-      <thead>
+-        <tr>
+-          <th style={{ verticalAlign: "top" }}>
+-            <strong>模型 ID（Model ID）</strong>
+-          </th>
+-
+-          <th style={{ verticalAlign: "top" }}>
+-            <strong>输入单价（每百万Token）</strong>
+-          </th>
+-
+-          <th style={{ verticalAlign: "top" }}>
+-            <strong>输出单价（每百万Token）</strong>
+-
+-            > <strong>思维链和回答</strong>
+-          </th>
+-
+-          <th style={{ verticalAlign: "top" }}>
+-            <strong>免费额度</strong>[（注）](/zh/model-studio/new-free-quota#977b13081ab56)
+-          </th>
+-        </tr>
+-      </thead>
+-
+-      <tbody>
+-        <tr>
+-          <td style={{ verticalAlign: "top" }}>
+-            unisound/unisound-u2
+-          </td>
+-
+-          <td style={{ verticalAlign: "top" }}>
+-            1元
+-          </td>
+-
+-          <td style={{ verticalAlign: "top" }}>
+-            2元
+-          </td>
+-
+-          <td style={{ verticalAlign: "top" }}>
+-            无
+-          </td>
+-        </tr>
+-      </tbody>
+-    </table>
+-  </Tab>
+-</Tabs>
+-
+ ## 图像生成 <span id="26310bc5cf4do" />
+ 
+ 计费规则：按输入图像和成功生成的 <strong>图像张数</strong>计费。未说明输入图像价格的模型，输入不计费，仅输出计费。
+@@ -12867,6 +13037,12 @@
+ | ----------------------- | ---------------- | ---------------- | ----------------------------------------------------------------------------------------------------------- |
+ | qwen-audio-3.1-tts-next | 6                | 12               | 100万Token                                                                                                   |
+   </Tab>
++
++  <Tab title="新加坡">
++| 模型 ID                   | 输入单价（元/百万 Token） | 输出单价（元/百万 Token） |
++| ----------------------- | ---------------- | ---------------- |
++| qwen-audio-3.1-tts-next | 6.781            | 5.104            |
++  </Tab>
+ </Tabs>
+ 
+ ## 音乐生成 <span id="35854be4db046" />
+@@ -12901,13 +13077,151 @@
+   <Tab title="华北2（北京）">
+     <table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}><colgroup><col style={{ width: "30%" }} /><col style={{ width: "20%" }} /><col style={{ width: "20%" }} /><col style={{ width: "30%" }} /></colgroup><thead><tr><th style={{ verticalAlign: "top" }}><strong>模型 ID（Model ID）</strong></th><th style={{ verticalAlign: "top" }}><strong>输入单价（每百万 Token）</strong></th><th style={{ verticalAlign: "top" }}><strong>输出单价（每百万 Token）</strong></th><th style={{ verticalAlign: "top" }}><p><strong>免费额度</strong><a href="/zh/model-studio/new-free-quota#977b13081ab56">（注）</a></p><p><sup>有效期：自开通百炼或模型发布之日起90天内（以较晚者为准）</sup></p></th></tr></thead><tbody><tr><td style={{ verticalAlign: "top" }}>qwen-audio-3.1-tts-flash</td><td style={{ verticalAlign: "top" }}>1.5元</td><td style={{ verticalAlign: "top" }}>12元</td><td style={{ verticalAlign: "top" }}>100万 Token</td></tr></tbody></table>
+ 
+-    <table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}><colgroup><col style={{ width: "33.333333%" }} /><col style={{ width: "33.333333%" }} /><col style={{ width: "33.333333%" }} /></colgroup><thead><tr><th style={{ verticalAlign: "top" }}><p><strong>模型 ID（Model ID）</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>输入单价（每万字符）</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>免费额度</strong><a href="/zh/model-studio/new-free-quota#977b13081ab56">（注）</a></p><p><sup>有效期：自开通百炼或模型发布之日起90天内（以较晚者为准）</sup></p></th></tr></thead><tbody><tr><td style={{ verticalAlign: "top" }}><p>qwen-audio-3.0-tts-plus</p></td><td style={{ verticalAlign: "top" }}><p>1.4元</p></td><td style={{ verticalAlign: "top" }}><p>1万字符</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>qwen-audio-3.0-tts-flash</p></td><td style={{ verticalAlign: "top" }}><p>1元</p></td><td style={{ verticalAlign: "top" }}><p>1万字符</p></td></tr></tbody></table>
++    <table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
++      <colgroup>
++        <col style={{ width: "33.333333%" }} />
++
++        <col style={{ width: "33.333333%" }} />
++
++        <col style={{ width: "33.333333%" }} />
++      </colgroup>
++
++      <thead>
++        <tr>
++          <th style={{ verticalAlign: "top" }}>
++            <strong>模型 ID（Model ID）</strong>
++          </th>
++
++          <th style={{ verticalAlign: "top" }}>
++            <strong>输入单价（每万字符）</strong>
++          </th>
++
++          <th style={{ verticalAlign: "top" }}>
++            <strong>免费额度</strong><a href="/zh/model-studio/new-free-quota#977b13081ab56">（注）</a>
++
++            <sup>有效期：自开通百炼或模型发布之日起90天内（以较晚者为准）</sup>
++          </th>
++        </tr>
++      </thead>
++
++      <tbody>
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
++            qwen-audio-3.1-tts-plus
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            1.4元
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            1万字符
++          </td>
++        </tr>
++
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
++            qwen-audio-3.0-tts-plus
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            1.4元
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            1万字符
++          </td>
++        </tr>
++
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
++            qwen-audio-3.0-tts-flash
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            1元
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            1万字符
++          </td>
++        </tr>
++      </tbody>
++    </table>
+   </Tab>
+ 
+   <Tab title="新加坡">
+     <table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}><colgroup><col style={{ width: "40%" }} /><col style={{ width: "30%" }} /><col style={{ width: "30%" }} /></colgroup><thead><tr><th style={{ verticalAlign: "top" }}><strong>模型 ID（Model ID）</strong></th><th style={{ verticalAlign: "top" }}><strong>输入单价（每百万 Token）</strong></th><th style={{ verticalAlign: "top" }}><strong>输出单价（每百万 Token）</strong></th></tr></thead><tbody><tr><td style={{ verticalAlign: "top" }}>qwen-audio-3.1-tts-flash</td><td style={{ verticalAlign: "top" }}>1.677元</td><td style={{ verticalAlign: "top" }}>13.636元</td></tr></tbody></table>
+ 
+-    <table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}><colgroup><col style={{ width: "33.333333%" }} /><col style={{ width: "33.333333%" }} /><col style={{ width: "33.333333%" }} /></colgroup><thead><tr><th style={{ verticalAlign: "top" }}><p><strong>模型 ID（Model ID）</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>服务部署范围</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>输入单价（每万字符）</strong></p></th></tr></thead><tbody><tr><td style={{ verticalAlign: "top" }}><p>qwen-audio-3.0-tts-plus</p></td><td style={{ verticalAlign: "top" }}><p>国际</p></td><td style={{ verticalAlign: "top" }}><p>1.49884元</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>qwen-audio-3.0-tts-flash</p></td><td style={{ verticalAlign: "top" }}><p>国际</p></td><td style={{ verticalAlign: "top" }}><p>1.12413元</p></td></tr></tbody></table>
++    <table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
++      <colgroup>
++        <col style={{ width: "33.333333%" }} />
++
++        <col style={{ width: "33.333333%" }} />
++
++        <col style={{ width: "33.333333%" }} />
++      </colgroup>
++
++      <thead>
++        <tr>
++          <th style={{ verticalAlign: "top" }}>
++            <strong>模型 ID（Model ID）</strong>
++          </th>
++
++          <th style={{ verticalAlign: "top" }}>
++            <strong>服务部署范围</strong>
++          </th>
++
++          <th style={{ verticalAlign: "top" }}>
++            <strong>输入单价（每万字符）</strong>
++          </th>
++        </tr>
++      </thead>
++
++      <tbody>
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
++            qwen-audio-3.1-tts-plus
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            国际
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            2.19元
++          </td>
++        </tr>
++
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
++            qwen-audio-3.0-tts-plus
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            国际
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            1.49884元
++          </td>
++        </tr>
++
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
++            qwen-audio-3.0-tts-flash
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            国际
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            1.12413元
++          </td>
++        </tr>
++      </tbody>
++    </table>
+   </Tab>
+ </Tabs>
+ 

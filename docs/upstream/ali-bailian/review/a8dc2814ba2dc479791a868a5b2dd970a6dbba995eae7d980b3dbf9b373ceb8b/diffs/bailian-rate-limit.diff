@@ -1,0 +1,473 @@
+--- reviewed/ali-bailian/bailian-rate-limit
++++ current/ali-bailian/bailian-rate-limit
+@@ -6001,6 +6001,20 @@
+       <tbody>
+         <tr>
+           <td style={{ verticalAlign: "top" }}>
++            deepseek-v4.1-flash-1017
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            15,000
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            1,200,000
++          </td>
++        </tr>
++
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
+             deepseek-v4.1-flash
+           </td>
+ 
+@@ -6127,6 +6141,24 @@
+       <tbody>
+         <tr>
+           <td style={{ verticalAlign: "top" }}>
++            deepseek-v4.1-flash-1017
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            全球
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            15,000
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            1,200,000
++          </td>
++        </tr>
++
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
+             deepseek-v4.1-flash
+           </td>
+ 
+@@ -6281,6 +6313,24 @@
+       <tbody>
+         <tr>
+           <td style={{ verticalAlign: "top" }}>
++            deepseek-v4.1-flash-1017
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            国际
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            10,000
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            1,200,000
++          </td>
++        </tr>
++
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
+             deepseek-v4.1-flash
+           </td>
+ 
+@@ -6395,6 +6445,24 @@
+       <tbody>
+         <tr>
+           <td style={{ verticalAlign: "top" }}>
++            deepseek-v4.1-flash-1017
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            全球
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            15,000
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            1,200,000
++          </td>
++        </tr>
++
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
+             deepseek-v4.1-flash
+           </td>
+ 
+@@ -6567,6 +6635,24 @@
+ 
+         <tr>
+           <td style={{ verticalAlign: "top" }}>
++            deepseek-v4.1-flash-1017
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            全球
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            15,000
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            1,200,000
++          </td>
++        </tr>
++
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
+             deepseek-v4.1-flash
+           </td>
+ 
+@@ -6683,6 +6769,24 @@
+       </thead>
+ 
+       <tbody>
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
++            deepseek-v4.1-flash-1017
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            中国香港
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            15,000
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            1,200,000
++          </td>
++        </tr>
++
+         <tr>
+           <td style={{ verticalAlign: "top" }}>
+             deepseek-v4.1-flash
+@@ -8449,6 +8553,20 @@
+       <tbody>
+         <tr>
+           <td style={{ verticalAlign: "top" }}>
++            MiniMax/MiniMax-M3.1-Flash
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            200
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            10,000,000
++          </td>
++        </tr>
++
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
+             MiniMax/MiniMax-M3
+           </td>
+ 
+@@ -8549,6 +8667,20 @@
+       <tbody>
+         <tr>
+           <td style={{ verticalAlign: "top" }}>
++            xiaomi/mimo-v2.6-pro-ultraspeed
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            100
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            5,000,000
++          </td>
++        </tr>
++
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
+             xiaomi/mimo-v2.5-pro
+           </td>
+ 
+@@ -8927,9 +9059,15 @@
+ 
+ <Tabs>
+   <Tab title="华北2（北京）">
+-| 模型名称                    | 每秒钟调用次数（RPS） |
++| 模型名称                    | 每分钟调用次数（RPM） |
+ | ----------------------- | ------------ |
+-| qwen-audio-3.1-tts-next | 3            |
++| qwen-audio-3.1-tts-next | 180          |
++  </Tab>
++
++  <Tab title="新加坡">
++| 模型名称                    | 每分钟调用次数（RPM） |
++| ----------------------- | ------------ |
++| qwen-audio-3.1-tts-next | 180          |
+   </Tab>
+ </Tabs>
+ 
+@@ -9135,15 +9273,97 @@
+ 
+ <Tabs>
+   <Tab title="华北2（北京）">
+-    <table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}><colgroup><col style={{ width: "39.972401%" }} /><col style={{ width: "60.027599%" }} /></colgroup><thead><tr><th style={{ verticalAlign: "top" }}><p><strong>模型名称</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>每分钟调用次数（RPM）</strong></p></th></tr></thead><tbody><tr><td style={{ verticalAlign: "top" }}><p><span>qwen-audio-3.1-tts-flash</span></p></td><td style={{ verticalAlign: "top" }}><p>180</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><span>qwen-audio-3.0-tts-plus</span></p></td><td style={{ verticalAlign: "top" }}><p>180</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><span>qwen-audio-3.0-tts-flash</span></p></td><td style={{ verticalAlign: "top" }}><p>180</p></td></tr></tbody></table>
++    <table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}><colgroup><col style={{ width: "39.972401%" }} /><col style={{ width: "60.027599%" }} /></colgroup><thead><tr><th style={{ verticalAlign: "top" }}><p><strong>模型名称</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>每分钟调用次数（RPM）</strong></p></th></tr></thead><tbody><tr><td style={{ verticalAlign: "top" }}><p><span>qwen-audio-3.1-tts-plus</span></p></td><td style={{ verticalAlign: "top" }}><p>180</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><span>qwen-audio-3.1-tts-flash</span></p></td><td style={{ verticalAlign: "top" }}><p>180</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><span>qwen-audio-3.0-tts-plus</span></p></td><td style={{ verticalAlign: "top" }}><p>180</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><span>qwen-audio-3.0-tts-flash</span></p></td><td style={{ verticalAlign: "top" }}><p>180</p></td></tr></tbody></table>
+   </Tab>
+ 
+   <Tab title="新加坡">
+-    <table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}><colgroup><col style={{ width: "34.76%" }} /><col style={{ width: "13.04%" }} /><col style={{ width: "52.2%" }} /></colgroup><thead><tr><th style={{ verticalAlign: "top" }}><p><strong>模型名称</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>服务部署范围</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>每分钟调用次数（RPM）</strong></p></th></tr></thead><tbody><tr><td style={{ verticalAlign: "top" }}><p><span>qwen-audio-3.1-tts-flash</span></p></td><td style={{ verticalAlign: "top" }}><p>国际</p></td><td style={{ verticalAlign: "top" }}><p>180</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><span>qwen-audio-3.0-tts-plus</span></p></td><td style={{ verticalAlign: "top" }}><p>国际</p></td><td style={{ verticalAlign: "top" }}><p>180</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><span>qwen-audio-3.0-tts-flash</span></p></td><td style={{ verticalAlign: "top" }}><p>国际</p></td><td style={{ verticalAlign: "top" }}><p>180</p></td></tr></tbody></table>
++    <table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
++      <colgroup>
++        <col style={{ width: "34.76%" }} />
++
++        <col style={{ width: "13.04%" }} />
++
++        <col style={{ width: "52.2%" }} />
++      </colgroup>
++
++      <thead>
++        <tr>
++          <th style={{ verticalAlign: "top" }}>
++            <strong>模型名称</strong>
++          </th>
++
++          <th style={{ verticalAlign: "top" }}>
++            <strong>服务部署范围</strong>
++          </th>
++
++          <th style={{ verticalAlign: "top" }}>
++            <strong>每分钟调用次数（RPM）</strong>
++          </th>
++        </tr>
++      </thead>
++
++      <tbody>
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
++            qwen-audio-3.1-tts-plus
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            国际
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            180
++          </td>
++        </tr>
++
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
++            qwen-audio-3.1-tts-flash
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            国际
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            180
++          </td>
++        </tr>
++
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
++            qwen-audio-3.0-tts-plus
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            国际
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            180
++          </td>
++        </tr>
++
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
++            qwen-audio-3.0-tts-flash
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            国际
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            180
++          </td>
++        </tr>
++      </tbody>
++    </table>
+   </Tab>
+ </Tabs>
+ 
+-### Qwen-TTS <span id="476158da2fwdl" />
++### Qwen3-TTS <span id="476158da2fwdl" />
+ 
+ <Tabs>
+   <Tab title="华北2（北京）">
+@@ -9163,7 +9383,7 @@
+   </Tab>
+ </Tabs>
+ 
+-### Qwen-TTS-Realtime <span id="0deabef960pq1" />
++### Qwen3-TTS-Realtime <span id="0deabef960pq1" />
+ 
+ <Tabs>
+   <Tab title="华北2（北京）">
+@@ -9183,7 +9403,7 @@
+   </Tab>
+ </Tabs>
+ 
+-### Qwen-TTS声音复刻 <span id="f4de4b96c09v6" />
++### Qwen3-TTS声音复刻 <span id="f4de4b96c09v6" />
+ 
+ <Tabs>
+   <Tab title="华北2（北京）">
+@@ -9623,7 +9843,7 @@
+   </Tab>
+ </Tabs>
+ 
+-### Qwen-Audio-3.1-ASR-Flash-Message <span id="asr-message" />
++### Qwen-Audio-ASR-Message <span id="asr-message" />
+ 
+ <Tabs>
+   <Tab title="华北2（北京）">
+@@ -9635,19 +9855,105 @@
+   </Tab>
+ </Tabs>
+ 
+-### Qwen-Audio-3.x-ASR-Flash-Streaming <span id="6314d076aabhs" />
++### Qwen-Audio-ASR-Streaming <span id="6314d076aabhs" />
+ 
+ <Tabs>
+   <Tab title="华北2（北京）">
+-    <table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}><colgroup><col style={{ width: "45%" }} /><col style={{ width: "25%" }} /><col style={{ width: "30%" }} /></colgroup><thead><tr><th style={{ verticalAlign: "top" }}><p><strong>模型名称</strong></p></th><th style={{ verticalAlign: "top" }}><p><span><strong>每秒钟调用次数（RPS）</strong></span></p></th><th style={{ verticalAlign: "top" }}>每分钟调用次数（RPM）</th></tr></thead><tbody><tr><td style={{ verticalAlign: "top" }}><p><span>qwen-audio-3.1-asr-flash-streaming</span></p></td><td style={{ verticalAlign: "top" }}>—</td><td style={{ verticalAlign: "top" }}>600</td></tr><tr><td style={{ verticalAlign: "top" }}><p><span>qwen-audio-3.0-asr-flash-streaming</span></p></td><td style={{ verticalAlign: "top" }}><p>20</p></td><td style={{ verticalAlign: "top" }}>—</td></tr></tbody></table>
++    <table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
++      <colgroup>
++        <col style={{ width: "70%" }} />
++
++        <col style={{ width: "30%" }} />
++      </colgroup>
++
++      <thead>
++        <tr>
++          <th style={{ verticalAlign: "top" }}>
++            **模型名称**
++          </th>
++
++          <th style={{ verticalAlign: "top" }}>
++            **每分钟调用次数（RPM）**
++          </th>
++        </tr>
++      </thead>
++
++      <tbody>
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
++            qwen-audio-3.1-asr-flash-streaming
++          </td>
++
++          <td rowSpan={2} style={{ verticalAlign: "top" }}>
++            1200
++          </td>
++        </tr>
++
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
++            qwen-audio-3.0-asr-flash-streaming
++          </td>
++        </tr>
++      </tbody>
++    </table>
+   </Tab>
+ 
+   <Tab title="新加坡">
+-    <table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}><colgroup><col style={{ width: "40%" }} /><col style={{ width: "15%" }} /><col style={{ width: "20%" }} /><col style={{ width: "25%" }} /></colgroup><thead><tr><th style={{ verticalAlign: "top" }}><p><strong>模型名称</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>服务部署范围</strong></p></th><th style={{ verticalAlign: "top" }}><p><span><strong>每秒钟调用次数（RPS）</strong></span></p></th><th style={{ verticalAlign: "top" }}>每分钟调用次数（RPM）</th></tr></thead><tbody><tr><td style={{ verticalAlign: "top" }}><p><span>qwen-audio-3.1-asr-flash-streaming</span></p></td><td style={{ verticalAlign: "top" }}><p>国际</p></td><td style={{ verticalAlign: "top" }}>—</td><td style={{ verticalAlign: "top" }}>600</td></tr><tr><td style={{ verticalAlign: "top" }}><p><span>qwen-audio-3.0-asr-flash-streaming</span></p></td><td style={{ verticalAlign: "top" }}><p>国际</p></td><td style={{ verticalAlign: "top" }}><p>20</p></td><td style={{ verticalAlign: "top" }}>—</td></tr></tbody></table>
++    <table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
++      <colgroup>
++        <col style={{ width: "50%" }} />
++
++        <col style={{ width: "25%" }} />
++
++        <col style={{ width: "25%" }} />
++      </colgroup>
++
++      <thead>
++        <tr>
++          <th style={{ verticalAlign: "top" }}>
++            **模型名称**
++          </th>
++
++          <th style={{ verticalAlign: "top" }}>
++            **服务部署范围**
++          </th>
++
++          <th style={{ verticalAlign: "top" }}>
++            **每分钟调用次数（RPM）**
++          </th>
++        </tr>
++      </thead>
++
++      <tbody>
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
++            qwen-audio-3.1-asr-flash-streaming
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            国际
++          </td>
++
++          <td rowSpan={2} style={{ verticalAlign: "top" }}>
++            1200
++          </td>
++        </tr>
++
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
++            qwen-audio-3.0-asr-flash-streaming
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            国际
++          </td>
++        </tr>
++      </tbody>
++    </table>
+   </Tab>
+ </Tabs>
+ 
+-### Qwen-Audio-3.x-ASR-Flash-Filetrans <span id="29376bdaa5s47" />
++### Qwen-Audio-ASR-Filetrans <span id="29376bdaa5s47" />
+ 
+ <Tabs>
+   <Tab title="华北2（北京）">
+@@ -9659,7 +9965,7 @@
+   </Tab>
+ </Tabs>
+ 
+-### Qwen-Audio-3.x-ASR-Flash <span id="8e353130f9pmp" />
++### Qwen-Audio-ASR <span id="8e353130f9pmp" />
+ 
+ <Tabs>
+   <Tab title="华北2（北京）">
+@@ -9671,7 +9977,7 @@
+   </Tab>
+ </Tabs>
+ 
+-### Qwen-ASR <span id="7d2f0509a3n03" />
++### Qwen3-ASR <span id="7d2f0509a3n03" />
+ 
+ <Tabs>
+   <Tab title="华北2（北京）">
+@@ -9703,7 +10009,7 @@
+   </Tab>
+ </Tabs>
+ 
+-### Qwen-ASR-Realtime <span id="9f21be56e82vj" />
++### Qwen3-ASR-Realtime <span id="9f21be56e82vj" />
+ 
+ <Tabs>
+   <Tab title="华北2（北京）">
