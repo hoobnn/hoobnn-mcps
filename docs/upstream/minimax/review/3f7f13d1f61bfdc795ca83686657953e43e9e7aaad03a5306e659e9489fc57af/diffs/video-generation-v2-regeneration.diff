@@ -1,0 +1,23 @@
+--- reviewed/minimax/video-generation-v2-regeneration
++++ current/minimax/video-generation-v2-regeneration
+@@ -7,13 +7,13 @@
+ * **按任务 ID**：传已有生成任务的 `source_task_id`
+ * **按源视频**：在 `content` 中传 `base_video`
+ 
+-<Warning>
+-  本接口仅支持对符合 MiniMax-H3 768P 输出规格的生成视频进行再生成并输出 2K，不支持任意视频的通用处理。
+-</Warning>
+-
+-<Note>
+-  再生成任务的 `task_type` 为 `regeneration`，可通过 H3 共用的[查询任务](/docs/api-reference/video-generation-v2-query)、[查询任务列表](/docs/api-reference/video-generation-v2-list)和[取消或删除任务](/docs/api-reference/video-generation-v2-delete)接口管理。
+-</Note>
++> [!WARNING]
++>
++> 本接口仅支持对符合 MiniMax-H3 768P 输出规格的生成视频进行再生成并输出 2K，不支持任意视频的通用处理。
++
++> [!NOTE]
++>
++> 再生成任务的 `task_type` 为 `regeneration`，可通过 H3 共用的[查询任务](/docs/api-reference/video-generation-v2-query.md)、[查询任务列表](/docs/api-reference/video-generation-v2-list.md)和[取消或删除任务](/docs/api-reference/video-generation-v2-delete.md)接口管理。
+ 
+ 
+ ## OpenAPI

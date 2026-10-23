@@ -12,6 +12,8 @@ H3 tools cover generation (`generate_video`), H3-Context-IR tasks (`create_h3_co
 
 Retains `text_to_audio`, `list_voices`, `voice_clone`, `voice_design`, `text_to_image` and `music_generation`. Defaults: speech-2.8-hd, image-01, music-3.0. The official music service notice limits paid APIs to existing paid customers and discontinues free music APIs.
 
+All 14 official API pages were reviewed again on 2026-10-23. H3 / H3-Max, Context-IR and regeneration request contracts are unchanged. Music model descriptions dropped some eligibility wording, while the service discontinuation notice remains; this does not establish renewed access for free models or new accounts. See the [contract review and local validation](../../docs/minimax-contracts.md#2026-10-23-文档更新审查).
+
 Not a fully compatible replacement: no legacy Hailuo V1 tasks or speaker playback; `first_frame_image` becomes `first_frame`, `async_mode` becomes `wait` (0–90 seconds). Voice cloning accepts a local file or uploaded file ID instead of the old `is_url` option. Chat, ASR, streaming and asynchronous long TTS are outside this implementation.
 
 Cancellation/deletion is hidden unless `admin` is included in `MCP_TOOL_GROUPS`. The default groups are video,image,speech,music,files,jobs,help.

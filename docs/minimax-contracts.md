@@ -1,10 +1,26 @@
 # MiniMax 契约与迁移
 
-核对时间：2026-10-11。依据用户指定的 [中国站接口概览](https://platform.minimax.cn/docs/api-reference/api-overview) 及其链接的 OpenAPI Markdown 正文；14 个接口来源纳入 `docs/audits/minimax-sources.json`、SHA-256 基线和 gzip 正文快照。现有其他供应商基线保持不变。
+首次接入核对：2026-10-11；最近契约复核：**2026-10-23**。依据用户指定的 [中国站接口概览](https://platform.minimax.cn/docs/api-reference/api-overview) 及其链接的 OpenAPI Markdown 正文；14 个接口来源纳入 `docs/audits/minimax-sources.json`、SHA-256 基线和 gzip 正文快照。
 
-## 官方 MCP 与新实现
+## 2026-10-23 文档更新审查
 
-本机 Codex 配置通过 `uvx minimax-mcp -y` 启动官方包，发现的本机缓存为 `0.0.19`。本次读取的 [官方 main 分支 server.py](https://github.com/MiniMax-AI/MiniMax-MCP/blob/main/minimax_mcp/server.py) 仍采用 V1 视频创建、查询和文件下载链路。缓存版本不能证明每次 uvx 最终选择的版本；因此判断依据同时包含源码接口。
+公开正文抓取 **14/14 成功，0 错误**，相对本 PR 2026-10-14 待审基线有 5 篇正文变化。逐份提取、比较 14 个 `openapi: 3.1.0` 代码块，仅音乐模型的 `description` 文字发生变化；请求字段、枚举、参数限制、endpoint 均未改变。完整差异见 [最新报告](upstream/minimax/review/3f7f13d1f61bfdc795ca83686657953e43e9e7aaad03a5306e659e9489fc57af/report.md) 及同目录 `diffs/`，保留 10 月 14 日原始 review。
+
+| 文档 | 实质变化 | 处理结论 |
+|---|---|---|
+| [音乐生成](https://platform.minimax.cn/docs/api-reference/music-generation) | 模型说明删除“仅限 M Plan 用户和付费用户使用”及免费版本“所有用户可通过 API Key 使用”等资格短语 | 页首 2026-08-20 停止新用户付费接口和免费接口的公告仍在，不能据此认定恢复开放；保留现有 `music-3.0` / `music-2.6` 支持及账号权限说明 |
+| [同步语音](https://platform.minimax.cn/docs/api-reference/speech-t2a-http) | 内部文档链接改为 `.md` 导出地址 | 无需修改请求或恢复链路 |
+| [Context-IR](https://platform.minimax.cn/docs/api-reference/video-generation-v2-h3-context-ir)、[再生成](https://platform.minimax.cn/docs/api-reference/video-generation-v2-regeneration)、[音色列表](https://platform.minimax.cn/docs/api-reference/voice-management-get) | 提示框改为 Markdown 引用，原参数正文保持一致 | 保留现有实现及模型校验 |
+
+`create_h3_context_ir_task` 已是当前工具名；来源映射和新基线使用该名称，文件上传映射不再指向旧 `enhance_video_prompt`。这来自本地工具重命名，不是官方 API 改名。H3 创建页在旧 review 中的购买链接调整也无需运行时适配。
+
+本轮只更新本平台文档快照、映射基线、审查说明；没有为展示性变化修改运行时代码，也不扩大音乐模型可用范围。验收覆盖现有 H3/H3-Max、Context-IR、再生成、任务故障恢复及实际 stdio；下方保留首次接入的历史验收记录。
+
+本轮 Python 3.13 独立锁定环境验收：MiniMax **15 项测试通过**（含从当前 PR checkout 导入的真实 stdio 子进程），文档检测/分平台 PR **18 项测试通过**；`sync_shared.py --check`、`upstream_docs.py --check-coverage`（139 个登记来源）及 `git diff --check` 通过。未发送付费请求，未核实账号音乐权限。
+
+## 官方 MCP 与新实现（2026-10-11 记录）
+
+2026-10-11 首次接入时，本机 Codex 配置通过 `uvx minimax-mcp -y` 启动官方包，发现的本机缓存为 `0.0.19`。当时读取的 [官方 main 分支 server.py](https://github.com/MiniMax-AI/MiniMax-MCP/blob/main/minimax_mcp/server.py) 采用 V1 视频创建、查询和文件下载链路。这是历史记录，不代表官方包当前版本；缓存版本也不能证明每次 uvx 最终选择的版本。
 
 | 项目 | 官方 MCP 读取到的实现 | 本次独立实现 |
 |---|---|---|

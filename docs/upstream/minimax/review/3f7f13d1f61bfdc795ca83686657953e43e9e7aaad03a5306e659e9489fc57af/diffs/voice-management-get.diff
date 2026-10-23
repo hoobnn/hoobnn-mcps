@@ -1,0 +1,15 @@
+--- reviewed/minimax/voice-management-get
++++ current/minimax/voice-management-get
+@@ -6,9 +6,9 @@
+ 
+ 包括系统音色、快速克隆音色、文生音色接口生成的音色、音乐生成接口的人声音色以及伴奏音色。
+ 
+-<Note>
+-  快速复刻得到的音色为未激活状态，需正式调用一次才可在本接口查询到
+-</Note>
++> [!NOTE]
++>
++> 快速复刻得到的音色为未激活状态，需正式调用一次才可在本接口查询到
+ 
+ 
+ ## OpenAPI

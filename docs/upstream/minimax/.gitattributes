@@ -1,0 +1,2 @@
+# Preserve the space prefix on blank context lines in generated unified diffs.
+review/**/diffs/*.diff -whitespace

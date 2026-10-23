@@ -1,0 +1,448 @@
+{
+  "format_version": 1,
+  "checked_at": "2026-10-14T07:49:02.359753+00:00",
+  "sources": [
+    {
+      "key": "minimax/file-management-upload",
+      "server": "minimax",
+      "id": "file-management-upload",
+      "url": "https://platform.minimax.cn/docs/api-reference/file-management-upload",
+      "fetch_url": "https://platform.minimax.cn/docs/api-reference/file-management-upload.md",
+      "kind": "api",
+      "tools": [
+        "create_h3_context_ir_task",
+        "generate_video",
+        "regenerate_video",
+        "upload_file",
+        "voice_clone"
+      ],
+      "sha256": "df26ab83ea7adf8c361eadab72c3e33348b82d9201ffd089f0054da10a030536",
+      "bytes": 5591,
+      "models": [],
+      "endpoints": [],
+      "doc_links": [
+        "https://platform.minimax.cn/user-center/basic-information/interface-key"
+      ],
+      "title": "文件上传",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": "Wed, 14 Oct 2026 07:48:58 GMT",
+        "Content-Type": "text/markdown; charset=utf-8"
+      }
+    },
+    {
+      "key": "minimax/image-generation-i2i",
+      "server": "minimax",
+      "id": "image-generation-i2i",
+      "url": "https://platform.minimax.cn/docs/api-reference/image-generation-i2i",
+      "fetch_url": "https://platform.minimax.cn/docs/api-reference/image-generation-i2i.md",
+      "kind": "api",
+      "tools": [
+        "text_to_image"
+      ],
+      "sha256": "3e83854b9f4f717ea59067f5133cb42d7c931c6eddb7c0772de758fffe358872",
+      "bytes": 8219,
+      "models": [
+        "image-01",
+        "image-01-live"
+      ],
+      "endpoints": [],
+      "doc_links": [
+        "https://platform.minimax.cn/user-center/basic-information/interface-key"
+      ],
+      "title": "图生图",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": "Wed, 14 Oct 2026 07:49:01 GMT",
+        "Content-Type": "text/markdown; charset=utf-8"
+      }
+    },
+    {
+      "key": "minimax/image-generation-t2i",
+      "server": "minimax",
+      "id": "image-generation-t2i",
+      "url": "https://platform.minimax.cn/docs/api-reference/image-generation-t2i",
+      "fetch_url": "https://platform.minimax.cn/docs/api-reference/image-generation-t2i.md",
+      "kind": "api",
+      "tools": [
+        "text_to_image"
+      ],
+      "sha256": "7c40f3cab4ccafc94978e682962f5a64ee0fb013f596e2877a9c343c90dfaffe",
+      "bytes": 7469,
+      "models": [
+        "image-01",
+        "image-01-live"
+      ],
+      "endpoints": [],
+      "doc_links": [
+        "https://platform.minimax.cn/user-center/basic-information/interface-key"
+      ],
+      "title": "文生图",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": "Wed, 14 Oct 2026 07:49:01 GMT",
+        "Content-Type": "text/markdown; charset=utf-8"
+      }
+    },
+    {
+      "key": "minimax/music-generation",
+      "server": "minimax",
+      "id": "music-generation",
+      "url": "https://platform.minimax.cn/docs/api-reference/music-generation",
+      "fetch_url": "https://platform.minimax.cn/docs/api-reference/music-generation.md",
+      "kind": "api",
+      "tools": [
+        "music_generation"
+      ],
+      "sha256": "90397823cfe88b53e99f52815889e1e4d69a5eeac4af429c0d390477b37a1f3b",
+      "bytes": 10788,
+      "models": [
+        "Music-2.6-free",
+        "Music-3.0-free",
+        "music-2.6",
+        "music-2.6-free",
+        "music-3.0",
+        "music-3.0-free",
+        "music-cover",
+        "music-cover-free",
+        "music-cover-preprocess"
+      ],
+      "endpoints": [],
+      "doc_links": [
+        "https://platform.minimax.cn/user-center/basic-information/interface-key"
+      ],
+      "title": "音乐生成 (Music Generation)",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": "Wed, 14 Oct 2026 07:49:02 GMT",
+        "Content-Type": "text/markdown; charset=utf-8"
+      }
+    },
+    {
+      "key": "minimax/speech-t2a-http",
+      "server": "minimax",
+      "id": "speech-t2a-http",
+      "url": "https://platform.minimax.cn/docs/api-reference/speech-t2a-http",
+      "fetch_url": "https://platform.minimax.cn/docs/api-reference/speech-t2a-http.md",
+      "kind": "api",
+      "tools": [
+        "recover_job",
+        "text_to_audio"
+      ],
+      "sha256": "c8c42eb076aae5585a394c269a81e852d21637056e63658bb222a5100e1c6e6f",
+      "bytes": 31250,
+      "models": [
+        "speech-2.6-hd",
+        "speech-2.6-turbo",
+        "speech-2.8-hd",
+        "speech-2.8-turbo"
+      ],
+      "endpoints": [],
+      "doc_links": [
+        "https://platform.minimax.cn/user-center/basic-information/interface-key"
+      ],
+      "title": "同步语音合成",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": "Wed, 14 Oct 2026 07:49:00 GMT",
+        "Content-Type": "text/markdown; charset=utf-8"
+      }
+    },
+    {
+      "key": "minimax/video-generation-v2-create",
+      "server": "minimax",
+      "id": "video-generation-v2-create",
+      "url": "https://platform.minimax.cn/docs/api-reference/video-generation-v2-create",
+      "fetch_url": "https://platform.minimax.cn/docs/api-reference/video-generation-v2-create.md",
+      "kind": "api",
+      "tools": [
+        "generate_video"
+      ],
+      "sha256": "61ba7eab66f1bf0ae979a3708e924f1e9f810929a364445659a3738cad0f8aa0",
+      "bytes": 20572,
+      "models": [
+        "MiniMax-H3",
+        "MiniMax-H3-Max"
+      ],
+      "endpoints": [],
+      "doc_links": [
+        "https://platform.minimax.cn/docs/pricing/overview#models/video",
+        "https://platform.minimax.cn/user-center/basic-information/interface-key"
+      ],
+      "title": "创建视频生成任务",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": "Wed, 14 Oct 2026 07:48:56 GMT",
+        "Content-Type": "text/markdown; charset=utf-8"
+      }
+    },
+    {
+      "key": "minimax/video-generation-v2-delete",
+      "server": "minimax",
+      "id": "video-generation-v2-delete",
+      "url": "https://platform.minimax.cn/docs/api-reference/video-generation-v2-delete",
+      "fetch_url": "https://platform.minimax.cn/docs/api-reference/video-generation-v2-delete.md",
+      "kind": "api",
+      "tools": [
+        "delete_video_task"
+      ],
+      "sha256": "b129270482af1274fa2fdd4f1597dbe244423b7c1db4625b418dc3bd4aa54fe3",
+      "bytes": 6209,
+      "models": [],
+      "endpoints": [],
+      "doc_links": [
+        "https://platform.minimax.cn/user-center/basic-information/interface-key"
+      ],
+      "title": "取消或删除任务",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": "Wed, 14 Oct 2026 07:48:56 GMT",
+        "Content-Type": "text/markdown; charset=utf-8"
+      }
+    },
+    {
+      "key": "minimax/video-generation-v2-h3-context-ir",
+      "server": "minimax",
+      "id": "video-generation-v2-h3-context-ir",
+      "url": "https://platform.minimax.cn/docs/api-reference/video-generation-v2-h3-context-ir",
+      "fetch_url": "https://platform.minimax.cn/docs/api-reference/video-generation-v2-h3-context-ir.md",
+      "kind": "api",
+      "tools": [
+        "create_h3_context_ir_task"
+      ],
+      "sha256": "a20c9a288ee306b6cbb178c1298e493f3e0974b2aef54ce92560d84f9d580766",
+      "bytes": 21257,
+      "models": [
+        "MiniMax-H3"
+      ],
+      "endpoints": [],
+      "doc_links": [
+        "https://platform.minimax.cn/user-center/basic-information/interface-key"
+      ],
+      "title": "创建 H3-Context-IR 任务",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": "Wed, 14 Oct 2026 07:48:58 GMT",
+        "Content-Type": "text/markdown; charset=utf-8"
+      }
+    },
+    {
+      "key": "minimax/video-generation-v2-list",
+      "server": "minimax",
+      "id": "video-generation-v2-list",
+      "url": "https://platform.minimax.cn/docs/api-reference/video-generation-v2-list",
+      "fetch_url": "https://platform.minimax.cn/docs/api-reference/video-generation-v2-list.md",
+      "kind": "api",
+      "tools": [
+        "list_video_tasks"
+      ],
+      "sha256": "79e526c3f45c2d08d0b5895ae232aa9c0736fb7f262a9660e6659746638c9332",
+      "bytes": 13208,
+      "models": [
+        "MiniMax-H3"
+      ],
+      "endpoints": [
+        "https://api.minimax.cn/v2/query/video_generation?page_num=1&page_size=4"
+      ],
+      "doc_links": [
+        "https://platform.minimax.cn/user-center/basic-information/interface-key"
+      ],
+      "title": "查询任务列表",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": "Wed, 14 Oct 2026 07:48:56 GMT",
+        "Content-Type": "text/markdown; charset=utf-8"
+      }
+    },
+    {
+      "key": "minimax/video-generation-v2-query",
+      "server": "minimax",
+      "id": "video-generation-v2-query",
+      "url": "https://platform.minimax.cn/docs/api-reference/video-generation-v2-query",
+      "fetch_url": "https://platform.minimax.cn/docs/api-reference/video-generation-v2-query.md",
+      "kind": "api",
+      "tools": [
+        "get_job",
+        "query_video_generation",
+        "recover_job"
+      ],
+      "sha256": "7a42905ea247034141ffcb8fdd0e0cf1d0fdd5d4add5b43919319b680ca123c2",
+      "bytes": 17344,
+      "models": [
+        "MiniMax-H3"
+      ],
+      "endpoints": [],
+      "doc_links": [
+        "https://platform.minimax.cn/user-center/basic-information/interface-key"
+      ],
+      "title": "查询任务",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": "Wed, 14 Oct 2026 07:48:56 GMT",
+        "Content-Type": "text/markdown; charset=utf-8"
+      }
+    },
+    {
+      "key": "minimax/video-generation-v2-regeneration",
+      "server": "minimax",
+      "id": "video-generation-v2-regeneration",
+      "url": "https://platform.minimax.cn/docs/api-reference/video-generation-v2-regeneration",
+      "fetch_url": "https://platform.minimax.cn/docs/api-reference/video-generation-v2-regeneration.md",
+      "kind": "api",
+      "tools": [
+        "regenerate_video"
+      ],
+      "sha256": "ce2f53dd24a0a1aaf84f514f96abdbc82240a404a49f48a88e0dd0359617ebfb",
+      "bytes": 19811,
+      "models": [
+        "MiniMax-H3"
+      ],
+      "endpoints": [],
+      "doc_links": [
+        "https://platform.minimax.cn/user-center/basic-information/interface-key"
+      ],
+      "title": "创建视频再生成任务",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": "Wed, 14 Oct 2026 07:48:58 GMT",
+        "Content-Type": "text/markdown; charset=utf-8"
+      }
+    },
+    {
+      "key": "minimax/voice-cloning-clone",
+      "server": "minimax",
+      "id": "voice-cloning-clone",
+      "url": "https://platform.minimax.cn/docs/api-reference/voice-cloning-clone",
+      "fetch_url": "https://platform.minimax.cn/docs/api-reference/voice-cloning-clone.md",
+      "kind": "api",
+      "tools": [
+        "voice_clone"
+      ],
+      "sha256": "32fcee49f2c29f54460d998de576df93041a50d91d462c33e7e2197616b79ad0",
+      "bytes": 11284,
+      "models": [
+        "speech-2.6-hd",
+        "speech-2.6-turbo",
+        "speech-2.8-hd",
+        "speech-2.8-turbo"
+      ],
+      "endpoints": [],
+      "doc_links": [
+        "https://platform.minimax.cn/user-center/basic-information/interface-key"
+      ],
+      "title": "音色快速复刻",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": "Wed, 14 Oct 2026 07:49:00 GMT",
+        "Content-Type": "text/markdown; charset=utf-8"
+      }
+    },
+    {
+      "key": "minimax/voice-design-design",
+      "server": "minimax",
+      "id": "voice-design-design",
+      "url": "https://platform.minimax.cn/docs/api-reference/voice-design-design",
+      "fetch_url": "https://platform.minimax.cn/docs/api-reference/voice-design-design.md",
+      "kind": "api",
+      "tools": [
+        "voice_design"
+      ],
+      "sha256": "a763cd6c4385ea2945665e7e3afd6a094879d6b01d03c0a4fc62ac02ad80dec8",
+      "bytes": 4047,
+      "models": [],
+      "endpoints": [],
+      "doc_links": [
+        "https://platform.minimax.cn/user-center/basic-information/interface-key"
+      ],
+      "title": "音色设计",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": "Wed, 14 Oct 2026 07:48:59 GMT",
+        "Content-Type": "text/markdown; charset=utf-8"
+      }
+    },
+    {
+      "key": "minimax/voice-management-get",
+      "server": "minimax",
+      "id": "voice-management-get",
+      "url": "https://platform.minimax.cn/docs/api-reference/voice-management-get",
+      "fetch_url": "https://platform.minimax.cn/docs/api-reference/voice-management-get.md",
+      "kind": "api",
+      "tools": [
+        "list_voices"
+      ],
+      "sha256": "ad3adbc5f7df4678fee02c8c3af28fd8075b5f9c321a75d7331669cde581c757",
+      "bytes": 6106,
+      "models": [],
+      "endpoints": [],
+      "doc_links": [
+        "https://platform.minimax.cn/user-center/basic-information/interface-key"
+      ],
+      "title": "查询可用音色ID",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": "Wed, 14 Oct 2026 07:48:59 GMT",
+        "Content-Type": "text/markdown; charset=utf-8"
+      }
+    }
+  ],
+  "changes": [
+    {
+      "key": "minimax/file-management-upload",
+      "status": "changed",
+      "tools": [
+        "create_h3_context_ir_task",
+        "enhance_video_prompt",
+        "generate_video",
+        "regenerate_video",
+        "upload_file",
+        "voice_clone"
+      ],
+      "url": "https://platform.minimax.cn/docs/api-reference/file-management-upload",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "minimax/video-generation-v2-create",
+      "status": "changed",
+      "tools": [
+        "generate_video"
+      ],
+      "url": "https://platform.minimax.cn/docs/api-reference/video-generation-v2-create",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [
+        "https://platform.minimax.cn/docs/pricing/overview#models/video"
+      ],
+      "doc_links_removed": []
+    },
+    {
+      "key": "minimax/video-generation-v2-h3-context-ir",
+      "status": "changed",
+      "tools": [
+        "create_h3_context_ir_task",
+        "enhance_video_prompt"
+      ],
+      "url": "https://platform.minimax.cn/docs/api-reference/video-generation-v2-h3-context-ir",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    }
+  ],
+  "errors": []
+}
