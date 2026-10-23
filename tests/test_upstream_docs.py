@@ -129,6 +129,23 @@ class DocumentContracts(unittest.TestCase):
         # Timestamp and transport headers alone must not invent body changes.
         self.assertEqual(docs.compare([dict(old, updated_at="later")], {"sources": [old]}), [])
 
+    def test_fetch_discovers_deepseek_and_xiaomi_models_without_url_fragments(self):
+        from unittest.mock import MagicMock
+        body = ("# Recent models\n\nNew IDs: `deepseek-v4.1-flash-1017`, `xiaomi/mimo-v2.6-pro-ultraspeed`.\n"
+                "Existing qwen3.8-max remains supported.\n"
+                "See https://help.aliyun.com/zh/model-studio/deepseek-not-a-model for the guide.\n")
+        response = MagicMock()
+        response.__enter__.return_value = response
+        response.url = "https://help.aliyun.com/zh/model-studio/newly-released-models.md"
+        response.headers = {"Content-Type": "text/markdown"}
+        response.read.side_effect = [body.encode(), b""]
+        source = {"id": "models", "server": "ali-bailian", "key": "ali-bailian/models",
+                  "url": response.url, "tools": []}
+        with patch.object(docs.urllib.request, "build_opener") as opener:
+            opener.return_value.open.return_value = response
+            record, _ = docs.fetch(source)
+        self.assertEqual(record["models"], ["deepseek-v4.1-flash-1017", "qwen3.8-max", "xiaomi/mimo-v2.6-pro-ultraspeed"])
+
     def test_fetch_failure_is_not_a_removed_document(self):
         source = {"key": "ark/api", "server": "ark", "id": "api", "url": "https://docs.volcengine.com/api"}
         old = dict(source, sha256="old", tools=["chat"])
