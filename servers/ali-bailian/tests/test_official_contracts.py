@@ -87,14 +87,18 @@ class OfficialContracts(unittest.TestCase):
         self.assertEqual(path, "/api/v1/services/audio/tts/customization")
         self.assertEqual(body, {"model": "voice-enrollment", "input": {
             "action": "create_voice", "target_model": "qwen-audio-3.0-tts-flash", "prefix": "me",
-            "url": "https://example.test/a.wav", "language_hints": ["zh"]}})
+            "audio": "https://example.test/a.wav", "language_hints": ["zh"]}})
         self.assertEqual((result["voice"], result["target_model"]), ("qwen-audio-3.0-tts-flash-me-1", "qwen-audio-3.0-tts-flash"))
 
-    def test_clone_voice_rejects_local_audio_and_bad_args_without_request(self):
+    def test_clone_voice_rejects_invalid_audio_and_bad_args_without_request(self):
         url = "https://example.test/a.wav"
-        cases = [(("/tmp/a.wav",), {}), (("data:audio/wav;base64,AA==",), {}), (("oss://dashscope-instant/a.wav",), {}),
+        cases = [((str(self.root / "missing.wav"),), {}), (("oss://dashscope-instant/a.wav",), {}),
+                 (("data:audio/wav;base64,not-base64",), {}), (("data:audio/wav;base64,",), {}),
+                 (("data:text/plain;base64,AA==",), {}), ((None,), {}),
+                 ((url,), {"url": url}), ((None,), {"url": "data:audio/wav;base64,AA=="}),
                  ((url,), {"prefix": "bad_name"}), ((url,), {"target_model": "qwen3-tts-vc-2026-01-22"}),
                  ((url,), {"target_model": "cosyvoice-v2", "language": "zh"}),
+                 ((url,), {"target_model": "qwen-audio-3.1-tts-flash", "language": "xx"}),
                  ((url,), {"target_model": "cosyvoice-v3-plus", "enable_preprocess": True}),
                  ((url,), {"max_prompt_audio_length": 31.0})]
         with patch.object(products, "api") as api, patch.object(media, "upload") as upload:
@@ -102,6 +106,37 @@ class OfficialContracts(unittest.TestCase):
                 self.assertFalse(products.clone_voice(*args, **kwargs)["ok"], (args, kwargs))
             api.assert_not_called()
             upload.assert_not_called()
+
+    def test_clone_voice_encodes_local_audio_and_preserves_data_uri_without_upload(self):
+        response = ({"output": {"voice_id": "qwen-audio-3.1-tts-plus-me-1"}}, None)
+        with patch.object(products, "api", return_value=response) as api, patch.object(media, "upload") as upload:
+            for suffix, mime in (("wav", "audio/wav"), ("mp3", "audio/mpeg"), ("m4a", "audio/mp4")):
+                sample = self.root / ("sample." + suffix)
+                sample.write_bytes(b"reference audio")
+                result = products.clone_voice(str(sample), target_model="qwen-audio-3.1-tts-plus", language="fr")
+                self.assertTrue(result["ok"], result)
+                inp = api.call_args.args[1]["input"]
+                self.assertEqual(inp["audio"], f"data:{mime};base64," + base64.b64encode(sample.read_bytes()).decode())
+                self.assertEqual(inp["language_hints"], ["fr"])
+                self.assertNotIn("url", inp)
+            data_uri = "data:audio/wav;base64,AA=="
+            self.assertTrue(products.clone_voice(data_uri)["ok"])
+            self.assertEqual(api.call_args.args[1]["input"]["audio"], data_uri)
+            self.assertTrue(products.clone_voice(url="https://example.test/legacy.wav")["ok"])
+            self.assertEqual(api.call_args.args[1]["input"]["audio"], "https://example.test/legacy.wav")
+            upload.assert_not_called()
+
+    def test_clone_voice_bounds_decoded_audio_size_and_local_formats(self):
+        sample = self.root / "sample.wav"
+        sample.write_bytes(b"four")
+        unsupported = self.root / "sample.ogg"
+        unsupported.write_bytes(b"ogg")
+        with patch.object(products, "CLONE_AUDIO_LIMIT", 3), patch.object(products, "api") as api:
+            for source in (str(sample), str(unsupported), "data:audio/wav;base64,Zm91cg=="):
+                self.assertFalse(products.clone_voice(source)["ok"], source)
+            sample.write_bytes(b"")
+            self.assertFalse(products.clone_voice(str(sample))["ok"])
+            api.assert_not_called()
 
     def test_clone_voice_without_voice_id_never_retries(self):
         with patch.object(products, "api", return_value=({"output": {}}, None)) as api:
@@ -111,22 +146,22 @@ class OfficialContracts(unittest.TestCase):
 
     def test_design_voice_body_preview_and_recovery(self):
         audio = base64.b64encode(b"RIFFfake").decode()
-        response = {"output": {"voice_id": "qwen-audio-3.0-tts-flash-vd-me-1", "target_model": "qwen-audio-3.0-tts-flash",
+        response = {"output": {"voice_id": "qwen-audio-3.1-tts-plus-vd-me-1", "target_model": "qwen-audio-3.1-tts-plus",
                                "preview_audio": {"data": audio, "sample_rate": 24000, "response_format": "wav"}},
                     "usage": {"count": 1}, "request_id": "r1"}
         root, store = self.root, products.STORE
         with patch.object(products, "api", return_value=(response, None)) as api, \
                 patch.object(jobs, "media_info", return_value={}):
-            result = products.design_voice("沉稳的中年男性", PREVIEW, "qwen-audio-3.0-tts-flash",
+            result = products.design_voice("沉稳的中年男性", PREVIEW, "qwen-audio-3.1-tts-plus",
                                            "me", Path(root) / "out", "local", language="zh")
             path, body = api.call_args.args
             self.assertEqual(path, "/api/v1/services/audio/tts/customization")
             self.assertEqual(body, {"model": "voice-enrollment", "input": {
-                "action": "create_voice", "target_model": "qwen-audio-3.0-tts-flash", "voice_prompt": "沉稳的中年男性",
+                "action": "create_voice", "target_model": "qwen-audio-3.1-tts-plus", "voice_prompt": "沉稳的中年男性",
                 "preview_text": PREVIEW, "prefix": "me", "language_hints": ["zh"]},
                 "parameters": {"sample_rate": 24000, "response_format": "wav"}})
             self.assertTrue(result["ok"], result)
-            self.assertEqual(store.load(result["job_id"])["result"]["voice"], "qwen-audio-3.0-tts-flash-vd-me-1")
+            self.assertEqual(store.load(result["job_id"])["result"]["voice"], "qwen-audio-3.1-tts-plus-vd-me-1")
             preview = Path(root) / "out" / "preview.wav"
             self.assertEqual(preview.read_bytes(), b"RIFFfake")
             preview.unlink()
@@ -167,6 +202,8 @@ class OfficialContracts(unittest.TestCase):
 
     def test_tts_routes_by_model_and_custom_voice_prefix(self):
         cases = [(tts(model="audio", voice="longanhuan_v3.6", instructions="用温柔的语气"), "qwen-audio-3.0-tts-flash"),
+                 (tts(model="qwen-audio-3.1-tts-plus", voice="system-voice", language="zh"), "qwen-audio-3.1-tts-plus"),
+                 (tts(voice="qwen-audio-3.1-tts-plus-vd-me-1", instructions="慢一点"), "qwen-audio-3.1-tts-plus"),
                  (tts(voice="cosyvoice-v3.5-plus-vd-me-1", parameters={"rate": 1.2}), "cosyvoice-v3.5-plus")]
         for opts, model in cases:
             with patch.object(media, "request", return_value=({"code": "InvalidParameter", "message": "stop"}, None)) as request:
@@ -195,7 +232,9 @@ class OfficialContracts(unittest.TestCase):
 
     def test_speech_synthesizer_local_validation(self):
         cases = [tts(model="audio"), tts(model="cosyvoice-v2", voice="v", instructions="慢"),
-                 tts(model="audio", voice="v", instructions="慢" * 51), tts(model="audio", voice="v", language="Chinese"),
+                 tts(model="cosyvoice", voice="v", instructions="慢" * 51), tts(model="audio", voice="v", language="Chinese"),
+                 tts(model="cosyvoice", voice="v", parameters={"instruction": "慢" * 51}),
+                 tts(model="cosyvoice-v2", voice="v", parameters={"instruction": "slow"}),
                  tts(model="audio", voice="v", parameters={"format": "mp3"}),
                  tts(model="audio", voice="v", parameters={"voice": "x"})]
         with patch.object(media, "request") as request:
@@ -203,6 +242,57 @@ class OfficialContracts(unittest.TestCase):
                 self.assertFalse(media.text_to_speech(opts, "/tmp/unused")["ok"], opts)
             request.assert_not_called()
         self.assertEqual(media.instruction_length("慢a"), 3)
+
+    def test_qwen_audio_instruction_does_not_inherit_cosyvoice_character_limit(self):
+        for model in media.QWEN_AUDIO_TTS:
+            opts = tts(model=model, voice="v", instructions="慢" * 51)
+            self.assertIsNone(media.check_tts(model, opts, "local"))
+            self.assertEqual(media.tts_request(model, opts, "hi")[1]["input"]["instruction"], "慢" * 51)
+
+    def test_tts_usage_keeps_provider_units_and_resumes_legacy_counters(self):
+        plus_usage = {"characters": 3, "input_tokens": 2, "output_tokens": 5, "total_tokens": 7}
+        flash_usage = {"input_tokens": 2, "output_tokens": 1, "total_tokens": 3}
+        for model, previous, current, expected in [
+                ("qwen-audio-3.1-tts-plus", plus_usage, plus_usage,
+                 {"characters": 6, "input_tokens": 4, "output_tokens": 10, "total_tokens": 14}),
+                ("qwen-audio-3.1-tts-flash", 5, flash_usage,
+                 {"legacy_untyped": 5, "input_tokens": 2, "output_tokens": 1, "total_tokens": 3})]:
+            plan = {"options": tts(model=model, voice=model + "-me-1"), "chunks": [
+                {"text": "old", "state": "generated", "url": "https://example.test/old.wav", "usage": previous},
+                {"text": "new", "state": "unsubmitted", "usage": {}}]}
+            job = products.STORE.create("tts", model, self.root / model, "url", resume=plan)
+            response = {"output": {"audio": {"url": "https://example.test/new.wav"}}, "usage": current}
+            with patch.object(media, "request", return_value=(response, None)) as request:
+                result = media.resume_tts(job)
+                self.assertTrue(result["ok"], result)
+                self.assertEqual(result["usage"], expected)
+                self.assertEqual(job["resume"]["chunks"][1]["usage"], current)
+                recovered = media.resume_tts(job)
+                self.assertEqual(recovered["usage"], expected)
+                self.assertEqual(request.call_count, 1)
+
+    def test_completed_legacy_tts_recovery_normalizes_usage_without_generation(self):
+        import wave
+        audio = self.root / "speech.wav"
+        with wave.open(str(audio), "wb") as output:
+            output.setnchannels(1)
+            output.setsampwidth(2)
+            output.setframerate(24000)
+            output.writeframes(b"\x00\x00" * 24)
+        model = "qwen-audio-3.1-tts-flash"
+        plan = {"options": tts(model=model, voice=model + "-me-1"), "chunks": [
+            {"text": "old", "state": "generated", "url": "https://example.test/old.wav", "usage": 5}]}
+        job = products.STORE.create("tts", model, self.root, "local", resume=plan)
+        job.update(state="delivered", usage={"characters": 5}, result={
+            "speech_file": str(audio), "speech_integrity": jobs.fingerprint(audio)})
+        products.STORE.save(job)
+        with patch.object(media, "request") as request, patch.object(jobs, "download") as download:
+            result = products.recover(job["job_id"])
+            self.assertTrue(result["ok"], result)
+            self.assertEqual(result["usage"], {"legacy_untyped": 5})
+            self.assertEqual(products.STORE.load(job["job_id"])["usage"], {"legacy_untyped": 5})
+            request.assert_not_called()
+            download.assert_not_called()
 
     def test_retired_asr_snapshots_rejected_and_current_id_sent(self):
         with patch.object(media, "request") as request:

@@ -12,7 +12,7 @@
 
 </div>
 
-`0.6.0` 适配官方 2026-10-10 模型下线：`clone_voice` / `design_voice` 改用 `voice-enrollment`，默认目标模型 `qwen-audio-3.0-tts-flash`，复刻只接受公网 URL；`text_to_speech` 新增 Qwen-Audio-TTS / CosyVoice 与 `instructions` 语气控制；`rerank` 统一走原生接口；`speech_to_text` 拒绝已下线的日期快照。旧的 qwen3-tts-vc/vd 音色已随模型下线，不能继续使用。
+`0.6.0` 适配官方 2026-10-10 模型下线：`clone_voice` / `design_voice` 改用 `voice-enrollment`，默认目标模型 `qwen-audio-3.0-tts-flash`；`text_to_speech` 新增 Qwen-Audio-TTS / CosyVoice 与 `instructions` 语气控制；`rerank` 统一走原生接口；`speech_to_text` 拒绝已下线的日期快照。旧的 qwen3-tts-vc/vd 音色已随模型下线，不能继续使用。
 
 `0.5.0` 去掉 `query_video`：视频进度统一用 `get_job` 查询，完成时自动下载；生成类工具和 `chat`、`text_to_speech`、`speech_to_text` 新增 `parameters`。这是不兼容变更。
 
@@ -38,6 +38,10 @@
 
 语言模型别名：`max` → `qwen3.8-max`（默认，能看图）、`plus` → `qwen3.7-plus`、`flash` → `qwen3.8-flash`；其他模型直接写 ID，如 `deepseek-v4-pro`、`kimi-k3`、`glm-5.3`。`chat` 统一走流式接口，支持多轮历史、看图、深度思考开关、JSON 输出和联网搜索。
 
+`MiniMax/MiniMax-M3.1-Flash` 已于2026-10-21加入百炼：`thinking=true` 映射为官方 `thinking={"type":"adaptive"}`，`false` 本地拒绝；`reasoning_split` 固定为 `true`，仅支持 `n=1`。思考深度通过 `parameters={"reasoning_effort":"high"}` 设置（low/medium/high/xhigh/max，默认max）；`MiniMax/MiniMax-M3` 可关闭思考但不支持此深度参数。两者的 `temperature=1`、`top_p=0.95` 固定，其他值不会生效，不支持 `json_mode` 或 `web_search`。M3.1不支持 `stop`，`parallel_tool_calls=false` 不能保证串行，`tool_choice` 仅支持auto；本 `chat` 返回文本和思考，未实现完整 Function Calling 循环。思考与回答共同占用输出 token 上限。参见 [MiniMax直供接入](https://help.aliyun.com/zh/model-studio/minimax-api-by-minimax)。
+
+千问联网搜索可通过 `parameters={"include_tool_usage":true}` 获取 `usage.x_tools.search.count/strategy`，返回统计原样保留；count 为搜索意图触发次数，不能用于费用对账。`deepseek-v4.1-flash-1017`、`xiaomi/mimo-v2.6-pro-ultraspeed` 等新增 ID 可显式传入，具体能力以官方模型页与账号权限为准。
+
 视频是异步任务：`generate_video` 默认 `wait=0`，提交后返回 `task_id`、`job_id`；之后 `get_job(job_id=...)` 查进度，默认单次查询，需要短轮询可指定 `wait`，最多 90 秒。视频模型默认 `wan`（`wan3.0-video`），`wan-fast` 对应 `wan3.0-video-prime`，能力相同、速度更快。视频的参考素材和本地文件会自动上传到百炼临时存储（48 小时有效）。
 
 模型不支持的明显参数组合在本地直接报错，其余交给服务端校验。
@@ -56,19 +60,33 @@ uv tool install ali-bailian-mcp
 
 | 变量 | 说明 |
 |---|---|
-| `DASHSCOPE_API_KEY` | 必需，百炼控制台 › API Key（北京地域） |
+| `DASHSCOPE_API_KEY` | 必需，百炼控制台对应地域的 API Key，与业务空间地域一致 |
 | `BAILIAN_OUT_DIR` | 图片、音频、视频的输出目录，默认 `~/Downloads/ali-bailian` |
 | `BAILIAN_RESOURCE_MODE` | 交付方式：`local`（默认）下载到本地，`url` 只返回 24 小时内有效的链接 |
 | `BAILIAN_JOB_DIR` | 任务记录目录，默认 `~/.local/share/ali-bailian-mcp/jobs` |
-| `DASHSCOPE_BASE_URL` | 默认 `https://dashscope.aliyuncs.com`；新加坡地域用 `https://dashscope-intl.aliyuncs.com`，key 不能跨地域混用 |
+| `DASHSCOPE_BASE_URL` | 默认 `https://dashscope.aliyuncs.com`（存量兼容）；推荐设置下表对应地域的 workspace 根域名，不能带 `/api/v1` 等路径 |
 
 参数说明见工具描述（`src/ali_bailian_mcp/server.py`），接口细节以百炼的[文生图](https://help.aliyun.com/zh/model-studio/text-to-image)、[OpenAI 兼容接口](https://help.aliyun.com/zh/model-studio/compatibility-of-openai-with-dashscope)、[千问 TTS](https://help.aliyun.com/zh/model-studio/qwen-tts-api)、[Qwen-Audio-TTS](https://help.aliyun.com/zh/model-studio/qwen-audio-tts-http-api)、[CosyVoice](https://help.aliyun.com/zh/model-studio/cosyvoice-tts-http-api)、[千问 ASR](https://help.aliyun.com/zh/model-studio/qwen-asr-api-reference) 和[万相 3.0 视频](https://help.aliyun.com/zh/model-studio/wan3-video-generation-api-reference)文档为准。
+
+## 接入域名与地域
+
+设置 `DASHSCOPE_BASE_URL` 为真实业务空间的**根域名**：北京 `https://{WorkspaceId}.cn-beijing.maas.aliyuncs.com`；新加坡 `https://{WorkspaceId}.ap-southeast-1.maas.aliyuncs.com`；HappyHorse 美国示例使用 `https://{WorkspaceId}.us-east-1.maas.aliyuncs.com`。将占位符替换为对应地域的业务空间 ID，并使用同地域 API Key。不要附加 `/api/v1` 或 `/compatible-mode/v1`，MCP 会按工具追加路径。
+
+| 产品 / 当前协议 | 北京 | 新加坡 | 其他地域与边界 |
+|---|---|---|---|
+| Qwen-Audio-TTS，HTTP SpeechSynthesizer | 3.1-plus/flash、3.0-plus/flash | 3.1-plus/flash、3.0-plus/flash | 模型名均带 `qwen-audio-…-tts-…`；目录存在不等于账号授权 |
+| CosyVoice，HTTP SpeechSynthesizer | 已接入的 v3.5 / v3 / v2 | 官方 HTTP 页未列出 | 新加坡的实时合成支持不代表 HTTP 合成支持 |
+| voice-enrollment 声音复刻 | 当前白名单全部模型 | Qwen-Audio 3.1-plus、3.0-plus/flash；CosyVoice v3-plus/flash | 复刻接口可用不代表该地域可用本 MCP 的 HTTP 合成 |
+| voice-enrollment 声音设计 | 当前白名单全部模型 | 未列出 | 设计音色绑定创建时的模型 |
+| HappyHorse 视频编辑 | 以产品 API 为准 | 以产品 API 为准 | 美国文档已改为 workspace 域名；地域、部署范围与账号权限仍需匹配 |
+
+Qwen-Audio-TTS / CosyVoice 的「模型接入方式」页介绍 **AOQ / WebSocket 实时协议**，本 MCP 当前实现上述 **HTTP 非实时协议**，不能只替换模型名就调用实时产品。参见 [地域与接入域名](https://help.aliyun.com/zh/model-studio/regions)、[Qwen-Audio-TTS HTTP](https://help.aliyun.com/zh/model-studio/qwen-audio-tts-http-api)、[CosyVoice HTTP](https://help.aliyun.com/zh/model-studio/cosyvoice-tts-http-api)、[实时接入方式](https://help.aliyun.com/zh/model-studio/qwen-audio-tts-model-access)。官方说明旧 DashScope 域名自2026-09-30起不再支持新特性，因此新增功能建议使用 workspace 域名。
 
 ## 0.3 新增接入
 
 | 工具 | 能力 | 官方契约 |
 |---|---|---|
-| `clone_voice` | 从公网录音 URL 复刻音色（voice-enrollment） | [复刻 HTTP API](https://help.aliyun.com/zh/model-studio/voice-clone-design-http-api) |
+| `clone_voice` | 从本地录音、公开 URL 或 Base64 Data URI 复刻音色（voice-enrollment） | [复刻 HTTP API](https://help.aliyun.com/zh/model-studio/voice-clone-design-http-api) |
 | `design_voice` | 按文字描述设计音色并保存试听（voice-enrollment） | [设计 API](https://help.aliyun.com/zh/model-studio/voice-design-api-references) |
 | `list_voices` / `get_voice` | 分页列出 / 查询 voice-enrollment 自定义音色及审核状态 | 同上 |
 | `edit_video` | HappyHorse 指令编辑、风格和元素替换 | [视频编辑 API](https://help.aliyun.com/en/model-studio/happyhorse-video-edit-api-reference) |
@@ -86,9 +104,12 @@ uv tool install ali-bailian-mcp
 2. 等审核：`get_voice(voice=…)` 的 `status` 为 `OK` 后可用（`DEPLOYING` 审核中，`UNDEPLOYED` 未通过）。
 3. 合成：`text_to_speech(text=…, voice=音色ID, instructions="用温柔的语气")`。不传 `model` 时按音色 ID 前缀自动选回 target_model，走 SpeechSynthesizer 协议。
 
-复刻只接受公网 http/https 音频 URL：官方要求「公网可访问」，且未说明 voice-enrollment 接受百炼临时上传的 `oss://` 地址（临时文件私有、与调用模型绑定），所以本地文件、data URL、`oss://` 一律本地拒绝，不自动上传。响应缺少音色 ID 时不会自动重建，用 `list_voices(prefix=…)` 核对。
+复刻的 `audio` 接受本地 WAV/MP3/M4A（≤10MB）、公网 http/https URL 或 Base64 Data URI；本地文件直接编码为 Data URI，统一发送官方 `input.audio`，不经过临时上传。旧 `url` 别名只接受公网 URL，不能与 `audio` 同时传入；官方 `input.url` 仍兼容但将逐步废弃。本 MCP 仍拒绝未经官方确认的 `oss://`。音频应满足 ≥16kHz、推荐10–20秒、最长60秒及至少5秒清晰朗读；远程文件规格和音色效果由服务端校验。响应缺少音色 ID 时不会自动重建，用 `list_voices(prefix=…)` 核对。
 
-`list_voices` / `get_voice` 统一走 voice-enrollment 的 `list_voice` / `query_voice`；复刻和设计音色在同一列表，`kind` 旧值 `clone` / `design` / `cosyvoice` 仍可传，均等价于 `enrollment`。已下线的 Qwen 复刻 / 设计音色不能再用于合成。Qwen-Audio-TTS / CosyVoice 与 voice-enrollment 的完整能力仅在北京地域。
+`list_voices` / `get_voice` 统一走 voice-enrollment 的 `list_voice` / `query_voice`；复刻和设计音色在同一列表，`kind` 旧值 `clone` / `design` / `cosyvoice` 仍可传，均等价于 `enrollment`。已下线的 Qwen 复刻 / 设计音色不能再用于合成。合成、复刻与设计的地域范围不同，见下方接入表。`qwen-audio-3.1-tts-plus` 已支持这三类工具，显式传 ID 即可；原 `audio` / `audio-plus` 别名及默认模型保持不变。
+
+
+`instructions` 发送为官方 `instruction`：仅 CosyVoice 应用100字符上限（汉字计2），Qwen-Audio-TTS 当前官方未公布同一上限，交服务端校验；CosyVoice v2 不支持指令，v3系统音色须使用官方固定指令，v3-plus自定义音色不支持指令。
 
 ### 视频编辑和数字人
 
@@ -110,6 +131,7 @@ HappyHorse 编辑输入视频 3–60 秒，输出最多 15 秒。数字人音频
 - 图片保存完整响应和逐项 URL，再有限并发交付；恢复只补下载。
 - 视频保存云端 `task_id`，重启后查询原任务，刷新结果 URL；不重新提交生成。
 - TTS 逐段保存文本、生成 URL 和文件；恢复跳过已合成段，只继续尚未提交的段，再拼接 WAV。状态未知的段禁止自动重复合成。明确被拒绝的段可由显式恢复调用再次提交。
+- TTS用量保留官方characters、input_tokens、output_tokens、total_tokens等字段，按同名单位累加；旧任务已丢单位的标量保存为legacy_untyped，不混入新计量，也不据此估算账单。
 - 音色设计先留档音色 ID 再交付试听；恢复只补试听交付，不再次创建音色。
 - 工具调用超时且没有拿到 ID，可通过 `list_jobs` 按时间、模型和摘要查找记录。
 

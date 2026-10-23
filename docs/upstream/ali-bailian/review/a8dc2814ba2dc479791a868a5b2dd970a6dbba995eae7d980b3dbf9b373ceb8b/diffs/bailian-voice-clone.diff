@@ -1,0 +1,1013 @@
+--- reviewed/ali-bailian/bailian-voice-clone
++++ current/ali-bailian/bailian-voice-clone
+@@ -4,9 +4,9 @@
+ 
+ <meta property="og:title" content="声音复刻HTTP API参考" />
+ 
+-<strong>用户指南：</strong>[声音复刻](/zh/model-studio/voice-cloning-user-guide)。
+-
+-## 接口地址（Qwen-Audio-TTS/CosyVoice） <span id="h2-url" />
++## 接口地址 <span id="h2-url" />
++
++### Qwen-Audio-TTS/Qwen-Audio-Realtime/CosyVoice <span id="h3-url-enrollment" />
+ 
+ <Tabs>
+   <Tab title="华北2（北京）">
+@@ -27,41 +27,101 @@
+ 
+   - 华北2（北京）地域：从 `dashscope.aliyuncs.com` 迁移至 `{WorkspaceId}.cn-beijing.maas.aliyuncs.com`
+   - 新加坡地域：从 `dashscope-intl.aliyuncs.com` 迁移至 `{WorkspaceId}.ap-southeast-1.maas.aliyuncs.com`
+-
+-  `{WorkspaceId}`需要替换为真实的[Workspace ID](/zh/model-studio/regions#h2_migrate_domain)。现有域名仍可正常使用。
+ </Tip>
+ 
+-## 接口地址（MiniMax） <span id="h2-mm-endpoint" />
++### MiniMax <span id="h2-mm-endpoint" />
+ 
+ HTTP请求地址：`POST https://dashscope.aliyuncs.com/api/v1/services/aigc/multimodal-generation/generation`
+ 
+ SDK调用配置的base\_url：`https://dashscope.aliyuncs.com/api/v1`
+ 
+-> 第三方模型（MiniMax）目前仅支持通过`dashscope.aliyuncs.com`域名调用，暂不支持专属域名。
++<Note>
++  第三方模型（MiniMax）目前仅支持通过`dashscope.aliyuncs.com`域名调用，暂不支持专属域名。
++</Note>
+ 
+ ## 请求头 <span id="h2-headers" />
+ 
+-<table style={{ display: "table", tableLayout: "fixed", width: "100%" }}><colgroup><col style={{ width: "24.99%" }} /><col style={{ width: "8.54%" }} /><col style={{ width: "10.32%" }} /><col style={{ width: "56.15%" }} /></colgroup><thead><tr><th><p><strong>参数</strong></p></th><th><p><strong>类型</strong></p></th><th><p><strong>是否必选</strong></p></th><th><p><strong>说明</strong></p></th></tr></thead><tbody><tr><td><p>Authorization</p></td><td><p>string</p></td><td><p>是</p></td><td><p>鉴权令牌，格式为<code>Bearer \<your\_api\_key></code>，使用时，将"<code>\<your\_api\_key></code>"替换为实际的API Key。</p></td></tr><tr><td><p>Content-Type</p></td><td><p>string</p></td><td><p>是</p></td><td><p>请求体的媒体类型。Qwen-Audio-TTS/CosyVoice固定为<code>application/json</code>，MiniMax固定为<code>application/json; charset=utf-8</code>。</p></td></tr></tbody></table>
+-
+-## 创建音色（Qwen-Audio-TTS/CosyVoice） <span id="h2-create" />
+-
+-<table bordertype="no-border" style={{ display: "table", tableLayout: "fixed", width: "100%" }}>
+-  <colgroup>
+-    <col style={{ width: "50%" }} />
+-
+-    <col style={{ width: "50%" }} />
+-  </colgroup>
+-
+-  <tbody>
+-    <tr>
+-      <td>
+-        ### 请求体 <span id="h3-cr-rq" />
++<table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
++  <colgroup>
++    <col style={{ width: "24.99%" }} />
++
++    <col style={{ width: "8.54%" }} />
++
++    <col style={{ width: "10.32%" }} />
++
++    <col style={{ width: "56.15%" }} />
++  </colgroup>
++
++  <thead>
++    <tr>
++      <th style={{ verticalAlign: "top" }}><strong>参数</strong></th>
++      <th style={{ verticalAlign: "top" }}><strong>类型</strong></th>
++      <th style={{ verticalAlign: "top" }}><strong>是否必选</strong></th>
++      <th style={{ verticalAlign: "top" }}><strong>说明</strong></th>
++    </tr>
++  </thead>
++
++  <tbody>
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        Authorization
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        string
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        是
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        鉴权令牌，格式为`Bearer <your_api_key>`，使用时，将"`<your_api_key>`"替换为实际的API Key。
++      </td>
++    </tr>
++
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        Content-Type
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        string
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        是
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        请求体的媒体类型。按模型系列设置：
++
++        - Qwen-Audio-TTS/Qwen-Audio-Realtime/CosyVoice：`application/json`。
++        - MiniMax：`application/json; charset=utf-8`。
++      </td>
++    </tr>
++  </tbody>
++</table>
++
++## 创建音色 <span id="h2-create" />
++
++### Qwen-Audio-TTS/Qwen-Audio-Realtime/CosyVoice <span id="h3-create-enrollment" />
++
++<table bordertype="no-border" style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
++  <colgroup>
++    <col style={{ width: "50%" }} />
++
++    <col style={{ width: "50%" }} />
++  </colgroup>
++
++  <tbody>
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        #### 请求体 <span id="h3-cr-rq" />
+ 
+         <strong>model</strong>`string`<strong>（必选）</strong>
+ 
+-        声音复刻模型。取值：
+-
+-        - `voice-enrollment`：Qwen-Audio-TTS/CosyVoice声音复刻。
++        固定为 `voice-enrollment`。
+ 
+         <strong>input</strong>`object`<strong>（必选）</strong>
+ 
+@@ -70,110 +130,100 @@
+         <Accordion title="属性" defaultOpen>
+           <strong>action</strong> `string`<strong>（必选）</strong>
+ 
+-          操作类型。
+-
+-          - Qwen-Audio-TTS/CosyVoice（`voice-enrollment`）：固定为`create_voice`。
++          固定为 `create_voice`。
+ 
+           <strong>target\_model</strong> `string`<strong>（必选）</strong>
+ 
+-          驱动音色的语音合成模型。必须与后续调用语音合成接口时使用的模型一致，否则合成会失败。
+-
+-          <strong>url</strong> `string`<strong>（必选）</strong>
+-
+-          <Tip>
+-            仅适用于Qwen-Audio-TTS/CosyVoice声音复刻（model为`voice-enrollment`时）。
+-          </Tip>
+-
+-          用于复刻音色的音频文件URL，要求公网可访问。
++          驱动音色的目标模型。必须与后续使用该音色的模型一致，否则调用失败。
++
++          <strong>audio</strong> `string`<strong>（必选）</strong>
++
++          用于复刻音色的参考音频，支持公网可访问的 URL 或 Base64 Data URI，例如 `data:audio/wav;base64,...`。
++
++          <Note>
++            兼容旧参数 `url`；使用 `url` 时可不传 `audio`。`url` 将逐步废弃，建议改用 `audio`。
++          </Note>
+ 
+           <strong>prefix</strong> `string`<strong>（必选）</strong>
+ 
+-          <Tip>
+-            仅适用于Qwen-Audio-TTS/CosyVoice（model为`voice-enrollment`时）。
+-          </Tip>
+-
+           音色名称前缀，仅允许数字和英文字母，不超过10个字符。生成的音色名格式：`{target_model}-{prefix}-{唯一标识}`。
+ 
+           <strong>language\_hints</strong> `array[string]`（可选）
+ 
+-          <Tip>
+-            仅适用于Qwen-Audio-TTS/CosyVoice声音复刻（model为`voice-enrollment`时），且仅qwen-audio-3.0-tts-plus、qwen-audio-3.1-tts-flash、qwen-audio-3.0-tts-flash、cosyvoice-v3.5-plus、v3.5-flash、v3-plus和v3-flash模型支持。
+-          </Tip>
+-
+           辅助模型识别样本音频的语种，从而更准确地提取音色特征，提升复刻效果。若设置的语种与实际音频语种不符（例如为中文音频设置 `en`），系统将忽略该设置并自动检测语种。
+ 
+-          此参数为数组，但当前版本仅处理第一个元素。
+-
+-          取值范围（因模型而异）：
+-
+-          - qwen-audio-3.0-tts-plus、qwen-audio-3.0-tts-flash：
+-
+-            - zh：中文
+-            - en：英语
+-            - fr：法语
+-            - de：德语
+-            - ja：日语
+-            - ko：韩语
+-            - ru：俄语
+-            - pt：葡萄牙语
+-            - th：泰语
+-            - id：印尼语
+-            - vi：越南语
+-            - it：意大利语
+-            - es：西班牙语
+-            - ms：马来西亚语
+-            - fil：菲律宾语
+-            - ar：阿拉伯语
+-          - cosyvoice-v3-plus：
+-
+-            - zh：中文
+-            - en：英文
+-            - fr：法语
+-            - de：德语
+-            - ja：日语
+-            - ko：韩语
+-            - ru：俄语
+-          - cosyvoice-v3.5-plus、cosyvoice-v3.5-flash、cosyvoice-v3-flash：
+-
+-            - zh：中文
+-            - en：英文
+-            - fr：法语
+-            - de：德语
+-            - ja：日语
+-            - ko：韩语
+-            - ru：俄语
+-            - pt：葡萄牙语
+-            - th：泰语
+-            - id：印尼语
+-            - vi：越南语
++          此参数为数组，长度必须为 1。
++
++          <Note>
++            适用于 qwen-audio-3.1-tts-plus、qwen-audio-3.1-tts-flash、qwen-audio-3.0-tts-plus、qwen-audio-3.0-tts-flash、qwen-audio-3.1-realtime-plus、qwen-audio-3.0-realtime-plus、qwen-audio-3.0-realtime-flash、cosyvoice-v3.5-plus、cosyvoice-v3.5-flash、cosyvoice-v3-plus、cosyvoice-v3-flash。
++          </Note>
++
++          <Accordion title="点击查看各模型支持的语言">
++            - qwen-audio-3.1-tts-plus、qwen-audio-3.1-tts-flash、qwen-audio-3.0-tts-plus、qwen-audio-3.0-tts-flash、qwen-audio-3.1-realtime-plus、qwen-audio-3.0-realtime-plus、qwen-audio-3.0-realtime-flash：
++
++              - zh：中文
++              - en：英语
++              - fr：法语
++              - de：德语
++              - ja：日语
++              - ko：韩语
++              - ru：俄语
++              - pt：葡萄牙语
++              - th：泰语
++              - id：印尼语
++              - vi：越南语
++              - it：意大利语
++              - es：西班牙语
++              - ms：马来西亚语
++              - fil：菲律宾语
++              - ar：阿拉伯语
++            - cosyvoice-v3-plus：
++
++              - zh：中文
++              - en：英文
++              - fr：法语
++              - de：德语
++              - ja：日语
++              - ko：韩语
++              - ru：俄语
++            - cosyvoice-v3.5-plus、cosyvoice-v3.5-flash、cosyvoice-v3-flash：
++
++              - zh：中文
++              - en：英文
++              - fr：法语
++              - de：德语
++              - ja：日语
++              - ko：韩语
++              - ru：俄语
++              - pt：葡萄牙语
++              - th：泰语
++              - id：印尼语
++              - vi：越南语
++          </Accordion>
+ 
+           默认值：\["zh"]。
+ 
+           <strong>max\_prompt\_audio\_length</strong> `float`（可选）
+ 
+-          <Tip>
+-            仅适用于Qwen-Audio-TTS/CosyVoice声音复刻（model为`voice-enrollment`时），且仅qwen-audio-3.0-tts-plus、qwen-audio-3.1-tts-flash、qwen-audio-3.0-tts-flash、cosyvoice-v3.5-plus、v3.5-flash和v3-flash模型支持。
+-          </Tip>
+-
+           音频预处理后用于声音复刻的参考音频最大时长（秒）。取值范围：\[3.0, 30.0]。
+ 
+           默认值：10.0。
+ 
++          <Note>
++            适用于 qwen-audio-3.1-tts-plus、qwen-audio-3.1-tts-flash、qwen-audio-3.0-tts-plus、qwen-audio-3.0-tts-flash、qwen-audio-3.1-realtime-plus、qwen-audio-3.0-realtime-plus、qwen-audio-3.0-realtime-flash、cosyvoice-v3.5-plus、cosyvoice-v3.5-flash、cosyvoice-v3-flash。
++          </Note>
++
+           <strong>enable\_preprocess</strong> `boolean`（可选）
+ 
+-          <Tip>
+-            仅适用于Qwen-Audio-TTS/CosyVoice声音复刻（model为`voice-enrollment`时），且仅qwen-audio-3.0-tts-plus、qwen-audio-3.1-tts-flash、qwen-audio-3.0-tts-flash、cosyvoice-v3.5-plus、v3.5-flash和v3-flash模型支持。
+-          </Tip>
+-
+           是否开启音频预处理（降噪、音频增强、音量规整）。有背景噪音时建议开启；安静环境建议关闭以最大程度还原音色。
+ 
+           默认值：false。
+ 
++          <Note>
++            适用于 qwen-audio-3.1-tts-plus、qwen-audio-3.1-tts-flash、qwen-audio-3.0-tts-plus、qwen-audio-3.0-tts-flash、qwen-audio-3.1-realtime-plus、qwen-audio-3.0-realtime-plus、qwen-audio-3.0-realtime-flash、cosyvoice-v3.5-plus、cosyvoice-v3.5-flash、cosyvoice-v3-flash。
++          </Note>
++
+           <strong>enable\_volume\_normalization</strong> `string`（可选）
+-
+-          <Tip>
+-            仅适用于Qwen-Audio-TTS/CosyVoice声音复刻（model为`voice-enrollment`时）。
+-          </Tip>
+ 
+           是否对用于声音复刻的样本音频进行音量归一化。取值：
+ 
+@@ -186,11 +236,11 @@
+         </Accordion>
+       </td>
+ 
+-      <td>
++      <td style={{ verticalAlign: "top" }}>
+         以下为华北2（北京）地域的配置，调用时请将"\{WorkspaceId}"替换为真实的业务空间ID，各地域的配置不同。
+ 
+         <CodeGroup>
+-          ```bash Qwen-Audio-TTS/CosyVoice声音复刻
++          ```bash 声音复刻
+           curl -X POST https://{WorkspaceId}.cn-beijing.maas.aliyuncs.com/api/v1/services/audio/tts/customization \
+           -H "Authorization: Bearer $DASHSCOPE_API_KEY" \
+           -H "Content-Type: application/json" \
+@@ -200,29 +250,40 @@
+                   "action": "create_voice",
+                   "target_model": "qwen-audio-3.0-tts-flash",
+                   "prefix": "myvoice",
+-                  "url": "https://your-audio-url.wav",
++                  "audio": "https://your-audio-url.wav",
+                   "language_hints": ["zh"],
+                   "enable_volume_normalization": "false"
+               }
+           }'
+           ```
+         </CodeGroup>
+-      </td>
+-    </tr>
+-  </tbody>
+-</table>
+-
+-<table bordertype="no-border" style={{ display: "table", tableLayout: "fixed", width: "100%" }}>
+-  <colgroup>
+-    <col style={{ width: "50%" }} />
+-
+-    <col style={{ width: "50%" }} />
+-  </colgroup>
+-
+-  <tbody>
+-    <tr>
+-      <td>
+-        ### 返回体 <span id="h3-cr-rs" />
++
++        使用本地 WAV 音频时，可通过以下代码生成 Base64 Data URI，并将 `audio` 的值填入创建或更新请求的 `input.audio` 字段。将 `sample.wav` 替换为本地音频路径。
++
++        ```python
++        import base64
++        from pathlib import Path
++
++        audio = "data:audio/wav;base64," + base64.b64encode(
++            Path("sample.wav").read_bytes()
++        ).decode("ascii")
++        ```
++      </td>
++    </tr>
++  </tbody>
++</table>
++
++<table bordertype="no-border" style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
++  <colgroup>
++    <col style={{ width: "50%" }} />
++
++    <col style={{ width: "50%" }} />
++  </colgroup>
++
++  <tbody>
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        #### 返回体 <span id="h3-cr-rs" />
+ 
+         <strong>request\_id</strong>`string`
+ 
+@@ -249,9 +310,9 @@
+         </Accordion>
+       </td>
+ 
+-      <td>
++      <td style={{ verticalAlign: "top" }}>
+         <CodeGroup>
+-          ```json Qwen-Audio-TTS/CosyVoice声音复刻
++          ```json 声音复刻
+           {
+               "output": {
+                   "voice_id": "qwen-audio-3.0-tts-flash-myvoice-xxxxxx"
+@@ -268,21 +329,23 @@
+   </tbody>
+ </table>
+ 
+-## 创建音色（MiniMax） <span id="h2-mm-create" />
+-
+-> 音色复刻请求会生成一段试听音频，试听音频按所选模型的同步语音合成单价额外计费。
+-
+-<table bordertype="no-border" style={{ display: "table", tableLayout: "fixed", width: "100%" }}>
+-  <colgroup>
+-    <col style={{ width: "50%" }} />
+-
+-    <col style={{ width: "50%" }} />
+-  </colgroup>
+-
+-  <tbody>
+-    <tr>
+-      <td>
+-        ### 请求体 <span id="h3-mm-rq" />
++### MiniMax <span id="h2-mm-create" />
++
++<Note>
++  音色复刻请求会生成一段试听音频，试听音频按所选模型的同步语音合成单价额外计费。
++</Note>
++
++<table bordertype="no-border" style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
++  <colgroup>
++    <col style={{ width: "50%" }} />
++
++    <col style={{ width: "50%" }} />
++  </colgroup>
++
++  <tbody>
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        #### 请求体 <span id="h3-mm-rq" />
+ 
+         <strong>model</strong>`string`<strong>（必选）</strong>
+ 
+@@ -332,7 +395,9 @@
+ 
+           复刻声音期望试听的内容。限制 1000 字符以内。
+ 
+-          > 试听将根据字符数正常收取语音合成费用，收费标准参见[MiniMax模型价格](/zh/model-studio/model-pricing#8296764fe3l4x)。
++          <Note>
++            试听将根据字符数正常收取语音合成费用，收费标准参见[MiniMax模型价格](/zh/model-studio/model-pricing#8296764fe3l4x)。
++          </Note>
+ 
+           - 语气词标签：仅当模型选择 `speech-2.8-hd` 或 `speech-2.8-turbo` 时，支持在文本中插入语气词标签。支持的语气词：`(laughs)`（笑声）、`(chuckle)`（轻笑）、`(coughs)`（咳嗽）、`(clear-throat)`（清嗓子）、`(groans)`（呻吟）、`(breath)`（正常换气）、`(pant)`（喘气）、`(inhale)`（吸气）、`(exhale)`（呼气）、`(gasps)`（倒吸气）、`(sniffs)`（吸鼻子）、`(sighs)`（叹气）、`(snorts)`（喷鼻息）、`(burps)`（打嗝）、`(lip-smacking)`（咂嘴）、`(humming)`（哼唱）、`(hissing)`（嘶嘶声）、`(emm)`（嗯）、`(whistles)`（口哨）、`(sneezes)`（喷嚏）、`(crying)`（抽泣）、`(applause)`（鼓掌）
+ 
+@@ -346,7 +411,9 @@
+           - 末位字符不可为 -、\_
+           - voice\_id 不可与已有 id 重复，否则会报错
+ 
+-          > 该参数全局唯一，建议使用时间戳等个性化信息命名。
++          <Note>
++            该参数全局唯一，建议使用时间戳等个性化信息命名。
++          </Note>
+ 
+           <strong>language\_boost</strong>`enum<string>`<strong>（可选）</strong>默认值：null
+ 
+@@ -370,9 +437,12 @@
+         </Accordion>
+       </td>
+ 
+-      <td>
++      <td style={{ verticalAlign: "top" }}>
++        <Note>
++          第三方模型（MiniMax）目前仅支持通过`dashscope.aliyuncs.com`域名调用，暂不支持专属域名
++        </Note>
++
+         ```bash
+-        # 第三方模型（MiniMax）目前仅支持通过dashscope.aliyuncs.com域名调用，暂不支持专属域名
+         curl -X POST 'https://dashscope.aliyuncs.com/api/v1/services/aigc/multimodal-generation/generation' \
+           -H "Authorization: Bearer $DASHSCOPE_API_KEY" \
+           -H 'Content-Type: application/json; charset=utf-8' \
+@@ -391,17 +461,17 @@
+   </tbody>
+ </table>
+ 
+-<table bordertype="no-border" style={{ display: "table", tableLayout: "fixed", width: "100%" }}>
+-  <colgroup>
+-    <col style={{ width: "50%" }} />
+-
+-    <col style={{ width: "50%" }} />
+-  </colgroup>
+-
+-  <tbody>
+-    <tr>
+-      <td>
+-        ### 返回体 <span id="h3-mm-rs" />
++<table bordertype="no-border" style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
++  <colgroup>
++    <col style={{ width: "50%" }} />
++
++    <col style={{ width: "50%" }} />
++  </colgroup>
++
++  <tbody>
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        #### 返回体 <span id="h3-mm-rs" />
+ 
+         <strong>request\_id</strong>`string`
+ 
+@@ -464,7 +534,7 @@
+         </Accordion>
+       </td>
+ 
+-      <td>
++      <td style={{ verticalAlign: "top" }}>
+         ```json
+         {
+             "output": {
+@@ -489,27 +559,27 @@
+ 
+ ## 查询音色列表 <span id="h2-list" />
+ 
+-<Tip>
+-  MiniMax不支持通过本接口查询音色列表。如需查询 MiniMax 系列模型（如 MiniMax/speech-2.8-turbo）的可用音色 ID（含系统音色与已复刻音色），请参见[声音管理](/zh/model-studio/sound-management#b447040127fbt)。
+-</Tip>
+-
+-<table bordertype="no-border" style={{ display: "table", tableLayout: "fixed", width: "100%" }}>
+-  <colgroup>
+-    <col style={{ width: "50%" }} />
+-
+-    <col style={{ width: "50%" }} />
+-  </colgroup>
+-
+-  <tbody>
+-    <tr>
+-      <td>
+-        ### 请求体 <span id="h3-ls-rq" />
++适用于 Qwen-Audio-TTS、Qwen-Audio-Realtime 和 CosyVoice。
++
++<Note>
++  MiniMax 不支持通过本接口查询音色列表。MiniMax 的可用音色 ID（包括系统音色和复刻音色）请参见[声音管理](/zh/model-studio/sound-management#b447040127fbt)。
++</Note>
++
++<table bordertype="no-border" style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
++  <colgroup>
++    <col style={{ width: "50%" }} />
++
++    <col style={{ width: "50%" }} />
++  </colgroup>
++
++  <tbody>
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        #### 请求体 <span id="h3-ls-rq" />
+ 
+         <strong>model</strong>`string`<strong>（必选）</strong>
+ 
+-        声音复刻模型。取值：
+-
+-        - `voice-enrollment`：Qwen-Audio-TTS/CosyVoice声音复刻。
++        固定为 `voice-enrollment`。
+ 
+         <strong>input</strong>`object`<strong>（必选）</strong>
+ 
+@@ -522,10 +592,6 @@
+ 
+           <strong>prefix</strong> `string`（可选）
+ 
+-          <Tip>
+-            仅适用于Qwen-Audio-TTS/CosyVoice。
+-          </Tip>
+-
+           按前缀筛选音色。
+ 
+           <strong>page\_index</strong> `integer`（可选）
+@@ -538,11 +604,11 @@
+         </Accordion>
+       </td>
+ 
+-      <td>
++      <td style={{ verticalAlign: "top" }}>
+         以下为华北2（北京）地域的配置，调用时请将"\{WorkspaceId}"替换为真实的业务空间ID，各地域的配置不同。
+ 
+         <CodeGroup>
+-          ```bash Qwen-Audio-TTS/CosyVoice
++          ```bash 查询音色列表
+           curl -X POST https://{WorkspaceId}.cn-beijing.maas.aliyuncs.com/api/v1/services/audio/tts/customization \
+           -H "Authorization: Bearer $DASHSCOPE_API_KEY" \
+           -H "Content-Type: application/json" \
+@@ -562,17 +628,17 @@
+   </tbody>
+ </table>
+ 
+-<table bordertype="no-border" style={{ display: "table", tableLayout: "fixed", width: "100%" }}>
+-  <colgroup>
+-    <col style={{ width: "50%" }} />
+-
+-    <col style={{ width: "50%" }} />
+-  </colgroup>
+-
+-  <tbody>
+-    <tr>
+-      <td>
+-        ### 返回体 <span id="h3-ls-rs" />
++<table bordertype="no-border" style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
++  <colgroup>
++    <col style={{ width: "50%" }} />
++
++    <col style={{ width: "50%" }} />
++  </colgroup>
++
++  <tbody>
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        #### 返回体 <span id="h3-ls-rs" />
+ 
+         <strong>request\_id</strong>`string`
+ 
+@@ -602,10 +668,6 @@
+ 
+             <strong>status</strong>`string`
+ 
+-            <Tip>
+-              仅Qwen-Audio-TTS/CosyVoice返回。
+-            </Tip>
+-
+             音色状态，取值参见"音色状态说明"。
+           </Accordion>
+         </Accordion>
+@@ -621,9 +683,9 @@
+         </Accordion>
+       </td>
+ 
+-      <td>
++      <td style={{ verticalAlign: "top" }}>
+         <CodeGroup>
+-          ```json Qwen-Audio-TTS/CosyVoice
++          ```json 查询音色列表
+           {
+               "output": {
+                   "voice_list": [
+@@ -649,25 +711,27 @@
+ 
+ ## 查询音色详情 <span id="h2-query" />
+ 
+-<Tip>
+-  仅适用于Qwen-Audio-TTS/CosyVoice（model为`voice-enrollment`时）。MiniMax模型不支持查询音色详情操作。
+-</Tip>
+-
+-<table bordertype="no-border" style={{ display: "table", tableLayout: "fixed", width: "100%" }}>
+-  <colgroup>
+-    <col style={{ width: "50%" }} />
+-
+-    <col style={{ width: "50%" }} />
+-  </colgroup>
+-
+-  <tbody>
+-    <tr>
+-      <td>
+-        ### 请求体 <span id="h3-qr-rq" />
++适用于 Qwen-Audio-TTS、Qwen-Audio-Realtime 和 CosyVoice。
++
++<Note>
++  MiniMax 不支持通过本接口查询音色详情。
++</Note>
++
++<table bordertype="no-border" style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
++  <colgroup>
++    <col style={{ width: "50%" }} />
++
++    <col style={{ width: "50%" }} />
++  </colgroup>
++
++  <tbody>
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        #### 请求体 <span id="h3-qr-rq" />
+ 
+         <strong>model</strong>`string`<strong>（必选）</strong>
+ 
+-        固定为`voice-enrollment`（Qwen-Audio-TTS/CosyVoice）。
++        固定为 `voice-enrollment`。
+ 
+         <strong>input</strong>`object`<strong>（必选）</strong>
+ 
+@@ -684,11 +748,11 @@
+         </Accordion>
+       </td>
+ 
+-      <td>
++      <td style={{ verticalAlign: "top" }}>
+         以下为华北2（北京）地域的配置，调用时请将"\{WorkspaceId}"替换为真实的业务空间ID，各地域的配置不同。
+ 
+         <Tabs>
+-          <Tab title="Qwen-Audio-TTS/CosyVoice">
++          <Tab title="查询音色详情">
+             ```bash
+             curl -X POST https://{WorkspaceId}.cn-beijing.maas.aliyuncs.com/api/v1/services/audio/tts/customization \
+             -H "Authorization: Bearer $DASHSCOPE_API_KEY" \
+@@ -708,17 +772,17 @@
+   </tbody>
+ </table>
+ 
+-<table bordertype="no-border" style={{ display: "table", tableLayout: "fixed", width: "100%" }}>
+-  <colgroup>
+-    <col style={{ width: "50%" }} />
+-
+-    <col style={{ width: "50%" }} />
+-  </colgroup>
+-
+-  <tbody>
+-    <tr>
+-      <td>
+-        ### 返回体 <span id="h3-qr-rs" />
++<table bordertype="no-border" style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
++  <colgroup>
++    <col style={{ width: "50%" }} />
++
++    <col style={{ width: "50%" }} />
++  </colgroup>
++
++  <tbody>
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        #### 返回体 <span id="h3-qr-rs" />
+ 
+         <strong>request\_id</strong>`string`
+ 
+@@ -761,7 +825,7 @@
+         </Accordion>
+       </td>
+ 
+-      <td>
++      <td style={{ verticalAlign: "top" }}>
+         ```json
+         {
+             "output": {
+@@ -784,25 +848,27 @@
+ 
+ ## 更新音色 <span id="h2-update" />
+ 
+-<Tip>
+-  仅适用于Qwen-Audio-TTS/CosyVoice声音复刻（model为`voice-enrollment`时）。MiniMax模型不支持更新操作。
+-</Tip>
+-
+-<table bordertype="no-border" style={{ display: "table", tableLayout: "fixed", width: "100%" }}>
+-  <colgroup>
+-    <col style={{ width: "50%" }} />
+-
+-    <col style={{ width: "50%" }} />
+-  </colgroup>
+-
+-  <tbody>
+-    <tr>
+-      <td>
+-        ### 请求体 <span id="h3-up-rq" />
++适用于 Qwen-Audio-TTS、Qwen-Audio-Realtime 和 CosyVoice。
++
++<Note>
++  MiniMax 不支持通过本接口更新音色。
++</Note>
++
++<table bordertype="no-border" style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
++  <colgroup>
++    <col style={{ width: "50%" }} />
++
++    <col style={{ width: "50%" }} />
++  </colgroup>
++
++  <tbody>
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        #### 请求体 <span id="h3-up-rq" />
+ 
+         <strong>model</strong>`string`<strong>（必选）</strong>
+ 
+-        固定为`voice-enrollment`。
++        固定为 `voice-enrollment`。
+ 
+         <strong>input</strong>`object`<strong>（必选）</strong>
+ 
+@@ -817,13 +883,17 @@
+ 
+           要更新的音色ID。
+ 
+-          <strong>url</strong> `string`<strong>（必选）</strong>
+-
+-          新的音频文件URL，要求公网可访问。
+-        </Accordion>
+-      </td>
+-
+-      <td>
++          <strong>audio</strong> `string`<strong>（必选）</strong>
++
++          新的参考音频，支持公网可访问的 URL 或 Base64 Data URI，例如 `data:audio/wav;base64,...`。
++
++          <Note>
++            兼容旧参数 `url`；使用 `url` 时可不传 `audio`。`url` 将逐步废弃，建议改用 `audio`。
++          </Note>
++        </Accordion>
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
+         以下为华北2（北京）地域的配置，调用时请将"\{WorkspaceId}"替换为真实的业务空间ID，各地域的配置不同。
+ 
+         ```bash
+@@ -835,7 +905,7 @@
+             "input": {
+                 "action": "update_voice",
+                 "voice_id": "yourVoiceId",
+-                "url": "https://new-audio-url.wav"
++                "audio": "https://new-audio-url.wav"
+             }
+         }'
+         ```
+@@ -844,17 +914,17 @@
+   </tbody>
+ </table>
+ 
+-<table bordertype="no-border" style={{ display: "table", tableLayout: "fixed", width: "100%" }}>
+-  <colgroup>
+-    <col style={{ width: "50%" }} />
+-
+-    <col style={{ width: "50%" }} />
+-  </colgroup>
+-
+-  <tbody>
+-    <tr>
+-      <td>
+-        ### 返回体 <span id="h3-up-rs" />
++<table bordertype="no-border" style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
++  <colgroup>
++    <col style={{ width: "50%" }} />
++
++    <col style={{ width: "50%" }} />
++  </colgroup>
++
++  <tbody>
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        #### 返回体 <span id="h3-up-rs" />
+ 
+         <strong>request\_id</strong>`string`
+ 
+@@ -875,7 +945,7 @@
+         </Accordion>
+       </td>
+ 
+-      <td>
++      <td style={{ verticalAlign: "top" }}>
+         ```json
+         {
+             "output": {},
+@@ -892,27 +962,27 @@
+ 
+ ## 删除音色 <span id="h2-delete" />
+ 
+-<Tip>
+-  MiniMax不支持通过本接口查询音色列表。如需查询 MiniMax 系列模型（如 MiniMax/speech-2.8-turbo）的可用音色 ID（含系统音色与已复刻音色），请参见[声音管理](/zh/model-studio/sound-management#b447040127fbt)。
+-</Tip>
+-
+-<table bordertype="no-border" style={{ display: "table", tableLayout: "fixed", width: "100%" }}>
+-  <colgroup>
+-    <col style={{ width: "50%" }} />
+-
+-    <col style={{ width: "50%" }} />
+-  </colgroup>
+-
+-  <tbody>
+-    <tr>
+-      <td>
+-        ### 请求体 <span id="h3-dl-rq" />
++适用于 Qwen-Audio-TTS、Qwen-Audio-Realtime 和 CosyVoice。
++
++<Note>
++  MiniMax 不支持通过本接口删除音色。MiniMax 音色的删除请参见[声音管理](/zh/model-studio/sound-management#62828c090dkbi)。
++</Note>
++
++<table bordertype="no-border" style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
++  <colgroup>
++    <col style={{ width: "50%" }} />
++
++    <col style={{ width: "50%" }} />
++  </colgroup>
++
++  <tbody>
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        #### 请求体 <span id="h3-dl-rq" />
+ 
+         <strong>model</strong>`string`<strong>（必选）</strong>
+ 
+-        声音复刻模型。取值：
+-
+-        - `voice-enrollment`：Qwen-Audio-TTS/CosyVoice声音复刻。
++        固定为 `voice-enrollment`。
+ 
+         <strong>input</strong>`object`<strong>（必选）</strong>
+ 
+@@ -925,19 +995,15 @@
+ 
+           <strong>voice\_id</strong> `string`<strong>（必选）</strong>
+ 
+-          <Tip>
+-            仅适用于Qwen-Audio-TTS/CosyVoice。
+-          </Tip>
+-
+           要删除的音色ID。
+         </Accordion>
+       </td>
+ 
+-      <td>
++      <td style={{ verticalAlign: "top" }}>
+         以下为华北2（北京）地域的配置，调用时请将"\{WorkspaceId}"替换为真实的业务空间ID，各地域的配置不同。
+ 
+         <CodeGroup>
+-          ```bash Qwen-Audio-TTS/CosyVoice
++          ```bash 删除音色
+           curl -X POST https://{WorkspaceId}.cn-beijing.maas.aliyuncs.com/api/v1/services/audio/tts/customization \
+           -H "Authorization: Bearer $DASHSCOPE_API_KEY" \
+           -H "Content-Type: application/json" \
+@@ -955,17 +1021,17 @@
+   </tbody>
+ </table>
+ 
+-<table bordertype="no-border" style={{ display: "table", tableLayout: "fixed", width: "100%" }}>
+-  <colgroup>
+-    <col style={{ width: "50%" }} />
+-
+-    <col style={{ width: "50%" }} />
+-  </colgroup>
+-
+-  <tbody>
+-    <tr>
+-      <td>
+-        ### 返回体 <span id="h3-dl-rs" />
++<table bordertype="no-border" style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
++  <colgroup>
++    <col style={{ width: "50%" }} />
++
++    <col style={{ width: "50%" }} />
++  </colgroup>
++
++  <tbody>
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        #### 返回体 <span id="h3-dl-rs" />
+ 
+         <strong>request\_id</strong>`string`
+ 
+@@ -986,9 +1052,9 @@
+         </Accordion>
+       </td>
+ 
+-      <td>
++      <td style={{ verticalAlign: "top" }}>
+         <CodeGroup>
+-          ```json Qwen-Audio-TTS/CosyVoice
++          ```json 删除音色
+           {
+               "output": {},
+               "usage": {
+@@ -1005,6 +1071,51 @@
+ 
+ ## 音色状态说明 <span id="h2-status" />
+ 
+-音色创建后会经过审核流程。以下状态适用于 Qwen-Audio-TTS/CosyVoice（`model` 为 `voice-enrollment`）。
+-
+-<table style={{ display: "table", tableLayout: "fixed", width: "100%" }}><colgroup><col style={{ width: "25%" }} /><col style={{ width: "75%" }} /></colgroup><thead><tr><th><p><strong>状态</strong></p></th><th><p><strong>说明</strong></p></th></tr></thead><tbody><tr><td><p>DEPLOYING</p></td><td><p>审核中/处理中。</p></td></tr><tr><td><p>OK</p></td><td><p>审核通过，可正常使用。</p></td></tr><tr><td><p>UNDEPLOYED</p></td><td><p>审核未通过，不可使用。</p></td></tr></tbody></table>
++音色创建后会经过审核流程。以下状态适用于 Qwen-Audio-TTS、Qwen-Audio-Realtime 和 CosyVoice。
++
++<table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
++  <colgroup>
++    <col style={{ width: "25%" }} />
++
++    <col style={{ width: "75%" }} />
++  </colgroup>
++
++  <thead>
++    <tr>
++      <th style={{ verticalAlign: "top" }}><strong>状态</strong></th>
++      <th style={{ verticalAlign: "top" }}><strong>说明</strong></th>
++    </tr>
++  </thead>
++
++  <tbody>
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        DEPLOYING
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        审核中/处理中。
++      </td>
++    </tr>
++
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        OK
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        审核通过，可正常使用。
++      </td>
++    </tr>
++
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        UNDEPLOYED
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        审核未通过，不可使用。
++      </td>
++    </tr>
++  </tbody>
++</table>

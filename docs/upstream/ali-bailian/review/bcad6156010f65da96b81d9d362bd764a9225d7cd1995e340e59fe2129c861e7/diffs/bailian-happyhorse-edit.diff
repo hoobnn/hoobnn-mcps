@@ -1,0 +1,137 @@
+--- reviewed/ali-bailian/bailian-happyhorse-edit
++++ current/ali-bailian/bailian-happyhorse-edit
+@@ -41,7 +41,7 @@
+   </Tab>
+ 
+   <Tab title="美国（弗吉尼亚）">
+-    `POST https://dashscope-us.aliyuncs.com/api/v1/services/aigc/video-generation/video-synthesis`
++    `POST https://{WorkspaceId}.us-east-1.maas.aliyuncs.com/api/v1/services/aigc/video-generation/video-synthesis`
+   </Tab>
+ 
+   <Tab title="德国（法兰克福）">
+@@ -60,7 +60,7 @@
+   - 新手指引请参见[Postman](/zh/model-studio/first-call-to-image-and-video-api)。
+ </Note>
+ 
+-<table bordertype="no-border" style={{ display: "table", tableLayout: "fixed", width: "100%" }}>
++<table bordertype="no-border" style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
+   <colgroup>
+     <col style={{ width: "50%" }} />
+ 
+@@ -69,7 +69,7 @@
+ 
+   <tbody>
+     <tr>
+-      <td>
++      <td style={{ verticalAlign: "top" }}>
+         #### 请求参数 <span id="hve123a0h4reqp" />
+ 
+         ##### 请求头（Headers） <span id="hve144a0h5hdr1" />
+@@ -182,7 +182,7 @@
+                      - \{base64\_data}：图像文件经过 Base64 编码后的字符串。
+                      - \{MIME\_type}：图像的媒体类型，需与文件格式对应。
+ 
+-                     <table style={{ display: "table", tableLayout: "fixed", width: "100%" }}><colgroup><col style={{ width: "50%" }} /><col style={{ width: "50%" }} /></colgroup><tbody><tr><td><p>图像格式</p></td><td><p>MIME Type</p></td></tr><tr><td><p>JPEG</p></td><td><p>image/jpeg</p></td></tr><tr><td><p>JPG</p></td><td><p>image/jpeg</p></td></tr><tr><td><p>PNG</p></td><td><p>image/png</p></td></tr><tr><td><p>WEBP</p></td><td><p>image/webp</p></td></tr></tbody></table>
++                     <table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}><colgroup><col style={{ width: "50%" }} /><col style={{ width: "50%" }} /></colgroup><tbody><tr><td style={{ verticalAlign: "top" }}><p>图像格式</p></td><td style={{ verticalAlign: "top" }}><p>MIME Type</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>JPEG</p></td><td style={{ verticalAlign: "top" }}><p>image/jpeg</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>JPG</p></td><td style={{ verticalAlign: "top" }}><p>image/jpeg</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>PNG</p></td><td style={{ verticalAlign: "top" }}><p>image/png</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>WEBP</p></td><td style={{ verticalAlign: "top" }}><p>image/webp</p></td></tr></tbody></table>
+                    </Accordion>
+             </Accordion>
+           </Accordion>
+@@ -226,7 +226,7 @@
+         </Accordion>
+       </td>
+ 
+-      <td>
++      <td style={{ verticalAlign: "top" }}>
+         <Tabs>
+           <Tab title="视频编辑（指令+参考图）">
+             ```bash
+@@ -262,7 +262,7 @@
+   </tbody>
+ </table>
+ 
+-<table bordertype="no-border" style={{ display: "table", tableLayout: "fixed", width: "100%" }}>
++<table bordertype="no-border" style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
+   <colgroup>
+     <col style={{ width: "50%" }} />
+ 
+@@ -271,7 +271,7 @@
+ 
+   <tbody>
+     <tr>
+-      <td>
++      <td style={{ verticalAlign: "top" }}>
+         #### 响应参数 <span id="hve379a0h4rsp1" />
+ 
+         <strong>output</strong> `object`
+@@ -310,7 +310,7 @@
+         请求失败的详细信息。请求成功时不会返回此参数，详情请参见[错误码](/zh/model-studio/error-code)。
+       </td>
+ 
+-      <td>
++      <td style={{ verticalAlign: "top" }}>
+         <Tabs>
+           <Tab title="成功响应">
+             请保存 task\_id，用于查询任务状态与结果。
+@@ -355,7 +355,7 @@
+   </Tab>
+ 
+   <Tab title="美国（弗吉尼亚）">
+-    `GET https://dashscope-us.aliyuncs.com/api/v1/tasks/{task_id}`
++    `GET https://{WorkspaceId}.us-east-1.maas.aliyuncs.com/api/v1/tasks/{task_id}`
+   </Tab>
+ 
+   <Tab title="德国（法兰克福）">
+@@ -375,7 +375,7 @@
+   - <strong>更多操作</strong>：如需批量查询、取消任务等操作，请参见[管理异步任务](/zh/model-studio/manage-asynchronous-tasks)。
+ </Note>
+ 
+-<table bordertype="no-border" style={{ display: "table", tableLayout: "fixed", width: "100%" }}>
++<table bordertype="no-border" style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
+   <colgroup>
+     <col style={{ width: "50%" }} />
+ 
+@@ -384,7 +384,7 @@
+ 
+   <tbody>
+     <tr>
+-      <td>
++      <td style={{ verticalAlign: "top" }}>
+         #### 请求参数 <span id="hve434a0h4qr01" />
+ 
+         ##### 请求头（Headers） <span id="hve444a0h5qr01" />
+@@ -400,7 +400,7 @@
+         任务ID。
+       </td>
+ 
+-      <td>
++      <td style={{ verticalAlign: "top" }}>
+         <Tabs>
+           <Tab title="查询任务结果">
+             将`{task_id}`完整替换为上一步接口返回的`task_id`的值。`task_id`查询有效期为24小时，并请将`{WorkspaceId}`替换为真实的[业务空间ID](/zh/model-studio/regions#h2_migrate_domain)。
+@@ -416,7 +416,7 @@
+   </tbody>
+ </table>
+ 
+-<table bordertype="no-border" style={{ display: "table", tableLayout: "fixed", width: "100%" }}>
++<table bordertype="no-border" style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
+   <colgroup>
+     <col style={{ width: "50%" }} />
+ 
+@@ -425,7 +425,7 @@
+ 
+   <tbody>
+     <tr>
+-      <td>
++      <td style={{ verticalAlign: "top" }}>
+         #### 响应参数 <span id="hve464a0h4qrs1" />
+ 
+         <strong>output</strong>`object`
+@@ -522,7 +522,7 @@
+         请求唯一标识。可用于请求明细溯源和问题排查。
+       </td>
+ 
+-      <td>
++      <td style={{ verticalAlign: "top" }}>
+         <Tabs>
+           <Tab title="任务执行成功">
+             视频URL仅保留24小时，超时后会被自动清除，请及时保存生成的视频。

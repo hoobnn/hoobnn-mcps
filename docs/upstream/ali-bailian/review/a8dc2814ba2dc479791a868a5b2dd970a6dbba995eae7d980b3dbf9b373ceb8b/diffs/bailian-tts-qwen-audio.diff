@@ -1,0 +1,79 @@
+--- reviewed/ali-bailian/bailian-tts-qwen-audio
++++ current/ali-bailian/bailian-tts-qwen-audio
+@@ -4,19 +4,19 @@
+ 
+ <meta property="og:title" content="非实时语音合成Qwen-Audio-TTS HTTP API参考" />
+ 
+-<Tip>
+-  本文描述的功能仅在华北2（北京）地域可用。
+-</Tip>
+-
+-<Tip>
+-  阿里云百炼为华北2（北京）地域推出了业务空间专属域名，能够为推理请求提供卓越的性能和更高的稳定性，建议从 `dashscope.aliyuncs.com` 迁移至 `{WorkspaceId}.cn-beijing.maas.aliyuncs.com`。
+-</Tip>
+-
+ ## 接口地址 <span id="fe508c8badxjg" />
+ 
+-`POST https://{WorkspaceId}.cn-beijing.maas.aliyuncs.com/api/v1/services/audio/tts/SpeechSynthesizer`
+-
+-调用时请将`{WorkspaceId}`替换为真实的[Workspace ID](/zh/model-studio/regions#h2_migrate_domain)。
++<Tabs>
++  <Tab title="华北2（北京）">
++    `POST https://{WorkspaceId}.cn-beijing.maas.aliyuncs.com/api/v1/services/audio/tts/SpeechSynthesizer`
++  </Tab>
++
++  <Tab title="新加坡">
++    `POST https://{WorkspaceId}.ap-southeast-1.maas.aliyuncs.com/api/v1/services/audio/tts/SpeechSynthesizer`
++  </Tab>
++</Tabs>
++
++调用时请将 `{WorkspaceId}` 替换为对应地域的[业务空间 ID](/zh/model-studio/regions#h2_migrate_domain)，并使用同地域的 [API Key](/zh/model-studio/get-api-key)。
+ 
+ ## 请求头 <span id="f5b7af17168sz" />
+ 
+@@ -460,13 +460,17 @@
+ 
+         计费用量。
+ 
++        <Note>
++          `qwen-audio-3.1-tts-flash` 按输入和输出 Token 计费；`qwen-audio-3.1-tts-plus`、`qwen-audio-3.0-tts-plus` 和 `qwen-audio-3.0-tts-flash` 按字符计费。
++        </Note>
++
+         <Accordion title="属性" defaultOpen>
+           <strong>input\_tokens</strong> `integer`
+ 
+           本次请求的输入 Token 数。
+ 
+           <Note>
+-            适用于 `qwen-audio-3.1-tts-flash`。
++            适用于 `qwen-audio-3.1-tts-plus`、`qwen-audio-3.1-tts-flash`。
+           </Note>
+ 
+           <strong>output\_tokens</strong> `integer`
+@@ -474,7 +478,7 @@
+           本次请求的输出 Token 数。
+ 
+           <Note>
+-            适用于 `qwen-audio-3.1-tts-flash`。
++            适用于 `qwen-audio-3.1-tts-plus`、`qwen-audio-3.1-tts-flash`。
+           </Note>
+ 
+           <strong>total\_tokens</strong> `integer`
+@@ -482,16 +486,12 @@
+           输入和输出 Token 数之和。
+ 
+           <Note>
+-            适用于 `qwen-audio-3.1-tts-flash`。
++            适用于 `qwen-audio-3.1-tts-plus`、`qwen-audio-3.1-tts-flash`。
+           </Note>
+ 
+           <strong>characters</strong> `integer`
+ 
+           累计计费字符数。
+-
+-          <Note>
+-            适用于 `qwen-audio-3.0-tts-plus`、`qwen-audio-3.0-tts-flash`。
+-          </Note>
+         </Accordion>
+       </td>
+ 

@@ -18,7 +18,7 @@ from .jobs import download as atomic_download
 TTS_MODELS = {"flash": "qwen3-tts-flash", "audio": "qwen-audio-3.0-tts-flash",
               "audio-plus": "qwen-audio-3.0-tts-plus", "cosyvoice": "cosyvoice-v3.5-plus"}
 # qwen3-tts-instruct-flash/vc/vd 已于 2026-10-10 下线；Qwen-Audio-TTS / CosyVoice 走 SpeechSynthesizer（HTTP 非实时）。
-QWEN_AUDIO_TTS = ("qwen-audio-3.0-tts-plus", "qwen-audio-3.1-tts-flash", "qwen-audio-3.0-tts-flash")
+QWEN_AUDIO_TTS = ("qwen-audio-3.1-tts-plus", "qwen-audio-3.0-tts-plus", "qwen-audio-3.1-tts-flash", "qwen-audio-3.0-tts-flash")
 COSYVOICE_TTS = ("cosyvoice-v3.5-plus", "cosyvoice-v3.5-flash", "cosyvoice-v3-plus", "cosyvoice-v3-flash", "cosyvoice-v2")
 SYNTH_MODELS = QWEN_AUDIO_TTS + COSYVOICE_TTS
 INSTRUCTION_MODELS = QWEN_AUDIO_TTS + ("cosyvoice-v3.5-plus", "cosyvoice-v3.5-flash", "cosyvoice-v3-plus", "cosyvoice-v3-flash")
@@ -148,14 +148,17 @@ def check_tts(model, o, mode):
     if model in SYNTH_MODELS:
         if not o["voice"]:
             return "Qwen-Audio-TTS/CosyVoice需指定voice：该模型的系统音色，或target_model与之一致的自定义音色ID"
-        if o["instructions"]:
+        extra = o.get("parameters") or {}
+        instruction = extra.get("instruction", o["instructions"])
+        if instruction:
+            if not isinstance(instruction, str):
+                return "instruction须为字符串"
             if model not in INSTRUCTION_MODELS:
                 return f"{model}不支持instruction（指令控制）"
-            if instruction_length(o["instructions"]) > 100:
-                return "instruction不超过100字符（汉字按2个字符计）"
+            if model in COSYVOICE_TTS and instruction_length(instruction) > 100:
+                return "CosyVoice的instruction不超过100字符（汉字按2个字符计）"
         if o["language"] and not re.fullmatch(r"[a-z]{2,3}", o["language"]):
             return "Qwen-Audio-TTS/CosyVoice的language为语种代码，如zh、en、ja"
-        extra = o.get("parameters") or {}
         if set(extra) & {"text", "voice", "model"}:
             return "parameters不能覆盖text/voice/model"
         if mode == "local" and extra.get("format", "wav") != "wav":
@@ -186,13 +189,27 @@ def text_to_speech(o, out_dir, mode="local"):
     if mode == "url" and len(chunks) > 1:
         return {"ok": False, "error": "url交付方式请分段调用，每段250字符以内"}
     resume = {"options": {**o, "model": model},
-              "chunks": [{"text": text, "state": "unsubmitted", "usage": 0} for text in chunks]}
+              "chunks": [{"text": text, "state": "unsubmitted", "usage": {}} for text in chunks]}
     job = STORE.create("tts", model, out_dir, mode, resume=resume,
                        summary={"voice": o["voice"], "chunks": len(chunks)})
     with STORE.processing(job):
         job["state"] = "partial"
         STORE.save(job)
         return resume_tts(job)
+
+
+def tts_usage(chunks):
+    """Sum equal provider counters without relabeling tokens as characters."""
+    totals = {}
+    for chunk in chunks:
+        usage = chunk.get("usage") or {}
+        if isinstance(usage, (int, float)):
+            # Old jobs discarded the unit; do not guess it from a model name.
+            usage = {"legacy_untyped": usage}
+        for key, value in usage.items():
+            if isinstance(value, (int, float)) and not isinstance(value, bool):
+                totals[key] = totals.get(key, 0) + value
+    return totals
 
 
 def resume_tts(job):
@@ -205,6 +222,8 @@ def resume_tts(job):
     if job["state"] == "delivered" and final:
         from .jobs import fingerprint
         if Path(final).is_file() and fingerprint(final) == job["result"].get("speech_integrity"):
+            job["usage"] = tts_usage(plan["chunks"])
+            STORE.save(job)
             return STORE.result(job)
     for i, chunk in enumerate(plan["chunks"]):
         if chunk["state"] == "unknown":
@@ -231,12 +250,12 @@ def resume_tts(job):
                 STORE.save(job)
                 return STORE.result(job)
             usage = response.get("usage") or {}
-            chunk.update(state="generated", url=url, usage=usage.get("characters") or usage.get("total_tokens") or 0)
+            chunk.update(state="generated", url=url, usage=usage)
             job["request_id"] = response.get("request_id")
             chunk["request_id"] = response.get("request_id")
             STORE.save(job)
         STORE.add(job, f"part-{i + 1:02d}.wav", url=chunk["url"])
-        job["usage"] = {"characters": sum(c["usage"] for c in plan["chunks"])}
+        job["usage"] = tts_usage(plan["chunks"])
         delivered = STORE.deliver(job)
         if delivered["job_state"] == "download_failed":
             job["result"]["chunks"] = sum(c["state"] == "generated" for c in plan["chunks"])

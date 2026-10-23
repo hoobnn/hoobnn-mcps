@@ -1,0 +1,46 @@
+--- reviewed/ali-bailian/bailian-model-directory
++++ current/ali-bailian/bailian-model-directory
+@@ -60,7 +60,7 @@
+ 
+     <tr>
+       <td style={{ verticalAlign: "top" }}>
+-        <Image src="https://img.alicdn.com/imgextra/i1/O1CN01EFGi131NqT95FPDqc_!!6000000001621-2-tps-56-56.png" alt="" className="inline" noZoom width={28} height={28} /> <strong><a href="https://bailian.console.aliyun.com/cn-beijing/model/market/detail/MiniMax%2FMiniMax-M3">MiniMax-M3</a></strong>
++        <Image src="https://img.alicdn.com/imgextra/i1/O1CN01EFGi131NqT95FPDqc_!!6000000001621-2-tps-56-56.png" alt="" className="inline" noZoom width={28} height={28} /> <strong><Link href="/zh/model-studio/minimax-m3-1-flash">MiniMax-M3.1-Flash</Link></strong>
+       </td>
+ 
+       <td style={{ verticalAlign: "top" }}>
+@@ -267,34 +267,6 @@
+ </table>
+ 
+ [查看更多](/zh/model-studio/tts-model)
+-
+-### 音乐生成 <span id="fun-music-h3" />
+-
+-根据提示词或歌词生成音乐
+-
+-<table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
+-  <colgroup>
+-    <col style={{ width: "33.33%" }} />
+-
+-    <col style={{ width: "33.33%" }} />
+-
+-    <col style={{ width: "33.34%" }} />
+-  </colgroup>
+-
+-  <tbody>
+-    <tr>
+-      <td style={{ verticalAlign: "top" }}>
+-        <Image src="https://img.alicdn.com/imgextra/i3/O1CN01Kmx9dR1wcHOaMMXAk_!!6000000006328-55-tps-28-28.svg" alt="" className="inline" noZoom width={28} height={28} /> <strong><a href="https://bailian.console.aliyun.com/cn-beijing/model/market/detail/fun-music-v1">fun-music-v1</a></strong>
+-      </td>
+-
+-      <td style={{ verticalAlign: "top" }} />
+-
+-      <td style={{ verticalAlign: "top" }} />
+-    </tr>
+-  </tbody>
+-</table>
+-
+-[查看更多](/zh/model-studio/fun-music)
+ 
+ ### 语音识别 <span id="296f30ceddocc" />
+ 

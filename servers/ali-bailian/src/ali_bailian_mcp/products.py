@@ -5,7 +5,7 @@ import json
 import re
 from pathlib import Path
 
-from .dashscope import encode_image, request
+from .dashscope import InputError, encode_image, request
 from .jobs import Store
 from .mcp_runtime import merge_parameters
 
@@ -21,6 +21,10 @@ DOCS = {
     "models": "https://help.aliyun.com/zh/model-studio/list-models",
     "upload": "https://help.aliyun.com/zh/model-studio/get-temporary-file-url",
     "tts_models": "https://help.aliyun.com/zh/model-studio/tts-model",
+    "regions": "https://help.aliyun.com/zh/model-studio/regions",
+    "tts_realtime_access": "https://help.aliyun.com/zh/model-studio/qwen-audio-tts-model-access",
+    "cosyvoice_realtime_access": "https://help.aliyun.com/zh/model-studio/cosyvoice-model-access",
+    "minimax_chat": "https://help.aliyun.com/zh/model-studio/minimax-api-by-minimax",
     "tts_qwen_audio": "https://help.aliyun.com/zh/model-studio/qwen-audio-tts-http-api",
     "tts_cosyvoice": "https://help.aliyun.com/zh/model-studio/cosyvoice-tts-http-api",
     "tts_instruction": "https://help.aliyun.com/zh/model-studio/non-realtime-tts-user-guide",
@@ -37,21 +41,21 @@ DOCS = {
 ENROLLMENT = "voice-enrollment"
 DEFAULT_VOICE_TARGET = "qwen-audio-3.0-tts-flash"
 # 声音复刻/设计支持的 HTTP 非实时合成模型（voice-cloning-user-guide / voice-design-user-guide「支持的模型与地域」）。
-CLONE_TARGETS = ("qwen-audio-3.0-tts-plus", "qwen-audio-3.1-tts-flash", "qwen-audio-3.0-tts-flash",
+CLONE_TARGETS = ("qwen-audio-3.1-tts-plus", "qwen-audio-3.0-tts-plus", "qwen-audio-3.1-tts-flash", "qwen-audio-3.0-tts-flash",
                  "cosyvoice-v3.5-plus", "cosyvoice-v3.5-flash", "cosyvoice-v3-plus", "cosyvoice-v3-flash", "cosyvoice-v2")
 DESIGN_TARGETS = CLONE_TARGETS[:-1]
 # language_hints 仅以下复刻模型支持，取值见复刻API正文。
 CLONE_LANGUAGES = {
-    "qwen-audio-3.0-tts-plus": {"zh", "en", "fr", "de", "ja", "ko", "ru", "pt", "th", "id", "vi", "it", "es", "ms", "fil", "ar"},
-    "qwen-audio-3.0-tts-flash": {"zh", "en", "fr", "de", "ja", "ko", "ru", "pt", "th", "id", "vi", "it", "es", "ms", "fil", "ar"},
-    "qwen-audio-3.1-tts-flash": None,  # 支持该参数，正文未列取值，交由服务端校验
+    **{m: {"zh", "en", "fr", "de", "ja", "ko", "ru", "pt", "th", "id", "vi", "it", "es", "ms", "fil", "ar"}
+       for m in ("qwen-audio-3.1-tts-plus", "qwen-audio-3.1-tts-flash", "qwen-audio-3.0-tts-plus", "qwen-audio-3.0-tts-flash")},
     "cosyvoice-v3-plus": {"zh", "en", "fr", "de", "ja", "ko", "ru"},
     **{m: {"zh", "en", "fr", "de", "ja", "ko", "ru", "pt", "th", "id", "vi"}
        for m in ("cosyvoice-v3.5-plus", "cosyvoice-v3.5-flash", "cosyvoice-v3-flash")},
 }
 VOICE_KINDS = ("enrollment", "cosyvoice", "clone", "design")  # 后三个为旧值，统一映射到 voice-enrollment
-LOCAL_AUDIO_REJECTED = ("voice-enrollment复刻要求公网可访问的音频URL（http/https）；官方未说明该接口接受百炼临时上传的oss://地址"
-                        "（临时文件私有、与模型绑定），本MCP不自动上传本地文件或data URL。请先把音频放到可公网访问的位置")
+CLONE_AUDIO_LIMIT = 10 * 1024 * 1024
+CLONE_AUDIO_MIME = {"wav": "audio/wav", "mp3": "audio/mpeg", "m4a": "audio/mp4"}
+CLONE_DATA_MIME = {"audio/wav", "audio/x-wav", "audio/mpeg", "audio/mp3", "audio/mp4", "audio/m4a", "audio/x-m4a"}
 
 
 def api(path, body, timeout=120):
@@ -74,14 +78,53 @@ def check_prefix(prefix):
     return None
 
 
-def clone_voice(audio, target_model=DEFAULT_VOICE_TARGET, prefix="custom", language=None,
-                enable_preprocess=None, max_prompt_audio_length=None):
-    """voice-enrollment create_voice（复刻）：只接受公网 http(s) 音频 URL。"""
+def clone_audio(audio=None, url=None):
+    """Encode local reference audio for input.audio; never use model-bound OSS uploads."""
+    if audio is not None and url is not None:
+        raise InputError("audio与旧参数url只能传一项，不能互相覆盖")
+    if url is not None and (not isinstance(url, str) or not url.startswith(("http://", "https://"))):
+        raise InputError("旧参数url只接受公网http/https音频URL；本地文件或Base64 Data URI请用audio")
+    source = audio if audio is not None else url
+    if not isinstance(source, str) or not source:
+        raise InputError("缺少audio（本地音频、http/https URL或Base64 Data URI）")
+    if source.startswith(("http://", "https://")):
+        return source
+    if source.startswith("oss://"):
+        raise InputError("voice-enrollment未说明支持oss://临时地址；请用本地音频、http/https URL或Base64 Data URI")
+    if source.startswith("data:"):
+        match = re.fullmatch(r"data:([^;,]+);base64,([A-Za-z0-9+/]*={0,2})", source)
+        if not match or match[1].lower() not in CLONE_DATA_MIME:
+            raise InputError("audio须为WAV/MP3/M4A的Base64 Data URI")
+        # Bound encoded size before allocating a decoded copy.
+        if len(match[2]) > ((CLONE_AUDIO_LIMIT + 2) // 3) * 4:
+            raise InputError("复刻音频超过10MB")
+        try:
+            data = base64.b64decode(match[2], validate=True)
+        except ValueError as exc:
+            raise InputError("audio的Base64数据无效") from exc
+        if not data or len(data) > CLONE_AUDIO_LIMIT:
+            raise InputError("复刻音频不能为空且不能超过10MB")
+        return source
+    path = Path(source).expanduser()
+    mime = CLONE_AUDIO_MIME.get(path.suffix.lower().lstrip("."))
+    if mime is None:
+        raise InputError("复刻本地音频仅支持WAV/MP3/M4A")
+    if not path.is_file():
+        raise InputError(f"音频不存在：{source}")
+    if not 0 < path.stat().st_size <= CLONE_AUDIO_LIMIT:
+        raise InputError("复刻音频不能为空且不能超过10MB")
+    data = path.read_bytes()
+    if not 0 < len(data) <= CLONE_AUDIO_LIMIT:
+        raise InputError("复刻音频不能为空且不能超过10MB")
+    return f"data:{mime};base64," + base64.b64encode(data).decode("ascii")
+
+
+def clone_voice(audio=None, target_model=DEFAULT_VOICE_TARGET, prefix="custom", language=None,
+                enable_preprocess=None, max_prompt_audio_length=None, *, url=None):
+    """voice-enrollment create_voice（复刻）：URL、Base64 Data URI或本地音频。"""
     if target_model not in CLONE_TARGETS:
         return {"ok": False, "error": "target_model须为支持声音复刻的HTTP合成模型：" + "、".join(CLONE_TARGETS)}
     error = check_prefix(prefix)
-    if not error and not (audio or "").startswith(("http://", "https://")):
-        error = LOCAL_AUDIO_REJECTED
     advanced = target_model in CLONE_LANGUAGES  # language_hints/预处理/时长参数的支持范围一致
     if not error and language is not None:
         allowed = CLONE_LANGUAGES.get(target_model, set())
@@ -94,7 +137,11 @@ def clone_voice(audio, target_model=DEFAULT_VOICE_TARGET, prefix="custom", langu
             error = "max_prompt_audio_length范围3.0–30.0秒"
     if error:
         return {"ok": False, "target_model": target_model, "error": error}
-    inp = {"action": "create_voice", "target_model": target_model, "prefix": prefix, "url": audio}
+    try:
+        reference = clone_audio(audio, url)
+    except (InputError, OSError) as exc:
+        return {"ok": False, "target_model": target_model, "error": str(exc)}
+    inp = {"action": "create_voice", "target_model": target_model, "prefix": prefix, "audio": reference}
     if language:
         inp["language_hints"] = [language]
     if enable_preprocess is not None:

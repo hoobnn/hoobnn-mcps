@@ -103,7 +103,7 @@ def chat(
     - "max"（默认）→ qwen3.8-max：千问旗舰，能看图。
     - "plus" → qwen3.7-plus：性价比均衡。
     - "flash" → qwen3.8-flash：最快最便宜，适合简单任务和批量处理。
-    百炼也托管第三方模型，直接写 ID：deepseek-v4-pro、kimi-k3、glm-5.3、MiniMax/MiniMax-M3 等。模型更新很快，
+    百炼也托管第三方模型，直接写 ID：deepseek-v4.1-flash-1017、kimi-k3、glm-5.3、MiniMax/MiniMax-M3.1-Flash 等。模型更新很快，
     不确定 ID 时先用 list_models 查。
 
     参数：
@@ -113,10 +113,15 @@ def chat(
     - images：随 prompt 一起发的图片，本地绝对路径或 URL，需要模型支持看图（qwen3.8-max、qwen3.6-plus、
       qwen3-vl-plus 等）。
     - thinking：是否开启深度思考，不传用模型默认值（千问新模型默认开）。简单问题设 false 更快更省。
+      MiniMax/MiniMax-M3 用官方 thinking.type=adaptive/disabled；MiniMax/MiniMax-M3.1-Flash 始终思考，false 本地拒绝。
+      M3.1-Flash 固定 reasoning_split=true、n=1；temperature 固定1、top_p固定0.95，其他值由官方忽略。
+      MiniMax 直供不支持 thinking_budget；M3.1-Flash思考深度可用 parameters.reasoning_effort=low/medium/high/xhigh/max（默认max），M3不支持。
       thinking_budget：思考的最大 token 数。
-    - max_tokens：回答的最大 token 数。temperature：采样温度。
+    - max_tokens：回答的最大 token 数，MiniMax直供包含思考和回答。temperature：采样温度。
     - json_mode：要求输出合法 JSON，prompt 里要写明 JSON 结构，且最好同时设 thinking=false。
     - web_search：让模型联网搜索后回答（千问系列支持）。
+      parameters.include_tool_usage=true 可返回 usage.x_tools.search；count为搜索意图触发次数，不能用于费用对账。
+      MiniMax直供M3系列不支持web_search或json_mode，相关请求本地拒绝。
     - parameters：官方请求体里本工具没单独列出的字段（OpenAI 兼容接口顶层），深度合并，不能覆盖 model/messages/stream。
 
     返回 ok、model、content（回答）、reasoning（思考过程，有的话）、finish_reason（length 表示被 max_tokens 截断）、
@@ -145,7 +150,7 @@ def text_to_speech(
     - model（别名或完整 ID）：
       - 不传：voice 是 clone_voice/design_voice 生成的自定义音色 ID（以 {target_model}- 开头）时自动用该 target_model，
         否则用 "flash" → qwen3-tts-flash（multimodal-generation 协议，系统音色，不支持指令）。
-      - "audio" → qwen-audio-3.0-tts-flash，"audio-plus" → qwen-audio-3.0-tts-plus，也可传 qwen-audio-3.1-tts-flash；
+      - "audio" → qwen-audio-3.0-tts-flash，"audio-plus" → qwen-audio-3.0-tts-plus，也可传 qwen-audio-3.1-tts-plus / qwen-audio-3.1-tts-flash；
         "cosyvoice" → cosyvoice-v3.5-plus，也可传 cosyvoice-v3.5-flash / v3-plus / v3-flash / v2。
         这些走 SpeechSynthesizer 协议，支持系统音色、自定义音色（须与创建时的 target_model 一致）和 instructions。
     - text：要朗读的文字。长文本自动按句切成 250 字以内的段合成再拼接（url 交付方式下不拼接，需自己分段）。
@@ -153,7 +158,7 @@ def text_to_speech(
       Qwen-Audio-TTS/CosyVoice 必须指定：对应模型的系统音色（如 longanhuan_v3.6，见官方音色列表，不能跨模型混用；
       cosyvoice-v3.5 系列没有系统音色）或自定义音色 ID。
     - instructions：语气/情感/方言指令（官方字段 instruction），如「用温柔的语气，语速稍慢」「请用河南话表达」。
-      不超过 100 字符（汉字按 2 计）。仅 Qwen-Audio-TTS 与 cosyvoice-v3.5/v3 系列支持；cosyvoice-v3-plus/v3-flash 的
+      CosyVoice 不超过 100 字符（汉字按 2 计）；Qwen-Audio-TTS 官方未公布同一上限，交服务端校验。仅 Qwen-Audio-TTS 与 cosyvoice-v3.5/v3 系列支持；cosyvoice-v3-plus/v3-flash 的
       系统音色须用官方音色列表规定的固定指令，cosyvoice-v3-plus 的自定义音色不支持；qwen3-tts-flash 不支持。
     - language：qwen3-tts-flash 写 Chinese、English、Japanese 等；Qwen-Audio-TTS/CosyVoice 写语种代码（zh、en、ja…，
       对应 language_hints）。不传自动识别。
@@ -262,21 +267,23 @@ def list_models(keyword: str | None = None, max_pages: int = 20) -> dict:
 
 
 @mcp.tool()
-def clone_voice(audio: str, target_model: str = "qwen-audio-3.0-tts-flash", prefix: str = "custom",
+def clone_voice(audio: str | None = None, target_model: str = "qwen-audio-3.0-tts-flash", prefix: str = "custom",
                 language: str | None = None, enable_preprocess: bool | None = None,
-                max_prompt_audio_length: float | None = None) -> dict:
+                max_prompt_audio_length: float | None = None, url: str | None = None) -> dict:
     """声音复刻：用 voice-enrollment（action=create_voice）从一段录音创建自定义音色，返回 voice（音色 ID）。创建免费。
-    - audio：公网可访问的 http/https 音频 URL（WAV 16bit/MP3/M4A，≤10MB，推荐 10–20 秒、最长 60 秒，含至少 5 秒连续清晰朗读）。
-      不接受本地文件、data URL 或 oss://：官方要求公网 URL，且未说明支持百炼临时上传地址。
-    - target_model：后续合成用的模型，默认 qwen-audio-3.0-tts-flash；可选 qwen-audio-3.0-tts-plus、qwen-audio-3.1-tts-flash、
+    - audio：本地文件、公网 http/https URL 或 Base64 Data URI（WAV 16bit/MP3/M4A，≤10MB，≥16kHz，推荐10–20秒、最长60秒，含至少5秒清晰朗读）。
+      本地文件编码为Data URI，直接放入官方input.audio，不经过临时上传；oss://未获官方确认，仍拒绝。
+    - url：旧公网URL别名，不能与audio同时传；内部统一发送input.audio（官方input.url已逐步废弃）。
+    - target_model：后续合成用的模型，默认 qwen-audio-3.0-tts-flash；可选 qwen-audio-3.1-tts-plus、qwen-audio-3.0-tts-plus、qwen-audio-3.1-tts-flash、
       cosyvoice-v3.5-plus/v3.5-flash/v3-plus/v3-flash/v2。音色只能用于该模型。
     - prefix：音色名前缀，1–10 位字母或数字；音色 ID 形如 {target_model}-{prefix}-{唯一标识}。
     - language：样本语种代码（zh、en…，language_hints），cosyvoice-v2 不支持。
     - enable_preprocess（降噪增强）、max_prompt_audio_length（3–30 秒）：cosyvoice-v3-plus/v2 不支持。
     音色需审核：用 get_voice 确认 status=OK 后，再 text_to_speech(voice=音色ID) 合成。响应缺少音色 ID 时不自动重建。
-    每个账号最多 1000 个音色。仅北京地域完整支持，需要复刻也可用 doubao-speech 的 clone_voice。
+    每个账号复刻/设计合计最多1000个音色。北京支持上述全部模型；新加坡支持3.1-tts-plus、3.0-tts-plus/flash和cosyvoice-v3-plus/flash。
+    使用同地域API Key和workspace根域名；模型列出不代表账号授权。Qwen-Audio-Realtime协议尚未接入。
     """
-    return products.clone_voice(audio, target_model, prefix, language, enable_preprocess, max_prompt_audio_length)
+    return products.clone_voice(audio, target_model, prefix, language, enable_preprocess, max_prompt_audio_length, url=url)
 
 
 @mcp.tool()
@@ -286,7 +293,7 @@ def design_voice(voice_prompt: str, preview_text: str, target_model: str = "qwen
     """声音设计：用 voice-enrollment（action=create_voice）按文字描述创建音色，返回 voice（音色 ID）并保存试听音频。创建免费。
     - voice_prompt：声音描述，仅中英文，≤500 字符，如「沉稳的中年男性，语速缓慢，音色低沉有磁性」。描述声音特质，不要求模仿真人。
     - preview_text：试听文本，15–200 字符，中英文。
-    - target_model：默认 qwen-audio-3.0-tts-flash；可选 qwen-audio-3.0-tts-plus、qwen-audio-3.1-tts-flash、
+    - target_model：默认 qwen-audio-3.0-tts-flash；可选 qwen-audio-3.1-tts-plus、qwen-audio-3.0-tts-plus、qwen-audio-3.1-tts-flash、
       cosyvoice-v3.5-plus/v3.5-flash/v3-plus/v3-flash。音色只能用于该模型。
     - prefix：1–10 位字母或数字；音色 ID 形如 {target_model}-vd-{prefix}-{唯一标识}。
     - language：zh 或 en，须与 preview_text 语种一致。sample_rate=16000/24000/48000，response_format=wav/mp3/pcm。
@@ -396,9 +403,10 @@ def list_capabilities() -> dict:
                       "video": ["generate_video", "edit_video", "animate_portrait"],
                       "retrieval": ["embed", "rerank"], "jobs": ["list_jobs", "get_job", "recover_job"]},
             "docs": products.DOCS,
-            "limits": ["clone_voice/design_voice走voice-enrollment，默认target_model为qwen-audio-3.0-tts-flash；复刻只接受公网http(s)音频URL",
+            "limits": ["clone_voice/design_voice走voice-enrollment，默认target_model为qwen-audio-3.0-tts-flash；复刻接受URL、本地音频或Base64 Data URI，统一发送input.audio",
                        "TTS支持非实时qwen3-tts-flash（multimodal-generation）及Qwen-Audio-TTS/CosyVoice（SpeechSynthesizer，支持instruction）；实时/WebSocket模型尚未接入",
-                       "Qwen-Audio-TTS/CosyVoice与voice-enrollment官方仅北京地域完整支持；本地按250字分段，官方未写单次文本上限",
+                       "Qwen-Audio-TTS HTTP合成支持北京/新加坡；CosyVoice HTTP合成与声音设计仅北京，复刻的地域和模型范围见工具帮助",
+                       "CosyVoice instruction上限100字符（汉字计2）；Qwen-Audio-TTS未公布同一上限；本地250字分段不是官方文本上限",
                        "speech_to_text只放行qwen3-asr-flash，已下线日期快照本地拒绝", "恢复锁使用POSIX flock，面向macOS/Linux",
                        "云端验证只覆盖北京地域小样本；其他地域与服务开通状态以账号为准"]}
 
