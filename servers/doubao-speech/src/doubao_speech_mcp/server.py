@@ -15,7 +15,7 @@ from .mcp_runtime import ReliableMCPServer, merge_parameters
 
 from . import speech
 from . import usage
-from . import products, management, ws_products, streaming_asr, interpretation, realtime, legacy, tasks
+from . import products, management, ws_products, streaming_asr, interpretation, realtime, legacy, tasks, podcast
 
 OUT_ROOT = Path(os.environ.get("DOUBAO_SPEECH_OUT_DIR", "~/Downloads/doubao-speech")).expanduser()
 LONG_TEXT_AUTO = 5000  # 超过此字数的同步分段合成可能超出单次调用预算，自动改走异步长文本接口
@@ -203,6 +203,7 @@ async def generate_podcast(
     format: str = "mp3",
     out_dir: str | None = None,
     parameters: dict | None = None,
+    transport: str = "sse",
 ) -> dict:
     """生成双人对谈播客。输入四选一：
     - text：一篇文章，模型改写成对谈（推荐 12000 字以内，超出会截断）。
@@ -210,10 +211,12 @@ async def generate_podcast(
     - topic：一个话题，模型联网搜索后生成；它只是话题，不能写格式要求。
     - dialogue：逐轮脚本直接演绎，如 [{"speaker":"音色ID","text":"本轮台词"}]，每轮最多 300 字、总共 1 万字。
     speakers：两个播客音色 ID（按给出的顺序），不传用官方默认。script_only=true 只生成脚本不合成音频（text/url 适用）。
-    format：mp3（默认）、pcm、aac、ogg_opus。parameters：官方请求里其余字段（如 retry_info 续传、input_text_max_length），深度合并。
-    返回音频路径、rounds（各轮文本与时间）、usage、task_id、last_finished_round_id；断线、轮次失败或服务端取消
+    format：mp3（默认）、pcm、aac、ogg_opus。parameters：官方请求里其余字段（如 retry_info 续传、input_info.input_text_max_length），深度合并。
+    transport默认sse（POST /api/v3/podcast/sse）；websocket仅用于历史接口兼容。
+    SSE须收到152且code=20000000才成功；363或HTTP200不能视为成功。返回音频路径、完整rounds、usage、
+    task_id（首次150的真实session_id，续传仍用原ID）、session_id（本次会话）、last_finished_round_id；断线、轮次失败或服务端取消
     （151，canceled=true）时 files 里的 .partial 只含已完整结束的轮次，可用 parameters.retry_info 显式续传后按序拼接；
-    未完成轮次的分片另存 diagnostic_file（字节数 discarded_bytes），仅供排查，不能作为续传输入。按官方播客计费，可能超过 300 秒。技巧见 get_speech_usage_examples(product='podcast')。
+    未完成轮次的分片另存 diagnostic_file（字节数 discarded_bytes），仅供排查，不能作为续传输入。SSE的progress_file在150和完整362时保存原请求和可续传边界，MCP取消也保留。按官方播客计费，可能超过 300 秒；须同时提高客户端超时和MCP_TOOL_TIMEOUT_SEC。技巧见 get_speech_usage_examples(product='podcast')。
     """
     sources = [name for name, value in (("text", text), ("url", url), ("topic", topic), ("dialogue", dialogue)) if value]
     if len(sources) != 1:
@@ -241,7 +244,11 @@ async def generate_podcast(
         merged(body, parameters)
     except speech.InputError as exc:
         return failure(exc)
-    return await ws_products.podcast(body, target_dir(out_dir))
+    if transport == "sse":
+        return await asyncio.to_thread(podcast.generate, body, target_dir(out_dir))
+    if transport == "websocket":
+        return await ws_products.podcast(body, target_dir(out_dir))
+    return failure("transport 只能是 sse / websocket")
 
 
 # ---------- 识别、翻译、妙记 ----------
@@ -553,8 +560,9 @@ def list_speech_capabilities() -> dict:
         "legacy_operations": sorted(legacy.OPERATIONS),
         "docs": {**products.DOCS,
                  "index": "https://docs.volcengine.com/docs/DoubaoVoice/list?lang=zh",
-                 "realtime": "https://docs.volcengine.com/docs/DoubaoVoice/endtoend-realtime-voice-full-duplex-version?lang=zh",
-                 "podcast": "https://docs.volcengine.com/docs/DoubaoVoice/PodcastAPI-websocket-v3protocol?lang=zh",
+                 "realtime": "https://docs.volcengine.com/docs/DoubaoVoice/seedrealtime?lang=zh",
+                 "realtime_legacy": "https://docs.volcengine.com/docs/DoubaoVoice/endtoend-realtime-voice-full-duplex-version?lang=zh",
+                 "podcast": "https://docs.volcengine.com/docs/DoubaoVoice/podcast?lang=zh",
                  "interpretation": "https://docs.volcengine.com/docs/DoubaoVoice/SimultaneousInterpretation20APIAccessDocumentation?lang=zh"},
         "limits": ["Speech SDK端侧离线能力需原生应用集成；MCP提供云API。",
                    "realtime（持久实时语音会话）和 admin（热词/替换词表、控制台 OpenAPI，需 AK/SK，可下单和删除）默认不启用。",
@@ -599,27 +607,29 @@ async def speech_raw_request(product: str, request: dict | None = None, operatio
 # ---------- 按需启用：实时会话（MCP_TOOL_GROUPS 含 realtime） ----------
 
 @mcp.tool()
-async def open_realtime_session(session: dict, extension: dict | None = None, out_dir: str | None = None, timeout: float = 30) -> dict:
-    """打开豆包实时语音3.0持久会话。最简session={audio:{output:{voice:'zh_female_vv_jupiter_bigtts'}}}，默认model=1.2.6.1、输入pcm16k/输出pcm_s16le24k。
+async def open_realtime_session(session: dict, extension: dict | None = None, out_dir: str | None = None, timeout: float = 30, mode: str = "legacy") -> dict:
+    """打开持久实时会话。mode=legacy（默认）为Seeduplex 3.0 / model=1.2.6.1；mode=seed为Doubao-Seed-Realtime-1.0 / model=1.3.0.0，使用独立seedrealtime入口。
+    最简session={audio:{output:{voice:'zh_female_vv_jupiter_bigtts'}}}，输入pcm16k/输出pcm_s16le24k；seed图像需加extension={video:{frame_format:'JPEG',frame_rate:'2'}}。
     可传instructions、tools（function定义）、audio配置；输入格式支持pcm/speech_opus（opus别名自动规范化），extension顶层支持asr/tts/dialog、热词、联网搜索、唱歌等。
-    返回客户端session_id，后续send/receive/close；会话只在本MCP进程内有效。创建后持续收包，生成音频写本地文件。按实时服务计费。
+    seed不支持客户端response.cancel；播报状态由response.created/canceled/done驱动，ASR仅作转写。返回客户端session_id，后续send/receive/close；只在本MCP进程内有效，生成音频写本地文件。按实时服务计费。
     """
-    return await realtime.sessions.open(session, target_dir(out_dir), extension, timeout)
+    return await realtime.sessions.open(session, target_dir(out_dir), extension, timeout, mode)
 
 
 @mcp.tool()
-async def send_realtime_event(session_id: str, event: dict, audio_file: str | None = None, timeout: float = 30) -> dict:
-    """向持久实时会话发送官方JSON事件。event须有type：input_audio_buffer.append + audio(base64)，input_audio_buffer.commit强制判停；response.cancel打断；session.update更新配置。
+async def send_realtime_event(session_id: str, event: dict, audio_file: str | None = None, timeout: float = 30, image_file: str | None = None) -> dict:
+    """向持久实时会话发送官方JSON事件。event须有type：input_audio_buffer.append + audio(base64)，input_audio_buffer.commit强制判停；legacy可response.cancel打断，seed禁止；session.update更新配置。
     conversation.item.create/retrieve/delete管理上下文，role=tool+call_id回传Function Calling结果；input_audio_mute.commit/unmute.commit处理静音。
-    audio_file可传16kHz/mono/int16裸.pcm，自动20ms分包，仅用于append；文件结束后再发送commit。会话开闭使用专用工具。
+    audio_file可传16kHz/mono/int16裸.pcm，自动20ms分包，文件结束后再发送commit。seed的input_image_buffer.append可传image(base64)或image_file本地PNG/JPEG，须匹配extension.video.frame_format；本地发送间隔至少0.5秒（2FPS），JSON事件上限2MB。音视频独立节流。会话开闭用专用工具。
     """
-    return await realtime.sessions.send(session_id, event, audio_file or "", timeout)
+    return await realtime.sessions.send(session_id, event, audio_file or "", timeout, image_file or "")
 
 
 @mcp.tool()
 async def receive_realtime_events(session_id: str, max_events: int = 100, timeout: float = 10) -> dict:
     """接收实时会话事件（等待最多timeout秒，<=60秒），返回ASR、回复文本、Function Calling、上下文、usage等。
     音频delta会转换为audio_file/chunk_bytes/audio_format/sample_rate，不返回巨大base64。收到工具调用后执行本地工具，再send_realtime_event回传call_id结果。
+    seed返回playback_state与顶层clear_playback_buffer（取消事件也带此标记）；true时客户端必须立即停播并清空已缓冲音频，队列溢出也保留该信号。ASR事件不切换播放状态。
     """
     return await realtime.sessions.receive(session_id, max_events, timeout)
 

@@ -81,8 +81,8 @@ GUIDES = {
     },
     "podcast": {
         "title": "播客：文章、链接、逐轮脚本与联网话题",
-        "sources": [DOC + "PodcastAPI-websocket-v3protocol?lang=zh", CONSOLE + "podcast?projectName=default"],
-        "tips": ["text/url改写文章或链接；dialogue直接演绎逐轮脚本；topic根据话题联网生成。topic只是话题，不具备格式指令能力。", "url支持网页及PDF/doc/txt链接，不把控制台上传格式直接视为API格式。", "script_only=true先生成脚本；dialogue每轮<=300字、总量<=10000字。", "speakers必须是两个音色，建议同系列配对，按给出的顺序发言。", "文章推荐<=12000字（parameters.input_text_max_length可调），超过会截断；return_audio_url的链接WebSocket文档写1小时、SSE文档写24小时，按1小时内下载处理。", "收到partial后保留task_id和last_finished_round_id，通过retry_info显式续传；partial只含完整轮次，续传结果按序追加，不能把局部音频当完整成品。", "diagnostic_file是被截掉的未完成轮次音频，只用于排查，不参与续传拼接；服务端取消（151）同样按失败处理。"],
+        "sources": [DOC + "podcast?lang=zh", DOC + "podcast_mustread?lang=zh", DOC + "PodcastAPI-websocket-v3protocol?lang=zh"],
+        "tips": ["text/url改写文章或链接；dialogue直接演绎逐轮脚本；topic根据话题联网生成。topic只是话题，不具备格式指令能力。", "url支持网页及PDF/doc/txt链接，不把控制台上传格式直接视为API格式。", "script_only=true先生成脚本；dialogue每轮<=300字、总量<=10000字。", "speakers必须是两个音色，建议同系列配对，按给出的顺序发言。", "文章推荐<=12000字（parameters.input_info.input_text_max_length可调），超过会截断；默认HTTP SSE，return_audio_url链接24小时有效；历史transport=websocket仍按旧文档1小时处理。", "只有152且code=20000000才成功；HTTP200、363和usage不能提前结束。progress_file保存原请求、首次150真实task_id、最近session_id和完整轮次边界，取消/超时也保留。收到partial后用parameters.retry_info显式续传；多次续传始终用首次task_id，返回片段需自行按序合并并调整时间轴。", "diagnostic_file是被截掉的未完成轮次音频，只用于排查，不参与续传拼接；服务端取消（151）同样按失败处理。"],
         "examples": [
             example("文章先生成脚本", "generate_podcast", {"text": "这里替换为完整文章。", "script_only": True}),
             example("链接转播客", "generate_podcast", {"url": "https://example.com/article"}),
@@ -121,10 +121,12 @@ GUIDES = {
         ],
     },
     "realtime": {
-        "title": "实时语音：角色指令、输入判停、打断与工具回传",
-        "sources": [DOC + "endtoend-realtime-voice-full-duplex-version?lang=zh"],
-        "tips": ["实时会话工具默认不启用，需在MCP配置设MCP_TOOL_GROUPS包含realtime并重启。", "session.instructions定义角色、语气和回答范围；不要照搬音频生成的时间区间标记。", "按open→append音频→commit→receive→close处理；输入文件是16kHz单声道int16裸PCM，append后需显式commit。", "response.cancel用于打断；工具调用应执行后按call_id回传结果，不能只收到调用就视为已完成。", "session_id是当前MCP进程的句柄，重启后失效；退出或完成后关闭连接。"],
+        "title": "实时语音：Seed图像输入、角色指令与工具回传",
+        "sources": [DOC + "seedrealtime?lang=zh", DOC + "endtoend-realtime-voice-full-duplex-version?lang=zh"],
+        "tips": ["实时会话工具默认不启用，需在MCP配置设MCP_TOOL_GROUPS包含realtime并重启。", "session.instructions定义角色、语气和回答范围；不要照搬音频生成的时间区间标记。", "按open→append音频→commit→receive→close处理；输入文件是16kHz单声道int16裸PCM，append后需显式commit。", "mode=legacy默认使用1.2.6.1，可response.cancel；mode=seed使用独立seedrealtime入口和1.3.0.0，禁止response.cancel。seed由response.created/canceled/done驱动playback_state，ASR仅作转写；clear_playback_buffer=true须立即停播并清空队列。工具调用需按call_id回传结果。", "session_id是当前MCP进程的句柄，重启后失效；退出或完成后关闭连接。"],
         "examples": [
+            example("摄像画面对话", "open_realtime_session", {"mode": "seed", "session": {"audio": {"output": {"voice": "zh_female_vv_jupiter_bigtts"}}}, "extension": {"video": {"frame_format": "JPEG", "frame_rate": "2"}}}),
+            example("发送视频帧或图片", "send_realtime_event", {"session_id": "REPLACE_WITH_SEED_OPEN_RESULT", "event": {"type": "input_image_buffer.append", "frame_id": "frame_1"}, "image_file": "/absolute/path/frame.jpg"}),
             example("简短语言陪练", "open_realtime_session", {"session": {"instructions": "你是耐心的英语口语陪练，每次只问一个简短问题，纠错时用简单中文解释。", "audio": {"output": {"voice": "zh_female_vv_jupiter_bigtts"}}}}),
             example("追加客户端采集音频", "send_realtime_event", {"session_id": "REPLACE_WITH_OPEN_RESULT", "event": {"type": "input_audio_buffer.append"}, "audio_file": "/absolute/path/mono16k.pcm"}),
             example("文件结束强制判停", "send_realtime_event", {"session_id": "REPLACE_WITH_OPEN_RESULT", "event": {"type": "input_audio_buffer.commit"}}),
@@ -146,7 +148,7 @@ def get_examples(product="audio", category=None):
             return {"ok": False, "error": "该产品不存在此category", "available_categories": list(categories)}
         guide["categories"] = {category: categories[category]}
         guide["examples"] = [e for e in guide["examples"] if e.get("category") == category]
-    return {"ok": True, "product": product, "verified_on": "2026-10-09",
+    return {"ok": True, "product": product, "verified_on": "2026-10-23" if product in {"podcast", "realtime"} else "2026-10-09",
             "available_products": list(GUIDES),
             "validation": "官方模板已阅读；示例为改写的MCP参数，未实际云端生成。路径、URL、音色ID和会话ID占位符需替换。",
             **guide}

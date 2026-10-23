@@ -329,6 +329,103 @@ class RealtimeTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(Path(first).read_bytes(), b"ab")
         self.assertEqual(Path(second).read_bytes(), b"ab")
 
+    async def open_seed(self, frame_format="JPEG"):
+        result = await self.manager.open({"audio": {"output": {"voice": "v"}}}, self.directory.name,
+                                         {"video": {"frame_format": frame_format, "frame_rate": "2"}}, mode="seed")
+        self.assertTrue(result["ok"], result)
+        return result["session_id"]
+
+    async def test_seed_endpoint_model_and_extension_video_are_independent(self):
+        handle = await self.open_seed()
+        self.assertTrue(self.connect.call_args.args[0].endswith("/api/v3/seedrealtime"))
+        event = self.ws.sent[0]
+        self.assertEqual(event["session"]["model"], "1.3.0.0")
+        self.assertNotIn("video", event["session"])
+        self.assertEqual(event["extension"]["video"], {"frame_format": "JPEG", "frame_rate": "2"})
+        sent = len(self.ws.sent)
+        self.assertFalse((await self.manager.send(handle, {"type": "response.cancel"}))["ok"])
+        self.assertFalse((await self.manager.send(handle, {"type": "session.update", "session": {"model": "1.2.6.1"}}))["ok"])
+        self.assertEqual(len(self.ws.sent), sent)
+
+    async def test_seed_and_legacy_validation_before_connect(self):
+        config = {"audio": {"output": {"voice": "v"}}}
+        cases = [dict(mode="wrong"), dict(mode="seed", session={**config, "model": "1.2.6.1"}),
+                 dict(mode="legacy", session={**config, "model": "1.3.0.0"}),
+                 dict(mode="legacy", extension={"video": {"frame_format": "JPEG"}}),
+                 dict(mode="seed", session={**config, "video": {"frame_format": "JPEG"}})]
+        for rate in (3, "10", True, "nan", 0):
+            cases.append(dict(mode="seed", extension={"video": {"frame_format": "JPEG", "frame_rate": rate}}))
+        for case in cases:
+            session = case.pop("session", config)
+            self.assertFalse((await self.manager.open(session, self.directory.name, **case))["ok"])
+        self.connect.assert_not_called()
+
+    async def test_seed_image_file_and_raw_image_have_two_fps_pacing(self):
+        handle = await self.open_seed()
+        path = Path(self.directory.name) / "frame.jpg"
+        image = b"\xff\xd8\xff" + b"JPEG fixture"
+        path.write_bytes(image)
+        with patch.object(realtime.asyncio, "sleep", new_callable=AsyncMock) as sleep:
+            first = await self.manager.send(handle, {"type": "input_image_buffer.append", "frame_id": "1"}, image_file=str(path))
+            second = await self.manager.send(handle, {"type": "input_image_buffer.append", "image": base64.b64encode(image).decode(), "frame_id": "2"})
+        self.assertTrue(first["ok"], first)
+        self.assertTrue(second["ok"], second)
+        self.assertEqual(base64.b64decode(self.ws.sent[-2]["image"]), image)
+        self.assertGreater(sleep.call_args.args[0], 0.45)
+        self.assertLessEqual(sleep.call_args.args[0], 0.5)
+        self.assertEqual(self.ws.sent[-1]["frame_id"], "2")
+
+    async def test_image_validation_and_legacy_guard_do_not_send(self):
+        handle = await self.open()
+        image = base64.b64encode(b"\xff\xd8\xfffixture").decode()
+        self.assertFalse((await self.manager.send(handle, {"type": "input_image_buffer.append", "image": image}))["ok"])
+        await self.manager.close(handle)
+        self.ws = FakeSocket()
+        self.connect.return_value = self.ws
+        handle = await self.open_seed("PNG")
+        before = len(self.ws.sent)
+        for event in ({"type": "input_image_buffer.append", "image": image},
+                      {"type": "input_image_buffer.append", "image": "??"},
+                      {"type": "session.update", "extension": {"video": {"frame_format": "JPEG"}}}):
+            self.assertFalse((await self.manager.send(handle, event))["ok"])
+        self.assertEqual(len(self.ws.sent), before)
+
+    async def test_seed_playback_state_uses_responses_and_cancel_clears_queued_audio(self):
+        handle = await self.open_seed()
+        self.ws.incoming.put_nowait(json.dumps({"type": "response.created"}))
+        first = await self.manager.receive(handle)
+        self.assertEqual(first["playback_state"], "SPEAKING")
+        self.ws.incoming.put_nowait(json.dumps({"type": "conversation.item.input_audio_transcription.completed", "text": "你好"}))
+        asr = await self.manager.receive(handle)
+        self.assertEqual(asr["playback_state"], "SPEAKING")
+        for event in ({"type": "response.output_audio.delta", "delta": base64.b64encode(b"audio").decode()},
+                      {"type": "response.canceled"}):
+            self.ws.incoming.put_nowait(json.dumps(event))
+        await asyncio.sleep(0)
+        canceled = await self.manager.receive(handle)
+        self.assertEqual(canceled["playback_state"], "LISTENING")
+        self.assertFalse(any(item["type"] == "response.output_audio.delta" for item in canceled["events"]))
+        self.assertTrue(canceled["events"][-1]["clear_playback_buffer"])
+        self.ws.incoming.put_nowait(json.dumps({"type": "response.created"}))
+        await self.manager.receive(handle)
+        self.ws.incoming.put_nowait(json.dumps({"type": "response.done", "usage": {"audio_tokens": 3}}))
+        done = await self.manager.receive(handle)
+        self.assertEqual(done["playback_state"], "LISTENING")
+        self.assertEqual(done["events"][-1]["usage"], {"audio_tokens": 3})
+
+    async def test_seed_cancel_clear_signal_survives_control_queue_overflow(self):
+        handle = await self.open_seed()
+        self.manager.sessions[handle].queue = asyncio.Queue(maxsize=2)
+        for event in ({"type": "response.canceled"}, {"type": "response.created"},
+                      {"type": "response.output_audio.started"}):
+            self.ws.incoming.put_nowait(json.dumps(event))
+        await asyncio.sleep(0)
+        result = await self.manager.receive(handle)
+        self.assertTrue(result["clear_playback_buffer"])
+        self.assertEqual(result["playback_state"], "SPEAKING")
+        self.assertGreater(result["dropped_events"], 0)
+        self.assertFalse((await self.manager.receive(handle, timeout=0.01))["clear_playback_buffer"])
+
 
 if __name__ == "__main__":
     unittest.main()

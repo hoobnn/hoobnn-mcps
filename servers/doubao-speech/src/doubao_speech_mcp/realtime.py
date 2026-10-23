@@ -1,4 +1,4 @@
-"""Seeduplex 3.0 persistent JSON WebSocket sessions (no binary V2 protocol)."""
+"""Versioned Seeduplex / Seed-Realtime persistent JSON WebSocket sessions."""
 
 import asyncio
 import atexit
@@ -17,18 +17,24 @@ from websockets.asyncio.client import connect
 from .speech import HOST, InputError, local_file
 
 ENDPOINT = HOST.replace("https://", "wss://").replace("http://", "ws://") + "/api/v3/duplex/realtime/dialogue"
+MODES = {"legacy": {"model": "1.2.6.1", "endpoint": ENDPOINT},
+         "seed": {"model": "1.3.0.0", "endpoint": HOST.replace("https://", "wss://").replace("http://", "ws://") + "/api/v3/seedrealtime"}}
 MAX_SESSIONS = 16
 MAX_EVENT_BYTES = 2 * 1024 * 1024
 
 
-def create_event(session, extension=None):
+def create_event(session, extension=None, mode="legacy"):
     """Keep advanced tools and extension fields; default only documented audio specs."""
     if not isinstance(session, dict):
         raise InputError("session 必须是对象")
+    if mode not in MODES:
+        raise InputError("mode 必须为 legacy / seed")
     config = copy.deepcopy(session)
-    config.setdefault("model", "1.2.6.1")
-    if config["model"] != "1.2.6.1":
-        raise InputError("实时 3.0 session.model 必须为 1.2.6.1")
+    config.setdefault("model", MODES[mode]["model"])
+    if config["model"] != MODES[mode]["model"]:
+        raise InputError(f"{mode} session.model 必须为 {MODES[mode]['model']}")
+    if "video" in config:
+        raise InputError("视频配置应放 extension.video，不是 session.video")
     audio = config.setdefault("audio", {})
     audio.setdefault("input", {}).setdefault("format", {"type": "pcm", "rate": 16000})
     output = audio.setdefault("output", {})
@@ -47,8 +53,25 @@ def create_event(session, extension=None):
     if extension is not None:
         if not isinstance(extension, dict):
             raise InputError("extension 必须是对象")
+        if "video" in extension:
+            validate_video(extension["video"], mode)
         event["extension"] = copy.deepcopy(extension)
     return event
+
+
+def validate_video(video, mode):
+    if mode != "seed":
+        raise InputError("video / image 输入仅支持 mode='seed'")
+    if not isinstance(video, dict) or video.get("frame_format") not in {"PNG", "JPEG"}:
+        raise InputError("extension.video.frame_format 必须为 PNG / JPEG")
+    if "frame_rate" in video:
+        value = video["frame_rate"]
+        try:
+            rate = float(value)
+        except (TypeError, ValueError):
+            rate = float("nan")
+        if isinstance(value, bool) or not math.isfinite(rate) or not 0 < rate <= 2:
+            raise InputError("extension.video.frame_rate 必须大于0且不超过2 FPS")
 
 
 @dataclass
@@ -57,6 +80,12 @@ class _Session:
     directory: Path
     audio_format: str
     input_format: str = "pcm"
+    mode: str = "legacy"
+    image_format: str | None = None
+    last_image_at: float | None = None
+    playback_state: str = "LISTENING"
+    clear_playback_buffer: bool = False
+    image_lock: asyncio.Lock = field(default_factory=asyncio.Lock)
     queue: asyncio.Queue = field(default_factory=lambda: asyncio.Queue(maxsize=2048))
     send_lock: asyncio.Lock = field(default_factory=asyncio.Lock)
     receive_lock: asyncio.Lock = field(default_factory=asyncio.Lock)
@@ -179,6 +208,24 @@ class RealtimeSessions:
                     raise InputError("服务返回了无效事件")
                 if event["type"] == "session.created":
                     state.remote_id = (event.get("session") or {}).get("id", "")
+                if state.mode == "seed":
+                    if event["type"] == "response.created":
+                        state.playback_state = "SPEAKING"
+                    elif event["type"] in {"response.canceled", "response.done"}:
+                        state.playback_state = "LISTENING"
+                    if event["type"] == "response.canceled":
+                        # Tell clients explicitly to clear any audio already queued locally.
+                        state.clear_playback_buffer = True
+                        event["clear_playback_buffer"] = True
+                        pending = []
+                        while not state.queue.empty():
+                            item = state.queue.get_nowait()
+                            if item.get("type") in {"response.output_audio.delta", "response.output_audio.done"}:
+                                state.dropped_events += 1
+                            else:
+                                pending.append(item)
+                        for item in pending:
+                            state.queue.put_nowait(item)
                 if event["type"] in ("response.output_audio.started", "response.canceled"):
                     self._close_audio(state)
                     state.audio_path = None
@@ -219,19 +266,19 @@ class RealtimeSessions:
         finally:
             await self._dispose(state)
 
-    async def open(self, session, out_dir, extension=None, timeout=30):
+    async def open(self, session, out_dir, extension=None, timeout=30, mode="legacy"):
         try:
             self._validate_timeout(timeout, 120)
-            return await asyncio.wait_for(self._open(session, out_dir, extension, timeout), timeout)
+            return await asyncio.wait_for(self._open(session, out_dir, extension, timeout, mode), timeout)
         except Exception as exc:
             return {"ok": False, "error": str(exc) or type(exc).__name__}
 
-    async def _open(self, session, out_dir, extension=None, timeout=30):
+    async def _open(self, session, out_dir, extension=None, timeout=30, mode="legacy"):
         websocket = None
         reserved = False
         session_id = str(uuid.uuid4())
         try:
-            event = create_event(session, extension)
+            event = create_event(session, extension, mode)
             if not 0 < timeout <= 120:
                 raise InputError("timeout 须在 0 到 120 秒之间")
             key = os.environ.get("VOLC_SPEECH_API_KEY")
@@ -244,7 +291,7 @@ class RealtimeSessions:
                     raise InputError(f"最多同时保持 {MAX_SESSIONS} 个实时会话，请先关闭旧会话")
                 self.sessions[session_id] = None  # reserve a slot before awaiting connect
                 reserved = True
-            websocket = await connect(ENDPOINT, additional_headers={"X-Api-Key": key},
+            websocket = await connect(MODES[mode]["endpoint"], additional_headers={"X-Api-Key": key},
                                       open_timeout=timeout, close_timeout=5, max_size=MAX_EVENT_BYTES)
             await asyncio.wait_for(websocket.send(json.dumps(event, ensure_ascii=False)), timeout)
             raw = await asyncio.wait_for(websocket.recv(), timeout)
@@ -252,11 +299,13 @@ class RealtimeSessions:
             if not isinstance(ack, dict) or ack.get("type") != "session.created":
                 raise InputError(f"会话创建失败：{ack}")
             state = _Session(websocket, directory, event["session"]["audio"]["output"]["format"]["type"],
-                             event["session"]["audio"]["input"]["format"]["type"])
+                             event["session"]["audio"]["input"]["format"]["type"], mode,
+                             (event.get("extension", {}).get("video") or {}).get("frame_format"))
             state.remote_id = (ack.get("session") or {}).get("id", "")
             self.sessions[session_id] = state
             state.reader = asyncio.create_task(self._reader(state))
-            return {"ok": True, "session_id": session_id, "event": ack, "output_dir": str(directory)}
+            return {"ok": True, "session_id": session_id, "event": ack, "output_dir": str(directory),
+                    "mode": mode, "model": MODES[mode]["model"], "playback_state": state.playback_state}
         except BaseException as exc:
             if reserved:
                 self.sessions.pop(session_id, None)
@@ -278,14 +327,14 @@ class RealtimeSessions:
         state.last_used = time.monotonic()
         return state
 
-    async def send(self, session_id, event, audio_file="", timeout=30):
+    async def send(self, session_id, event, audio_file="", timeout=30, image_file=""):
         try:
             self._validate_timeout(timeout, 120)
-            return await asyncio.wait_for(self._send_event(session_id, event, audio_file, timeout), timeout)
+            return await asyncio.wait_for(self._send_event(session_id, event, audio_file, timeout, image_file), timeout)
         except Exception as exc:
             return {"ok": False, "error": str(exc) or type(exc).__name__}
 
-    async def _send_event(self, session_id, event, audio_file="", timeout=30):
+    async def _send_event(self, session_id, event, audio_file="", timeout=30, image_file=""):
         """Send arbitrary documented upstream event; audio_file streams PCM at 20 ms pace."""
         try:
             state = self._get(session_id)
@@ -295,15 +344,61 @@ class RealtimeSessions:
                 raise InputError("event 须为包含 type 的对象")
             if event["type"] in ("session.create", "session.close"):
                 raise InputError("请使用 open / close 管理会话生命周期")
+            if state.mode == "seed" and event["type"] == "response.cancel":
+                raise InputError("Seed-Realtime 不支持 response.cancel；服务端通过 response.canceled 打断")
             if not 0 < timeout <= 120:
                 raise InputError("timeout 须在 0 到 120 秒之间")
             payload = copy.deepcopy(event)
             payload.setdefault("event_id", str(uuid.uuid4()))
             if event["type"] == "session.update":
                 config = payload.get("session", {})
+                if not isinstance(config, dict):
+                    raise InputError("session.update.session 必须是对象")
+                if "model" in config and config["model"] != MODES[state.mode]["model"]:
+                    raise InputError("不能通过 session.update 跨版本切换 model，请新建对应 mode 会话")
+                if "video" in config:
+                    raise InputError("视频配置应放 extension.video，不是 session.video")
+                extension = payload.get("extension", {})
+                if not isinstance(extension, dict):
+                    raise InputError("extension 必须是对象")
+                if "video" in extension:
+                    validate_video(extension["video"], state.mode)
+                    if extension["video"]["frame_format"] != state.image_format:
+                        raise InputError("持久会话中不可切换视频帧格式，请新建会话")
+                if "audio" in config and "input" in config["audio"] and "format" in config["audio"]["input"]:
+                    raise InputError("持久会话中不可切换输入格式，请新建会话")
                 if "audio" in config and "output" in config["audio"] and "format" in config["audio"]["output"]:
                     raise InputError("持久会话中不可切换输出格式，请新建会话")
             chunks = 0
+            if image_file and audio_file:
+                raise InputError("image_file 与 audio_file 不能同时使用")
+            if image_file and event["type"] != "input_image_buffer.append":
+                raise InputError("image_file 仅可用于 input_image_buffer.append")
+            if event["type"] == "input_image_buffer.append":
+                if state.mode != "seed" or state.image_format is None:
+                    raise InputError("图片需要 mode='seed' 且 extension.video.frame_format 已声明")
+                if image_file:
+                    if "image" in payload:
+                        raise InputError("image_file 与 event.image 不能同时提供")
+                    path = local_file(image_file, 1.5)  # Wire JSON is bounded by MAX_EVENT_BYTES below.
+                    data = await asyncio.to_thread(path.read_bytes)
+                    payload["image"] = base64.b64encode(data).decode()
+                else:
+                    encoded = payload.get("image")
+                    if not isinstance(encoded, str):
+                        raise InputError("input_image_buffer.append.image 必须是 Base64 字符串")
+                    data = base64.b64decode(encoded, validate=True)
+                actual = "PNG" if data.startswith(b"\x89PNG\r\n\x1a\n") else "JPEG" if data.startswith(b"\xff\xd8\xff") else None
+                if actual != state.image_format:
+                    raise InputError("图片内容格式必须与 extension.video.frame_format 一致（PNG / JPEG）")
+                # Independent from the audio lock: images never delay 20 ms audio pacing.
+                async with state.image_lock:
+                    delay = 0 if state.last_image_at is None else max(0, 0.5 - (time.monotonic() - state.last_image_at))
+                    if delay:
+                        await asyncio.sleep(delay)
+                    await self._send(state, payload, timeout)
+                    state.last_image_at = time.monotonic()
+                return {"ok": True, "session_id": session_id, "event_id": payload["event_id"], "chunks": 1}
             if audio_file:
                 if event["type"] != "input_audio_buffer.append":
                     raise InputError("audio_file 仅可用于 input_audio_buffer.append")
@@ -343,9 +438,12 @@ class RealtimeSessions:
         except asyncio.TimeoutError:
             try:
                 state = self._get(session_id)
+                clear = state.clear_playback_buffer
+                state.clear_playback_buffer = False
                 return {"ok": not bool(state.error), "session_id": session_id, "events": [],
                         "closed": state.closed.is_set(), "error": state.error or None,
-                        "dropped_events": state.dropped_events}
+                        "dropped_events": state.dropped_events, "playback_state": state.playback_state,
+                        "clear_playback_buffer": clear}
             except InputError as exc:
                 return {"ok": False, "error": str(exc)}
         except Exception as exc:
@@ -373,9 +471,12 @@ class RealtimeSessions:
                         await asyncio.gather(get, closed, return_exceptions=True)
                 while len(events) < max_events and not state.queue.empty():
                     events.append(state.queue.get_nowait())
+                clear = state.clear_playback_buffer
+                state.clear_playback_buffer = False
             return {"ok": not bool(state.error), "session_id": session_id, "events": events,
                     "closed": state.closed.is_set(), "error": state.error or None,
-                    "dropped_events": state.dropped_events}
+                    "dropped_events": state.dropped_events, "playback_state": state.playback_state,
+                    "clear_playback_buffer": clear}
         except Exception as exc:
             return {"ok": False, "error": str(exc) or type(exc).__name__}
 

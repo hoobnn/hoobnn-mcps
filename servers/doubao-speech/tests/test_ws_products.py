@@ -219,7 +219,7 @@ class SessionTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(result["rounds"][0]["timing"]["audio_duration"], 1.2)
         self.assertEqual(result["usage"][0]["usage"]["output_audio_tokens"], 10)
         self.assertEqual(connect.call_args.kwargs["additional_headers"]["X-Api-Resource-Id"], "volc.service_type.10050")
-        # Transport stays on the WebSocket podcast endpoint; see the 2026-10-13 audit for why not SSE.
+        # The opt-in legacy implementation retains its WebSocket endpoint.
         self.assertTrue(connect.call_args.args[0].endswith("/api/v3/sami/podcasttts"))
         self.assertTrue(connect.call_args.args[0].startswith("wss://"))
         self.assertNotIn("diagnostic_file", result)
