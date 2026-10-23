@@ -1,0 +1,16 @@
+--- reviewed/doubao-speech/doubao-podcast
++++ current/doubao-speech/doubao-podcast
+@@ -16,13 +16,6 @@
+ **x\-api\-key ** `string` <span data-api-tag="require|TzpVRz">必选</span>
+ 
+ API Key 可以从 [控制台>API Key管理](https://console.volcengine.com/speech/new/setting/apikeys?projectName=default.) 获取
+-
+-&nbsp;
+-
+-注意：
+-
+-
+-* 本接口同时支持[旧版控制台](https://console.volcengine.com/speech/service/10035)的鉴权方式，详见[旧版控制台鉴权参考](https://www.volcengine.com/docs/6561/2534847?lang=zh)
+ 
+ 
+ 

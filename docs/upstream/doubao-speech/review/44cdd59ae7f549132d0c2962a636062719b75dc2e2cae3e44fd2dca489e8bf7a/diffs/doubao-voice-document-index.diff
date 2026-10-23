@@ -1,0 +1,56 @@
+--- reviewed/doubao-speech/doubao-voice-document-index
++++ current/doubao-speech/doubao-voice-document-index
+@@ -759,7 +759,7 @@
+     "DocumentCode": "PodcastAPI-websocket-v3protocol",
+     "DocumentID": 1668014,
+     "Title": "语音播客",
+-    "ParentCode": "Voicepodcastlargemodel",
++    "ParentCode": "history-podcast",
+     "Status": 2
+   },
+   {
+@@ -1526,6 +1526,13 @@
+     "Status": 1
+   },
+   {
++    "DocumentCode": "history-podcast",
++    "DocumentID": 2720564,
++    "Title": "语音播客接口",
++    "ParentCode": "HistoryDocs-9",
++    "Status": 1
++  },
++  {
+     "DocumentCode": "hot-words-and-context",
+     "DocumentID": 2604976,
+     "Title": "热词与上下文",
+@@ -1586,14 +1593,14 @@
+     "DocumentID": 2708572,
+     "Title": "语音播客",
+     "ParentCode": "Voicepodcastlargemodel",
+-    "Status": 5
++    "Status": 2
+   },
+   {
+     "DocumentCode": "podcast_mustread",
+     "DocumentID": 2709746,
+     "Title": "语音播客",
+     "ParentCode": "apiguide",
+-    "Status": 5
++    "Status": 2
+   },
+   {
+     "DocumentCode": "recording-file-recognition-lite-http",
+@@ -1624,6 +1631,13 @@
+     "Status": 2
+   },
+   {
++    "DocumentCode": "seedrealtime",
++    "DocumentID": 2722879,
++    "Title": "Doubao-Seed-Realtime-1.0",
++    "ParentCode": "End-to-endreal-timespeechlargemodel",
++    "Status": 5
++  },
++  {
+     "DocumentCode": "service",
+     "DocumentID": 1801934,
+     "Title": "service",

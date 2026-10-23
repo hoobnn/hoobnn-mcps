@@ -1,0 +1,38 @@
+--- reviewed/doubao-speech/doubao-voice-document-index
++++ current/doubao-speech/doubao-voice-document-index
+@@ -1390,7 +1390,7 @@
+     "DocumentID": 2608617,
+     "Title": "录音文件识别闲时版",
+     "ParentCode": "audio-file-recognition",
+-    "Status": 1
++    "Status": 5
+   },
+   {
+     "DocumentCode": "audio-file-recognition-standard-edition",
+@@ -1600,7 +1600,7 @@
+     "DocumentID": 2608628,
+     "Title": "录音文件识别极速版",
+     "ParentCode": "audio-file-recognition",
+-    "Status": 2
++    "Status": 5
+   },
+   {
+     "DocumentCode": "resource_packs",
+@@ -1614,7 +1614,7 @@
+     "DocumentID": 2608619,
+     "Title": "结果查询",
+     "ParentCode": "audio-file-recognition-idle-time-edition",
+-    "Status": 2
++    "Status": 5
+   },
+   {
+     "DocumentCode": "result-query-http-1",
+@@ -1684,7 +1684,7 @@
+     "DocumentID": 2608618,
+     "Title": "任务提交",
+     "ParentCode": "audio-file-recognition-idle-time-edition",
+-    "Status": 2
++    "Status": 5
+   },
+   {
+     "DocumentCode": "task-submission-http-1",

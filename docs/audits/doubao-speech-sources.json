@@ -717,5 +717,17 @@
     "kind": "guide",
     "fetch_url": "https://docs.volcengine.com/api/doc/getDocList?LibraryCode=DoubaoVoice",
     "fetch_kind": "volcengine_index"
+  },
+  {
+    "id": "doubao-seedrealtime",
+    "url": "https://docs.volcengine.com/docs/DoubaoVoice/seedrealtime?lang=zh",
+    "tools": [
+      "close_realtime_session",
+      "open_realtime_session",
+      "receive_realtime_events",
+      "send_realtime_event"
+    ],
+    "kind": "api",
+    "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=seedrealtime"
   }
 ]

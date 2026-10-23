@@ -1,6 +1,6 @@
 {
   "format_version": 1,
-  "reviewed_at": "2026-10-13T14:35:17.347380+00:00",
+  "reviewed_at": "2026-10-23T07:03:17.575387+00:00",
   "sources": [
     {
       "key": "doubao-speech/doubao-access-mustread",
@@ -15,13 +15,15 @@
         "receive_realtime_events",
         "send_realtime_event"
       ],
-      "sha256": "27f11ed92d027990319de88b803f10be2b7480928b5f465ea761f0f66991ecf4",
-      "bytes": 11026,
-      "models": [],
+      "sha256": "68aee350c6c46eee3c3b8e18468e8ce672f2298a4007bdeb234e72d57a548dcf",
+      "bytes": 12055,
+      "models": [
+        "Doubao"
+      ],
       "endpoints": [],
       "doc_links": [],
       "title": "端到端实时语音",
-      "updated_at": "2026-09-28T13:16:45Z",
+      "updated_at": "2026-10-20T12:04:54Z",
       "document_id": "2549732",
       "headers": {
         "ETag": null,
@@ -193,13 +195,13 @@
       "tools": [
         "generate_audio"
       ],
-      "sha256": "39ab1c08b37999c54120d83d43ed2b3f1042caa175c26e30c296daa3d17431fe",
-      "bytes": 15371,
+      "sha256": "703fb2040ca5ee2863f2053b913cc0ec90ac667119aafc38b939650a2d0f2dcf",
+      "bytes": 17230,
       "models": [],
       "endpoints": [],
       "doc_links": [],
       "title": "Seed Audio 1.5 营销资源合作计划",
-      "updated_at": "2026-09-30T07:21:21Z",
+      "updated_at": "2026-10-15T12:02:37Z",
       "document_id": "2697433",
       "headers": {
         "ETag": null,
@@ -1257,8 +1259,8 @@
       "tools": [
         "generate_podcast"
       ],
-      "sha256": "b171698ff7a428e22d04cec21412479461895a98558e8cb964b6a89ecc6ea737",
-      "bytes": 8493,
+      "sha256": "2eb307876f71d8478776ecae123d0d22df154104e7eda3fec680a107f4e3cf79",
+      "bytes": 8271,
       "models": [
         "seed-tts-2.0-standard"
       ],
@@ -1272,7 +1274,7 @@
         "https://docs.volcengine.com/docs/DoubaoVoice/tone-training-http?lang=zh)生成的音色"
       ],
       "title": "语音播客",
-      "updated_at": "2026-10-12T07:34:57Z",
+      "updated_at": "2026-10-14T08:33:02Z",
       "document_id": "2708572",
       "headers": {
         "ETag": null,
@@ -1299,7 +1301,7 @@
         "https://docs.volcengine.com/docs/DoubaoVoice/tone-training-http?lang=zh"
       ],
       "title": "语音播客",
-      "updated_at": "2026-10-12T07:32:54Z",
+      "updated_at": "2026-10-14T08:33:12Z",
       "document_id": "2709746",
       "headers": {
         "ETag": null,
@@ -1661,6 +1663,46 @@
       }
     },
     {
+      "key": "doubao-speech/doubao-seedrealtime",
+      "server": "doubao-speech",
+      "id": "doubao-seedrealtime",
+      "url": "https://docs.volcengine.com/docs/DoubaoVoice/seedrealtime?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=seedrealtime",
+      "kind": "api",
+      "tools": [
+        "close_realtime_session",
+        "open_realtime_session",
+        "receive_realtime_events",
+        "send_realtime_event"
+      ],
+      "sha256": "5289226af9587022d9be15edfa37f5dcf79b17ca66ad8b2870d5fd1d3a03e7e6",
+      "bytes": 21708,
+      "models": [
+        "Doubao"
+      ],
+      "endpoints": [
+        "wss://openspeech.bytedance.com/api/v3/seedrealtime"
+      ],
+      "doc_links": [
+        "https://docs.volcengine.com/docs/6561/1257544?lang=zh",
+        "https://docs.volcengine.com/docs/6561/1257544?lang=zh)，同时也支持复刻音色",
+        "https://docs.volcengine.com/docs/87772/2272949?lang=zh",
+        "https://docs.volcengine.com/docs/87772/2272953?redirect=1&lang=zh",
+        "https://docs.volcengine.com/docs/DoubaoVoice/access-mustread?lang=zh#llUZxXnt",
+        "https://www.volcengine.com/docs/6561/2549732?AuditDocumentID=397063&lang=zh",
+        "https://www.volcengine.com/docs/6561/2549732?AuditDocumentID=397063&lang=zh#llUZxXnt",
+        "https://www.volcengine.com/docs/6561/2549732?AuditDocumentID=397063&lang=zh)，了解协议设计原则、注意事项与最佳实践等，避免因协议不熟悉导致接入异常"
+      ],
+      "title": "Doubao-Seed-Realtime-1.0",
+      "updated_at": "2026-10-21T09:34:08Z",
+      "document_id": "2722879",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
       "key": "doubao-speech/doubao-servicestatus-servicestatus",
       "server": "doubao-speech",
       "id": "doubao-servicestatus-servicestatus",
@@ -1858,7 +1900,7 @@
         "https://www.volcengine.com/docs/6561/2534847?lang=zh"
       ],
       "title": "任务提交",
-      "updated_at": "2026-09-28T11:41:14Z",
+      "updated_at": "2026-10-14T06:15:23Z",
       "document_id": "2608618",
       "headers": {
         "ETag": null,
@@ -2315,9 +2357,10 @@
         "get_speech_usage_examples",
         "list_speech_capabilities"
       ],
-      "sha256": "b2c10829a4289c9b10226627d2ffdf67ba66d40ca9e557c79bcf49677cfa35e8",
-      "bytes": 44917,
+      "sha256": "90ef939a6767d7e025450b3696bcd090945de55ad3c0deb740ca89c5ad4bdbfd",
+      "bytes": 45257,
       "models": [
+        "Doubao-Seed-Realtime-1.0",
         "DoubaoFoundationModelSpeechEntrepreneurAccelerationProgram-CustomerNotice",
         "DoubaoTextToSpeech20CapabilityIntroduction",
         "DoubaoVoiceMinutes",
@@ -2326,7 +2369,7 @@
       "endpoints": [],
       "doc_links": [],
       "title": "doubao-voice-document-index",
-      "documents": 251,
+      "documents": 253,
       "document_codes": [
         "APIAccessFAQ",
         "APIKeyUsage",
@@ -2546,6 +2589,7 @@
         "error-code-query",
         "error-code-query-1",
         "historical-endtoend-realtime-voice-interface",
+        "history-podcast",
         "hot-words-and-context",
         "iOS",
         "iOS-1",
@@ -2560,6 +2604,7 @@
         "resource_packs",
         "result-query-http",
         "result-query-http-1",
+        "seedrealtime",
         "service",
         "sound-reproduction",
         "speaker-separation",

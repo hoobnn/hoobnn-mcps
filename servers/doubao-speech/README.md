@@ -20,7 +20,7 @@
 |---|---|---|
 | `text_to_speech` | 语音合成：2.0 音色、语音指令、8 种方言、30+ 语种、读音修正、SRT 字幕；超过 5000 字自动改走异步长文本（最多 10 万字） | 同步单向流式 HTTP / 异步长文本，`seed-tts-2.0`（复刻音色自动用 `seed-icl-2.0`） |
 | `generate_audio` | 音频生成：按描述生成音效、配乐、多角色对白混合的音频，最长 120 秒，可参考音色、音频或图片 | `seed-audio-1.0` |
-| `generate_podcast` | 双人播客：`text` 文章 / `url` 链接 / `topic` 联网话题 / `dialogue` 逐轮脚本；可只出脚本 | WebSocket 播客协议 |
+| `generate_podcast` | 双人播客：`text` 文章 / `url` 链接 / `topic` 联网话题 / `dialogue` 逐轮脚本；可只出脚本 | HTTP SSE（默认）/ 历史 WebSocket 可选 |
 | `speech_to_text` | 录音识别：`flash` 同步（100MB / 2 小时）；`standard` / `idle` 异步（URL，512MB / 5 小时，支持说话人分离） | 极速版 / 标准版 / 闲时版 |
 | `summarize_meeting` | 妙记：转写加全文总结、章节、待办、问答、翻译，开关式参数；结果 JSON 自动下载 | 异步 HTTP |
 | `translate_text` | Seed-X 机器翻译，`glossary` 指定术语，自动检测语种 | 一次 1–16 条文本 |
@@ -58,7 +58,7 @@ uv tool install doubao-speech-mcp
 | `DOUBAO_SPEECH_JOB_DIR` | 异步任务记录，默认 `~/.local/share/doubao-speech-mcp/jobs` |
 | `VOLC_SPEECH_BASE_URL` | 默认 `https://openspeech.bytedance.com` |
 
-音频生成和播客可能超过 300 秒，客户端需设置相应超时。异步任务提交前先写本地记录，`get_job` 完成时自动把官方临时 URL 的结果下载到输出目录。
+音频生成和播客可能超过 300 秒，需同时提高客户端超时和服务端 `MCP_TOOL_TIMEOUT_SEC`（最高 3600）；SSE 按该总预算读取，不再固定截断于 300 秒。异步任务提交前先写本地记录，`get_job` 完成时自动把官方临时 URL 的结果下载到输出目录。
 
 本地运行与验证：
 
@@ -172,12 +172,22 @@ MCP 客户端本地启动命令可指定本项目 `.venv/bin/doubao-speech-mcp` 
 1. 使用返回的客户端 `session_id`，通过 `send_realtime_event` 发送 `input_audio_buffer.append` 与 `audio_file`（16kHz / mono / int16 裸 PCM），或事件里的 Base64 `audio`。
 2. 发送 `input_audio_buffer.commit` 强制判停，或由服务端判断停顿。
 3. `receive_realtime_events` 接收转写、回复、音频路径、工具调用和用量。音频 delta 自动落盘，附格式和采样率，不返回巨大 Base64。
-4. 调用者执行 Function Calling，再通过 `conversation.item.create` 回传 `role=tool` 和对应 `call_id`。可发送 `response.cancel` 打断、上下文增删查和 `session.update`。
+4. 调用者执行 Function Calling，再通过 `conversation.item.create` 回传 `role=tool` 和对应 `call_id`。`mode=legacy` 可发送 `response.cancel` 打断；上下文增删查和 `session.update` 两种模式均可用。
 5. `close_realtime_session` 等待关闭确认并释放连接；MCP 退出也会清理全部会话。
 
 实时上传 20ms 一包。MCP 不直接采集麦克风、播放声音或驱动声卡，客户端负责设备输入输出。同传需 16kHz / mono / 16bit WAV 或 PCM；WAV 自动去容器。目标 PCM16k 保存有效 WAV，PCM24k 保留 float32 原始 PCM 并返回格式信息。
 
-播客断线、轮次失败或服务端取消（事件 151，返回 `canceled: true`）时保留 `.partial.*`、`task_id` 和 `last_finished_round_id`；按官方续传要求，`.partial.*` 只含已完整结束的轮次。未完成轮次的分片另存为 `podcast-<task_id>.unfinished-round.diagnostic-not-for-resume.<fmt>`（路径见 `diagnostic_file`，字节数见 `discarded_bytes`），仅供排查，不能拼进续传结果。可通过 `parameters.retry_info` 显式续传；返回的是续传片段，不自动和旧文件合并。
+`mode=legacy` 为兼容默认值：`/api/v3/duplex/realtime/dialogue` + `model=1.2.6.1`。新模式 `mode=seed` 使用 `/api/v3/seedrealtime` + `model=1.3.0.0`，不能仅在旧模式换 model。图像配置在 **`extension.video`**：
+
+```json
+{"mode":"seed","session":{"audio":{"output":{"voice":"zh_female_vv_jupiter_bigtts"}}},"extension":{"video":{"frame_format":"JPEG","frame_rate":"2"}}}
+```
+
+用 `send_realtime_event` 发送 `{"type":"input_image_buffer.append","frame_id":"frame_1"}`，并传 `image_file` 本地 PNG/JPEG，或在事件中传 Base64 `image`；编码必须匹配 `extension.video.frame_format`。图像至多 2 FPS，工具独立节流，不阻塞音频 20ms 节奏；单个 JSON 事件本地上限 2MB。Seed 模式禁止 `response.cancel`，由服务端 VAD 通过 `response.canceled` 打断。播放状态只看 `response.created/canceled/done`；ASR 事件只用于转写。`receive_realtime_events` 的 `clear_playback_buffer=true`（即使取消事件因队列拥塞被丢弃也会保留）要求客户端立即停播并清空已缓冲音频。
+
+`generate_podcast` 默认 `transport="sse"`，向 `/api/v3/podcast/sse` 一次 POST；`transport="websocket"` 保留历史接口。SSE 只有收到 **152 且 `code=20000000`** 才成功，HTTP 200、363 和 usage 均不能提前结束。`task_id` 是首次 150 返回的真实 `session_id`；续传返回新的 `session_id`，`task_id` 始终保留首次值。
+
+SSE 在提交前、150 和每个完整 362 时保存 `progress_file`（原请求、真实任务 ID、完整轮次和续传信息，无凭据）。断线、超时、轮次失败、151 取消或 MCP 取消时，`.partial.*` 只含已写成的完整轮次；未完成分片另存 `diagnostic_file`，不可拼入续传结果。音频保存失败不会把 `retry_info` 推进到未落盘轮次。按原请求加 `parameters.retry_info={"retry_task_id":"首次task_id","last_finished_round_id":最后完整轮次}` 显式续传；不自动重新提交或合并文件，需按完整片段时长调整续传时间轴。
 
 音色列表中备注「仅限单向流」的 27 个外语音色，`speech_raw_request(product='tts_websocket')` 默认的双向流会在本地直接拒绝，需传 `mode='unidirectional'`；`text_to_speech` 走单向流 HTTP，不受影响。
 
@@ -200,11 +210,11 @@ MCP 客户端本地启动命令可指定本项目 `.venv/bin/doubao-speech-mcp` 
 
 ## 官方来源与覆盖边界
 
-新增接口来源包括[长文本提交](https://docs.volcengine.com/docs/DoubaoVoice/Tasksubmission?lang=zh)、[音色注册](https://docs.volcengine.com/docs/DoubaoVoice/tone-training-http?lang=zh)、[音色设计](https://docs.volcengine.com/docs/DoubaoVoice/SoundDesignAPI?lang=zh)、[实时识别](https://docs.volcengine.com/docs/DoubaoVoice/bidirectional-streaming-automatic-speech-recognition-websocket?lang=zh)、[播客](https://docs.volcengine.com/docs/DoubaoVoice/PodcastAPI-websocket-v3protocol?lang=zh)、[实时 3.0](https://docs.volcengine.com/docs/DoubaoVoice/endtoend-realtime-voice-full-duplex-version?lang=zh)、[同传](https://docs.volcengine.com/docs/DoubaoVoice/SimultaneousInterpretation20APIAccessDocumentation?lang=zh)、[机器翻译](https://docs.volcengine.com/docs/DoubaoVoice/MachineTranslationLargeModel-APIAccessDocumentation?lang=zh)、[妙记](https://docs.volcengine.com/docs/DoubaoVoice/DoubaoVoiceMinutes-APIAccessDocumentation?lang=zh)、[热词](https://docs.volcengine.com/docs/DoubaoVoice/HotWordManagementAPIv10?lang=zh)、[替换词](https://docs.volcengine.com/docs/DoubaoVoice/ReplacementWordAPIv11?lang=zh)及[控制台 OpenAPI](https://api.volcengine.com/api-docs/view?action=ActivateService&serviceCode=speech_saas_prod&version=2025-05-20)。
+新增接口来源包括[长文本提交](https://docs.volcengine.com/docs/DoubaoVoice/Tasksubmission?lang=zh)、[音色注册](https://docs.volcengine.com/docs/DoubaoVoice/tone-training-http?lang=zh)、[音色设计](https://docs.volcengine.com/docs/DoubaoVoice/SoundDesignAPI?lang=zh)、[实时识别](https://docs.volcengine.com/docs/DoubaoVoice/bidirectional-streaming-automatic-speech-recognition-websocket?lang=zh)、[播客 SSE](https://docs.volcengine.com/docs/DoubaoVoice/podcast?lang=zh)、[实时 3.0](https://docs.volcengine.com/docs/DoubaoVoice/endtoend-realtime-voice-full-duplex-version?lang=zh)、[同传](https://docs.volcengine.com/docs/DoubaoVoice/SimultaneousInterpretation20APIAccessDocumentation?lang=zh)、[机器翻译](https://docs.volcengine.com/docs/DoubaoVoice/MachineTranslationLargeModel-APIAccessDocumentation?lang=zh)、[妙记](https://docs.volcengine.com/docs/DoubaoVoice/DoubaoVoiceMinutes-APIAccessDocumentation?lang=zh)、[热词](https://docs.volcengine.com/docs/DoubaoVoice/HotWordManagementAPIv10?lang=zh)、[替换词](https://docs.volcengine.com/docs/DoubaoVoice/ReplacementWordAPIv11?lang=zh)及[控制台 OpenAPI](https://api.volcengine.com/api-docs/view?action=ActivateService&serviceCode=speech_saas_prod&version=2025-05-20)。
 
 Speech SDK 的离线模型、端侧 VAD / 音频处理和 Android / iOS 接入需原生应用，不能等同于云 MCP。术语词表 CRUD 官方仅公开控制台流程；翻译 / 同传通过 `glossary`、`glossary_table_id`（或 `parameters` 里的 `glossary_table_name`）使用术语。同传官方附件的 Protobuf 尚未声明文档新增的 `detected_language`，本版不猜字段编号。
 
-历史产品使用独立工具与旧版凭据，返回各操作的精确官方 `source` 链接。传统 `/api/v2/asr` 旧 WebSocket 协议未重复实现；一句话和流式识别功能通过现行大模型接口提供。实时对话采用最新 3.0，未复制旧 1.0 / 2.0 会话协议。所有产品覆盖不等于每个历史 SDK / 协议版本都已适配。
+历史产品使用独立工具与旧版凭据，返回各操作的精确官方 `source` 链接。传统 `/api/v2/asr` 旧 WebSocket 协议未重复实现；一句话和流式识别功能通过现行大模型接口提供。实时对话提供 Seed-Realtime 1.0 与兼容 Seeduplex 3.0，未复制旧 1.0 / 2.0 二进制会话协议。所有产品覆盖不等于每个历史 SDK / 协议版本都已适配。
 
 `_ast/` 的 Protobuf bindings 来自同传官方 Python 示例，生成日期 2026-06-12，调整为包内相对 import；运行依赖 `mcp`、`websockets`、`protobuf`。
 

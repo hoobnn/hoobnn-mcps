@@ -27,6 +27,7 @@ class StdioSmoke(unittest.IsolatedAsyncioTestCase):
                     await asyncio.wait_for(client.initialize(), 10)
                     tools = {t.name: t for t in (await client.list_tools()).tools}
                     self.assertFalse(OPTIONAL & tools.keys())
+                    self.assertEqual(tools["generate_podcast"].input_schema["properties"]["transport"]["default"], "sse")
                     # Only the raw escape hatch takes a whole official request body.
                     for name, tool in tools.items():
                         if name != "speech_raw_request":
@@ -48,6 +49,8 @@ class StdioSmoke(unittest.IsolatedAsyncioTestCase):
                 await asyncio.wait_for(client.initialize(), 10)
                 tools = {t.name: t for t in (await client.list_tools()).tools}
                 self.assertTrue(OPTIONAL <= tools.keys())
+                self.assertEqual(tools["open_realtime_session"].input_schema["properties"]["mode"]["default"], "legacy")
+                self.assertIn("image_file", tools["send_realtime_event"].input_schema["properties"])
                 catalog = json.loads((await client.call_tool("list_speech_capabilities", {})).content[0].text)
                 self.assertEqual(catalog["disabled_groups"], [])
                 for names in catalog["products"].values():

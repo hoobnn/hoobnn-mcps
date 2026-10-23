@@ -94,7 +94,7 @@ class TypedBodies(unittest.TestCase):
         self.assertFalse(server.clone_voice("S_x", "/tmp/a.wav", language="klingon")["ok"])
 
     def test_podcast_inputs_map_to_actions(self):
-        with patch.object(ws_products, "podcast", new=AsyncMock(return_value={"ok": True})) as podcast:
+        with patch.object(server.podcast, "generate", return_value={"ok": True}) as podcast:
             asyncio.run(server.generate_podcast(topic="城市", speakers=["a", "b"]))
             body = podcast.call_args.args[0]
             self.assertEqual((body["action"], body["prompt_text"]), (4, "城市"))
