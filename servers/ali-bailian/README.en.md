@@ -116,7 +116,7 @@ The `audio` argument accepts a local WAV/MP3/M4A file (up to 10MB), a public htt
 
 The new video tools default to `wait=0`: they only submit and record the job immediately. Then use `get_job(job_id=...)` to check progress, and `recover_job(job_id=...)` if the download fails.
 
-HappyHorse editing takes input video of 3–60 seconds and outputs at most 15 seconds. Digital-human audio must be under 20 seconds and under 15MB, at 480P / 720P resolution, in the Beijing region. Local video media is uploaded to Bailian temporary storage; reference images are sent as data URLs to the editing endpoint. Model and region access still need confirmation with real calls.
+HappyHorse editing takes input video of 3–60 seconds and outputs at most 15 seconds. Digital-human audio must be under 20 seconds and under 15MB, at 480P / 720P resolution, in the Beijing region. Local video media is uploaded to Bailian temporary storage (the official temporary upload supports only Beijing and Singapore; use public URLs with a US workspace); reference images are sent as data URLs to the editing endpoint. Model and region access still need confirmation with real calls.
 
 ### Embeddings and reranking
 
