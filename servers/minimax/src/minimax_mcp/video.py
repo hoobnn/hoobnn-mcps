@@ -11,6 +11,8 @@ from .jobs import Store
 
 STORE = Store("MINIMAX_JOB_DIR", "~/.local/share/hoobnn-minimax-mcp/jobs")
 MODELS = {"MiniMax-H3": {"resolutions": ["768P", "2K"], "min_duration": 4},
+          "MiniMax-H3-Highspeed": {"resolutions": ["768P"], "min_duration": 4},
+          "MiniMax-H3-Lite": {"resolutions": ["480P", "768P"], "min_duration": 4},
           "MiniMax-H3-Max": {"resolutions": ["480P", "768P"], "min_duration": 5}}
 RATIOS = {"adaptive", "21:9", "16:9", "4:3", "1:1", "3:4", "9:16"}
 ROLES = {"image_url": {"first_frame", "last_frame", "reference_image"},
@@ -109,7 +111,7 @@ def build_request(task_type, *, prompt="", model="MiniMax-H3", content=None,
                   reference_images=None, reference_videos=None, reference_audios=None,
                   source_task_id=None, parameters=None):
     if task_type not in ENDPOINTS or model not in MODELS:
-        raise ValueError("仅支持 H3 / H3-Max V2；旧 Hailuo V1 请使用原 MCP")
+        raise ValueError("仅支持 H3 / H3-Highspeed / H3-Lite / H3-Max V2；旧 Hailuo V1 请使用原 MCP")
     if task_type != "generation" and model != "MiniMax-H3":
         raise ValueError("提示词增强和再生成仅支持 MiniMax-H3")
     options = copy.deepcopy(parameters or {})
@@ -139,6 +141,8 @@ def build_request(task_type, *, prompt="", model="MiniMax-H3", content=None,
                                        reference_images, reference_videos, reference_audios)
         mode = validate_content(body["content"], task_type == "regeneration")
         if task_type != "regeneration":
+            if mode == "reference" and model == "MiniMax-H3-Lite" and ratio in {None, "adaptive"}:
+                raise ValueError("MiniMax-H3-Lite 多模态参考暂不支持 adaptive，需显式指定具体 ratio")
             ratio = ratio or ("16:9" if mode == "text" else "adaptive")
             if ratio not in RATIOS or (mode == "text" and ratio == "adaptive"):
                 raise ValueError("无效 ratio；纯文生视频不能使用 adaptive")
@@ -150,7 +154,7 @@ def build_request(task_type, *, prompt="", model="MiniMax-H3", content=None,
     if task_type != "h3_context_ir":
         resolution = resolution or ("2K" if model == "MiniMax-H3" else "768P")
         if resolution not in MODELS[model]["resolutions"] or (task_type == "regeneration" and resolution != "2K"):
-            raise ValueError("模型不支持该分辨率；H3-Max 不支持 2K，再生成仅支持 2K")
+            raise ValueError("模型不支持该分辨率；仅 H3 支持 2K，H3-Highspeed 仅 768P，再生成仅支持 2K")
         body["resolution"] = resolution
     if len(json.dumps(body).encode()) > 64 * 1024 * 1024:
         raise ValueError("请求体超过 64 MB，改用公网 URL / mm_file://")

@@ -16,7 +16,7 @@ hoobnn 的个人 MCP server 集合。每个 server 是 `servers/<name>/` 下的�
 
 | Server | 作用 |
 |---|---|
-| [`minimax`](servers/minimax) | MiniMax：H3 / H3-Max 视频、提示词增强、2K 再生成、语音/音色、图片、音乐与任务恢复（离线验证） |
+| [`minimax`](servers/minimax) | MiniMax：H3 / H3-Highspeed / H3-Lite / H3-Max 视频、提示词增强、2K 再生成、语音/音色、图片、音乐与任务恢复（离线验证） |
 | [`volcengine-ark`](servers/volcengine-ark) | 火山方舟：Seedream 图像、Seedance 视频、语言与多模态理解、联网搜索、向量化和任务恢复（Seedream 已云端验证，其余待账号开通后验证） |
 | [`doubao-speech`](servers/doubao-speech) | 豆包语音：合成（含异步长文本）、识别、音频生成、播客、同传、翻译、妙记、复刻与音色设计；实时对话 3.0、词表及控制台管理按需启用 |
 | [`ali-bailian`](servers/ali-bailian) | 阿里云百炼：图像、语言、TTS / ASR、音色复刻与设计、视频生成 / 编辑 / 数字人、向量与重排序、任务恢复 |

@@ -1,6 +1,17 @@
 # MiniMax 契约与迁移
 
-首次接入核对：2026-10-11；最近契约复核：**2026-10-23**。依据用户指定的 [中国站接口概览](https://platform.minimax.cn/docs/api-reference/api-overview) 及其链接的 OpenAPI Markdown 正文；14 个接口来源纳入 `docs/audits/minimax-sources.json`、SHA-256 基线和 gzip 正文快照。
+首次接入核对：2026-10-11；最近契约复核：**2026-10-24**。依据用户指定的 [中国站接口概览](https://platform.minimax.cn/docs/api-reference/api-overview) 及其链接的 OpenAPI Markdown 正文；14 个接口来源纳入 `docs/audits/minimax-sources.json`、SHA-256 基线和 gzip 正文快照。
+
+## 2026-10-24 文档更新审查
+
+公开正文抓取 **14/14 成功，0 错误**，相对 2026-10-23 基线有 4 篇正文变化。完整差异见 [报告](upstream/minimax/review/15a7ef27daec7bbfe3b76e32b9cb69275265c05559c8fdf370672b40c4f93ebe/report.md) 及同目录 `diffs/`。
+
+| 文档 | 实质变化 | 处理结论 |
+|---|---|---|
+| [创建视频任务](https://platform.minimax.cn/docs/api-reference/video-generation-v2-create) | `model` 枚举新增 `MiniMax-H3-Highspeed`（仅 768P、4–15 秒）与 `MiniMax-H3-Lite`（480P/768P、默认 768P、4–15 秒）；`MiniMax-H3-Lite` 多模态参考暂不支持 `adaptive`，需显式指定比例；`extra` 仍仅属于 H3-Max | `generate_video` 接入两个新模型及档位校验；Lite 参考模式未给或给 `adaptive` 的 `ratio` 时本地拒绝，不替用户猜比例；`extra` 继续只对 H3-Max 放行 |
+| [同步语音](https://platform.minimax.cn/docs/api-reference/speech-t2a-http)、[Context-IR](https://platform.minimax.cn/docs/api-reference/video-generation-v2-h3-context-ir)、[再生成](https://platform.minimax.cn/docs/api-reference/video-generation-v2-regeneration) | 站内相对链接改为 `platform.minimaxi.com` 绝对地址 | 展示性变化；Context-IR 与再生成仍只接受 `MiniMax-H3`，请求不变 |
+
+新模型仅按官方枚举做离线契约接入，未发送付费请求，不代表当前账号已开通。
 
 ## 2026-10-23 文档更新审查
 
@@ -35,9 +46,9 @@
 
 实现不复制官方项目代码，使用本仓库共享运行时；旧四个环境变量可继续使用。工具名保留常用媒体名称，但视频参数和任务不做 V1 兼容。`play_audio`、语言/ASR/流式与长文本异步语音不在此次范围。具体迁移见 [MiniMax README](../servers/minimax/README.md)。
 
-## H3 与 H3-Max
+## H3、H3-Highspeed、H3-Lite 与 H3-Max
 
-以 [创建任务](https://platform.minimax.cn/docs/api-reference/video-generation-v2-create) 的正文和枚举为准：H3 为 768P/2K、4–15 秒；H3-Max 为 480P/768P、5–15 秒且没有 2K。二者共用 content[]；H3-Max 的 extra.prompt_expansion_mode 支持 disabled/balanced/quality。
+以 [创建任务](https://platform.minimax.cn/docs/api-reference/video-generation-v2-create) 的正文和枚举为准：H3 为 768P/2K、4–15 秒；H3-Highspeed 仅 768P、4–15 秒；H3-Lite 为 480P/768P、4–15 秒，多模态参考须显式指定具体比例；H3-Max 为 480P/768P、5–15 秒。只有 H3 支持 2K。四者共用 content[]；H3-Max 的 extra.prompt_expansion_mode 支持 disabled/balanced/quality。
 
 本地验证提示词、输入类型、文件大小、引用数量、互斥关系和模型档位；素材真实尺寸、编码、参考视频/音频时长由平台上传和生成校验。所有本地素材在生成前上传为 mm_file://，上传回执保存在任务记录中。
 

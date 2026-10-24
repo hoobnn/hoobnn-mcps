@@ -50,12 +50,13 @@ def generate_video(prompt: str = "", model: str = "MiniMax-H3", content: list[di
                    ratio: str | None = None, wait: int = 0, output_directory: str | None = None,
                    parameters: dict | None = None) -> dict:
     """MiniMax H3 V2 音画视频生成，支持文生、首帧、尾帧、首尾帧和多模态参考。按量计费。
-    H3: 4–15整数秒，768P/2K（默认2K）；H3-Max: 5–15秒，480P/768P（默认768P），不支持2K。
+    H3: 4–15整数秒，768P/2K（默认2K）；H3-Highspeed: 4–15秒，仅768P；H3-Lite: 4–15秒，480P/768P（默认768P），
+    多模态参考须显式给具体ratio；H3-Max: 5–15秒，480P/768P（默认768P）。后三者不支持2K。
     prompt 与快捷素材参数可组合；或单独传官方 content 数组，不能混用。所有模式需要1个非空text，最多7000字符。
     素材接受公网URL、mm_file://ID、data URI或本地绝对路径；本地文件自动上传，有效期7天。
     首/尾帧各最多1张，与参考素材互斥；参考图<=9、视频<=3、音频<=3。图片<=30MB，视频<=50MB，音频<=15MB；
     参考视频/音频每段2–15秒且各自总长<=15秒，具体尺寸/编码由上传接口校验。请求体<=64MB。
-    ratio省略时文生为16:9，其余adaptive；首尾帧总是跟随图片比例。parameters支持callback_url/aigc_watermark；
+    ratio省略时文生为16:9，其余adaptive（H3-Lite参考除外）；首尾帧总是跟随图片比例。parameters支持callback_url/aigc_watermark；
     H3-Max另支持extra.prompt_expansion_mode=disabled/balanced/quality。不允许覆盖模型或content。
     wait=0只提交，最多等待90秒；返回job_id/task_id，get_job后续查询及下载，recover_job只补交付不重新生成。
     工具超时可用list_jobs找回。HTTP超时且无task_id时不自动重试，避免重复付费。离线契约已测试，账号权限需实际调用验证。
