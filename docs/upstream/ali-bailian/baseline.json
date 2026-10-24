@@ -1,6 +1,6 @@
 {
   "format_version": 1,
-  "reviewed_at": "2026-10-23T06:51:24.893207+00:00",
+  "reviewed_at": "2026-10-24T07:26:15.527863+00:00",
   "sources": [
     {
       "key": "ali-bailian/bailian-asr",
@@ -149,8 +149,8 @@
       "tools": [
         "chat"
       ],
-      "sha256": "30f7f8a3026993886e5f40e64aa484896cc18a5626efd9a1a3e3c60e414a1ecf",
-      "bytes": 134481,
+      "sha256": "d336fd6aad74b899030f8b3f0e8e203f4eaf9e29e34b8c5c9548314a318d5c00",
+      "bytes": 134490,
       "models": [
         "DeepSeek-V3.2",
         "DeepSeek-V4",
@@ -1240,14 +1240,13 @@
       "tools": [
         "embed"
       ],
-      "sha256": "42806d23ad83c080ed5a6b806edee6513d631516d0f6f9bfc4e0f6e7c3121cc3",
-      "bytes": 49009,
+      "sha256": "cc9d43345aee0a3024cabc3bd1831eded76e7a0df0646c0a86416bac0f24aaef",
+      "bytes": 54719,
       "models": [
         "Multimodal-Embedding",
         "Qwen3",
         "multimodal-embedding",
         "multimodal-embedding-api-reference",
-        "multimodal-embedding-one-peace-v1",
         "multimodal-embedding-v1",
         "qwen2.5-vl-embedding",
         "qwen3-vl-embedding"
@@ -1940,14 +1939,18 @@
         "edit_video",
         "generate_video"
       ],
-      "sha256": "a34d35eddd0071e698b990a77f9d2eae121832c3141a77cfb295e2abc43316b5",
-      "bytes": 48778,
+      "sha256": "5b63f230305349f7e7ba9586eae4f378e23ab2d35f7675df1860cbe5ec989e44",
+      "bytes": 51530,
       "models": [
         "qwen-plus",
         "qwen-vl",
         "qwen3-vl-plus"
       ],
       "endpoints": [
+        "https://dashscope-intl.aliyuncs.com/api/v1",
+        "https://dashscope-intl.aliyuncs.com/api/v1/uploads",
+        "https://dashscope-intl.aliyuncs.com/compatible-mode/v1/chat/completions",
+        "https://dashscope.aliyuncs.com/api/v1",
         "https://dashscope.aliyuncs.com/api/v1/uploads",
         "https://dashscope.aliyuncs.com/api/v1/uploads?action=getPolicy&model=qwen3-vl-plus",
         "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",

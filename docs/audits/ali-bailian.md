@@ -69,6 +69,18 @@
 4. 正文与端点示例均为北京 workspace 域名；新加坡仅部分模型可用（见复刻指南），默认 `DASHSCOPE_BASE_URL` 下的实际可用性未做付费验证。
 5. 本次抓取发现 `bailian-happyhorse-edit` 正文新增美国 workspace 端点、删除 `dashscope-us` 示例，与语音迁移无关，未写入基线，留给下一次上游检查 PR 处理。
 
+## 2026-10-24 上游更新审查（PR #17）
+
+公开正文抓取 **36/36 成功、3 项来源变化、0 失败**，完整差异见 [报告](../upstream/ali-bailian/review/f915617767939c3c92388597ffe066cffb80b79ad592bd6a8408b387c44c6c01/report.md) 及同目录 `diffs/`。去除表格 `verticalAlign` / `overflowWrap` 样式改动后，实质变化如下：
+
+| 实质变化 | 处理结论 | 官方依据 |
+|---|---|---|
+| Chat `parallel_tool_calls` 默认值由 `false` 改为 `true`；不保证串行的模型新增 `kimi-k3` | 本 `chat` 不默认发送该字段，也未实现 Function Calling 循环；通过 `parameters` 透传 `tools` 时按官方新默认生效。README 中 M3.1 不能保证串行的说明仍成立，无需改代码 | [Chat参数](https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions) |
+| 临时上传明确仅支持北京与新加坡，新加坡使用 `dashscope-intl.aliyuncs.com` 与新加坡 API Key | 上传路径 `/api/v1/uploads` 已相对 `DASHSCOPE_BASE_URL` 拼接，配置新加坡根域名即可，无需改代码。README 补充：美国 workspace 不能依赖本地文件自动上传，需改用公网 URL | [临时上传](https://help.aliyun.com/zh/model-studio/get-temporary-file-url) |
+| 多模态向量 CLI 示例由 `multimodal-embedding-one-peace-v1` 改为 `tongyi-embedding-vision-plus` | one-peace 早已不在模型表，本 MCP 也未引用；模型表与输入限制仅样式变化，`embed` 不变 | [多模态向量](https://help.aliyun.com/zh/model-studio/multimodal-embedding-api-reference) |
+
+本轮没有运行时代码变化，也没有发送付费请求；新加坡上传与 `parallel_tool_calls` 新默认未做云端验收。
+
 ## 2026-10-23 上游更新落实（PR #14，待人工复查）
 
 本轮对照最新官方 `.md` 正文与 PR #14 原捕获基线，抓取 **36/36 成功、19 项来源变化、0 失败**。原有32个来源对照主分支10月13日基线时有16篇正文变化；PR原基线已包含HappyHorse域名变化，因此两份差异数量不同。新增4个监控来源：[地域与接入域名](https://help.aliyun.com/zh/model-studio/regions)、[Qwen-Audio-TTS接入方式](https://help.aliyun.com/zh/model-studio/qwen-audio-tts-model-access)、[CosyVoice接入方式](https://help.aliyun.com/zh/model-studio/cosyvoice-model-access)、[MiniMax直供接入](https://help.aliyun.com/zh/model-studio/minimax-api-by-minimax)。保留既有review目录，本轮捕获通过平台独立 `upstream_pr.stage` 写入待审基线、完整diff及内容寻址快照；尚未合并或发布。
