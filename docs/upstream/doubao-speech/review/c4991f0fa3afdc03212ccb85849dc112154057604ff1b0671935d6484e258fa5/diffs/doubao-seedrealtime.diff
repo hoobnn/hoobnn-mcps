@@ -1,0 +1,11 @@
+--- reviewed/doubao-speech/doubao-seedrealtime
++++ current/doubao-speech/doubao-seedrealtime
+@@ -66,7 +66,7 @@
+ 
+ **instructions**`string`
+ 
+-系统提示词（System message），用于引导模型的回复内容与音频风格，与模型内部 SP 及上下文合计长度上限为 64K tokens（系统提示词 instructions + 模型内部 SP + 对话历史上下文）
++系统提示词（System message），用于引导模型的回复内容与音频风格，与模型内部 SP、对话历史上下文及FC结果合计长度上限为 64K tokens（系统提示词 instructions + 模型内部 SP + 对话历史上下文 + FC结果）
+ 
+ **audio ** `object`必选
+ 

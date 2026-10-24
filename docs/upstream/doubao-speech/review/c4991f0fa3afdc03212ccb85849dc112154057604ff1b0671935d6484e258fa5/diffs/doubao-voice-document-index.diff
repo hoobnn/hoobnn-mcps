@@ -1,0 +1,11 @@
+--- reviewed/doubao-speech/doubao-voice-document-index
++++ current/doubao-speech/doubao-voice-document-index
+@@ -1500,7 +1500,7 @@
+   {
+     "DocumentCode": "endtoend-realtime-voice-full-duplex-version",
+     "DocumentID": 2549778,
+-    "Title": "端到端实时语音",
++    "Title": "端到端实时语音（Seeduplex）",
+     "ParentCode": "End-to-endreal-timespeechlargemodel",
+     "Status": 2
+   },
