@@ -98,6 +98,15 @@
 - `ark-seedance-2-5`：示例素材迁移到 arkdocs 域名、体验中心链接更新、所有示例新增 `watermark: true`；Draft 转正式视频的 `resolution` 由「默认且仅支持 1080p」改为「必须传入，仅支持 1080p」。示例取值不改变 API 默认值，本工具始终显式发送 watermark；本工具不支持 `content.draft_task`（parameters 不能覆盖 content），且每次都发送 resolution，因此不受影响。
 - `ark-seedream-4-0-5-0`、`ark-seedream-5-0-pro`：示例改为 `watermark: true`、Python SDK 包名改为 `arkruntime`、Java 示例改用 FAST 提示词优化并注明 ark-runtime ≥0.6.0、素材迁移域名、提示块缩进调整；参考数量、尺寸档位、像素范围和 1.5K/1K 同价说明均未变。
 
+## 2026-10-24 上游正文复核（review/e7f00015…）
+
+17/17 官方来源抓取成功、0 错误，仅 [模型列表](https://docs.volcengine.com/docs/ark/model-list?lang=zh) 1 篇变化，完整差异见 [报告](../upstream/volcengine-ark/review/e7f00015d86c7da8391f2cf5df073f3d69a63df2a3aa345a31c496298b914a85/report.md)。
+
+|变化 |实现与处理结果 |
+|---|---|
+|模型目录新增 `kimi-k3-1-pro-261024`（深度思考、多模态理解、工具调用、结构化输出，1024k 上下文，Responses / Chat API） |`chat` 已支持传完整模型 ID，无需改代码；不新增别名，默认 pro 不变。未发送请求，不代表账号已开通 |
+|报告的 `models_added` 列出 6 个已有 DeepSeek ID，却漏掉 kimi |DeepSeek 是 10-23 补充提取前缀后的首次提取，并非本次上新；候选提取正则补充 `kimi-` 前缀并加回归。提取结果不参与变化判定，不会引发额外 PR |
+
 ## 2026-10-23 上游正文复核（review/4b20446b…）
 
 本次 17/17 官方来源抓取成功、0 错误；相对上一份待审基线新增 8 项正文变化，与 2026-10-13 已核实基线相比累计 10 篇变化。已保留旧 review，并通过 `scripts/upstream_pr.stage` 单独更新方舟基线、最新 review 与内容寻址快照，没有接受其他平台基线。

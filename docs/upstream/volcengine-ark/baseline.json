@@ -1,6 +1,6 @@
 {
   "format_version": 1,
-  "reviewed_at": "2026-10-23T06:46:33.435176+00:00",
+  "reviewed_at": "2026-10-24T16:03:04.640369+00:00",
   "sources": [
     {
       "key": "volcengine-ark/ark-base-url-and-authentication",
@@ -51,6 +51,13 @@
       "sha256": "35f2fecd7bd865c015786e2083fbfc4185c5a7cc243373c710bf4d1ada74afd0",
       "bytes": 54644,
       "models": [
+        "deepseek-v4-1-flash-260910",
+        "deepseek-v4-1-flash-261017",
+        "deepseek-v4-1-flash-economy-261017",
+        "deepseek-v4-flash",
+        "deepseek-v4-flash-ga-260731",
+        "deepseek-v4-pro",
+        "deepseek-v4-pro-ga-260813",
         "doubao",
         "doubao-seed-2-0-lite-260215",
         "doubao-seed-2-0-lite-260428",
@@ -84,6 +91,9 @@
       "bytes": 114938,
       "models": [
         "Doubao",
+        "deepseek-v4-1-flash-260910",
+        "deepseek-v4-1-flash-261017",
+        "deepseek-v4-1-flash-economy-261017",
         "doubao",
         "doubao-seed-2-0-lite-260428",
         "doubao_app",
@@ -146,9 +156,12 @@
       "sha256": "8202e80748a4bf274d2207389b1ca2b7fa749f0ef95d6bef509a09430a8b87f7",
       "bytes": 150921,
       "models": [
+        "DeepSeek-V4.1-Flash",
         "Doubao",
         "Seedance",
         "Seedream",
+        "deepseek-harness",
+        "deepseek-v4-1-flash",
         "doubao-assistant",
         "doubao-assistant-pricing",
         "doubao-assistant-terms-and-data-authorization-agreement",
@@ -1126,12 +1139,18 @@
         "generate_video",
         "list_capabilities"
       ],
-      "sha256": "bfde265cb1fe10b961af17a6d6e8d5ed6fd2af88a6dfa4e13212b6f233d378f2",
-      "bytes": 61996,
+      "sha256": "717ad6c5bc6d5c8573b2343164f560671edb60950c4922b23987ce7a9bd10712",
+      "bytes": 63744,
       "models": [
         "Doubao",
         "Seedance",
         "Seedream",
+        "deepseek-v4-1-flash-260910",
+        "deepseek-v4-1-flash-261017",
+        "deepseek-v4-1-flash-economy-261017",
+        "deepseek-v4-flash-ga-260731",
+        "deepseek-v4-pro-260425",
+        "deepseek-v4-pro-ga-260813",
         "doubao",
         "doubao-embedding-vision-250615",
         "doubao-embedding-vision-251215",
@@ -1166,7 +1185,7 @@
       "endpoints": [],
       "doc_links": [],
       "title": "模型列表",
-      "updated_at": "2026-10-21T06:43:28Z",
+      "updated_at": "2026-10-24T11:43:57Z",
       "document_id": "1330310",
       "headers": {
         "ETag": null,

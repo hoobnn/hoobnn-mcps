@@ -28,7 +28,7 @@ HOSTS = {"docs.volcengine.com", "www.volcengine.com", "help.aliyun.com",
          "platform.minimax.cn", "platform.minimaxi.com", "platform.minimax.io"}
 MODEL = re.compile(r"\b(?:doubao|seedream|seedance|qwen|wan[0-9]|happyhorse|cosyvoice|"
                    r"text-embedding|multimodal-embedding|gte-rerank|seed-tts|seed-icl|"
-                   r"volc\.speech|bigmodel|MiniMax-|deepseek-|xiaomi/mimo-|speech-2|music-|image-01)[A-Za-z0-9_.-]*", re.I)
+                   r"volc\.speech|bigmodel|MiniMax-|deepseek-|kimi-|xiaomi/mimo-|speech-2|music-|image-01)[A-Za-z0-9_.-]*", re.I)
 URL = re.compile(r"(?:https?|wss)://[^\s<>\"'`\\]+")
 
 
