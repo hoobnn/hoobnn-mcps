@@ -1,0 +1,205 @@
+--- reviewed/ali-bailian/bailian-upload
++++ current/ali-bailian/bailian-upload
+@@ -19,6 +19,10 @@
+   * 生产环境建议使用[阿里云OSS](https://help.aliyun.com/zh/oss/user-guide/what-is-oss) 等稳定存储，确保文件长期可用并规避限流问题。
+ </Tip>
+ 
++<Note>
++  本功能支持<strong>华北2（北京）</strong>和<strong>新加坡</strong>地域。本文代码示例默认以<strong>北京地域</strong>为例；如需使用新加坡地域，请按示例中的注释将请求 URL 中的 `dashscope.aliyuncs.com` 替换为 `dashscope-intl.aliyuncs.com`，并使用新加坡地域的 API Key（两地域 API Key 不同，获取方式见[获取与配置 API Key](/zh/model-studio/get-api-key)）。
++</Note>
++
+ ## 使用方式 <span id="b33e0ac80abq5" />
+ 
+ 1. 获取文件 URL：请先通过[步骤一](/zh/model-studio/get-temporary-file-url#a363e01e741gu)上传文件（图片、视频或音频），获取以`oss://` 为前缀的临时 URL。
+@@ -53,7 +57,7 @@
+         - model\_name：指定文件将要用于哪个模型，如`qwen3-vl-plus`。
+         - file\_path：待上传的本地文件路径（图片、视频等）。
+ 
+-        ```python expandable
++        ```python
+         import os
+         import requests
+         from pathlib import Path
+@@ -61,6 +65,8 @@
+ 
+         def get_upload_policy(api_key, model_name):
+             """获取文件上传凭证"""
++            # 北京与新加坡地域的 API Key 不同，请使用对应地域的 API Key
++            # 以下为北京地域 url，若使用新加坡地域，需将 url 替换为：https://dashscope-intl.aliyuncs.com/api/v1/uploads
+             url = "https://dashscope.aliyuncs.com/api/v1/uploads"
+             headers = {
+                 "Authorization": f"Bearer {api_key}",
+@@ -178,7 +184,7 @@
+         - modelName：指定文件将要用于哪个模型，如`qwen3-vl-plus`。
+         - filePath：待上传的本地文件路径（图片、视频等）。
+ 
+-        ```java expandable
++        ```java
+         import org.apache.http.client.methods.CloseableHttpResponse;
+         import org.apache.http.client.methods.HttpGet;
+         import org.apache.http.client.methods.HttpPost;
+@@ -199,6 +205,8 @@
+ 
+         public class PublicUrlHandler {
+ 
++            // 北京与新加坡地域的 API Key 不同，请使用对应地域的 API Key
++            // 以下为北京地域 url，若使用新加坡地域，需将 url 替换为：https://dashscope-intl.aliyuncs.com/api/v1/uploads
+             private static final String API_URL = "https://dashscope.aliyuncs.com/api/v1/uploads";
+ 
+             public static JSONObject getUploadPolicy(String apiKey, String modelName) throws IOException {
+@@ -316,10 +324,15 @@
+ 
+         ```python
+         import os
++        import dashscope
+         from dashscope import Files
+ 
++        # 北京与新加坡地域的 API Key 不同，请使用对应地域的 API Key
+         # 从环境变量中获取 API Key
+         api_key = os.getenv('DASHSCOPE_API_KEY')
++
++        # 以下为北京地域 url，若使用新加坡地域，需将 url 替换为：https://dashscope-intl.aliyuncs.com/api/v1
++        dashscope.base_http_api_url = 'https://dashscope.aliyuncs.com/api/v1'
+ 
+         # 上传文件（purpose=fine_tune 用于微调训练文件，purpose=inference 用于推理临时文件）
+         result = Files.upload(
+@@ -379,6 +392,7 @@
+         执行上传命令：
+ 
+         ```bash
++        # 默认使用北京地域，若使用新加坡地域，请先执行：export DASHSCOPE_HTTP_BASE_URL="https://dashscope-intl.aliyuncs.com/api/v1"（新加坡地域 API Key 不同）
+         dashscope oss.upload --model qwen3-vl-plus --file cat.png
+         ```
+ 
+@@ -398,6 +412,7 @@
+         执行上传命令：
+ 
+         ```bash
++        # 默认使用北京地域，若使用新加坡地域，请先执行：export DASHSCOPE_HTTP_BASE_URL="https://dashscope-intl.aliyuncs.com/api/v1"（新加坡地域 API Key 不同）
+         dashscope oss.upload --model qwen3-vl-plus --file cat.png --api_key sk-xxxxxxx
+         ```
+ 
+@@ -416,7 +431,7 @@
+ 
+     #### 命令行参数说明 <span id="a33377c69bwdq" />
+ 
+-    <table style={{ display: "table", tableLayout: "fixed", width: "100%" }}><colgroup><col style={{ width: "14.271357%" }} /><col style={{ width: "10.050251%" }} /><col style={{ width: "50.653266%" }} /><col style={{ width: "25.025126%" }} /></colgroup><thead><tr><th><p><strong>参数</strong></p></th><th><p><strong>是否必须</strong></p></th><th><p><strong>说明</strong></p></th><th><p><strong>示例</strong></p></th></tr></thead><tbody><tr><td><p>oss.upload</p></td><td><p>是</p></td><td><p>dashscope的子命令，用于执行文件上传操作。</p></td><td><p>oss.upload</p></td></tr><tr><td><p>--model</p></td><td><p>是</p></td><td><p>指定文件将要用于哪个模型。</p></td><td><p>qwen3-vl-plus</p></td></tr><tr><td><p>--file</p></td><td><p>是</p></td><td><p>本地文件的路径。可以是相对路径或绝对路径。</p></td><td><p>cat.png，/data/img.jpg</p></td></tr><tr><td><p>--api\_key</p></td><td><p>否</p></td><td><p>阿里云百炼API-KEY。如已配置环境变量，无需填写此参数。</p></td><td><p>sk-xxxx</p></td></tr></tbody></table>
++    <table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}><colgroup><col style={{ width: "14.271357%" }} /><col style={{ width: "10.050251%" }} /><col style={{ width: "50.653266%" }} /><col style={{ width: "25.025126%" }} /></colgroup><thead><tr><th><p><strong>参数</strong></p></th><th><p><strong>是否必须</strong></p></th><th><p><strong>说明</strong></p></th><th><p><strong>示例</strong></p></th></tr></thead><tbody><tr><td><p>oss.upload</p></td><td><p>是</p></td><td><p>dashscope的子命令，用于执行文件上传操作。</p></td><td><p>oss.upload</p></td></tr><tr><td><p>--model</p></td><td><p>是</p></td><td><p>指定文件将要用于哪个模型。</p></td><td><p>qwen3-vl-plus</p></td></tr><tr><td><p>--file</p></td><td><p>是</p></td><td><p>本地文件的路径。可以是相对路径或绝对路径。</p></td><td><p>cat.png，/data/img.jpg</p></td></tr><tr><td><p>--api\_key</p></td><td><p>否</p></td><td><p>阿里云百炼API-KEY。如已配置环境变量，无需填写此参数。</p></td><td><p>sk-xxxx</p></td></tr></tbody></table>
+   </Tab>
+ </Tabs>
+ 
+@@ -447,6 +462,7 @@
+     </Note>
+ 
+     ```bash
++    # 以下为北京地域 url，若使用新加坡地域，需将 url 替换为：https://dashscope-intl.aliyuncs.com/compatible-mode/v1/chat/completions
+     curl -X POST https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions \
+     -H "Authorization: Bearer $DASHSCOPE_API_KEY" \
+     -H 'Content-Type: application/json' \
+@@ -539,8 +555,12 @@
+                     {"text": "这是什么"}]
+             }]
+ 
++        # 北京与新加坡地域的 API Key 不同，请使用对应地域的 API Key
+         # 若没有配置环境变量，请用百炼API Key将下行替换为：api_key="sk-xxx"
+         api_key = os.getenv('DASHSCOPE_API_KEY')
++
++        # 以下为北京地域 url，若使用新加坡地域，需将 url 替换为：https://dashscope-intl.aliyuncs.com/api/v1
++        dashscope.base_http_api_url = 'https://dashscope.aliyuncs.com/api/v1'
+ 
+         response = dashscope.MultiModalConversation.call(
+             api_key=api_key,
+@@ -553,7 +573,7 @@
+       </Tab>
+ 
+       <Tab title="响应示例">
+-        ```json expandable
++        ```json
+         {
+             "status_code": 200,
+             "request_id": "ccd9dcfb-98f0-92bc-xxxxxx",
+@@ -613,12 +633,13 @@
+           请将 `oss://...`替换为真实的临时 URL，否则请求将失败。
+         </Note>
+ 
+-        ```java expandable
++        ```java
+         import com.alibaba.dashscope.aigc.multimodalconversation.*;
+         import com.alibaba.dashscope.common.Role;
+         import com.alibaba.dashscope.exception.ApiException;
+         import com.alibaba.dashscope.exception.NoApiKeyException;
+         import com.alibaba.dashscope.exception.UploadFileException;
++        import com.alibaba.dashscope.utils.Constants;
+         import com.alibaba.dashscope.utils.JsonUtils;
+ 
+         import java.util.Arrays;
+@@ -627,10 +648,13 @@
+ 
+             private static final String modelName = "qwen3-vl-plus";
+ 
++            // 北京与新加坡地域的 API Key 不同，请使用对应地域的 API Key
+             // 若没有配置环境变量，请用百炼API Key将下行替换为：api_key="sk-xxx"
+             public static String apiKey = System.getenv("DASHSCOPE_API_KEY");
+ 
+             public static void simpleMultiModalConversationCall() throws ApiException, NoApiKeyException, UploadFileException {
++                // 以下为北京地域 url，若使用新加坡地域，需将 url 替换为：https://dashscope-intl.aliyuncs.com/api/v1
++                Constants.baseHttpApiUrl = "https://dashscope.aliyuncs.com/api/v1";
+                 MultiModalConversation conv = new MultiModalConversation();
+                 MultiModalMessageItemText systemText = new MultiModalMessageItemText("You are a helpful assistant.");
+                 MultiModalConversationMessage systemMessage = MultiModalConversationMessage.builder()
+@@ -668,7 +692,7 @@
+       </Tab>
+ 
+       <Tab title="响应示例">
+-        ```json expandable
++        ```json
+         {
+             "requestId": "b6d60f91-4a7f-9257-xxxxxx",
+             "usage": {
+@@ -727,7 +751,8 @@
+ ##### 请求接口 <span id="cd5c7c20fb74b" />
+ 
+ ```http
+-GET https://dashscope.aliyuncs.com/api/v1/uploads
++北京地域：GET https://dashscope.aliyuncs.com/api/v1/uploads
++新加坡地域：GET https://dashscope-intl.aliyuncs.com/api/v1/uploads
+ ```
+ 
+ <Tip>
+@@ -736,15 +761,16 @@
+ 
+ ##### 入参描述 <span id="c606afaf252dg" />
+ 
+-<table style={{ display: "table", tableLayout: "fixed", width: "100%" }}><colgroup><col style={{ width: "11.161218%" }} /><col style={{ width: "13.754228%" }} /><col style={{ width: "8.117249%" }} /><col style={{ width: "7.328072%" }} /><col style={{ width: "36.414882%" }} /><col style={{ width: "23.224352%" }} /></colgroup><thead><tr><th><p><strong>传参方式</strong></p></th><th><p><strong>字段</strong></p></th><th><p><strong>类型</strong></p></th><th><p><strong>必选</strong></p></th><th><p><strong>描述</strong></p></th><th><p><strong>示例值</strong></p></th></tr></thead><tbody><tr><td rowSpan={2}><p>Header</p></td><td><p>Content-Type</p></td><td><p><em>string</em></p></td><td><p>是</p></td><td><p>请求类型：application/json 。</p></td><td><p>application/json</p></td></tr><tr><td><p>Authorization</p></td><td><p><em>string</em></p></td><td><p>是</p></td><td><p>阿里云百炼API Key，例如：Bearer sk-xxx。</p></td><td><p>Bearer sk-xxx</p></td></tr><tr><td rowSpan={2}><p>Params</p></td><td><p>action</p></td><td><p><em>string</em></p></td><td><p>是</p></td><td><p>操作类型，当前场景为<code>getPolicy</code>。</p></td><td><p>getPolicy</p></td></tr><tr><td><p>model</p></td><td><p><em>string</em></p></td><td><p>是</p></td><td><p>需要调用的模型名称。</p></td><td><p>qwen3-vl-plus</p></td></tr></tbody></table>
++<table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}><colgroup><col style={{ width: "11.161218%" }} /><col style={{ width: "13.754228%" }} /><col style={{ width: "8.117249%" }} /><col style={{ width: "7.328072%" }} /><col style={{ width: "36.414882%" }} /><col style={{ width: "23.224352%" }} /></colgroup><thead><tr><th><p><strong>传参方式</strong></p></th><th><p><strong>字段</strong></p></th><th><p><strong>类型</strong></p></th><th><p><strong>必选</strong></p></th><th><p><strong>描述</strong></p></th><th><p><strong>示例值</strong></p></th></tr></thead><tbody><tr><td rowSpan={2}><p>Header</p></td><td><p>Content-Type</p></td><td><p><em>string</em></p></td><td><p>是</p></td><td><p>请求类型：application/json 。</p></td><td><p>application/json</p></td></tr><tr><td><p>Authorization</p></td><td><p><em>string</em></p></td><td><p>是</p></td><td><p>阿里云百炼API Key，例如：Bearer sk-xxx。</p></td><td><p>Bearer sk-xxx</p></td></tr><tr><td rowSpan={2}><p>Params</p></td><td><p>action</p></td><td><p><em>string</em></p></td><td><p>是</p></td><td><p>操作类型，当前场景为<code>getPolicy</code>。</p></td><td><p>getPolicy</p></td></tr><tr><td><p>model</p></td><td><p><em>string</em></p></td><td><p>是</p></td><td><p>需要调用的模型名称。</p></td><td><p>qwen3-vl-plus</p></td></tr></tbody></table>
+ 
+ ##### 出参描述 <span id="58595f510c3zl" />
+ 
+-<table style={{ display: "table", tableLayout: "fixed", width: "100%" }}><colgroup><col style={{ width: "24.731183%" }} /><col style={{ width: "9.569892%" }} /><col style={{ width: "39.569892%" }} /><col style={{ width: "26.129032%" }} /></colgroup><thead><tr><th><p><strong>字段</strong></p></th><th><p><strong>类型</strong></p></th><th><p><strong>描述</strong></p></th><th><p><strong>示例值</strong></p></th></tr></thead><tbody><tr><td><p>request\_id</p></td><td><p><em>string</em></p></td><td><p>本次请求的系统唯一码。</p></td><td><p>7574ee8f-...-11c33ab46e51</p></td></tr><tr><td><p>data</p></td><td><p><em>object</em></p></td><td><p>-</p></td><td><p>-</p></td></tr><tr><td><p>data.policy</p></td><td><p><em>string</em></p></td><td><p>上传凭证。</p></td><td><p>eyJl...1ZSJ9XX0=</p></td></tr><tr><td><p>data.signature</p></td><td><p><em>string</em></p></td><td><p>上传凭证的签名。</p></td><td><p>g5K...d40=</p></td></tr><tr><td><p>data.upload\_dir</p></td><td><p><em>string</em></p></td><td><p>上传文件的目录。</p></td><td><p>dashscope-instant/xxx/2024-07-18/xxxx</p></td></tr><tr><td><p>data.upload\_host</p></td><td><p><em>string</em></p></td><td><p>上传的host地址。</p></td><td><p>[https://dashscope-file-xxx.oss-cn-beijing.aliyuncs.com](https://dashscope-file-xxx.oss-cn-beijing.aliyuncs.com)</p></td></tr><tr><td><p>data.expire\_in\_seconds</p></td><td><p><em>string</em></p></td><td><p>凭证有效期（单位：秒）。</p><div><p>过期后，重新调用本接口获取新的凭证。</p></div></td><td><p>300</p></td></tr><tr><td><p>data.max\_file\_size\_mb</p></td><td><p><em>string</em></p></td><td><p>本次允许上传的最大文件的大小（单位：MB）。</p><p>该值与需要访问的模型相关。</p></td><td><p>100</p></td></tr><tr><td><p>data.capacity\_limit\_mb</p></td><td><p><em>string</em></p></td><td><p>同一个主账号每天上传容量限制（单位：MB）。</p></td><td><p>999999999</p></td></tr><tr><td><p>data.oss\_access\_key\_id</p></td><td><p><em>string</em></p></td><td><p>用于上传的access key。</p></td><td><p>LTAxxx</p></td></tr><tr><td><p>data.x\_oss\_object\_acl</p></td><td><p><em>string</em></p></td><td><p>上传文件的访问权限，<code>private</code>表示私有。</p></td><td><p>private</p></td></tr><tr><td><p>data.x\_oss\_forbid\_overwrite</p></td><td><p><em>string</em></p></td><td><p>文件同名时是否可以覆盖，<code>true</code>表示不可覆盖。</p></td><td><p>true</p></td></tr></tbody></table>
++<table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}><colgroup><col style={{ width: "24.731183%" }} /><col style={{ width: "9.569892%" }} /><col style={{ width: "39.569892%" }} /><col style={{ width: "26.129032%" }} /></colgroup><thead><tr><th><p><strong>字段</strong></p></th><th><p><strong>类型</strong></p></th><th><p><strong>描述</strong></p></th><th><p><strong>示例值</strong></p></th></tr></thead><tbody><tr><td><p>request\_id</p></td><td><p><em>string</em></p></td><td><p>本次请求的系统唯一码。</p></td><td><p>7574ee8f-...-11c33ab46e51</p></td></tr><tr><td><p>data</p></td><td><p><em>object</em></p></td><td><p>-</p></td><td><p>-</p></td></tr><tr><td><p>data.policy</p></td><td><p><em>string</em></p></td><td><p>上传凭证。</p></td><td><p>eyJl...1ZSJ9XX0=</p></td></tr><tr><td><p>data.signature</p></td><td><p><em>string</em></p></td><td><p>上传凭证的签名。</p></td><td><p>g5K...d40=</p></td></tr><tr><td><p>data.upload\_dir</p></td><td><p><em>string</em></p></td><td><p>上传文件的目录。</p></td><td><p>dashscope-instant/xxx/2024-07-18/xxxx</p></td></tr><tr><td><p>data.upload\_host</p></td><td><p><em>string</em></p></td><td><p>上传的host地址。</p></td><td><p>[https://dashscope-file-xxx.oss-cn-beijing.aliyuncs.com](https://dashscope-file-xxx.oss-cn-beijing.aliyuncs.com)</p></td></tr><tr><td><p>data.expire\_in\_seconds</p></td><td><p><em>string</em></p></td><td><p>凭证有效期（单位：秒）。</p><div><p>过期后，重新调用本接口获取新的凭证。</p></div></td><td><p>300</p></td></tr><tr><td><p>data.max\_file\_size\_mb</p></td><td><p><em>string</em></p></td><td><p>本次允许上传的最大文件的大小（单位：MB）。</p><p>该值与需要访问的模型相关。</p></td><td><p>100</p></td></tr><tr><td><p>data.capacity\_limit\_mb</p></td><td><p><em>string</em></p></td><td><p>同一个主账号每天上传容量限制（单位：MB）。</p></td><td><p>999999999</p></td></tr><tr><td><p>data.oss\_access\_key\_id</p></td><td><p><em>string</em></p></td><td><p>用于上传的access key。</p></td><td><p>LTAxxx</p></td></tr><tr><td><p>data.x\_oss\_object\_acl</p></td><td><p><em>string</em></p></td><td><p>上传文件的访问权限，<code>private</code>表示私有。</p></td><td><p>private</p></td></tr><tr><td><p>data.x\_oss\_forbid\_overwrite</p></td><td><p><em>string</em></p></td><td><p>文件同名时是否可以覆盖，<code>true</code>表示不可覆盖。</p></td><td><p>true</p></td></tr></tbody></table>
+ 
+ ##### 请求示例 <span id="2fcbfbaf30a0f" />
+ 
+ ```bash
++# 以下为北京地域 url，若使用新加坡地域，需将 url 替换为：https://dashscope-intl.aliyuncs.com/api/v1/uploads
+ curl --location 'https://dashscope.aliyuncs.com/api/v1/uploads?action=getPolicy&model=qwen3-vl-plus' \
+ --header "Authorization: Bearer $DASHSCOPE_API_KEY" \
+ --header 'Content-Type: application/json'
+@@ -795,7 +821,7 @@
+ 
+ #### 入参描述 <span id="22dc4afc8cadg" />
+ 
+-<table style={{ display: "table", tableLayout: "fixed", width: "100%" }}>
++<table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
+   <colgroup>
+     <col style={{ width: "9.694415%" }} />
+ 
+@@ -1090,7 +1116,7 @@
+ 
+ 本文的API还有特定状态码，具体如下所示。
+ 
+-<table style={{ display: "table", tableLayout: "fixed", width: "100%" }}>
++<table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
+   <colgroup>
+     <col style={{ width: "13.245033%" }} />
+ 
