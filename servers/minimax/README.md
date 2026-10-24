@@ -31,7 +31,7 @@ uv tool install hoobnn-minimax-mcp
 
 | 工具 | 行为 |
 |---|---|
-| `generate_video` | 文生、首帧、尾帧、首尾帧、多模态参考，支持 H3 / H3-Max |
+| `generate_video` | 文生、首帧、尾帧、首尾帧、多模态参考，支持 H3 / H3-Highspeed / H3-Lite / H3-Max |
 | `create_h3_context_ir_task` | 创建 H3-Context-IR 任务（`/v2/h3_context_ir`），异步生成增强提示词；不自动再提交视频 |
 | `regenerate_video` | 创建视频再生成任务（`/v2/video_regeneration`），合规的 H3 768P 产物再生成 2K；不是通用超分 |
 | `query_video_generation` / `get_job` | 查询 V2 任务并交付结果 |
@@ -40,7 +40,7 @@ uv tool install hoobnn-minimax-mcp
 | `upload_file` | 上传生成素材或音色复刻音频，返回 `mm_file://` 引用 |
 | `list_jobs` / `recover_job` | 本地任务发现及交付恢复，不重新生成 |
 
-`MiniMax-H3` 支持 768P / 2K、4–15 整数秒，默认 2K、5 秒；`MiniMax-H3-Max` 支持 480P / 768P、5–15 秒，默认 768P，不支持 2K。
+`MiniMax-H3` 支持 768P / 2K、4–15 整数秒，默认 2K、5 秒；`MiniMax-H3-Highspeed` 仅支持 768P、4–15 秒；`MiniMax-H3-Lite` 支持 480P / 768P、4–15 秒，默认 768P，多模态参考须显式指定具体 `ratio`（不支持 adaptive）；`MiniMax-H3-Max` 支持 480P / 768P、5–15 秒，默认 768P。后三者均不支持 2K。
 
 ```json
 {"prompt":"小猫抬头望向窗外，雨点轻敲玻璃，镜头缓慢靠近。", "model":"MiniMax-H3", "resolution":"2K", "duration":5, "ratio":"16:9"}
@@ -61,7 +61,7 @@ uv tool install hoobnn-minimax-mcp
 - `text_to_image`：`image-01` / `image-01-live`，支持人物参考及部分生成失败报告。
 - `music_generation`：`music-3.0` / `music-2.6` 歌曲或纯音乐。官方 2026-08-20 公告已停止免费音乐接口，付费接口仅历史付费用户继续使用；不承诺当前账号权限。
 
-2026-10-23 已复核全部 14 个官方接口页：H3 / H3-Max、Context-IR 和再生成的请求契约未变。音乐模型说明删去部分资格短语，但停服公告仍在，不能据此认定免费接口或新账号已恢复开放。完整差异与本地验收见 [契约复核](../../docs/minimax-contracts.md#2026-10-23-文档更新审查)。
+2026-10-24 已复核全部 14 个官方接口页：创建任务新增 `MiniMax-H3-Highspeed`、`MiniMax-H3-Lite`，已接入并离线验证；Context-IR 和再生成的请求契约未变。音乐停服公告仍在，不能据此认定免费接口或新账号已恢复开放。完整差异与本地验收见 [契约复核](../../docs/minimax-contracts.md#2026-10-24-文档更新审查)。
 
 工具名尽量沿用官方 MCP，但不是所有旧参数的原样替代：视频只实现 H3 V2，不接受旧 Hailuo V1 模型/任务；`first_frame_image` 改为 `first_frame`，`async_mode` 改为默认异步的 `wait`。`voice_clone` 的 URL 下载参数 `is_url` 改为本地 `file` 或预上传 `file_id`。不实现本机扬声器 `play_audio`、语言模型、ASR、WebSocket 流式和异步长文本语音。
 

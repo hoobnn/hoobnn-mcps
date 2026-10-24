@@ -1,6 +1,6 @@
 {
   "format_version": 1,
-  "reviewed_at": "2026-10-23T06:46:26.532708+00:00",
+  "reviewed_at": "2026-10-24T07:26:07.564055+00:00",
   "sources": [
     {
       "key": "minimax/file-management-upload",
@@ -26,7 +26,7 @@
       "title": "文件上传",
       "headers": {
         "ETag": null,
-        "Last-Modified": "Fri, 23 Oct 2026 06:46:25 GMT",
+        "Last-Modified": "Sat, 24 Oct 2026 07:26:03 GMT",
         "Content-Type": "text/markdown; charset=utf-8"
       }
     },
@@ -53,7 +53,7 @@
       "title": "图生图",
       "headers": {
         "ETag": null,
-        "Last-Modified": "Fri, 23 Oct 2026 06:46:26 GMT",
+        "Last-Modified": "Sat, 24 Oct 2026 07:26:06 GMT",
         "Content-Type": "text/markdown; charset=utf-8"
       }
     },
@@ -80,7 +80,7 @@
       "title": "文生图",
       "headers": {
         "ETag": null,
-        "Last-Modified": "Fri, 23 Oct 2026 06:46:26 GMT",
+        "Last-Modified": "Sat, 24 Oct 2026 07:26:07 GMT",
         "Content-Type": "text/markdown; charset=utf-8"
       }
     },
@@ -114,7 +114,7 @@
       "title": "音乐生成 (Music Generation)",
       "headers": {
         "ETag": null,
-        "Last-Modified": "Fri, 23 Oct 2026 06:46:26 GMT",
+        "Last-Modified": "Sat, 24 Oct 2026 07:26:07 GMT",
         "Content-Type": "text/markdown; charset=utf-8"
       }
     },
@@ -129,8 +129,8 @@
         "recover_job",
         "text_to_audio"
       ],
-      "sha256": "9734ac005d52d92386cd5bced89b5a247c84a342c9c17b62f5c418455dd49efb",
-      "bytes": 31253,
+      "sha256": "0f73fa207f8ad1ecd68fb84e05388b685faad8536454be5f93d259be5260d8aa",
+      "bytes": 31282,
       "models": [
         "speech-2.6-hd",
         "speech-2.6-turbo",
@@ -139,12 +139,13 @@
       ],
       "endpoints": [],
       "doc_links": [
-        "https://platform.minimax.cn/user-center/basic-information/interface-key"
+        "https://platform.minimax.cn/user-center/basic-information/interface-key",
+        "https://platform.minimaxi.com/docs/guides/speech-t2a-websocket.md#接入地址"
       ],
       "title": "同步语音合成",
       "headers": {
         "ETag": null,
-        "Last-Modified": "Fri, 23 Oct 2026 06:46:25 GMT",
+        "Last-Modified": "Sat, 24 Oct 2026 07:26:05 GMT",
         "Content-Type": "text/markdown; charset=utf-8"
       }
     },
@@ -158,10 +159,12 @@
       "tools": [
         "generate_video"
       ],
-      "sha256": "61ba7eab66f1bf0ae979a3708e924f1e9f810929a364445659a3738cad0f8aa0",
-      "bytes": 20572,
+      "sha256": "88abf3d8625a4409baff786b49722b77c67394925b3aa7e6e155f1eadc3118ff",
+      "bytes": 21739,
       "models": [
         "MiniMax-H3",
+        "MiniMax-H3-Highspeed",
+        "MiniMax-H3-Lite",
         "MiniMax-H3-Max"
       ],
       "endpoints": [],
@@ -172,7 +175,7 @@
       "title": "创建视频生成任务",
       "headers": {
         "ETag": null,
-        "Last-Modified": "Fri, 23 Oct 2026 06:46:24 GMT",
+        "Last-Modified": "Sat, 24 Oct 2026 07:26:03 GMT",
         "Content-Type": "text/markdown; charset=utf-8"
       }
     },
@@ -196,7 +199,7 @@
       "title": "取消或删除任务",
       "headers": {
         "ETag": null,
-        "Last-Modified": "Fri, 23 Oct 2026 06:46:24 GMT",
+        "Last-Modified": "Sat, 24 Oct 2026 07:26:02 GMT",
         "Content-Type": "text/markdown; charset=utf-8"
       }
     },
@@ -210,19 +213,20 @@
       "tools": [
         "create_h3_context_ir_task"
       ],
-      "sha256": "29413c07bbb6f3921af79d2b250fa766c18e480f6007c877e71dd763b4b2dcdf",
-      "bytes": 21251,
+      "sha256": "a1675aee075ed44a927d2930d0075817e517e79b82bd5f4a152897793e344be0",
+      "bytes": 21309,
       "models": [
         "MiniMax-H3"
       ],
       "endpoints": [],
       "doc_links": [
-        "https://platform.minimax.cn/user-center/basic-information/interface-key"
+        "https://platform.minimax.cn/user-center/basic-information/interface-key",
+        "https://platform.minimaxi.com/docs/api-reference/video-generation-v2-query.md)或[查询任务列表](https://platform.minimaxi.com/docs/api-reference/video-generation-v2-list.md)接口查询。H3-Context-IR"
       ],
       "title": "创建 H3-Context-IR 任务",
       "headers": {
         "ETag": null,
-        "Last-Modified": "Fri, 23 Oct 2026 06:46:25 GMT",
+        "Last-Modified": "Sat, 24 Oct 2026 07:26:03 GMT",
         "Content-Type": "text/markdown; charset=utf-8"
       }
     },
@@ -250,7 +254,7 @@
       "title": "查询任务列表",
       "headers": {
         "ETag": null,
-        "Last-Modified": "Fri, 23 Oct 2026 06:46:24 GMT",
+        "Last-Modified": "Sat, 24 Oct 2026 07:26:02 GMT",
         "Content-Type": "text/markdown; charset=utf-8"
       }
     },
@@ -278,7 +282,7 @@
       "title": "查询任务",
       "headers": {
         "ETag": null,
-        "Last-Modified": "Fri, 23 Oct 2026 06:46:24 GMT",
+        "Last-Modified": "Sat, 24 Oct 2026 07:26:02 GMT",
         "Content-Type": "text/markdown; charset=utf-8"
       }
     },
@@ -292,19 +296,20 @@
       "tools": [
         "regenerate_video"
       ],
-      "sha256": "564363881edcced43cbc4837bb4f597d3a5b9c503ff98c096a55a29d81aed753",
-      "bytes": 19811,
+      "sha256": "128ed39096dd1d943fbb8b5b25f033ad40a05dec7786f7d6e02363133659f389",
+      "bytes": 19898,
       "models": [
         "MiniMax-H3"
       ],
       "endpoints": [],
       "doc_links": [
-        "https://platform.minimax.cn/user-center/basic-information/interface-key"
+        "https://platform.minimax.cn/user-center/basic-information/interface-key",
+        "https://platform.minimaxi.com/docs/api-reference/video-generation-v2-query.md)、[查询任务列表](https://platform.minimaxi.com/docs/api-reference/video-generation-v2-list.md)和[取消或删除任务](https://platform.minimaxi.com/docs/api-reference/video-generation-v2-delete.md)接口管理"
       ],
       "title": "创建视频再生成任务",
       "headers": {
         "ETag": null,
-        "Last-Modified": "Fri, 23 Oct 2026 06:46:25 GMT",
+        "Last-Modified": "Sat, 24 Oct 2026 07:26:03 GMT",
         "Content-Type": "text/markdown; charset=utf-8"
       }
     },
@@ -333,7 +338,7 @@
       "title": "音色快速复刻",
       "headers": {
         "ETag": null,
-        "Last-Modified": "Fri, 23 Oct 2026 06:46:25 GMT",
+        "Last-Modified": "Sat, 24 Oct 2026 07:26:05 GMT",
         "Content-Type": "text/markdown; charset=utf-8"
       }
     },
@@ -357,7 +362,7 @@
       "title": "音色设计",
       "headers": {
         "ETag": null,
-        "Last-Modified": "Fri, 23 Oct 2026 06:46:25 GMT",
+        "Last-Modified": "Sat, 24 Oct 2026 07:26:05 GMT",
         "Content-Type": "text/markdown; charset=utf-8"
       }
     },
@@ -381,7 +386,7 @@
       "title": "查询可用音色ID",
       "headers": {
         "ETag": null,
-        "Last-Modified": "Fri, 23 Oct 2026 06:46:25 GMT",
+        "Last-Modified": "Sat, 24 Oct 2026 07:26:06 GMT",
         "Content-Type": "text/markdown; charset=utf-8"
       }
     }

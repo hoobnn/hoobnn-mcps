@@ -40,6 +40,27 @@ class Contracts(unittest.TestCase):
             with self.subTest(kwargs=kwargs), self.assertRaises(ValueError):
                 video.build_request("generation", prompt="cat", **kwargs)
 
+    def test_highspeed_and_lite_model_specific_contracts(self):
+        image = "https://example.test/input.png"
+        body = video.build_request("generation", prompt="cat", model="MiniMax-H3-Highspeed", duration=4)
+        self.assertEqual((body["resolution"], body["duration"]), ("768P", 4))
+        body = video.build_request("generation", prompt="cat", model="MiniMax-H3-Lite", resolution="480P")
+        self.assertEqual(body["resolution"], "480P")
+        body = video.build_request("generation", prompt="cat", model="MiniMax-H3-Lite", reference_images=[image], ratio="9:16")
+        self.assertEqual(body["ratio"], "9:16")
+        self.assertEqual(video.build_request("generation", prompt="cat", model="MiniMax-H3-Lite",
+                                             first_frame=image)["ratio"], "adaptive")
+        for kwargs in ({"model": "MiniMax-H3-Highspeed", "resolution": "480P"},
+                       {"model": "MiniMax-H3-Highspeed", "resolution": "2K"},
+                       {"model": "MiniMax-H3-Lite", "resolution": "2K"},
+                       {"model": "MiniMax-H3-Lite", "reference_images": [image]},
+                       {"model": "MiniMax-H3-Lite", "reference_images": [image], "ratio": "adaptive"},
+                       {"model": "MiniMax-H3-Lite", "parameters": {"extra": {"prompt_expansion_mode": "quality"}}}):
+            with self.subTest(kwargs=kwargs), self.assertRaises(ValueError):
+                video.build_request("generation", prompt="cat", **kwargs)
+        with self.assertRaises(ValueError):
+            video.build_request("regeneration", model="MiniMax-H3-Highspeed", source_task_id="1")
+
     def test_modes_and_content_not_mutated(self):
         image = "https://example.test/input.png"
         for frames in ({"first_frame": image}, {"last_frame": image}, {"first_frame": image, "last_frame": image}):

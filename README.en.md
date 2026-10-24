@@ -16,7 +16,7 @@ hoobnn's personal collection of MCP servers. Each server is a standalone Python 
 
 | Server | What it does |
 |---|---|
-| [`minimax`](servers/minimax) | Independent H3 / H3-Max video, prompt enhancement, 2K regeneration, speech/voices, images, music and recovery (offline validation) |
+| [`minimax`](servers/minimax) | Independent H3 / H3-Highspeed / H3-Lite / H3-Max video, prompt enhancement, 2K regeneration, speech/voices, images, music and recovery (offline validation) |
 | [`volcengine-ark`](servers/volcengine-ark) | Volcengine Ark: Seedream images, Seedance video, language and multimodal understanding, web search, embeddings and job recovery (Seedream verified against the cloud; the rest await model activation on the account) |
 | [`doubao-speech`](servers/doubao-speech) | Doubao Speech: synthesis (including async long text), recognition, audio generation, podcasts, simultaneous interpretation, translation, Minutes, voice cloning and voice design; Realtime Dialogue 3.0, word tables and console management are opt-in |
 | [`ali-bailian`](servers/ali-bailian) | Alibaba Cloud Model Studio (Bailian): images, language, TTS / ASR, voice cloning and design, video generation / editing / digital humans, embeddings and reranking, job recovery |
