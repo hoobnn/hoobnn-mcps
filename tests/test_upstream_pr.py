@@ -46,7 +46,10 @@ class PlatformPRs(unittest.TestCase):
             (audit / "report.md").write_text("# Captured changes\n")
             destination = root / "upstream/minimax"
             snapshots = root / "snapshots"
+            fingerprint = pr.stage("minimax", audit, destination, snapshots, write=False)
+            self.assertFalse(destination.exists() or snapshots.exists())
             digest = pr.stage("minimax", audit, destination, snapshots)
+            self.assertEqual(digest, fingerprint)
             self.assertTrue(digest)
             self.assertEqual(json.loads((destination / "baseline.json").read_text())["sources"], [record])
             self.assertTrue((destination / "review" / digest / "report.md").exists())

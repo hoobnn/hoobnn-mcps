@@ -9,7 +9,7 @@ import shutil
 from upstream_docs import ROOT, SERVERS, atomic_bytes, atomic_json
 
 
-def stage(server, audit, destination, snapshots):
+def stage(server, audit, destination, snapshots, write=True):
     result = json.loads((audit / "result.json").read_text())
     if result["errors"]:
         raise ValueError("Incomplete platform audit; refusing PR baseline")
@@ -33,6 +33,8 @@ def stage(server, audit, destination, snapshots):
         for r in records), separators=(",", ":")).encode()).hexdigest()
     if not result["changes"]:
         return None
+    if not write:
+        return digest
     destination.mkdir(parents=True, exist_ok=True)
     for sha, content in captured:
         atomic_bytes(snapshots / (sha + ".md.gz"), gzip.compress(content, mtime=0))
@@ -51,9 +53,11 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--server", required=True, choices=SERVERS)
     parser.add_argument("--output", type=Path, default=ROOT / ".upstream-docs")
+    parser.add_argument("--fingerprint-only", action="store_true",
+                        help="validate and print the capture fingerprint without writing the repository")
     args = parser.parse_args()
     digest = stage(args.server, args.output, ROOT / "docs/upstream" / args.server,
-                   ROOT / "docs/upstream/snapshots")
+                   ROOT / "docs/upstream/snapshots", write=not args.fingerprint_only)
     import os
     with open(os.environ["GITHUB_OUTPUT"], "a") as output:
         output.write(f"changed={'true' if digest else 'false'}\nfingerprint={digest or ''}\n")

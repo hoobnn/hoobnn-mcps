@@ -15,6 +15,7 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  issues: write
 
 concurrency:
   group: upstream-docs
@@ -48,8 +49,10 @@ jobs:
             const prefix = `docs/upstream-${process.env.SERVER}-`;
             const pr = prs.find(p => p.head.repo?.full_name === `${context.repo.owner}/${context.repo.repo}` && p.head.ref.startsWith(prefix));
             core.setOutput('exists', pr ? 'true' : 'false');
+            core.setOutput('number', pr ? String(pr.number) : '');
+            core.setOutput('fingerprint', pr ? pr.head.ref.slice(prefix.length) : '');
             if (pr) {
-              await core.summary.addRaw(`已有 ${process.env.SERVER} 待审 PR：${pr.html_url}。本次只拉取并保存报告，不改写分支或人工提交。\n`).write();
+              await core.summary.addRaw(`已有 ${process.env.SERVER} 待审 PR：${pr.html_url}。本次只拉取并保存报告，不改写分支或人工提交；出现新变化时在该 PR 评论提醒。\n`).write();
             }
       - name: Fetch only this platform and compare its merged baseline
         env:
@@ -57,12 +60,18 @@ jobs:
         run: python scripts/upstream_docs.py --server "$SERVER" --output .upstream-docs
       - name: Stage captured documents for manual review
         id: audit
-        if: steps.pending.outputs.exists != 'true'
         env:
           SERVER: ${{ matrix.server }}
-        run: python scripts/upstream_pr.py --server "$SERVER" --output .upstream-docs
+          PENDING: ${{ steps.pending.outputs.exists }}
+        run: |
+          if [ "$PENDING" = true ]; then
+            # 已有待审 PR：只校验并计算指纹，不写入仓库
+            python scripts/upstream_pr.py --server "$SERVER" --output .upstream-docs --fingerprint-only
+          else
+            python scripts/upstream_pr.py --server "$SERVER" --output .upstream-docs
+          fi
       - name: Check staged document formatting
-        if: steps.audit.outputs.changed == 'true'
+        if: steps.pending.outputs.exists != 'true' && steps.audit.outputs.changed == 'true'
         run: git diff --check
       - name: Attach audit summary
         if: always()
@@ -78,19 +87,57 @@ jobs:
           path: .upstream-docs/
           retention-days: 14
           if-no-files-found: warn
+      - name: Mention the owner on the pending PR about newer changes
+        if: >-
+          steps.pending.outputs.exists == 'true' && steps.audit.outputs.changed == 'true' &&
+          steps.audit.outputs.fingerprint != steps.pending.outputs.fingerprint
+        uses: actions/github-script@v7
+        env:
+          SERVER: ${{ matrix.server }}
+          NUMBER: ${{ steps.pending.outputs.number }}
+          FINGERPRINT: ${{ steps.audit.outputs.fingerprint }}
+          RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        with:
+          script: |
+            const fs = require('fs');
+            const { SERVER, NUMBER, FINGERPRINT, RUN_URL } = process.env;
+            const marker = `<!-- upstream-fingerprint:${FINGERPRINT} -->`;
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              ...context.repo, issue_number: Number(NUMBER)
+            });
+            if (comments.some(c => c.body?.includes(marker))) {
+              core.info('该批变化已提醒过，跳过');
+              return;
+            }
+            let report = fs.existsSync('.upstream-docs/report.md') ? fs.readFileSync('.upstream-docs/report.md', 'utf8') : '';
+            if (report.length > 60000) report = report.slice(0, 60000) + '\n\n…（已截断，完整内容见 artifact）';
+            await github.rest.issues.createComment({
+              ...context.repo, issue_number: Number(NUMBER),
+              body: [
+                marker,
+                `@${context.repo.owner} ${SERVER} 官方文档在本 PR 捕获之后又有新变化。本 PR 分支未被改写；下方报告相对已合并基线，包含本 PR 已捕获的变化。合并或关闭本 PR 后，下一次检查会按最新正文重新开 PR。`,
+                '',
+                `检测回执：${RUN_URL}（artifact 保留 14 天）`,
+                '',
+                '<details><summary>本次报告</summary>',
+                '',
+                report,
+                '</details>',
+              ].join('\n'),
+            });
       - name: Open a platform documentation PR
-        if: steps.audit.outputs.changed == 'true'
+        if: steps.pending.outputs.exists != 'true' && steps.audit.outputs.changed == 'true'
         uses: peter-evans/create-pull-request@v7
         with:
           branch: docs/upstream-${{ matrix.server }}-${{ steps.audit.outputs.fingerprint }}
           base: ${{ github.event.repository.default_branch }}
           title: 'docs(${{ matrix.server }}): 更新官方文档快照，待人工适配'
           body: |
-            ${{ matrix.server }} 的官方文档发生变化。本 PR 只包含该平台的捕获快照、差异、候选模型/接口报告及待审基线。
+            @${{ github.repository_owner }} ${{ matrix.server }} 的官方文档发生变化。本 PR 只包含该平台的捕获快照、差异、候选模型/接口报告及待审基线。
 
             请查看 docs/upstream/${{ matrix.server }}/review/${{ steps.audit.outputs.fingerprint }}/report.md 和 diffs/，在此 PR 分支补充代码、测试与说明，再手动合并。正文变化不代表接口必然变化，也不代表当前账号已有模型权限。
 
-            基线在合并后生效；合并前请确认已处理全部契约变化。后续自动检查不会更新已有待审 PR 或覆盖人工提交，新的变化仍保留在各平台 Actions 报告中。
+            基线在合并后生效；合并前请确认已处理全部契约变化。后续自动检查不会更新已有待审 PR 或覆盖人工提交；出现新变化时会在本 PR 评论提醒，完整报告保留在各平台 Actions 中。
 
             本 PR 使用 GITHUB_TOKEN 创建，不会自动触发后续 PR CI；你的后续提交会触发正常 CI。此次自动操作只验证抓取完整性及快照 SHA-256，不代表实现或云端运行验收。
 
