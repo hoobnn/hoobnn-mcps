@@ -1,6 +1,6 @@
 [project]
 name = "hoobnn-minimax-mcp"
-version = "0.2.0"
+version = "0.3.0"
 description = "MiniMax H3 video, speech, image and music MCP with durable task recovery"
 readme = "README.md"
 license = "MIT"

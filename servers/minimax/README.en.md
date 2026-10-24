@@ -2,6 +2,8 @@
 
 Independent MiniMax stdio server, distributed as `hoobnn-minimax-mcp`, not the official `minimax-mcp`. See [Chinese documentation](README.md) for the complete contract and migration notes.
 
+`0.3.0` adds `MiniMax-H3-Highspeed` (768P only) and `MiniMax-H3-Lite` (480P / 768P; multimodal references need an explicit non-adaptive `ratio`) to `generate_video`, both 4–15 seconds without 2K.
+
 `0.2.0` renames `enhance_video_prompt` to `create_h3_context_ir_task`, matching the official "create H3-Context-IR task" API; the old name has no alias. This is a breaking change.
 
 Install from PyPI with `uv tool install hoobnn-minimax-mcp` (or from this checkout with `uv tool install ./servers/minimax`). Point your MCP client at the absolute path of `~/.local/bin/hoobnn-minimax-mcp`, without arguments, then restart the client.
