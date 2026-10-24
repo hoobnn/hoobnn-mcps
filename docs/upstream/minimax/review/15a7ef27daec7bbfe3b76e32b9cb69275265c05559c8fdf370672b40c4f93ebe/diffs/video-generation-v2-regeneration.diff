@@ -1,0 +1,11 @@
+--- reviewed/minimax/video-generation-v2-regeneration
++++ current/minimax/video-generation-v2-regeneration
+@@ -13,7 +13,7 @@
+ 
+ > [!NOTE]
+ >
+-> 再生成任务的 `task_type` 为 `regeneration`，可通过 H3 共用的[查询任务](/docs/api-reference/video-generation-v2-query.md)、[查询任务列表](/docs/api-reference/video-generation-v2-list.md)和[取消或删除任务](/docs/api-reference/video-generation-v2-delete.md)接口管理。
++> 再生成任务的 `task_type` 为 `regeneration`，可通过 H3 共用的[查询任务](https://platform.minimaxi.com/docs/api-reference/video-generation-v2-query.md)、[查询任务列表](https://platform.minimaxi.com/docs/api-reference/video-generation-v2-list.md)和[取消或删除任务](https://platform.minimaxi.com/docs/api-reference/video-generation-v2-delete.md)接口管理。
+ 
+ 
+ ## OpenAPI

@@ -1,0 +1,11 @@
+--- reviewed/minimax/video-generation-v2-h3-context-ir
++++ current/minimax/video-generation-v2-h3-context-ir
+@@ -14,7 +14,7 @@
+ 
+ > [!NOTE]
+ >
+-> 创建成功后，使用[查询任务](/docs/api-reference/video-generation-v2-query.md)或[查询任务列表](/docs/api-reference/video-generation-v2-list.md)接口查询。H3-Context-IR 任务的 `task_type` 为 `h3_context_ir`；任务成功后，从 `content.prompt` 获取增强提示词。
++> 创建成功后，使用[查询任务](https://platform.minimaxi.com/docs/api-reference/video-generation-v2-query.md)或[查询任务列表](https://platform.minimaxi.com/docs/api-reference/video-generation-v2-list.md)接口查询。H3-Context-IR 任务的 `task_type` 为 `h3_context_ir`；任务成功后，从 `content.prompt` 获取增强提示词。
+ 
+ 
+ ## OpenAPI

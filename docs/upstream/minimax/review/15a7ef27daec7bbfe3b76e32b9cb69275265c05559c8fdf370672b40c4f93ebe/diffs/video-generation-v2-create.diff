@@ -1,0 +1,82 @@
+--- reviewed/minimax/video-generation-v2-create
++++ current/minimax/video-generation-v2-create
+@@ -1,6 +1,6 @@
+ # 创建视频生成任务
+ 
+-> 视频生成 V2 接口，通过多模态 content 数组输入（文本 / 图片 / 视频 / 音频），可通过 `model` 字段切换 MiniMax H3 与 MiniMax H3 Max，覆盖文生视频、图生视频（首尾帧）、多模态参考生视频，最高 2K 输出。<br /><br />提示：若需要使用 MiniMax H3 或 MiniMax H3 Max，请点击 [按量购买 API](https://platform.minimax.cn/docs/pricing/overview#models/video)。
++> 视频生成 V2 接口，通过多模态 content 数组输入（文本 / 图片 / 视频 / 音频），可通过 `model` 字段切换 MiniMax H3、MiniMax H3 Highspeed、MiniMax H3 Lite 与 MiniMax H3 Max，覆盖文生视频、图生视频（首尾帧）、多模态参考生视频，最高 2K 输出。<br /><br />提示：若需要使用 MiniMax H3、MiniMax H3 Highspeed、MiniMax H3 Lite 或 MiniMax H3 Max，请点击 [按量购买 API](https://platform.minimax.cn/docs/pricing/overview#models/video)。
+ 
+ 
+ 
+@@ -29,7 +29,7 @@
+         `task_id`，需通过[查询任务](/api-reference/video-generation-v2-query)接口轮询任务状态，任务成功后获取生成视频。
+ 
+ 
+-        当前支持模型：`MiniMax-H3`、`MiniMax-H3-Max`。
++        当前支持模型：`MiniMax-H3`、`MiniMax-H3-Highspeed`、`MiniMax-H3-Lite`、`MiniMax-H3-Max`。
+       operationId: videoGenerationV2Create
+       parameters:
+         - name: Content-Type
+@@ -161,17 +161,24 @@
+         model:
+           type: string
+           description: >-
+-            模型名称。当前可用值：`MiniMax-H3`、`MiniMax-H3-Max`。
+-
+-
+-            - **`MiniMax-H3`**：支持文生视频、图生视频（首帧 / 尾帧）与多模态参考生视频；分辨率 `768P` /
+-            `2K`，时长 4~15 秒。
+-
+-            - **`MiniMax-H3-Max`**：**极速生成**版本。支持**文生视频**、**图生视频（首帧 /
+-            尾帧）**与**多模态参考生视频**（参考图 / 参考视频 / 参考音频）；分辨率 `480P` / `768P`，**不支持
+-            `2K`**；时长 5~15 秒。
++            模型名称。当前可用值：`MiniMax-H3`、`MiniMax-H3-Highspeed`、`MiniMax-H3-Lite`、`MiniMax-H3-Max`。
++
++
++            - **`MiniMax-H3`**：**适合高品质视频创作的版本**。支持文生视频、图生视频（首帧 /
++            尾帧）与多模态参考生视频；分辨率 `768P` / `2K`，时长 4~15 秒。
++
++            - **`MiniMax-H3-Highspeed`**：**兼顾生成质量与速度的版本**。支持文生视频、图生视频（首帧 /
++            尾帧）与多模态参考生视频（参考图 / 参考视频 / 参考音频）；分辨率 `768P`，**不支持 `2K`**；时长 4~15 秒。
++
++            - **`MiniMax-H3-Lite`**：**轻量版本**。支持文生视频、图生视频（首帧 / 尾帧）与多模态参考生视频（参考图 /
++            参考视频 / 参考音频）；分辨率 `480P` / `768P`，**不支持 `2K`**；时长 4~15 秒。
++
++            - **`MiniMax-H3-Max`**：**极速生成版本**。支持文生视频、图生视频（首帧 / 尾帧）与多模态参考生视频（参考图
++            / 参考视频 / 参考音频）；分辨率 `480P` / `768P`，**不支持 `2K`**；时长 5~15 秒。
+           enum:
+             - MiniMax-H3
++            - MiniMax-H3-Highspeed
++            - MiniMax-H3-Lite
+             - MiniMax-H3-Max
+         content:
+           type: array
+@@ -273,6 +280,8 @@
+             视频分辨率。不同模型支持的档位不同：
+ 
+             - **`MiniMax-H3`**：`768P`、`2K`
++            - **`MiniMax-H3-Highspeed`**：`768P`（不支持 `2K`）
++            - **`MiniMax-H3-Lite`**：`480P`、`768P`（默认 `768P`，不支持 `2K`）
+             - **`MiniMax-H3-Max`**：`480P`、`768P`（默认 `768P`，不支持 `2K`）
+           enum:
+             - 480P
+@@ -284,6 +293,8 @@
+             生成视频时长（秒），必选，整数。不同模型可用值不同：
+ 
+             - **`MiniMax-H3`**：`4`~`15`
++            - **`MiniMax-H3-Highspeed`**：`4`~`15`
++            - **`MiniMax-H3-Lite`**：`4`~`15`
+             - **`MiniMax-H3-Max`**：`5`~`15`（不支持 4 秒）
+           enum:
+             - 4
+@@ -315,7 +326,9 @@
+ 
+ 
+             **多模态参考生视频（r2va，content 含 `reference_image` / `reference_video` /
+-            `reference_audio`）**：`ratio` 可选，默认 `adaptive`；也可显式指定上述任一具体比例。
++            `reference_audio`）**：`ratio` 可选，默认
++            `adaptive`；也可显式指定上述任一具体比例。`MiniMax-H3-Lite` 暂不支持
++            `adaptive`，需显式指定具体比例。
+           enum:
+             - adaptive
+             - '21:9'
