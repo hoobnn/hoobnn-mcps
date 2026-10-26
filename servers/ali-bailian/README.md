@@ -40,6 +40,8 @@
 
 语言模型别名：`max` → `qwen3.8-max`（默认，能看图）、`plus` → `qwen3.7-plus`、`flash` → `qwen3.8-flash`；其他模型直接写 ID，如 `deepseek-v4-pro`、`kimi-k3`、`glm-5.3`。`chat` 统一走流式接口，支持多轮历史、看图、深度思考开关、JSON 输出和联网搜索。
 
+`kimi/kimi-k3.1-pro`、`kimi/kimi-k3.1-pro-highspeed` 为月之暗面直供模型，可直接传完整 ID。两者的 `reasoning_effort` 默认且仅支持 `max`，不支持 `n`、`parallel_tool_calls` 参数，应省略这些字段；`parameters={"reasoning_effort":"max","enable_thinking_history":true}` 可开启历史思考回传（默认关闭），并在 `history` 的 assistant 消息中保留 `reasoning_content`。`kimi/kimi-k3` 的思考深度同样默认且仅支持 `max`，不要与阿里云直供 `kimi-k3` 混用。工具不自动填入上述可选参数，扩展参数由服务端校验。参见 [Chat参数](https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions)。
+
 `MiniMax/MiniMax-M3.1-Flash` 已于2026-10-21加入百炼：`thinking=true` 映射为官方 `thinking={"type":"adaptive"}`，`false` 本地拒绝；`reasoning_split` 固定为 `true`，仅支持 `n=1`。思考深度通过 `parameters={"reasoning_effort":"high"}` 设置（low/medium/high/xhigh/max，默认max）；`MiniMax/MiniMax-M3` 可关闭思考但不支持此深度参数。两者的 `temperature=1`、`top_p=0.95` 固定，其他值不会生效，不支持 `json_mode` 或 `web_search`。M3.1不支持 `stop`，`parallel_tool_calls=false` 不能保证串行，`tool_choice` 仅支持auto；本 `chat` 返回文本和思考，未实现完整 Function Calling 循环。思考与回答共同占用输出 token 上限。参见 [MiniMax直供接入](https://help.aliyun.com/zh/model-studio/minimax-api-by-minimax)。
 
 千问联网搜索可通过 `parameters={"include_tool_usage":true}` 获取 `usage.x_tools.search.count/strategy`，返回统计原样保留；count 为搜索意图触发次数，不能用于费用对账。`deepseek-v4.1-flash-1017`、`xiaomi/mimo-v2.6-pro-ultraspeed` 等新增 ID 可显式传入，具体能力以官方模型页与账号权限为准。
