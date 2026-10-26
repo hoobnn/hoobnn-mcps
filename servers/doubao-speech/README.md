@@ -179,6 +179,8 @@ MCP 客户端本地启动命令可指定本项目 `.venv/bin/doubao-speech-mcp` 
 
 实时上传 20ms 一包。MCP 不直接采集麦克风、播放声音或驱动声卡，客户端负责设备输入输出。同传需 16kHz / mono / 16bit WAV 或 PCM；WAV 自动去容器。目标 PCM16k 保存有效 WAV，PCM24k 保留 float32 原始 PCM 并返回格式信息。
 
+官方[接入必读](https://docs.volcengine.com/docs/DoubaoVoice/access-mustread?lang=zh) 现已补充输入质量要求（2026-10-26 复核）：纯人声 RMS 推荐 −31.7～−23.9 dBFS（目标约 −27.6），准入范围 −37～−19.5 dBFS，峰值 ≤−1 dBFS；纯背景噪声 RMS 推荐 ≤−50 dBFS（目标约 −52.6），SNR 推荐 20～30 dB，最低要求为噪声 ≤−45 dBFS 且 SNR ≥15 dB。客户端负责采集与质量控制；MCP 不自动增益、降噪或从混合音频估算纯人声/纯噪声 RMS。麦克风停采且不再发音频帧时发送 `input_audio_mute.commit`，恢复时发送 `input_audio_unmute.commit`，避免保活超时。
+
 `mode=legacy` 为兼容默认值：`/api/v3/duplex/realtime/dialogue` + `model=1.2.6.1`。新模式 `mode=seed` 使用 `/api/v3/seedrealtime` + `model=1.3.0.0`，不能仅在旧模式换 model。图像配置在 **`extension.video`**：
 
 ```json

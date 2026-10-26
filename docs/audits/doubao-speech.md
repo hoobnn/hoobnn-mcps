@@ -14,6 +14,18 @@
 
 新增回归测试覆盖上述官方契约，含独立手工编码 protobuf wire fixture。0.4.0 后豆包语音共 **132 项离线测试通过**。这证明本地实现与已取得文档/协议样本相符，不证明账号开通、生产可用、实际模型效果或每个音色授权。
 
+## 2026-10-26 上游文档复核（PR #22）
+
+重新抓取 **77/77** 个官方来源，0 失败，与 PR 捕获基线无新增差异；全部 77 个 gzip 快照解压后 SHA-256 核验通过。主分支到 PR 仅 1 篇变化，见 [报告](../upstream/doubao-speech/review/9bccbdcdda03b22a55f83d7865722525597be1c4a19efdac44574562e64eba3a/report.md) 及同目录 `diffs/`。
+
+[接入必读](https://docs.volcengine.com/docs/DoubaoVoice/access-mustread?lang=zh) 将“音频格式约束”扩展为“音频约束”，新增人声与背景噪声质量要求，并替换 Seeduplex / Seed-Realtime 交互示意图。输入编码、16kHz 单声道 int16 小端序、Base64 字段、20ms / 640 字节节奏、静音/取消静音保活事件与输出配置均未改变。
+
+纯人声 RMS 推荐 −31.7～−23.9 dBFS，中心约 −27.6；最低准入不低于 −37、不高于 −19.5 dBFS，峰值 ≤−1 dBFS。纯背景噪声 RMS 推荐 ≤−50 dBFS，中心约 −52.6；SNR 推荐 20～30 dB，最低准入为噪声 ≤−45 dBFS 且 SNR ≥15 dB。
+
+中英文 README 补充质量要求与既有静音保活操作。`send_realtime_event` 已可透传 `input_audio_mute.commit` / `input_audio_unmute.commit`，现有音频分片节奏与编码保持一致，无需协议迁移。客户端承担设备采集、质量控制与播放，MCP 不自动增益或降噪；从混合流不能可靠计算官方定义的纯人声/纯背景噪声指标，因此不加入未经声源分离验证的本地硬拦截。
+
+未连接真实语音服务。离线检查回执见 [review-notes.md](../upstream/doubao-speech/review/9bccbdcdda03b22a55f83d7865722525597be1c4a19efdac44574562e64eba3a/review-notes.md)。
+
 ## 2026-10-24 上游文档复核（PR #18）
 
 重新抓取 **77/77** 个官方来源，失败 0，3 篇正文变化，完整差异见 [报告](../upstream/doubao-speech/review/c4991f0fa3afdc03212ccb85849dc112154057604ff1b0671935d6484e258fa5/report.md) 及同目录 `diffs/`。
