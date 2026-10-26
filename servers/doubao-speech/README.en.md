@@ -179,6 +179,8 @@ Minimal configuration:
 
 Realtime upload sends one packet per 20ms. The MCP does not capture the microphone, play sound or drive the sound card; the client handles device input and output. Simultaneous interpretation needs 16kHz / mono / 16bit WAV or PCM; WAV containers are stripped automatically. Target PCM16k is saved as valid WAV; PCM24k keeps raw float32 PCM and returns format information.
 
+The official [access guide](https://docs.volcengine.com/docs/DoubaoVoice/access-mustread?lang=zh), reviewed on 2026-10-26, specifies input quality: speech-only RMS should be −31.7 to −23.9 dBFS (target about −27.6), within −37 to −19.5 dBFS, with peaks ≤−1 dBFS. Noise-only RMS should be ≤−50 dBFS (target about −52.6), with SNR of 20–30 dB; minimum requirements are noise ≤−45 dBFS and SNR ≥15 dB. The client handles capture and quality control; the MCP does not apply automatic gain or denoising, or estimate speech-only/noise-only RMS from mixed audio. When microphone capture stops and audio frames cease, send `input_audio_mute.commit`; send `input_audio_unmute.commit` when capture resumes to avoid keepalive timeouts.
+
 `mode=legacy` preserves the default: `/api/v3/duplex/realtime/dialogue` with `model=1.2.6.1`. `mode=seed` selects `/api/v3/seedrealtime` with `model=1.3.0.0`; changing only the model on the legacy endpoint is rejected. Video configuration belongs in **`extension.video`**:
 
 ```json
