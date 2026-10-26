@@ -1,6 +1,6 @@
 {
   "format_version": 1,
-  "reviewed_at": "2026-10-24T07:26:36.972650+00:00",
+  "reviewed_at": "2026-10-26T07:56:35.326163+00:00",
   "sources": [
     {
       "key": "doubao-speech/doubao-access-mustread",
@@ -15,15 +15,15 @@
         "receive_realtime_events",
         "send_realtime_event"
       ],
-      "sha256": "68aee350c6c46eee3c3b8e18468e8ce672f2298a4007bdeb234e72d57a548dcf",
-      "bytes": 12055,
+      "sha256": "accf62dd5747008c11ec0badca3e234fd19d2eafe23ef0c3358934f2f4353bd3",
+      "bytes": 12700,
       "models": [
         "Doubao"
       ],
       "endpoints": [],
       "doc_links": [],
       "title": "端到端实时语音",
-      "updated_at": "2026-10-20T12:04:54Z",
+      "updated_at": "2026-10-26T02:29:18Z",
       "document_id": "2549732",
       "headers": {
         "ETag": null,

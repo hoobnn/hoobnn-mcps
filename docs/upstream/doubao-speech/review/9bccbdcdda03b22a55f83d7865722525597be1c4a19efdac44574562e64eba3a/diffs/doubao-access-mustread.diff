@@ -1,0 +1,73 @@
+--- reviewed/doubao-speech/doubao-access-mustread
++++ current/doubao-speech/doubao-access-mustread
+@@ -28,9 +28,11 @@
+ 
+ * **音频承载方式**：音频不走独立的二进制通道，而是以 **Base64 编码字符串**的形式内嵌于 JSON 事件字段中
+ 
+-# 音频格式约束
+-
+-* **输入音频**：
++# 音频约束
++
++## **输入音频**
++
++* **格式约束：**
+ 
+    * PCM/Opus（由服务端自动转为PCM）、单声道、16000Hz、int16、小端序
+ 
+@@ -38,27 +40,43 @@
+ 
+    * 音频字节经 Base64 编码后放入` audio` 字段
+ 
++* **质量约束：**
++
++   * 人声强度 RMS（纯人声部分）
++
++      * 推荐范围：\-31.7 ~ \-23.9 dBFS，中心目标约 \-27.6 dBFS
++
++      * 最低准入：不低于 \-37 dBFS，低于此值将影响模型效果；不高于 \-19.5 dBFS，峰值应控制在 ≤ \-1 dBFS
++
++   * 背景噪声 RMS（纯背景噪声部分）
++
++      * 推荐范围：不高于 \-50 dBFS，且SNR（信噪比）为20~30 dB，中心目标约 \-52.6 dBFS
++
++      * 最低准入：不高于 \-45 dBFS，且 SNR 不低于 15 dB
++
+ > **注意**
+ 
+ * > 音频分片建议以20 ms 为单位（16k /int16 格式下每包 640 字节），并严格按照实时音频流的节奏发送，发送速率偏离实际节奏（过快或过慢）都将触发服务端错误
+ 
+ * > 模型依赖上行音频流保活。客户端关闭麦克风后若不再发送音频帧，须主动发送静音事件`input_audio_mute.commit`，恢复麦克风时发送取消静音事件`input_audio_unmute.commit`，否则服务端会因持续收不到音频输入触发超时，导致模型无响应
+ 
+-* **输出音频**：
+-
+-   * 支持在`session.audio.output`配置输出音频格式，默认返回Ogg Opus格式的音频
+-
+-   * 音频数据以 Base64 编码在 `delta `字段下行
++* > 人声过轻或背景噪声过大均会影响模型效果，请尽量将输入音频调整至上述推荐范围内
++
++## **输出音频**
++
++* 支持在`session.audio.output`配置输出音频格式，默认返回Ogg Opus格式的音频
++
++* 音频数据以 Base64 编码在 `delta `字段下行
+ 
+ # 最简交互示例图
+ 
+-Seeduplex
+-
+-![图片](https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_e14c86ee1fb6cb0309e3b0198d9d70ea.png)
+-
+- Doubao\-Seed\-Realtime\-1.0
+-
+-![图片](https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_887dd011074aae339e15f16fb509fb9a.png)
++**Seeduplex**
++
++![图片](https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_36cf5df711dbbe6dbb408b7bd7f1ac97.png)
++
++ ** Doubao\-Seed\-Realtime\-1.0**
++
++![图片](https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_a28157fe8931741dc0d060b5c681d923.png)
+ 
+ # 最佳实践
+ 
