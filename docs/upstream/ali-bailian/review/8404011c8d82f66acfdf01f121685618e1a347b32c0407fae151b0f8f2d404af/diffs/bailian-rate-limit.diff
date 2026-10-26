@@ -1,0 +1,46 @@
+--- reviewed/ali-bailian/bailian-rate-limit
++++ current/ali-bailian/bailian-rate-limit
+@@ -7717,19 +7717,31 @@
+       <tbody>
+         <tr>
+           <td style={{ verticalAlign: "top" }}>
++            kimi/kimi-k3.1-pro-highspeed
++          </td>
++
++          <td rowSpan={7} style={{ verticalAlign: "top" }}>
++            500
++
++            > 同一个阿里云百炼API Key 下，在 7 个模型中共享 500 RPM 限流配额。即这 7 个模型的每分钟请求总数加起来不能超过 500。
++          </td>
++
++          <td rowSpan={7} style={{ verticalAlign: "top" }}>
++            3,000,000
++
++            > 同一个阿里云百炼API Key 下，在 7 个模型中共享 3000000 TPM 限流配额。即这 7 个模型的每分钟 Token 消耗总数加起来不能超过 3000000。
++          </td>
++        </tr>
++
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
++            kimi/kimi-k3.1-pro
++          </td>
++        </tr>
++
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
+             kimi/kimi-k3
+-          </td>
+-
+-          <td rowSpan={5} style={{ verticalAlign: "top" }}>
+-            500
+-
+-            > 同一个阿里云百炼API Key 下，在 5 个模型中共享 500 RPM 限流配额。即这 5 个模型的每分钟请求总数加起来不能超过 500。
+-          </td>
+-
+-          <td rowSpan={5} style={{ verticalAlign: "top" }}>
+-            3,000,000
+-
+-            > 同一个阿里云百炼API Key 下，在 5 个模型中共享 3000000 TPM 限流配额。即这 5 个模型的每分钟 Token 消耗总数加起来不能超过 3000000。
+           </td>
+         </tr>
+ 

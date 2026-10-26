@@ -69,6 +69,16 @@
 4. 正文与端点示例均为北京 workspace 域名；新加坡仅部分模型可用（见复刻指南），默认 `DASHSCOPE_BASE_URL` 下的实际可用性未做付费验证。
 5. 本次抓取发现 `bailian-happyhorse-edit` 正文新增美国 workspace 端点、删除 `dashscope-us` 示例，与语音迁移无关，未写入基线，留给下一次上游检查 PR 处理。
 
+## 2026-10-26 上游文档复核（PR #21）
+
+重新抓取 **36/36** 个官方来源，0 失败，与 PR 捕获基线无新增差异；全部 36 个 gzip 快照解压后 SHA-256 核验通过。主分支到 PR 的 3 篇变化见 [报告](../upstream/ali-bailian/review/8404011c8d82f66acfdf01f121685618e1a347b32c0407fae151b0f8f2d404af/report.md) 及同目录 `diffs/`。
+
+- [Chat参数](https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions) 新增月之暗面直供 `kimi/kimi-k3.1-pro`、`kimi/kimi-k3.1-pro-highspeed`：思考深度默认且仅支持 `max`；不支持 `n`、`parallel_tool_calls`；支持 `enable_thinking_history`，默认关闭，历史思考由 assistant 的 `reasoning_content` 回传。既有月之暗面直供 `kimi/kimi-k3` 的深度说明独立成段，默认且仅支持 `max`，不能与阿里云直供 `kimi-k3` 混淆。
+- [价格](https://help.aliyun.com/zh/model-studio/model-pricing) 增加两个模型，[限流](https://help.aliyun.com/zh/model-studio/rate-limit) 将其纳入同一 API Key 下 7 个月之暗面直供模型共享的 500 RPM / 3,000,000 TPM。MCP 不维护固定价格或本地配额池，无需改变计费和调度逻辑。
+- `build_chat_body` 使用完整模型 ID，默认不填充 `n`、`parallel_tool_calls`、`reasoning_effort`、`enable_thinking_history`；`parameters` 可透传受支持字段，`history` 保留 assistant `reasoning_content`。新增中英文 README 用法，无运行时代码变更；不增加模型别名，不把文档收录当成账号权限验证。
+
+未调用真实模型 API。离线检查回执见 [review-notes.md](../upstream/ali-bailian/review/8404011c8d82f66acfdf01f121685618e1a347b32c0407fae151b0f8f2d404af/review-notes.md)。
+
 ## 2026-10-24 上游更新审查（PR #17）
 
 公开正文抓取 **36/36 成功、3 项来源变化、0 失败**，完整差异见 [报告](../upstream/ali-bailian/review/f915617767939c3c92388597ffe066cffb80b79ad592bd6a8408b387c44c6c01/report.md) 及同目录 `diffs/`。去除表格 `verticalAlign` / `overflowWrap` 样式改动后，实质变化如下：
