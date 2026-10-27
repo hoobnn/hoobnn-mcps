@@ -1,6 +1,6 @@
 {
   "format_version": 1,
-  "reviewed_at": "2026-10-26T07:56:16.592100+00:00",
+  "reviewed_at": "2026-10-27T08:03:21.148784+00:00",
   "sources": [
     {
       "key": "ali-bailian/bailian-asr",
@@ -518,8 +518,8 @@
       "fetch_url": "https://help.aliyun.com/zh/model-studio/models.md",
       "kind": "models",
       "tools": [],
-      "sha256": "1845372f1eb2ceffd0cc23ca8c0c22149c870656490e29ec84daee248064254a",
-      "bytes": 22051,
+      "sha256": "c3c32190e3dcce870f8d32c252c99de10b6eb4c32d9a7c5eb1748adc8c3e25ae",
+      "bytes": 14855,
       "models": [
         "MiniMax-M3.1-Flash",
         "deepseek-v4-pro-0813",
@@ -530,10 +530,14 @@
         "happyhorse-1.1-t2v",
         "kimi-k3",
         "minimax-m3-1-flash",
-        "qwen-audio-3.0-tts-plus",
+        "qwen-audio-3.1-asr-flash",
         "qwen-audio-3.1-asr-flash-filetrans",
+        "qwen-audio-3.1-asr-flash-message",
         "qwen-audio-3.1-asr-flash-streaming",
         "qwen-audio-3.1-realtime-plus",
+        "qwen-audio-3.1-tts-flash",
+        "qwen-audio-3.1-tts-next",
+        "qwen-audio-3.1-tts-plus",
         "qwen-image-3.0-pro",
         "qwen-omni",
         "qwen3-5-omni-plus",
@@ -551,7 +555,6 @@
         "qwen3.8-omni-flash-realtime",
         "qwen38-offline",
         "qwen38-realtime",
-        "speech-2.8-hd",
         "wan2.7-image-pro",
         "wan3.0-video"
       ],
@@ -572,8 +575,8 @@
       "fetch_url": "https://help.aliyun.com/zh/model-studio/newly-released-models.md",
       "kind": "models",
       "tools": [],
-      "sha256": "029e6e1b61b71200419d2c499caae10e4e2e5c01a7c20885ac1b5735f0d53de6",
-      "bytes": 546673,
+      "sha256": "deb69a7cc0fbe96240eff9a2be951b7baad386c2ad488ba0fd6639b14729b5de",
+      "bytes": 547331,
       "models": [
         "CosyVoice",
         "CosyVoice-v3-Flash",
@@ -1000,8 +1003,8 @@
       "fetch_url": "https://help.aliyun.com/zh/model-studio/model-pricing.md",
       "kind": "models",
       "tools": [],
-      "sha256": "7e6e2ccfcc39454548d6508231656f73b79d5dcffe518b773045a7d64040c61e",
-      "bytes": 655631,
+      "sha256": "2a8cbb1c16706ff928f06899acb952d4d4b25b3bfd86a0b36155e5599f02b4eb",
+      "bytes": 656196,
       "models": [
         "CosyVoice",
         "DeepSeek-",
@@ -1464,8 +1467,8 @@
       "fetch_url": "https://help.aliyun.com/zh/model-studio/rate-limit.md",
       "kind": "guide",
       "tools": [],
-      "sha256": "a87a5bec98321d8cd4c9ca8e664241f97ada81bf9c2030db820ab45b2d0d12e1",
-      "bytes": 379093,
+      "sha256": "fc76916d8efe60d2a9908b121e69c400119cf5a75e59f42d8e1a7010ea73c889",
+      "bytes": 380268,
       "models": [
         "CosyVoice",
         "DeepSeek-",
@@ -1851,8 +1854,8 @@
       "tools": [
         "text_to_speech"
       ],
-      "sha256": "753d32fb70d2e2de84eb4be8356367cc05893477f0fb882fd1b4e58c56f3e3b1",
-      "bytes": 25033,
+      "sha256": "1aef022fb725113fb96908e09dc64b1b97d1dda41b9bb182e5e7434031725468",
+      "bytes": 25182,
       "models": [
         "CosyVoice",
         "Qwen-Audio-TTS",

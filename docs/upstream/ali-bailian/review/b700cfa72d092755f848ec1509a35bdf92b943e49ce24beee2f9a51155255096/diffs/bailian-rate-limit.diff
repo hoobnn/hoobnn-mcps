@@ -1,0 +1,56 @@
+--- reviewed/ali-bailian/bailian-rate-limit
++++ current/ali-bailian/bailian-rate-limit
+@@ -3733,7 +3733,9 @@
+   </Tab>
+ </Tabs>
+ 
+-### 千问Omni-Realtime <span id="a410617af4cte" />
++### 千问Omni-Realtime <span id="a410617af4cte" /> <span id="realtime-request-counting" />
++
++通过 WebSocket 接入时，RPM 限制每分钟的建连请求次数。同一连接内的多轮响应不重复计数；重连计为新请求。目前没有单独限制同时保持的连接总数，但仍受 TPM 限制。各型号限额见下方表格。
+ 
+ <Tabs>
+   <Tab title="华北2（北京）">
+@@ -7935,6 +7937,24 @@
+ 
+         <tr>
+           <td style={{ verticalAlign: "top" }}>
++            glm-5.3
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            美国
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            15,000
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            1,200,000
++          </td>
++        </tr>
++
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
+             glm-5.2
+           </td>
+ 
+@@ -9094,6 +9114,8 @@
+ ## 语音对话 <span id="55945fd2b5bbf" />
+ 
+ ### 实时语音对话 <span id="739e085c10fxx" />
++
++通过 WebSocket 接入时，RPM 限制每分钟的建连请求次数。同一连接内的多轮响应不重复计数；重连计为新请求。目前没有单独限制同时保持的连接总数，但仍受 TPM 限制。各型号限额见下方表格。
+ 
+ <Tabs>
+   <Tab title="华北2（北京）">
+@@ -9703,6 +9725,8 @@
+ 
+ ### Qwen-LiveTranslate-Flash-Realtime <span id="ea64133a8buvv" />
+ 
++通过 WebSocket 接入时，RPM 限制每分钟的建连请求次数。同一连接内的多轮响应不重复计数；重连计为新请求。目前没有单独限制同时保持的连接总数，但仍受 TPM 限制。各型号限额见下方表格。
++
+ <Tabs>
+   <Tab title="华北2（北京）">
+     <table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
