@@ -170,3 +170,16 @@ curl --fail --location https://help.aliyun.com/zh/model-studio/list-models.md
 2026-10-13 语音迁移后，百炼包 **43 项离线测试通过**：新增复刻 / 设计请求体与本地校验、设计试听交付与恢复不重建、缺音色 ID 不重试、kind 旧值映射、SpeechSynthesizer 路由与请求体、指令长度及模型限制、ASR 下线快照拒绝等回归，全部 mock，无真实付费请求。
 
 2026-10-23更新后，百炼包 **51项离线测试通过**，上游文档/PR流程 **19项测试通过**；来源覆盖检查通过（全库143来源，本平台36来源）。新增回归覆盖本地录音与Data URI、url冲突/大小/格式、3.1-plus设计恢复/TTS路由、产品指令长度差异、按单位累加usage及旧任务恢复（含已完整交付任务的提前返回路径）、MiniMax思考协议/本地拒绝、搜索统计保留、DeepSeek/Xiaomi候选提取。真实stdio发现19个工具，验证audio/url输入schema、互斥及非法Data URI拒绝和最新chat帮助；父/子进程均校验模块来自PR独占worktree，provider请求数为0。测试通过不表示新模型或地域云端验收。
+
+## 2026-10-28 文档复核与 0.7.1
+
+复核 PR #23 的 5 篇变化，并再次抓取全部 36 个来源，全部成功；相对 PR 捕获另有 18 篇变化。原始报告、差异与完整快照见 [PR 原始批次](../upstream/ali-bailian/review/b700cfa72d092755f848ec1509a35bdf92b943e49ce24beee2f9a51155255096/report.md) 和 [最新批次](../upstream/ali-bailian/review/33d989647b153ce52e017bee1253f96751fe63b63277d2772c3e9e415fc7005c/report.md)。
+
+- Qwen-Audio-TTS 方言：MCP `instructions` 已映射到官方 `input.instruction`；仅支持该方言/指令的系统音色及复刻音色可用，设计音色暂不支持方言。补充工具帮助和中英文 README；请求映射无需修改。
+- GLM-5.3 新增美国部署及价格/限流；Qwen3.8-Flash 新增欧盟和香港部署。`chat` 已透传完整模型 ID，地域通过 `DASHSCOPE_BASE_URL` 选择，不默认切换模型或地域，也不硬编码费用/限额。
+- 模型目录表格转为卡片、更新推荐模型和上下文/能力表。目录撤下推荐卡片不等于模型下线；不据此删除已有模型。`list_models` 仍使用官方 HTTP 目录分页和 `output.total`，不使用 SDK 2.0 的 `resp.total_count`。
+- ASR、向量、多模态向量、rerank、TTS、临时上传、声音复刻/设计、数字人等示例迁移到 DashScope SDK 2.0。逐项核对 HTTP 请求定义：现有 HTTP endpoint、请求嵌套与结果解析继续适用，不将 SDK 的扁平响应误当作 HTTP 协议变化。
+- `qwen-audio-3.1-realtime-flash` 及其复刻能力属于实时协议，当前 MCP 仅接入非实时 TTS，不把新实时型号加入 HTTP 合成/创建白名单。Tripo 新增 3D 工具、价格与并发规则不属于当前 MCP 工具范围，不宣称已接入。实时 WebSocket RPM 按建连计数的说明也不改变本 MCP 的 HTTP 行为。
+- TTS 模型页重组地域、音色类型和语言列表；仍以具体 HTTP API 的地域/协议说明为准，保留现有模型与默认值。
+
+本次版本为文档和工具帮助补丁，不包含新模型协议实现或付费云端验收。本地验证：百炼 51、方舟 33、豆包语音 155、MiniMax 16、共享与文档链路 42 项，共 297 项测试通过，包含四个真实 stdio 入口；36 个百炼快照 SHA-256 与长度校验、全库 144 个来源覆盖、共享源码同步、actionlint、wheel/sdist 构建及 diff 检查通过。远端 CI 和发布回执见 PR #23 与对应 Actions。

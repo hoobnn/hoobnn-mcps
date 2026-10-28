@@ -1,0 +1,281 @@
+--- reviewed/ali-bailian/bailian-model-pricing
++++ current/ali-bailian/bailian-model-pricing
+@@ -5584,6 +5584,34 @@
+           </td>
+ 
+           <td style={{ verticalAlign: "top" }}>
++            欧盟
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            非思考和思考模式
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            0\<Token≤1M
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            1.094元
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            3.427元
++          </td>
++        </tr>
++
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
++            qwen3.8-flash
++
++            > [上下文缓存](/zh/model-studio/context-cache)享有折扣
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
+             全球
+           </td>
+ 
+@@ -6351,6 +6379,112 @@
+ 
+           <td style={{ verticalAlign: "top" }}>
+             28.8元
++          </td>
++        </tr>
++      </tbody>
++    </table>
++  </Tab>
++
++  <Tab title="中国香港">
++    <table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
++      <colgroup>
++        <col style={{ width: "16.67%" }} />
++
++        <col style={{ width: "16.67%" }} />
++
++        <col style={{ width: "16.67%" }} />
++
++        <col style={{ width: "16.67%" }} />
++
++        <col style={{ width: "16.67%" }} />
++
++        <col style={{ width: "16.65%" }} />
++      </colgroup>
++
++      <thead>
++        <tr>
++          <th style={{ verticalAlign: "top" }}>
++            <strong>模型 ID（Model ID）</strong>
++          </th>
++
++          <th style={{ verticalAlign: "top" }}>
++            <strong>服务部署范围</strong>
++          </th>
++
++          <th style={{ verticalAlign: "top" }}>
++            <strong>模式</strong>
++          </th>
++
++          <th style={{ verticalAlign: "top" }}>
++            <strong>单次请求的输入Token数</strong>
++          </th>
++
++          <th style={{ verticalAlign: "top" }}>
++            <strong>输入单价（每百万Token）</strong>
++          </th>
++
++          <th style={{ verticalAlign: "top" }}>
++            <strong>输出单价（每百万Token）</strong>
++
++            > <strong>思维链+回答</strong>
++          </th>
++        </tr>
++      </thead>
++
++      <tbody>
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
++            qwen3.8-flash
++
++            > [上下文缓存](/zh/model-studio/context-cache)享有折扣
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            中国香港
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            非思考和思考模式
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            0\<Token≤1M
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            1.094元
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            3.427元
++          </td>
++        </tr>
++
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
++            qwen3.8-flash
++
++            > [上下文缓存](/zh/model-studio/context-cache)享有折扣
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            全球
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            非思考和思考模式
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            0\<Token≤1M
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            0.8元
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            2.7元
+           </td>
+         </tr>
+       </tbody>
+@@ -6434,9 +6568,9 @@
+ 
+ <Tabs>
+   <Tab title="华北2（北京）">
+-| 模型 ID（Model ID）      | 服务部署范围 | 输入单价（每百万Token） | 缓存命中输入单价（每百万Token） | 输出单价（每百万Token） |
+-| -------------------- | ------ | -------------- | ------------------ | -------------- |
+-| `qwen3.8-omni-flash` | 中国内地   | 0.8元           | 0.1元               | 2.7元           |
++| **模型 ID（Model ID）**  | **服务部署范围** | **输入单价（每百万Token）** | **缓存命中输入单价（每百万Token）** | **输出单价（每百万Token）** |
++| -------------------- | ---------- | ------------------ | ---------------------- | ------------------ |
++| `qwen3.8-omni-flash` | 中国内地       | 0.8元               | 0.1元                   | 2.7元               |
+ 
+     <table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
+       <colgroup>
+@@ -6732,9 +6866,9 @@
+   </Tab>
+ 
+   <Tab title="新加坡">
+-| 模型 ID（Model ID）      | 服务部署范围 | 输入单价（每百万Token） | 缓存命中输入单价（每百万Token） | 输出单价（每百万Token） |
+-| -------------------- | ------ | -------------- | ------------------ | -------------- |
+-| `qwen3.8-omni-flash` | 国际     | 1.094元         | 0.117元             | 3.427元         |
++| **模型 ID（Model ID）**  | **服务部署范围** | **输入单价（每百万Token）** | **缓存命中输入单价（每百万Token）** | **输出单价（每百万Token）** |
++| -------------------- | ---------- | ------------------ | ---------------------- | ------------------ |
++| `qwen3.8-omni-flash` | 国际         | 1.094元             | 0.117元                 | 3.427元             |
+ 
+     <table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
+       <colgroup>
+@@ -7026,27 +7160,27 @@
+   </Tab>
+ 
+   <Tab title="中国香港">
+-| 模型 ID（Model ID）      | 服务部署范围 | 输入单价（每百万Token） | 缓存命中输入单价（每百万Token） | 输出单价（每百万Token） |
+-| -------------------- | ------ | -------------- | ------------------ | -------------- |
+-| `qwen3.8-omni-flash` | 全球     | 0.8元           | 0.1元               | 2.7元           |
++| **模型 ID（Model ID）**  | **服务部署范围** | **输入单价（每百万Token）** | **缓存命中输入单价（每百万Token）** | **输出单价（每百万Token）** |
++| -------------------- | ---------- | ------------------ | ---------------------- | ------------------ |
++| `qwen3.8-omni-flash` | 全球         | 0.8元               | 0.1元                   | 2.7元               |
+   </Tab>
+ 
+   <Tab title="日本（东京）">
+-| 模型 ID（Model ID）      | 服务部署范围 | 输入单价（每百万Token） | 缓存命中输入单价（每百万Token） | 输出单价（每百万Token） |
+-| -------------------- | ------ | -------------- | ------------------ | -------------- |
+-| `qwen3.8-omni-flash` | 全球     | 0.8元           | 0.1元               | 2.7元           |
++| **模型 ID（Model ID）**  | **服务部署范围** | **输入单价（每百万Token）** | **缓存命中输入单价（每百万Token）** | **输出单价（每百万Token）** |
++| -------------------- | ---------- | ------------------ | ---------------------- | ------------------ |
++| `qwen3.8-omni-flash` | 全球         | 0.8元               | 0.1元                   | 2.7元               |
+   </Tab>
+ 
+   <Tab title="德国（法兰克福）">
+-| 模型 ID（Model ID）      | 服务部署范围 | 输入单价（每百万Token） | 缓存命中输入单价（每百万Token） | 输出单价（每百万Token） |
+-| -------------------- | ------ | -------------- | ------------------ | -------------- |
+-| `qwen3.8-omni-flash` | 全球     | 0.8元           | 0.1元               | 2.7元           |
++| **模型 ID（Model ID）**  | **服务部署范围** | **输入单价（每百万Token）** | **缓存命中输入单价（每百万Token）** | **输出单价（每百万Token）** |
++| -------------------- | ---------- | ------------------ | ---------------------- | ------------------ |
++| `qwen3.8-omni-flash` | 全球         | 0.8元               | 0.1元                   | 2.7元               |
+   </Tab>
+ 
+   <Tab title="美国（弗吉尼亚）">
+-| 模型 ID（Model ID）      | 服务部署范围 | 输入单价（每百万Token） | 缓存命中输入单价（每百万Token） | 输出单价（每百万Token） |
+-| -------------------- | ------ | -------------- | ------------------ | -------------- |
+-| `qwen3.8-omni-flash` | 全球     | 0.8元           | 0.1元               | 2.7元           |
++| **模型 ID（Model ID）**  | **服务部署范围** | **输入单价（每百万Token）** | **缓存命中输入单价（每百万Token）** | **输出单价（每百万Token）** |
++| -------------------- | ---------- | ------------------ | ---------------------- | ------------------ |
++| `qwen3.8-omni-flash` | 全球         | 0.8元               | 0.1元                   | 2.7元               |
+   </Tab>
+ </Tabs>
+ 
+@@ -7064,7 +7198,7 @@
+   <Tab title="华北2（北京）">
+     单价：元/百万 Token。
+ 
+-    <table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}><colgroup><col style={{ width: "25%" }} /><col style={{ width: "13%" }} /><col style={{ width: "13%" }} /><col style={{ width: "13%" }} /><col style={{ width: "13%" }} /><col style={{ width: "23%" }} /></colgroup><thead><tr><th style={{ verticalAlign: "top" }}><p>模型 ID（Model ID）</p></th><th style={{ verticalAlign: "top" }}><p>输入：文本/图片/视频</p></th><th style={{ verticalAlign: "top" }}><p>输入：音频</p></th><th style={{ verticalAlign: "top" }}><p>输出：文本</p></th><th style={{ verticalAlign: "top" }}><p>输出：音频</p></th><th style={{ verticalAlign: "top" }}><p><strong>免费额度</strong><a href="/zh/model-studio/new-free-quota#977b13081ab56">（注）</a></p><p><sup>有效期：自开通百炼/模型发布/申请通过之日起90天内（以较晚者为准）</sup></p></th></tr></thead><tbody><tr><td style={{ verticalAlign: "top" }}><p><code>qwen3.8-omni-flash-realtime</code></p></td><td style={{ verticalAlign: "top" }}><p>1.5</p></td><td style={{ verticalAlign: "top" }}><p>6</p></td><td style={{ verticalAlign: "top" }}><p>4.5</p></td><td style={{ verticalAlign: "top" }}><p>12</p></td><td style={{ verticalAlign: "top" }}><p>100万Token</p></td></tr></tbody></table>
++    <table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}><colgroup><col style={{ width: "25%" }} /><col style={{ width: "13%" }} /><col style={{ width: "13%" }} /><col style={{ width: "13%" }} /><col style={{ width: "13%" }} /><col style={{ width: "23%" }} /></colgroup><thead><tr><th style={{ verticalAlign: "top" }}><p><strong>模型 ID（Model ID）</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>输入：文本/图片/视频</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>输入：音频</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>输出：文本</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>输出：音频</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>免费额度</strong><a href="/zh/model-studio/new-free-quota#977b13081ab56">（注）</a></p><p><sup>有效期：自开通百炼/模型发布/申请通过之日起90天内（以较晚者为准）</sup></p></th></tr></thead><tbody><tr><td style={{ verticalAlign: "top" }}><p><code>qwen3.8-omni-flash-realtime</code></p></td><td style={{ verticalAlign: "top" }}><p>1.5</p></td><td style={{ verticalAlign: "top" }}><p>6</p></td><td style={{ verticalAlign: "top" }}><p>4.5</p></td><td style={{ verticalAlign: "top" }}><p>12</p></td><td style={{ verticalAlign: "top" }}><p>100万Token</p></td></tr></tbody></table>
+ 
+     <table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
+       <colgroup>
+@@ -7352,7 +7486,7 @@
+   <Tab title="新加坡">
+     单价：元/百万 Token。
+ 
+-    <table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}><colgroup><col style={{ width: "32%" }} /><col style={{ width: "17%" }} /><col style={{ width: "17%" }} /><col style={{ width: "17%" }} /><col style={{ width: "17%" }} /></colgroup><thead><tr><th style={{ verticalAlign: "top" }}><p>模型 ID（Model ID）</p></th><th style={{ verticalAlign: "top" }}><p>输入：文本/图片/视频</p></th><th style={{ verticalAlign: "top" }}><p>输入：音频</p></th><th style={{ verticalAlign: "top" }}><p>输出：文本</p></th><th style={{ verticalAlign: "top" }}><p>输出：音频</p></th></tr></thead><tbody><tr><td style={{ verticalAlign: "top" }}><p><code>qwen3.8-omni-flash-realtime</code></p></td><td style={{ verticalAlign: "top" }}><p>1.677</p></td><td style={{ verticalAlign: "top" }}><p>6.781</p></td><td style={{ verticalAlign: "top" }}><p>5.104</p></td><td style={{ verticalAlign: "top" }}><p>13.636</p></td></tr></tbody></table>
++    <table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}><colgroup><col style={{ width: "32%" }} /><col style={{ width: "17%" }} /><col style={{ width: "17%" }} /><col style={{ width: "17%" }} /><col style={{ width: "17%" }} /></colgroup><thead><tr><th style={{ verticalAlign: "top" }}><p><strong>模型 ID（Model ID）</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>输入：文本/图片/视频</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>输入：音频</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>输出：文本</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>输出：音频</strong></p></th></tr></thead><tbody><tr><td style={{ verticalAlign: "top" }}><p><code>qwen3.8-omni-flash-realtime</code></p></td><td style={{ verticalAlign: "top" }}><p>1.677</p></td><td style={{ verticalAlign: "top" }}><p>6.781</p></td><td style={{ verticalAlign: "top" }}><p>5.104</p></td><td style={{ verticalAlign: "top" }}><p>13.636</p></td></tr></tbody></table>
+ 
+     <table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
+       <colgroup>
+@@ -14402,6 +14536,8 @@
+ 
+ 实时语音对话模型支持文本和音频的输入与输出，按输入 Token 和输出 Token 分别计费。音频 Token 按时长折算：`总 Token 数 = 音频时长（单位：秒）* 12.5`，不足 1 秒按 1 秒计算。
+ 
++仅输出文本时，按文本输出单价计费；输出文本和音频时，仅对音频收取输出费用，伴随文本不另收输出费。
++
+ 在多轮对话场景中，与文本大模型一致，模型会维护完整的对话上下文以保持连贯的对话能力。历史对话内容会作为后续轮次的输入处理和计费，因此每轮的输入 Token 数会随对话轮次增加而逐步增长。各类内容的具体计费方式如下：
+ 
+ - <strong>用户输入的音频和文本</strong>：计入上下文，在后续每轮对话中作为输入计费。其中音频按音频 Token 计费，文本按文本 Token 计费。
+@@ -14417,11 +14553,11 @@
+ 
+ <Tabs>
+   <Tab title="华北2（北京）">
+-    <table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}><colgroup><col style={{ width: "16.666667%" }} /><col style={{ width: "16.666667%" }} /><col style={{ width: "16.666667%" }} /><col style={{ width: "16.666667%" }} /><col style={{ width: "16.666667%" }} /><col style={{ width: "16.666667%" }} /></colgroup><thead><tr><th rowSpan={2} style={{ verticalAlign: "top" }}><p><strong>模型 ID（Model ID）</strong></p></th><th colSpan={2} style={{ verticalAlign: "top" }}><p><strong>输入单价（每百万Token）</strong></p></th><th colSpan={2} style={{ verticalAlign: "top" }}><p><strong>输出单价（每百万Token）</strong></p></th><th rowSpan={2} style={{ verticalAlign: "top" }}><p><strong>免费额度</strong><a href="/zh/model-studio/new-free-quota#977b13081ab56">（注）</a></p><p><sup>有效期：自开通百炼/模型发布/申请通过之日起90天内（以较晚者为准）</sup></p></th></tr><tr><th style={{ verticalAlign: "top" }}><p><strong>文本</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>音频</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>文本</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>音频</strong></p></th></tr></thead><tbody><tr><td style={{ verticalAlign: "top" }}><p><span>qwen-audio-3.1-realtime-plus</span></p></td><td style={{ verticalAlign: "top" }}><p>5元</p></td><td style={{ verticalAlign: "top" }}><p>40元</p></td><td style={{ verticalAlign: "top" }}><p>40元</p></td><td style={{ verticalAlign: "top" }}><p>150元</p></td><td style={{ verticalAlign: "top" }}><p>100万Token</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><span>qwen-audio-3.0-realtime-plus</span></p></td><td style={{ verticalAlign: "top" }}><p>5元</p></td><td style={{ verticalAlign: "top" }}><p>40元</p></td><td style={{ verticalAlign: "top" }}><p>40元</p></td><td style={{ verticalAlign: "top" }}><p>150元</p></td><td style={{ verticalAlign: "top" }}><p>100万Token</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><span>qwen-audio-3.0-realtime-flash</span></p></td><td style={{ verticalAlign: "top" }}><p>1.5元</p></td><td style={{ verticalAlign: "top" }}><p>6元</p></td><td style={{ verticalAlign: "top" }}><p>4.5元</p></td><td style={{ verticalAlign: "top" }}><p>12元</p></td><td style={{ verticalAlign: "top" }}><p>100万Token</p></td></tr></tbody></table>
++    <table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}><colgroup><col style={{ width: "16.666667%" }} /><col style={{ width: "16.666667%" }} /><col style={{ width: "16.666667%" }} /><col style={{ width: "16.666667%" }} /><col style={{ width: "16.666667%" }} /><col style={{ width: "16.666667%" }} /></colgroup><thead><tr><th rowSpan={2} style={{ verticalAlign: "top" }}><p><strong>模型 ID（Model ID）</strong></p></th><th colSpan={2} style={{ verticalAlign: "top" }}><p><strong>输入单价（每百万Token）</strong></p></th><th colSpan={2} style={{ verticalAlign: "top" }}><p><strong>输出单价（每百万Token）</strong></p></th><th rowSpan={2} style={{ verticalAlign: "top" }}><p><strong>免费额度</strong><a href="/zh/model-studio/new-free-quota#977b13081ab56">（注）</a></p><p><sup>有效期：自开通百炼/模型发布/申请通过之日起90天内（以较晚者为准）</sup></p></th></tr><tr><th style={{ verticalAlign: "top" }}><p><strong>文本</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>音频</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>文本</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>音频</strong></p></th></tr></thead><tbody><tr><td style={{ verticalAlign: "top" }}><p><span>qwen-audio-3.1-realtime-plus</span></p></td><td style={{ verticalAlign: "top" }}><p>5元</p></td><td style={{ verticalAlign: "top" }}><p>40元</p></td><td style={{ verticalAlign: "top" }}><p>40元</p></td><td style={{ verticalAlign: "top" }}><p>150元</p></td><td style={{ verticalAlign: "top" }}><p>100万Token</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><span>qwen-audio-3.1-realtime-flash</span></p></td><td style={{ verticalAlign: "top" }}><p>1.5元</p></td><td style={{ verticalAlign: "top" }}><p>6元</p></td><td style={{ verticalAlign: "top" }}><p>4.5元</p></td><td style={{ verticalAlign: "top" }}><p>12元</p></td><td style={{ verticalAlign: "top" }}><p>100万Token</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><span>qwen-audio-3.0-realtime-plus</span></p></td><td style={{ verticalAlign: "top" }}><p>5元</p></td><td style={{ verticalAlign: "top" }}><p>40元</p></td><td style={{ verticalAlign: "top" }}><p>40元</p></td><td style={{ verticalAlign: "top" }}><p>150元</p></td><td style={{ verticalAlign: "top" }}><p>100万Token</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><span>qwen-audio-3.0-realtime-flash</span></p></td><td style={{ verticalAlign: "top" }}><p>1.5元</p></td><td style={{ verticalAlign: "top" }}><p>6元</p></td><td style={{ verticalAlign: "top" }}><p>4.5元</p></td><td style={{ verticalAlign: "top" }}><p>12元</p></td><td style={{ verticalAlign: "top" }}><p>100万Token</p></td></tr></tbody></table>
+   </Tab>
+ 
+   <Tab title="新加坡">
+-    <table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}><colgroup><col style={{ width: "16.666667%" }} /><col style={{ width: "16.666667%" }} /><col style={{ width: "16.666667%" }} /><col style={{ width: "16.666667%" }} /><col style={{ width: "16.666667%" }} /><col style={{ width: "16.666667%" }} /></colgroup><thead><tr><th rowSpan={2} style={{ verticalAlign: "top" }}><p><strong>模型 ID（Model ID）</strong></p></th><th rowSpan={2} style={{ verticalAlign: "top" }}><p><strong>服务部署范围</strong></p></th><th colSpan={2} style={{ verticalAlign: "top" }}><p><strong>输入单价（每百万Token）</strong></p></th><th colSpan={2} style={{ verticalAlign: "top" }}><p><strong>输出单价（每百万Token）</strong></p></th></tr><tr><th style={{ verticalAlign: "top" }}><p><strong>文本</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>音频</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>文本</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>音频</strong></p></th></tr></thead><tbody><tr><td style={{ verticalAlign: "top" }}><p><span>qwen-audio-3.1-realtime-plus</span></p></td><td style={{ verticalAlign: "top" }}><p><span>国际</span></p></td><td style={{ verticalAlign: "top" }}><p>5.995元</p></td><td style={{ verticalAlign: "top" }}><p>47.963元</p></td><td style={{ verticalAlign: "top" }}><p>47.963元</p></td><td style={{ verticalAlign: "top" }}><p>179.861元</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><span>qwen-audio-3.0-realtime-plus</span></p></td><td style={{ verticalAlign: "top" }}><p><span>国际</span></p></td><td style={{ verticalAlign: "top" }}><p>5.995元</p></td><td style={{ verticalAlign: "top" }}><p>47.963元</p></td><td style={{ verticalAlign: "top" }}><p>47.963元</p></td><td style={{ verticalAlign: "top" }}><p>179.861元</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><span>qwen-audio-3.0-realtime-flash</span></p></td><td style={{ verticalAlign: "top" }}><p><span>国际</span></p></td><td style={{ verticalAlign: "top" }}><p>1.677元</p></td><td style={{ verticalAlign: "top" }}><p>6.781元</p></td><td style={{ verticalAlign: "top" }}><p>5.104元</p></td><td style={{ verticalAlign: "top" }}><p>13.636元</p></td></tr></tbody></table>
++    <table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}><colgroup><col style={{ width: "16.666667%" }} /><col style={{ width: "16.666667%" }} /><col style={{ width: "16.666667%" }} /><col style={{ width: "16.666667%" }} /><col style={{ width: "16.666667%" }} /><col style={{ width: "16.666667%" }} /></colgroup><thead><tr><th rowSpan={2} style={{ verticalAlign: "top" }}><p><strong>模型 ID（Model ID）</strong></p></th><th rowSpan={2} style={{ verticalAlign: "top" }}><p><strong>服务部署范围</strong></p></th><th colSpan={2} style={{ verticalAlign: "top" }}><p><strong>输入单价（每百万Token）</strong></p></th><th colSpan={2} style={{ verticalAlign: "top" }}><p><strong>输出单价（每百万Token）</strong></p></th></tr><tr><th style={{ verticalAlign: "top" }}><p><strong>文本</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>音频</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>文本</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>音频</strong></p></th></tr></thead><tbody><tr><td style={{ verticalAlign: "top" }}><p><span>qwen-audio-3.1-realtime-plus</span></p></td><td style={{ verticalAlign: "top" }}><p><span>国际</span></p></td><td style={{ verticalAlign: "top" }}><p>5.995元</p></td><td style={{ verticalAlign: "top" }}><p>47.963元</p></td><td style={{ verticalAlign: "top" }}><p>47.963元</p></td><td style={{ verticalAlign: "top" }}><p>179.861元</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><span>qwen-audio-3.1-realtime-flash</span></p></td><td style={{ verticalAlign: "top" }}><p><span>国际</span></p></td><td style={{ verticalAlign: "top" }}><p>1.677元</p></td><td style={{ verticalAlign: "top" }}><p>6.781元</p></td><td style={{ verticalAlign: "top" }}><p>5.104元</p></td><td style={{ verticalAlign: "top" }}><p>13.636元</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><span>qwen-audio-3.0-realtime-plus</span></p></td><td style={{ verticalAlign: "top" }}><p><span>国际</span></p></td><td style={{ verticalAlign: "top" }}><p>5.995元</p></td><td style={{ verticalAlign: "top" }}><p>47.963元</p></td><td style={{ verticalAlign: "top" }}><p>47.963元</p></td><td style={{ verticalAlign: "top" }}><p>179.861元</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><span>qwen-audio-3.0-realtime-flash</span></p></td><td style={{ verticalAlign: "top" }}><p><span>国际</span></p></td><td style={{ verticalAlign: "top" }}><p>1.677元</p></td><td style={{ verticalAlign: "top" }}><p>6.781元</p></td><td style={{ verticalAlign: "top" }}><p>5.104元</p></td><td style={{ verticalAlign: "top" }}><p>13.636元</p></td></tr></tbody></table>
+   </Tab>
+ </Tabs>
+ 
+@@ -15035,11 +15171,21 @@
+ 
+ <strong>Tripo-3D模型生成</strong>
+ 
+-计费规则：输入不计费，输出按次数计费。
++计费规则：输入不计费，输出按次计费，价格以积分计，**`1积分 = 0.07元`**。
++
++计费公式：`费用 = （基础项积分 + 所开启附加项的积分之和）× 0.07元`。
++
++- 基础项：每次调用只计其中一项，动画重定向按动画个数计费。
++- 附加项：按需开启，可同时开启多项，每项在基础项积分上累加计费；没有附加项或未开启时仅计基础项积分。
++
++计费示例：
++
++- 仅基础项：使用Tripo-H3.1文生3D生成白模，费用 = 10 × 0.07元 = 0.7元。
++- 基础项+附加项：使用Tripo-H3.1单图生3D，带高清贴图（4K）和四边面网格，费用 = （20 + 20 + 5）× 0.07元 = 3.15元。
+ 
+ <Tabs>
+   <Tab title="华北2（北京）">
+-    <table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}><colgroup><col style={{ width: "25%" }} /><col style={{ width: "25%" }} /><col style={{ width: "25%" }} /><col style={{ width: "25%" }} /></colgroup><thead><tr><th style={{ verticalAlign: "top" }}><p><strong>模型 ID（Model ID）</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>3D任务类型</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>输出规格</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>输出单价</strong></p></th></tr></thead><tbody><tr><td rowSpan={12} style={{ verticalAlign: "top" }}><p>Tripo/Tripo-H3.1</p></td><td rowSpan={6} style={{ verticalAlign: "top" }}><p>文生3D</p></td><td style={{ verticalAlign: "top" }}><p>标准版+无贴图</p></td><td style={{ verticalAlign: "top" }}><p>0.7元/次</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>标准版+带标清贴图</p></td><td style={{ verticalAlign: "top" }}><p>1.4元/次</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>标准版+带高清贴图</p></td><td style={{ verticalAlign: "top" }}><p>2.1元/次</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>超清版+无贴图</p></td><td style={{ verticalAlign: "top" }}><p>2.1元/次</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>超清版+带标清贴图</p></td><td style={{ verticalAlign: "top" }}><p>2.8元/次</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>超清版+带高清贴图</p></td><td style={{ verticalAlign: "top" }}><p>3.5元/次</p></td></tr><tr><td rowSpan={6} style={{ verticalAlign: "top" }}><p>单图生3D/多图生3D</p></td><td style={{ verticalAlign: "top" }}><p>标准版+无贴图</p></td><td style={{ verticalAlign: "top" }}><p>1.4元/次</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>标准版+带标清贴图</p></td><td style={{ verticalAlign: "top" }}><p>2.1元/次</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>标准版+带高清贴图</p></td><td style={{ verticalAlign: "top" }}><p>2.8元/次</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>超清版+无贴图</p></td><td style={{ verticalAlign: "top" }}><p>2.8元/次</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>超清版+带标清贴图</p></td><td style={{ verticalAlign: "top" }}><p>3.5元/次</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>超清版+带高清贴图</p></td><td style={{ verticalAlign: "top" }}><p>4.2元/次</p></td></tr><tr><td rowSpan={6} style={{ verticalAlign: "top" }}><p>Tripo/Tripo-P1.0</p></td><td rowSpan={3} style={{ verticalAlign: "top" }}><p>文生3D</p></td><td style={{ verticalAlign: "top" }}><p>无贴图</p></td><td style={{ verticalAlign: "top" }}><p>2.1元/次</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>带标清贴图</p></td><td style={{ verticalAlign: "top" }}><p>2.8元/次</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>带高清贴图</p></td><td style={{ verticalAlign: "top" }}><p>3.5元/次</p></td></tr><tr><td rowSpan={3} style={{ verticalAlign: "top" }}><p>单图生3D/多图生3D</p></td><td style={{ verticalAlign: "top" }}><p>无贴图</p></td><td style={{ verticalAlign: "top" }}><p>2.8元/次</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>带标清贴图</p></td><td style={{ verticalAlign: "top" }}><p>3.5元/次</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>带高清贴图</p></td><td style={{ verticalAlign: "top" }}><p>4.2元/次</p></td></tr></tbody></table>
++    <table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}><colgroup><col style={{ width: "25%" }} /><col style={{ width: "25%" }} /><col style={{ width: "25%" }} /><col style={{ width: "25%" }} /></colgroup><thead><tr><th style={{ verticalAlign: "top" }}><p><strong>模型 ID（Model ID）</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>计费类型</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>计费项</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>消耗积分</strong></p></th></tr></thead><tbody><tr><td rowSpan={10} style={{ verticalAlign: "top" }}><p>Tripo/Tripo-H3.1</p></td><td rowSpan={3} style={{ verticalAlign: "top" }}><p>基础项</p></td><td style={{ verticalAlign: "top" }}><p>文生3D（不含贴图）</p></td><td style={{ verticalAlign: "top" }}><p>10积分/次</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>单图生3D（不含贴图）</p></td><td style={{ verticalAlign: "top" }}><p>20积分/次</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>多图生3D（不含贴图）</p></td><td style={{ verticalAlign: "top" }}><p>20积分/次</p></td></tr><tr><td rowSpan={7} style={{ verticalAlign: "top" }}><p>附加项</p></td><td style={{ verticalAlign: "top" }}><p>标准贴图（2K）</p></td><td style={{ verticalAlign: "top" }}><p>10积分/次</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>高清贴图（4K）</p></td><td style={{ verticalAlign: "top" }}><p>20积分/次</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>超清贴图（8K）</p></td><td style={{ verticalAlign: "top" }}><p>30积分/次</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>高精度几何（Ultra）</p></td><td style={{ verticalAlign: "top" }}><p>20积分/次</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>四边面网格</p></td><td style={{ verticalAlign: "top" }}><p>5积分/次</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>智能低模</p></td><td style={{ verticalAlign: "top" }}><p>10积分/次</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>分部件生成</p></td><td style={{ verticalAlign: "top" }}><p>20积分/次</p></td></tr><tr><td rowSpan={6} style={{ verticalAlign: "top" }}><p>Tripo/Tripo-P1.0</p></td><td rowSpan={3} style={{ verticalAlign: "top" }}><p>基础项</p></td><td style={{ verticalAlign: "top" }}><p>文生3D（不含贴图）</p></td><td style={{ verticalAlign: "top" }}><p>30积分/次</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>单图生3D（不含贴图）</p></td><td style={{ verticalAlign: "top" }}><p>40积分/次</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>多图生3D（不含贴图）</p></td><td style={{ verticalAlign: "top" }}><p>40积分/次</p></td></tr><tr><td rowSpan={3} style={{ verticalAlign: "top" }}><p>附加项</p></td><td style={{ verticalAlign: "top" }}><p>标准贴图（2K）</p></td><td style={{ verticalAlign: "top" }}><p>10积分/次</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>高清贴图（4K）</p></td><td style={{ verticalAlign: "top" }}><p>20积分/次</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>超清贴图（8K）</p></td><td style={{ verticalAlign: "top" }}><p>30积分/次</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>Tripo/Tripo-ImageToSplat</p></td><td style={{ verticalAlign: "top" }}><p>基础项</p></td><td style={{ verticalAlign: "top" }}><p>图片生成Gaussian Splat</p></td><td style={{ verticalAlign: "top" }}><p>30积分/次</p></td></tr><tr><td rowSpan={3} style={{ verticalAlign: "top" }}><p>Tripo/Tripo-Texture</p></td><td rowSpan={3} style={{ verticalAlign: "top" }}><p>基础项</p></td><td style={{ verticalAlign: "top" }}><p>标准贴图（2K）</p></td><td style={{ verticalAlign: "top" }}><p>10积分/次</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>高清贴图（4K）</p></td><td style={{ verticalAlign: "top" }}><p>20积分/次</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>超清贴图（8K）</p></td><td style={{ verticalAlign: "top" }}><p>30积分/次</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>Tripo/Tripo-Segmentation</p></td><td style={{ verticalAlign: "top" }}><p>基础项</p></td><td style={{ verticalAlign: "top" }}><p>网格分割</p></td><td style={{ verticalAlign: "top" }}><p>40积分/次</p></td></tr><tr><td rowSpan={2} style={{ verticalAlign: "top" }}><p>Tripo/Tripo-SmartSegmentation</p></td><td rowSpan={2} style={{ verticalAlign: "top" }}><p>基础项</p></td><td style={{ verticalAlign: "top" }}><p>智能分割（图片输入）</p></td><td style={{ verticalAlign: "top" }}><p>85积分/次</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>智能分割（模型输入）</p></td><td style={{ verticalAlign: "top" }}><p>55积分/次</p></td></tr><tr><td rowSpan={2} style={{ verticalAlign: "top" }}><p>Tripo/Tripo-MeshCompletion</p></td><td rowSpan={2} style={{ verticalAlign: "top" }}><p>基础项</p></td><td style={{ verticalAlign: "top" }}><p>AI补全</p></td><td style={{ verticalAlign: "top" }}><p>50积分/次</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>快速封口</p></td><td style={{ verticalAlign: "top" }}><p>30积分/次</p></td></tr><tr><td rowSpan={2} style={{ verticalAlign: "top" }}><p>Tripo/Tripo-Retopology</p></td><td rowSpan={2} style={{ verticalAlign: "top" }}><p>基础项</p></td><td style={{ verticalAlign: "top" }}><p>重拓扑v1.0（基础）</p></td><td style={{ verticalAlign: "top" }}><p>10积分/次</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>重拓扑v2.0（智能）</p></td><td style={{ verticalAlign: "top" }}><p>30积分/次</p></td></tr><tr><td rowSpan={2} style={{ verticalAlign: "top" }}><p>Tripo/Tripo-ConvertFormat</p></td><td rowSpan={2} style={{ verticalAlign: "top" }}><p>基础项</p></td><td style={{ verticalAlign: "top" }}><p>基础转换</p></td><td style={{ verticalAlign: "top" }}><p>5积分/次</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>高级转换</p></td><td style={{ verticalAlign: "top" }}><p>10积分/次</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>Tripo/Tripo-RigCheck</p></td><td style={{ verticalAlign: "top" }}><p>基础项</p></td><td style={{ verticalAlign: "top" }}><p>可绑骨检查</p></td><td style={{ verticalAlign: "top" }}><p>不计费</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>Tripo/Tripo-AutoRig</p></td><td style={{ verticalAlign: "top" }}><p>基础项</p></td><td style={{ verticalAlign: "top" }}><p>绑骨</p></td><td style={{ verticalAlign: "top" }}><p>25积分/次</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>Tripo/Tripo-AnimationRetarget</p></td><td style={{ verticalAlign: "top" }}><p>基础项</p></td><td style={{ verticalAlign: "top" }}><p>动画重定向</p></td><td style={{ verticalAlign: "top" }}><p>10积分/个动画</p></td></tr></tbody></table>
+   </Tab>
+ </Tabs>
+ 
