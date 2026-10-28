@@ -24,7 +24,7 @@
 
 MCP 查询：`{"product": "audio"}`。
 
-来源：[官方来源1](https://console.volcengine.com/speech/new/experience/audio?projectName=default)、[官方来源2](https://docs.volcengine.com/docs/DoubaoVoice/audio-generation-http?lang=zh)。
+来源：[官方来源1](https://console.volcengine.com/speech/new/experience/audio?projectName=default)、[官方来源2](https://docs.volcengine.com/docs/doubao-voice/audio-generation-http?lang=zh)。
 
 ### 文本生成（`text`）
 
@@ -164,7 +164,7 @@ MCP 查询：`{"product": "audio"}`。
 
 MCP 查询：`{"product": "tts"}`。
 
-来源：[官方来源1](https://docs.volcengine.com/docs/DoubaoVoice/DoubaoTextToSpeech20CapabilityIntroduction?lang=zh)、[官方来源2](https://docs.volcengine.com/docs/DoubaoVoice/unidirectional-streaming-text-to-speech-http?lang=zh)。
+来源：[官方来源1](https://docs.volcengine.com/docs/doubao-voice/doubao-text-to-speech-20-capability-introduction?lang=zh)、[官方来源2](https://docs.volcengine.com/docs/doubao-voice/unidirectional-streaming-text-to-speech-http?lang=zh)。
 
 官方展示用法：吵架、暧昧悄悄话、四川话、北京话、承接问询语境、承接老友相见语境。
 
@@ -269,7 +269,7 @@ MCP 查询：`{"product": "tts"}`。
 
 MCP 查询：`{"product": "voice"}`。
 
-来源：[官方来源1](https://docs.volcengine.com/docs/DoubaoVoice/SoundDesignAPI?lang=zh)、[官方来源2](https://docs.volcengine.com/docs/DoubaoVoice/SoundReplication20BestPractices?lang=zh)、[官方来源3](https://docs.volcengine.com/docs/DoubaoVoice/tone-training-http?lang=zh)。
+来源：[官方来源1](https://docs.volcengine.com/docs/doubao-voice/sound-design-api?lang=zh)、[官方来源2](https://docs.volcengine.com/docs/doubao-voice/sound-replication-20-best-practices?lang=zh)、[官方来源3](https://docs.volcengine.com/docs/doubao-voice/tone-training-http?lang=zh)。
 
 官方展示用法：街头说唱者、儒雅老人、古代文人、超市促销员。
 
@@ -331,7 +331,7 @@ MCP 查询：`{"product": "voice"}`。
 
 MCP 查询：`{"product": "podcast"}`。
 
-来源：[官方来源1](https://docs.volcengine.com/docs/DoubaoVoice/podcast?lang=zh)、[官方来源2](https://docs.volcengine.com/docs/DoubaoVoice/podcast_mustread?lang=zh)、[官方来源3](https://docs.volcengine.com/docs/DoubaoVoice/PodcastAPI-websocket-v3protocol?lang=zh)。
+来源：[官方来源1](https://docs.volcengine.com/docs/doubao-voice/podcast?lang=zh)、[官方来源2](https://docs.volcengine.com/docs/doubao-voice/podcast-mustread?lang=zh)、[官方来源3](https://docs.volcengine.com/docs/doubao-voice/podcast-api-websocket-v3protocol?lang=zh)。
 
 - text/url改写文章或链接；dialogue直接演绎逐轮脚本；topic根据话题联网生成。topic只是话题，不具备格式指令能力。
 - url支持网页及PDF/doc/txt链接，不把控制台上传格式直接视为API格式。
@@ -399,7 +399,7 @@ MCP 查询：`{"product": "podcast"}`。
 
 MCP 查询：`{"product": "asr"}`。
 
-来源：[官方来源1](https://docs.volcengine.com/docs/DoubaoVoice/hot-words-and-context?lang=zh)、[官方来源2](https://docs.volcengine.com/docs/DoubaoVoice/speaker-separation?lang=zh)。
+来源：[官方来源1](https://docs.volcengine.com/docs/doubao-voice/hot-words-and-context?lang=zh)、[官方来源2](https://docs.volcengine.com/docs/doubao-voice/speaker-separation?lang=zh)。
 
 - 热词只放难识别的专名，不堆通用词；热词是概率引导，替换词表是后处理强制替换。
 - 热词效果差时补生僻字解释或领域背景；上下文优先最近几轮，按新到旧排列。
@@ -465,7 +465,7 @@ MCP 查询：`{"product": "asr"}`。
 
 MCP 查询：`{"product": "translation"}`。
 
-来源：[官方来源1](https://docs.volcengine.com/docs/DoubaoVoice/MachineTranslationLargeModel-APIAccessDocumentation?lang=zh)、[官方来源2](https://docs.volcengine.com/docs/DoubaoVoice/SimultaneousInterpretation20APIAccessDocumentation?lang=zh)。
+来源：[官方来源1](https://docs.volcengine.com/docs/doubao-voice/machine-translation-large-model-api-access-documentation?lang=zh)、[官方来源2](https://docs.volcengine.com/docs/doubao-voice/simultaneous-interpretation2-0-api-access-documentation?lang=zh)。
 
 - 固定品牌和专业术语用glossary；直传术语优先于术语表。不要把ASR热词当作翻译词典。
 - 机器翻译不指定source_language可自动检测；1–16条文本，按原顺序处理，每条<=1024 tokens。
@@ -519,7 +519,7 @@ MCP 查询：`{"product": "translation"}`。
 
 MCP 查询：`{"product": "minutes"}`。
 
-来源：[官方来源1](https://docs.volcengine.com/docs/DoubaoVoice/DoubaoVoiceMinutes-APIAccessDocumentation?lang=zh)。
+来源：[官方来源1](https://docs.volcengine.com/docs/doubao-voice/doubao-voice-minutes-api-access-documentation?lang=zh)。
 
 - bundle_billing（AllActivate）只选择计费方式，不会开启功能；summary、chapters、todos、qa、translate_to按需打开。
 - 只需原始转写用speech_to_text；妙记至少启用一项附加功能。
@@ -565,7 +565,7 @@ MCP 查询：`{"product": "minutes"}`。
 
 MCP 查询：`{"product": "realtime"}`。
 
-来源：[官方来源1](https://docs.volcengine.com/docs/DoubaoVoice/seedrealtime?lang=zh)、[官方来源2](https://docs.volcengine.com/docs/DoubaoVoice/endtoend-realtime-voice-full-duplex-version?lang=zh)。
+来源：[官方来源1](https://docs.volcengine.com/docs/doubao-voice/seedrealtime?lang=zh)、[官方来源2](https://docs.volcengine.com/docs/doubao-voice/end-to-end-real-time-voice-full-duplex-version?lang=zh)。
 
 - 实时会话工具默认不启用，需在MCP配置设MCP_TOOL_GROUPS包含realtime并重启。
 - session.instructions定义角色、语气和回答范围；不要照搬音频生成的时间区间标记。

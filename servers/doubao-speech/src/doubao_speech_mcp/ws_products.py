@@ -1,6 +1,6 @@
 """Event framing from the official TTS protocols attachment (2026-09-28).
 
-https://docs.volcengine.com/docs/DoubaoVoice/bidirectional-streaming-text-to-speech-websocket
+https://docs.volcengine.com/docs/doubao-voice/bidirectional-streaming-text-to-speech-websocket
 Podcast uses the same framing, with its own session lifecycle.
 """
 
@@ -19,7 +19,7 @@ from . import speech
 
 
 # Voices whose remark in the official voice list reads「仅限单向流使用，不支持双向流，双向流调用会直接报错」.
-# Source: https://docs.volcengine.com/docs/DoubaoVoice/Tonelist-1?lang=zh (UpdatedTime 2026-10-13T08:17:11Z),
+# Source: https://docs.volcengine.com/docs/doubao-voice/tone-list-3?lang=zh (UpdatedTime 2026-10-13T08:17:11Z),
 # section「豆包语音合成模型2.0」外语音色列表, extracted 2026-10-13; 27 voices. Re-check when the page changes.
 UNIDIRECTIONAL_ONLY_SPEAKERS = frozenset({
     "th_female_cake_uranus_bigtts", "th_male_paran_uranus_bigtts",

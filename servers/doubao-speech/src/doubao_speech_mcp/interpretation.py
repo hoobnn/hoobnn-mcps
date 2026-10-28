@@ -1,6 +1,6 @@
 """Doubao simultaneous interpretation, using the official AST protobuf demo.
 
-Source: https://docs.volcengine.com/docs/DoubaoVoice/SimultaneousInterpretation20APIAccessDocumentation?lang=zh
+Source: https://docs.volcengine.com/docs/doubao-voice/simultaneous-interpretation2-0-api-access-documentation?lang=zh
 The source WAV container is removed before 80ms PCM packets are sent.
 """
 

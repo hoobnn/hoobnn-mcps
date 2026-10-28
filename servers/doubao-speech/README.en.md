@@ -12,7 +12,9 @@ An MCP server for Doubao Speech.
 
 </div>
 
-A stdio MCP server for the Doubao Speech cloud APIs. Endpoints were checked against the [official catalog](https://docs.volcengine.com/docs/DoubaoVoice/list?lang=zh) on 2026-10-10.
+A stdio MCP server for the Doubao Speech cloud APIs. Endpoints were checked against the [official catalog](https://docs.volcengine.com/docs/doubao-voice) on 2026-10-10.
+
+`0.5.1` updates official documentation links after the Volcengine migration. Tool help and examples now use the current library name and slugs; speech request protocols are unchanged.
 
 `0.5.0` switches podcast generation to HTTP SSE by default, persisting the real session ID, complete rounds and resume receipts; pass `transport="websocket"` to use the historical path. Realtime sessions gain image / video-frame input and cancellation playback state through `mode="seed"`; `legacy` remains the default realtime mode.
 
@@ -137,7 +139,7 @@ Multilingual: use lines in the target language together with character, accent a
 }
 ```
 
-The list of supported languages follows the [official audio generation API](https://docs.volcengine.com/docs/DoubaoVoice/audio-generation-http?lang=zh); the console templates may differ from what the API lists. The four usage types and parameter examples are also written into the `generate_audio` tool description, so clients can read them on tool discovery.
+The list of supported languages follows the [official audio generation API](https://docs.volcengine.com/docs/doubao-voice/audio-generation-http?lang=zh); the console templates may differ from what the API lists. The four usage types and parameter examples are also written into the `generate_audio` tool description, so clients can read them on tool discovery.
 
 ### Long text, recognition and Minutes
 
@@ -179,7 +181,7 @@ Minimal configuration:
 
 Realtime upload sends one packet per 20ms. The MCP does not capture the microphone, play sound or drive the sound card; the client handles device input and output. Simultaneous interpretation needs 16kHz / mono / 16bit WAV or PCM; WAV containers are stripped automatically. Target PCM16k is saved as valid WAV; PCM24k keeps raw float32 PCM and returns format information.
 
-The official [access guide](https://docs.volcengine.com/docs/DoubaoVoice/access-mustread?lang=zh), reviewed on 2026-10-26, specifies input quality: speech-only RMS should be −31.7 to −23.9 dBFS (target about −27.6), within −37 to −19.5 dBFS, with peaks ≤−1 dBFS. Noise-only RMS should be ≤−50 dBFS (target about −52.6), with SNR of 20–30 dB; minimum requirements are noise ≤−45 dBFS and SNR ≥15 dB. The client handles capture and quality control; the MCP does not apply automatic gain or denoising, or estimate speech-only/noise-only RMS from mixed audio. When microphone capture stops and audio frames cease, send `input_audio_mute.commit`; send `input_audio_unmute.commit` when capture resumes to avoid keepalive timeouts.
+The official [access guide](https://docs.volcengine.com/docs/doubao-voice/access-must-read?lang=zh), reviewed on 2026-10-26, specifies input quality: speech-only RMS should be −31.7 to −23.9 dBFS (target about −27.6), within −37 to −19.5 dBFS, with peaks ≤−1 dBFS. Noise-only RMS should be ≤−50 dBFS (target about −52.6), with SNR of 20–30 dB; minimum requirements are noise ≤−45 dBFS and SNR ≥15 dB. The client handles capture and quality control; the MCP does not apply automatic gain or denoising, or estimate speech-only/noise-only RMS from mixed audio. When microphone capture stops and audio frames cease, send `input_audio_mute.commit`; send `input_audio_unmute.commit` when capture resumes to avoid keepalive timeouts.
 
 `mode=legacy` preserves the default: `/api/v3/duplex/realtime/dialogue` with `model=1.2.6.1`. `mode=seed` selects `/api/v3/seedrealtime` with `model=1.3.0.0`; changing only the model on the legacy endpoint is rejected. Video configuration belongs in **`extension.video`**:
 
@@ -214,7 +216,7 @@ The 27 foreign-language voices marked "unidirectional streaming only" in the voi
 
 ## Official sources and coverage limits
 
-Sources for newly added endpoints include [long-text submission](https://docs.volcengine.com/docs/DoubaoVoice/Tasksubmission?lang=zh), [voice registration](https://docs.volcengine.com/docs/DoubaoVoice/tone-training-http?lang=zh), [voice design](https://docs.volcengine.com/docs/DoubaoVoice/SoundDesignAPI?lang=zh), [realtime recognition](https://docs.volcengine.com/docs/DoubaoVoice/bidirectional-streaming-automatic-speech-recognition-websocket?lang=zh), [podcast SSE](https://docs.volcengine.com/docs/DoubaoVoice/podcast?lang=zh), [Realtime 3.0](https://docs.volcengine.com/docs/DoubaoVoice/endtoend-realtime-voice-full-duplex-version?lang=zh), [simultaneous interpretation](https://docs.volcengine.com/docs/DoubaoVoice/SimultaneousInterpretation20APIAccessDocumentation?lang=zh), [machine translation](https://docs.volcengine.com/docs/DoubaoVoice/MachineTranslationLargeModel-APIAccessDocumentation?lang=zh), [Minutes](https://docs.volcengine.com/docs/DoubaoVoice/DoubaoVoiceMinutes-APIAccessDocumentation?lang=zh), [hot words](https://docs.volcengine.com/docs/DoubaoVoice/HotWordManagementAPIv10?lang=zh), [replacement words](https://docs.volcengine.com/docs/DoubaoVoice/ReplacementWordAPIv11?lang=zh) and the [console OpenAPI](https://api.volcengine.com/api-docs/view?action=ActivateService&serviceCode=speech_saas_prod&version=2025-05-20).
+Sources for newly added endpoints include [long-text submission](https://docs.volcengine.com/docs/doubao-voice/task-sub-mission?lang=zh), [voice registration](https://docs.volcengine.com/docs/doubao-voice/tone-training-http?lang=zh), [voice design](https://docs.volcengine.com/docs/doubao-voice/sound-design-api?lang=zh), [realtime recognition](https://docs.volcengine.com/docs/doubao-voice/bidirectional-streaming-automatic-speech-recognition-websocket?lang=zh), [podcast SSE](https://docs.volcengine.com/docs/doubao-voice/podcast?lang=zh), [Realtime 3.0](https://docs.volcengine.com/docs/doubao-voice/end-to-end-real-time-voice-full-duplex-version?lang=zh), [simultaneous interpretation](https://docs.volcengine.com/docs/doubao-voice/simultaneous-interpretation2-0-api-access-documentation?lang=zh), [machine translation](https://docs.volcengine.com/docs/doubao-voice/machine-translation-large-model-api-access-documentation?lang=zh), [Minutes](https://docs.volcengine.com/docs/doubao-voice/doubao-voice-minutes-api-access-documentation?lang=zh), [hot words](https://docs.volcengine.com/docs/doubao-voice/hot-word-management-api-v10?lang=zh), [replacement words](https://docs.volcengine.com/docs/doubao-voice/replacement-word-api-v11?lang=zh) and the [console OpenAPI](https://api.volcengine.com/api-docs/view?action=ActivateService&serviceCode=speech_saas_prod&version=2025-05-20).
 
 The Speech SDK's offline models, on-device VAD / audio processing and Android / iOS integration require native apps and are not equivalent to a cloud MCP. Terminology table CRUD is only published officially as a console flow; translation / simultaneous interpretation use terminology through `glossary`, `glossary_table_id` (or `glossary_table_name` in `parameters`). The Protobuf in the official simultaneous interpretation attachment does not yet declare the `detected_language` added in the docs, so this version does not guess its field number.
 
@@ -224,7 +226,7 @@ The Protobuf bindings in `_ast/` come from the official Python example for simul
 
 Offline tests cover HTTP contracts, job states, signing, Protobuf, binary frames, simulated WebSocket send/receive, audio files, timeout / cancellation cleanup, and real stdio MCP initialization, tool discovery and calls. No paid cloud APIs were called, so the tests cannot prove account activation, available quota or actual generation quality.
 
-Parameter details are in the tool descriptions (`src/doubao_speech_mcp/server.py`). Official documentation is authoritative for endpoint details: [unidirectional streaming TTS](https://docs.volcengine.com/docs/DoubaoVoice/unidirectional-streaming-text-to-speech-http), [recorded-file recognition turbo](https://docs.volcengine.com/docs/DoubaoVoice/recording-file-recognition-lite-http), [audio generation](https://docs.volcengine.com/docs/DoubaoVoice/audio-generation-http), [voice list](https://docs.volcengine.com/docs/6561/1257544).
+Parameter details are in the tool descriptions (`src/doubao_speech_mcp/server.py`). Official documentation is authoritative for endpoint details: [unidirectional streaming TTS](https://docs.volcengine.com/docs/doubao-voice/unidirectional-streaming-text-to-speech-http), [recorded-file recognition turbo](https://docs.volcengine.com/docs/doubao-voice/recording-file-recognition-lite-http), [audio generation](https://docs.volcengine.com/docs/doubao-voice/audio-generation-http), [voice list](https://docs.volcengine.com/docs/6561/1257544).
 
 ## Runtime and reliability
 

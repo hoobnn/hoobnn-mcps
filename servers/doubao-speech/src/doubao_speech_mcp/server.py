@@ -183,7 +183,7 @@ def generate_audio(
     同步调用，通常要几十秒到两分钟，客户端的工具调用超时要设到 300 秒左右。按生成音频的秒数计费，长音频先和用户
     确认。返回 ok、model、files、url（2 小时内有效）、duration（计费秒数）、subtitle、error。
     官方分类与时间区间写法来源：https://console.volcengine.com/speech/new/experience/audio?projectName=default
-    API参数来源：https://docs.volcengine.com/docs/DoubaoVoice/audio-generation-http?lang=zh
+    API参数来源：https://docs.volcengine.com/docs/doubao-voice/audio-generation-http?lang=zh
     """
     opts = dict(prompt=prompt, speaker=speaker, reference_audios=reference_audios or [],
                 reference_image=reference_image, format=format.lower(), sample_rate=sample_rate,
@@ -559,11 +559,11 @@ def list_speech_capabilities() -> dict:
         "console_action_versions": management.CONSOLE_VERSIONS,
         "legacy_operations": sorted(legacy.OPERATIONS),
         "docs": {**products.DOCS,
-                 "index": "https://docs.volcengine.com/docs/DoubaoVoice/list?lang=zh",
-                 "realtime": "https://docs.volcengine.com/docs/DoubaoVoice/seedrealtime?lang=zh",
-                 "realtime_legacy": "https://docs.volcengine.com/docs/DoubaoVoice/endtoend-realtime-voice-full-duplex-version?lang=zh",
-                 "podcast": "https://docs.volcengine.com/docs/DoubaoVoice/podcast?lang=zh",
-                 "interpretation": "https://docs.volcengine.com/docs/DoubaoVoice/SimultaneousInterpretation20APIAccessDocumentation?lang=zh"},
+                 "index": "https://docs.volcengine.com/docs/doubao-voice",
+                 "realtime": "https://docs.volcengine.com/docs/doubao-voice/seedrealtime?lang=zh",
+                 "realtime_legacy": "https://docs.volcengine.com/docs/doubao-voice/end-to-end-real-time-voice-full-duplex-version?lang=zh",
+                 "podcast": "https://docs.volcengine.com/docs/doubao-voice/podcast?lang=zh",
+                 "interpretation": "https://docs.volcengine.com/docs/doubao-voice/simultaneous-interpretation2-0-api-access-documentation?lang=zh"},
         "limits": ["Speech SDK端侧离线能力需原生应用集成；MCP提供云API。",
                    "realtime（持久实时语音会话）和 admin（热词/替换词表、控制台 OpenAPI，需 AK/SK，可下单和删除）默认不启用。",
                    "术语词表CRUD官方仅提供控制台；使用支持glossary / glossary_table_id。",

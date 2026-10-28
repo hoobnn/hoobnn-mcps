@@ -14,7 +14,7 @@ from . import transport
 
 from . import speech
 
-DOC_ROOT = "https://docs.volcengine.com/docs/DoubaoVoice/"
+DOC_ROOT = "https://docs.volcengine.com/docs/doubao-voice/"
 OPERATIONS = {
     "subtitle_submit": ("POST", "/api/v1/vc/submit", "query", "Audiovideosubtitlegeneration"),
     "subtitle_query": ("GET", "/api/v1/vc/query", "query", "Audiovideosubtitlegeneration"),

@@ -13,13 +13,13 @@ from pathlib import Path
 from . import speech
 
 DOCS = {
-    "tts_submit": "https://docs.volcengine.com/docs/DoubaoVoice/Tasksubmission?lang=zh",
-    "tts_query": "https://docs.volcengine.com/docs/DoubaoVoice/Resultquery?lang=zh",
-    "voice_clone": "https://docs.volcengine.com/docs/DoubaoVoice/tone-training-http?lang=zh",
-    "voice_query": "https://docs.volcengine.com/docs/DoubaoVoice/tone-query-http?lang=zh",
-    "voice_upgrade": "https://docs.volcengine.com/docs/DoubaoVoice/tone-upgrade-http?lang=zh",
-    "voice_design": "https://docs.volcengine.com/docs/DoubaoVoice/SoundDesignAPI?lang=zh",
-    "asr_standard": "https://docs.volcengine.com/docs/DoubaoVoice/LargemodelrecordingfilerecognitionstandardversionAPI?lang=zh",
+    "tts_submit": "https://docs.volcengine.com/docs/doubao-voice/task-sub-mission?lang=zh",
+    "tts_query": "https://docs.volcengine.com/docs/doubao-voice/result-query?lang=zh",
+    "voice_clone": "https://docs.volcengine.com/docs/doubao-voice/tone-training-http?lang=zh",
+    "voice_query": "https://docs.volcengine.com/docs/doubao-voice/tone-query-http?lang=zh",
+    "voice_upgrade": "https://docs.volcengine.com/docs/doubao-voice/tone-upgrade-http?lang=zh",
+    "voice_design": "https://docs.volcengine.com/docs/doubao-voice/sound-design-api?lang=zh",
+    "asr_standard": "https://docs.volcengine.com/docs/doubao-voice/large-model-recording-file-recognition-standard-version-api?lang=zh",
     "asr_idle": "https://www.volcengine.com/docs/6561/1840838?lang=zh",
 }
 ASR_MODES = {

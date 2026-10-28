@@ -12,7 +12,9 @@
 
 </div>
 
-豆包语音云 API 的 stdio MCP server。接口依据[官方目录](https://docs.volcengine.com/docs/DoubaoVoice/list?lang=zh)于 2026-10-10 核对。
+豆包语音云 API 的 stdio MCP server。接口依据[官方目录](https://docs.volcengine.com/docs/doubao-voice)于 2026-10-10 核对。
+
+`0.5.1` 更新火山文档迁移后的官方链接，工具帮助和使用示例同步使用当前文档库名与 slug；语音请求协议保持不变。
 
 `0.5.0` 将播客默认通道改为 HTTP SSE，持久保存真实会话 ID、完整轮次与续传回执；需要历史通道时显式传 `transport="websocket"`。实时会话新增 `mode="seed"` 的图像 / 视频帧输入及取消播放状态，原 `legacy` 模式仍为默认。
 
@@ -137,7 +139,7 @@ MCP 客户端本地启动命令可指定本项目 `.venv/bin/doubao-speech-mcp` 
 }
 ```
 
-语言支持清单以[官方音频生成 API](https://docs.volcengine.com/docs/DoubaoVoice/audio-generation-http?lang=zh)为准，控制台模板展示与 API 列举可能不同。四类用法及参数示例也已写入 `generate_audio` 的工具描述，客户端发现工具时即可读取。
+语言支持清单以[官方音频生成 API](https://docs.volcengine.com/docs/doubao-voice/audio-generation-http?lang=zh)为准，控制台模板展示与 API 列举可能不同。四类用法及参数示例也已写入 `generate_audio` 的工具描述，客户端发现工具时即可读取。
 
 ### 长文本、识别与妙记
 
@@ -179,7 +181,7 @@ MCP 客户端本地启动命令可指定本项目 `.venv/bin/doubao-speech-mcp` 
 
 实时上传 20ms 一包。MCP 不直接采集麦克风、播放声音或驱动声卡，客户端负责设备输入输出。同传需 16kHz / mono / 16bit WAV 或 PCM；WAV 自动去容器。目标 PCM16k 保存有效 WAV，PCM24k 保留 float32 原始 PCM 并返回格式信息。
 
-官方[接入必读](https://docs.volcengine.com/docs/DoubaoVoice/access-mustread?lang=zh) 现已补充输入质量要求（2026-10-26 复核）：纯人声 RMS 推荐 −31.7～−23.9 dBFS（目标约 −27.6），准入范围 −37～−19.5 dBFS，峰值 ≤−1 dBFS；纯背景噪声 RMS 推荐 ≤−50 dBFS（目标约 −52.6），SNR 推荐 20～30 dB，最低要求为噪声 ≤−45 dBFS 且 SNR ≥15 dB。客户端负责采集与质量控制；MCP 不自动增益、降噪或从混合音频估算纯人声/纯噪声 RMS。麦克风停采且不再发音频帧时发送 `input_audio_mute.commit`，恢复时发送 `input_audio_unmute.commit`，避免保活超时。
+官方[接入必读](https://docs.volcengine.com/docs/doubao-voice/access-must-read?lang=zh) 现已补充输入质量要求（2026-10-26 复核）：纯人声 RMS 推荐 −31.7～−23.9 dBFS（目标约 −27.6），准入范围 −37～−19.5 dBFS，峰值 ≤−1 dBFS；纯背景噪声 RMS 推荐 ≤−50 dBFS（目标约 −52.6），SNR 推荐 20～30 dB，最低要求为噪声 ≤−45 dBFS 且 SNR ≥15 dB。客户端负责采集与质量控制；MCP 不自动增益、降噪或从混合音频估算纯人声/纯噪声 RMS。麦克风停采且不再发音频帧时发送 `input_audio_mute.commit`，恢复时发送 `input_audio_unmute.commit`，避免保活超时。
 
 `mode=legacy` 为兼容默认值：`/api/v3/duplex/realtime/dialogue` + `model=1.2.6.1`。新模式 `mode=seed` 使用 `/api/v3/seedrealtime` + `model=1.3.0.0`，不能仅在旧模式换 model。图像配置在 **`extension.video`**：
 
@@ -214,7 +216,7 @@ SSE 在提交前、150 和每个完整 362 时保存 `progress_file`（原请求
 
 ## 官方来源与覆盖边界
 
-新增接口来源包括[长文本提交](https://docs.volcengine.com/docs/DoubaoVoice/Tasksubmission?lang=zh)、[音色注册](https://docs.volcengine.com/docs/DoubaoVoice/tone-training-http?lang=zh)、[音色设计](https://docs.volcengine.com/docs/DoubaoVoice/SoundDesignAPI?lang=zh)、[实时识别](https://docs.volcengine.com/docs/DoubaoVoice/bidirectional-streaming-automatic-speech-recognition-websocket?lang=zh)、[播客 SSE](https://docs.volcengine.com/docs/DoubaoVoice/podcast?lang=zh)、[实时 3.0](https://docs.volcengine.com/docs/DoubaoVoice/endtoend-realtime-voice-full-duplex-version?lang=zh)、[同传](https://docs.volcengine.com/docs/DoubaoVoice/SimultaneousInterpretation20APIAccessDocumentation?lang=zh)、[机器翻译](https://docs.volcengine.com/docs/DoubaoVoice/MachineTranslationLargeModel-APIAccessDocumentation?lang=zh)、[妙记](https://docs.volcengine.com/docs/DoubaoVoice/DoubaoVoiceMinutes-APIAccessDocumentation?lang=zh)、[热词](https://docs.volcengine.com/docs/DoubaoVoice/HotWordManagementAPIv10?lang=zh)、[替换词](https://docs.volcengine.com/docs/DoubaoVoice/ReplacementWordAPIv11?lang=zh)及[控制台 OpenAPI](https://api.volcengine.com/api-docs/view?action=ActivateService&serviceCode=speech_saas_prod&version=2025-05-20)。
+新增接口来源包括[长文本提交](https://docs.volcengine.com/docs/doubao-voice/task-sub-mission?lang=zh)、[音色注册](https://docs.volcengine.com/docs/doubao-voice/tone-training-http?lang=zh)、[音色设计](https://docs.volcengine.com/docs/doubao-voice/sound-design-api?lang=zh)、[实时识别](https://docs.volcengine.com/docs/doubao-voice/bidirectional-streaming-automatic-speech-recognition-websocket?lang=zh)、[播客 SSE](https://docs.volcengine.com/docs/doubao-voice/podcast?lang=zh)、[实时 3.0](https://docs.volcengine.com/docs/doubao-voice/end-to-end-real-time-voice-full-duplex-version?lang=zh)、[同传](https://docs.volcengine.com/docs/doubao-voice/simultaneous-interpretation2-0-api-access-documentation?lang=zh)、[机器翻译](https://docs.volcengine.com/docs/doubao-voice/machine-translation-large-model-api-access-documentation?lang=zh)、[妙记](https://docs.volcengine.com/docs/doubao-voice/doubao-voice-minutes-api-access-documentation?lang=zh)、[热词](https://docs.volcengine.com/docs/doubao-voice/hot-word-management-api-v10?lang=zh)、[替换词](https://docs.volcengine.com/docs/doubao-voice/replacement-word-api-v11?lang=zh)及[控制台 OpenAPI](https://api.volcengine.com/api-docs/view?action=ActivateService&serviceCode=speech_saas_prod&version=2025-05-20)。
 
 Speech SDK 的离线模型、端侧 VAD / 音频处理和 Android / iOS 接入需原生应用，不能等同于云 MCP。术语词表 CRUD 官方仅公开控制台流程；翻译 / 同传通过 `glossary`、`glossary_table_id`（或 `parameters` 里的 `glossary_table_name`）使用术语。同传官方附件的 Protobuf 尚未声明文档新增的 `detected_language`，本版不猜字段编号。
 
@@ -224,7 +226,7 @@ Speech SDK 的离线模型、端侧 VAD / 音频处理和 Android / iOS 接入�
 
 离线测试覆盖 HTTP 合同、任务状态、签名、Protobuf、二进制帧、模拟 WebSocket 收发、音频文件、超时 / 取消清理，以及实际 stdio MCP 初始化、工具发现与调用。未调用付费云接口，因此不能证明账号开通、配额可用或实际生成质量。
 
-参数说明见工具描述（`src/doubao_speech_mcp/server.py`）。接口细节以官方文档为准：[单向流式语音合成](https://docs.volcengine.com/docs/DoubaoVoice/unidirectional-streaming-text-to-speech-http)、[录音文件识别极速版](https://docs.volcengine.com/docs/DoubaoVoice/recording-file-recognition-lite-http)、[音频生成](https://docs.volcengine.com/docs/DoubaoVoice/audio-generation-http)、[音色列表](https://docs.volcengine.com/docs/6561/1257544)。
+参数说明见工具描述（`src/doubao_speech_mcp/server.py`）。接口细节以官方文档为准：[单向流式语音合成](https://docs.volcengine.com/docs/doubao-voice/unidirectional-streaming-text-to-speech-http)、[录音文件识别极速版](https://docs.volcengine.com/docs/doubao-voice/recording-file-recognition-lite-http)、[音频生成](https://docs.volcengine.com/docs/doubao-voice/audio-generation-http)、[音色列表](https://docs.volcengine.com/docs/6561/1257544)。
 
 ## 运行时与稳定性
 
