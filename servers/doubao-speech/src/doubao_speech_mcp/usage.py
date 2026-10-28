@@ -1,7 +1,7 @@
 """Offline examples rewritten from official console templates and API documentation."""
 from copy import deepcopy
 
-DOC = "https://docs.volcengine.com/docs/DoubaoVoice/"
+DOC = "https://docs.volcengine.com/docs/doubao-voice/"
 CONSOLE = "https://console.volcengine.com/speech/new/experience/"
 
 
@@ -55,7 +55,7 @@ GUIDES = {
     },
     "tts": {
         "title": "合成2.0：语音指令、方言、读音修正与引用上文",
-        "sources": [DOC + "DoubaoTextToSpeech20CapabilityIntroduction?lang=zh", DOC + "unidirectional-streaming-text-to-speech-http?lang=zh"],
+        "sources": [DOC + "doubao-text-to-speech-20-capability-introduction?lang=zh", DOC + "unidirectional-streaming-text-to-speech-http?lang=zh"],
         "official_examples": ["吵架", "暧昧悄悄话", "四川话", "北京话", "承接问询语境", "承接老友相见语境"],
         "tips": ["text只放需要朗读的正文；instructions放情绪、语气和速度，先明确主情绪，再补局部变化。", "支持能力取决于音色；方言用dialect，读音纠正用pronunciations。", "引用上文让模型理解上一轮问答但不朗读：parameters.req_params.additions.context_texts，additions可直接写对象。", "instructions也映射context_texts；多个上下文、SSML或其他高级选项都放parameters。", "超过5000字自动走异步长文本（long_text可强制），返回job_id后用get_job查询并下载。", "音色列表备注「仅限单向流」的外语音色（如en_male_ryan_uranus_bigtts）不能走tts_websocket双向流，用text_to_speech或mode=unidirectional。"],
         "examples": [
@@ -69,7 +69,7 @@ GUIDES = {
     },
     "voice": {
         "title": "音色设计与复刻：声线描述、试听与录音准备",
-        "sources": [DOC + "SoundDesignAPI?lang=zh", DOC + "SoundReplication20BestPractices?lang=zh", DOC + "tone-training-http?lang=zh"],
+        "sources": [DOC + "sound-design-api?lang=zh", DOC + "sound-replication-20-best-practices?lang=zh", DOC + "tone-training-http?lang=zh"],
         "official_examples": ["街头说唱者", "儒雅老人", "古代文人", "超市促销员"],
         "tips": ["设计描述按性别/年龄感、音色质感、语言、角色、语速/语调/情绪展开；优先写最重要的辨识特征。", "preview_text是试听正文，description是声音描述；用与最终场景一致的文本试听，促销场景可包含价格数字。", "设计描述<=200字符，试听<=300字符；图片<=10MB。图文同时提交时图片优先。", "设计和复刻需已分配的speaker_id，消耗训练次数；查询状态成功/激活后再用该音色合成，试听URL只有1小时。", "复刻最佳实践推荐14–30秒WAV、单声道、单人、低噪声和一致的表演；避免重叠人声、混响，过度降噪可能损失相似度。", "中英混读目标应在样音覆盖中英；稳定助理选平稳样音，表达型复刻还需结合正文语义与语音指令试听。"],
         "examples": [
@@ -81,7 +81,7 @@ GUIDES = {
     },
     "podcast": {
         "title": "播客：文章、链接、逐轮脚本与联网话题",
-        "sources": [DOC + "podcast?lang=zh", DOC + "podcast_mustread?lang=zh", DOC + "PodcastAPI-websocket-v3protocol?lang=zh"],
+        "sources": [DOC + "podcast?lang=zh", DOC + "podcast-mustread?lang=zh", DOC + "podcast-api-websocket-v3protocol?lang=zh"],
         "tips": ["text/url改写文章或链接；dialogue直接演绎逐轮脚本；topic根据话题联网生成。topic只是话题，不具备格式指令能力。", "url支持网页及PDF/doc/txt链接，不把控制台上传格式直接视为API格式。", "script_only=true先生成脚本；dialogue每轮<=300字、总量<=10000字。", "speakers必须是两个音色，建议同系列配对，按给出的顺序发言。", "文章推荐<=12000字（parameters.input_info.input_text_max_length可调），超过会截断；默认HTTP SSE，return_audio_url链接24小时有效；历史transport=websocket仍按旧文档1小时处理。", "只有152且code=20000000才成功；HTTP200、363和usage不能提前结束。progress_file保存原请求、首次150真实task_id、最近session_id和完整轮次边界，取消/超时也保留。收到partial后用parameters.retry_info显式续传；多次续传始终用首次task_id，返回片段需自行按序合并并调整时间轴。", "diagnostic_file是被截掉的未完成轮次音频，只用于排查，不参与续传拼接；服务端取消（151）同样按失败处理。"],
         "examples": [
             example("文章先生成脚本", "generate_podcast", {"text": "这里替换为完整文章。", "script_only": True}),
@@ -102,7 +102,7 @@ GUIDES = {
     },
     "translation": {
         "title": "翻译与同传：术语一致性、字幕和语音输出",
-        "sources": [DOC + "MachineTranslationLargeModel-APIAccessDocumentation?lang=zh", DOC + "SimultaneousInterpretation20APIAccessDocumentation?lang=zh"],
+        "sources": [DOC + "machine-translation-large-model-api-access-documentation?lang=zh", DOC + "simultaneous-interpretation2-0-api-access-documentation?lang=zh"],
         "tips": ["固定品牌和专业术语用glossary；直传术语优先于术语表。不要把ASR热词当作翻译词典。", "机器翻译不指定source_language可自动检测；1–16条文本，按原顺序处理，每条<=1024 tokens。", "同传文件需16kHz/16bit/单声道；s2t只要字幕，s2s还返回目标语音。", "录音保持安静、避免多人同时发言；本工具处理文件，麦克风实时采集由客户端负责。"],
         "examples": [
             example("指定术语译法", "translate_text", {"texts": ["火山引擎提供语音服务。"], "target_language": "en", "source_language": "zh", "glossary": {"火山引擎": "Volcengine"}}),
@@ -112,7 +112,7 @@ GUIDES = {
     },
     "minutes": {
         "title": "妙记：按需启用摘要与章节",
-        "sources": [DOC + "DoubaoVoiceMinutes-APIAccessDocumentation?lang=zh"],
+        "sources": [DOC + "doubao-voice-minutes-api-access-documentation?lang=zh"],
         "tips": ["bundle_billing（AllActivate）只选择计费方式，不会开启功能；summary、chapters、todos、qa、translate_to按需打开。", "只需原始转写用speech_to_text；妙记至少启用一项附加功能。", "speaker_count已知时填写，未知保持0自动识别。", "提交后用get_job查询，完成时自动下载结果JSON；等待中不要重复提交。"],
         "examples": [
             example("会议转写与摘要", "summarize_meeting", {"file_url": "https://example.com/meeting.wav"}),
@@ -122,7 +122,7 @@ GUIDES = {
     },
     "realtime": {
         "title": "实时语音：Seed图像输入、角色指令与工具回传",
-        "sources": [DOC + "seedrealtime?lang=zh", DOC + "endtoend-realtime-voice-full-duplex-version?lang=zh"],
+        "sources": [DOC + "seedrealtime?lang=zh", DOC + "end-to-end-real-time-voice-full-duplex-version?lang=zh"],
         "tips": ["实时会话工具默认不启用，需在MCP配置设MCP_TOOL_GROUPS包含realtime并重启。", "session.instructions定义角色、语气和回答范围；不要照搬音频生成的时间区间标记。", "按open→append音频→commit→receive→close处理；输入文件是16kHz单声道int16裸PCM，append后需显式commit。", "mode=legacy默认使用1.2.6.1，可response.cancel；mode=seed使用独立seedrealtime入口和1.3.0.0，禁止response.cancel。seed由response.created/canceled/done驱动playback_state，ASR仅作转写；clear_playback_buffer=true须立即停播并清空队列。工具调用需按call_id回传结果。", "session_id是当前MCP进程的句柄，重启后失效；退出或完成后关闭连接。"],
         "examples": [
             example("摄像画面对话", "open_realtime_session", {"mode": "seed", "session": {"audio": {"output": {"voice": "zh_female_vv_jupiter_bigtts"}}}, "extension": {"video": {"frame_format": "JPEG", "frame_rate": "2"}}}),

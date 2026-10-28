@@ -45,7 +45,7 @@
 
 ### 图片
 
-依据[图片 API](https://docs.volcengine.com/docs/ark/image-generation-api?lang=zh)和[图片教程](https://docs.volcengine.com/docs/ark/seedream-4-0-5-0?lang=zh)：
+依据[图片 API](https://docs.volcengine.com/docs/ark/image-generation-api?lang=zh)和[图片教程](https://docs.volcengine.com/docs/ark/image-generation-tutorial?lang=zh)：
 
 - pro/flash最多10张参考；lite最多14张。组图与搜索仅lite支持；总参考数+最大生成数不能超过15。group是最大数量，模型不保证正好生成该数量。
 - pro/flash档位1K/1.5K/2K；lite档位2K/3K/4K。显式宽高的总像素限制分别为921600–4624220及3686400–16777216，宽高比1/16–16；图层拆分仅支持档位或auto，不能填写像素尺寸。本次增加预检。
