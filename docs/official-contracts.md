@@ -34,13 +34,13 @@ HTML 回退读取 `window.__ICE_PAGE_PROPS__` 的 `docDetailData.storeData.data.
 官网公开文档读取路径实测可用，取 `Result.MDContent`：
 
 ```text
-GET https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=ark&DocumentCode=<slug>
-GET https://docs.volcengine.com/api/doc/getDocDetail?LibraryCode=DoubaoVoice&DocumentCode=<slug>
+GET https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=82379&DocumentID=<document-id>
+GET https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=<document-id>
 ```
 
-同响应保留 `Title/DocumentID/DocumentCode/UpdatedTime`。`ContentType=json` 表示另一字段 `Content` 的编辑器富文本，不代表没有 Markdown；不对随机编辑器块 ID 计算契约指纹。
+同响应保留 `Title/DocumentID/DocumentCode/UpdatedTime`。2026-10-28 官网将语音库名从 `DoubaoVoice` 改为 `doubao-voice`，并批量规范化 slug；抓取改用已核对的数字 `LibraryID/DocumentID`，继续逐项严格校验返回身份。可读链接同步到当前 canonical slug，不自动接受未知的重定向身份。`ContentType=json` 表示另一字段 `Content` 的编辑器富文本，不代表没有 Markdown；不对随机编辑器块 ID 计算契约指纹。
 
-目录由 `getDocList?LibraryCode=ark`、`getDocList?LibraryCode=DoubaoVoice` 获取，用于发现新增/移除页面。旧数字地址可用 `getDocumentCode?LibraryID=...&DocumentID=...` 映射 slug。目录排序和请求元数据不进入正文指纹。
+目录由 `getDocList?LibraryID=82379`、`getDocList?LibraryID=6561` 获取，用于发现新增/移除页面。已撤下的 `seedream-4-0-5-0`（1824121）已从监控登记移除，改为官方目录中的 `image-generation-tutorial`（2742760）；这是新增来源，正文仍须正常审查，不继承旧教程的已审结论。旧数字地址可用 `getDocumentCode?LibraryID=...&DocumentID=...` 映射 slug。目录排序和请求元数据不进入正文指纹。
 
 本次火山 `.md/llms.txt/llms-full.txt` 返回 HTTP 200 HTML 壳，不能作为正文成功。上述读取路径是官方前端自用接口，未查到对外稳定性承诺，格式变化应显式修适配器，不能当作正式云产品 OpenAPI。
 
@@ -120,3 +120,9 @@ python3 scripts/upstream_docs.py --server minimax --accept-baseline
 2026-10-11 补入 MiniMax：17 个工具，14 个中国站 OpenAPI 正文来源纳入覆盖检查、基线和 gzip 快照，其他供应商基线未变；登记来源合计 132 个。验证回执见 [minimax-contracts.md](minimax-contracts.md)。
 
 没有执行真实云端生成、识别、训练或管理操作；模型权限、旧文本向量型号、文本向量 dimensions 等未确认项保留在逐项报告中。远端 CI 状态见 [Actions](https://github.com/hoobnn/hoobnn-mcps/actions/workflows/test.yml)。
+
+## 2026-10-28 迁移修复验证
+
+从两个官方目录按已审基线的 DocumentID 对齐：76 个语音正文保持相同文档 ID；方舟 15 个正文保持原 ID，旧图片教程被官方撤下，另登记新教程。两个目录与 92 个正文均使用数字身份抓取；可读文档 URL 更新为官方目录返回的库名与 slug。历史快照和已审正文指纹保持原样，新教程及新正文变化继续进入正常待审流程。
+
+全量联网巡检 144/144 成功、0 错误（方舟 17、百炼 36、语音 77、MiniMax 14）。补充回归验证数字身份可容忍 slug 迁移，同时拒绝错误/缺失 DocumentID、LibraryID 和已撤下空文档。隐藏目录报告上传已显式启用 include-hidden-files；远端实际产物留存另以 Actions 回执为准。

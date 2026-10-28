@@ -82,6 +82,21 @@ class DocumentContracts(unittest.TestCase):
         with self.assertRaises(ValueError):
             docs.extract(json.dumps({"Result": {"DocumentCode": "other", "MDContent": "body" * 100}}), source)
 
+    def test_numeric_identity_survives_slug_migration_and_rejects_wrong_document(self):
+        source = {"id": "api", "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=1329505"}
+        result = {"LibraryID": 6561, "DocumentID": 1329505, "LibraryCode": "doubao-voice",
+                  "DocumentCode": "websocket-bidirectional-streaming-v3", "Title": "API",
+                  "MDContent": "# API\n" + "official contract\n" * 20}
+        content, metadata = docs.extract(json.dumps({"Result": result}), source)
+        self.assertEqual(content, result["MDContent"])
+        self.assertEqual(metadata["document_id"], "1329505")
+        for field, wrong in (("LibraryID", 82379), ("DocumentID", 1329506), ("LibraryID", None), ("DocumentID", None)):
+            with self.subTest(field=field, wrong=wrong), self.assertRaisesRegex(ValueError, field):
+                docs.extract(json.dumps({"Result": dict(result, **{field: wrong})}), source)
+        # A retired page can return an empty Result with the requested DocumentID.
+        with self.assertRaises(ValueError):
+            docs.extract(json.dumps({"Result": {"DocumentID": 1329505, "LibraryID": 0}}), source)
+
     def test_official_markdown_may_embed_html_tables(self):
         body = "# API\n<table><tr><td><p>model contract</p></td></tr></table>\n" * 20
         self.assertEqual(docs.extract(body, {"id": "api"})[0], body)
