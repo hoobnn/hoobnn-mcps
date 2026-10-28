@@ -85,6 +85,7 @@ jobs:
         with:
           name: official-document-audit-${{ matrix.server }}-${{ github.run_id }}
           path: .upstream-docs/
+          include-hidden-files: true
           retention-days: 14
           if-no-files-found: warn
       - name: Mention the owner on the pending PR about newer changes
