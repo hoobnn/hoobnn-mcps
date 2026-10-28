@@ -12,6 +12,8 @@
 
 </div>
 
+`0.7.1` 补充 Qwen-Audio-TTS 方言用法：支持方言指令的系统音色及复刻音色使用 `instructions="请讲上海话。"`（映射到官方 `input.instruction`）；设计音色暂不支持方言。复核至 2026-10-28 的官方文档；SDK 2.0 示例迁移不影响本 MCP 的 HTTP 请求。
+
 `0.7.0` 新增复刻本地录音 / Base64 Data URI、`qwen-audio-3.1-tts-plus` 和百炼托管 MiniMax 的思考协议支持，更新 workspace 地域接入说明。TTS 用量保留原始单位，旧任务丢失单位的计量返回 `legacy_untyped`，不再猜测字符或 token。
 
 `0.6.0` 适配官方 2026-10-10 模型下线：`clone_voice` / `design_voice` 改用 `voice-enrollment`，默认目标模型 `qwen-audio-3.0-tts-flash`；`text_to_speech` 新增 Qwen-Audio-TTS / CosyVoice 与 `instructions` 语气控制；`rerank` 统一走原生接口；`speech_to_text` 拒绝已下线的日期快照。旧的 qwen3-tts-vc/vd 音色已随模型下线，不能继续使用。

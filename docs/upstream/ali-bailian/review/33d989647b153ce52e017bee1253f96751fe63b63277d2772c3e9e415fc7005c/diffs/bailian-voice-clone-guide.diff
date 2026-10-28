@@ -1,0 +1,345 @@
+--- reviewed/ali-bailian/bailian-voice-clone-guide
++++ current/ali-bailian/bailian-voice-clone-guide
+@@ -16,14 +16,21 @@
+ 
+ - [获取 API Key](/zh/model-studio/get-api-key)，并将其[配置到环境变量](/zh/model-studio/configure-api-key-through-environment-variables) `DASHSCOPE_API_KEY`。
+ 
+-- 获取业务空间 ID，将示例中的 `YOUR_WORKSPACE_ID` 替换为真实值。获取方式请参见[地域与接入域名](/zh/model-studio/regions)。
+-
+-- 安装 Python HTTP 库 `requests`：
++- 获取业务空间 ID，将示例中的 `YOUR_WORKSPACE_ID`（SDK 示例中的 `{WorkspaceId}`）替换为真实值。获取方式请参见[地域与接入域名](/zh/model-studio/regions)。
++
++- 使用 HTTP 方式时，安装 Python HTTP 库 `requests`：
+ 
+   ```bash
+   pip install requests
+   ```
+ 
++- 使用 Python SDK 方式时，安装 [DashScope SDK](/zh/model-studio/install-sdk)（需 2.0.1 及以上版本）：
++
++  ```bash
++  # 本文档示例基于 DashScope Python SDK 2.0 编写，需 2.0.1 及以上版本
++  pip install -U "dashscope>=2.0.1"
++  ```
++
+ - 准备符合[音频要求](#vc02_audio_h2)的音频文件。Qwen-Audio-TTS、Qwen-Audio-Realtime 和 CosyVoice 支持公网 URL 或 Base64 Data URI；MiniMax 仍使用公网 URL。以下示例使用[示例音频](https://dashscope.oss-cn-beijing.aliyuncs.com/samples/audio/cosyvoice/cosyvoice-zeroshot-sample.wav)的 URL，本地音频的编码和传参方式请参见 [HTTP API](/zh/model-studio/voice-clone-design-http-api#h3-create-enrollment)。
+ 
+ ## 开始使用 <span id="vc03_qs_h2" /> <span id="vc05_faq_h2" />
+@@ -38,80 +45,122 @@
+ 
+     <span id="vc03_cosy_h3" />
+ 
+-    Qwen-Audio-TTS 和 CosyVoice 使用相同的音色创建和基础合成流程。以下以 `qwen-audio-3.1-tts-flash` 为例。
+-
+-    1. **创建音色**：通过 HTTP API 的 `audio` 字段传入参考音频 URL 或 Base64 Data URI，`target_model` 指定目标模型，`prefix` 为音色名称前缀。
++    Qwen-Audio-TTS 和 CosyVoice 使用相同的音色创建和基础合成流程。以下以 `qwen-audio-3.1-tts-plus` 为例。
++
++    1. **创建音色**：传入参考音频 URL（HTTP 方式还支持 Base64 Data URI，SDK 方式使用公网 URL），`target_model` 指定目标模型，`prefix` 为音色名称前缀。
+     2. **合成语音**：将返回的音色 ID 传入 `voice`，使用同一个目标模型合成语音并保存音频。
+ 
+-    ```python height="500" expandable
+-    import os
+-    import time
+-    import requests
+-
+-    workspace_id = "YOUR_WORKSPACE_ID"
+-    target_model = "qwen-audio-3.1-tts-flash"
+-    base_url = f"https://{workspace_id}.cn-beijing.maas.aliyuncs.com/api/v1"
+-    headers = {"Authorization": f"Bearer {os.environ['DASHSCOPE_API_KEY']}"}
+-
+-    response = requests.post(
+-        f"{base_url}/services/audio/tts/customization",
+-        headers=headers,
+-        json={
+-            "model": "voice-enrollment",
+-            "input": {
+-                "action": "create_voice",
+-                "target_model": target_model,
+-                "prefix": "myvoice",
+-                "audio": "https://dashscope.oss-cn-beijing.aliyuncs.com/samples/audio/cosyvoice/cosyvoice-zeroshot-sample.wav",
+-            },
+-        },
+-        timeout=60,
+-    )
+-    response.raise_for_status()
+-    voice_id = response.json()["output"]["voice_id"]
+-    print(f"voice_id: {voice_id}")
+-
+-    for _ in range(30):
++    <Tabs>
++      <Tab title="Python SDK">
++        ```python height="500" expandable
++        import os
++
++        import dashscope
++
++        # 以下为华北2（北京）地域的配置，调用时请将"{WorkspaceId}"替换为真实的业务空间ID，各地域的配置不同。
++        client = dashscope.Client(
++            # 若没有将API Key配置到环境变量中，请将下行替换为自己的API Key：api_key="sk-xxx"
++            api_key=os.getenv("DASHSCOPE_API_KEY"),
++            workspace="{WorkspaceId}",
++            region="cn-beijing",
++        )
++
++        target_model = "qwen-audio-3.1-tts-plus"
++
++        # 创建音色。
++        voice = client.audio.voices.create(
++            target_model=target_model,
++            prefix="myvoice",
++            url="https://dashscope.oss-cn-beijing.aliyuncs.com/samples/audio/cosyvoice/cosyvoice-zeroshot-sample.wav",
++        )
++        voice_id = voice.voice_id
++        print(f"voice_id: {voice_id}")
++
++        # 使用绑定模型和返回的音色 ID 合成语音。
++        audio = client.audio.tts.synthesize(
++            "今天天气晴朗，适合外出散步。祝你度过愉快的一天。",
++            model=target_model,
++            voice=voice_id,
++            format="wav",
++            sample_rate=24000,
++        )
++        with open("output.wav", "wb") as f:
++            f.write(audio)
++        ```
++      </Tab>
++
++      <Tab title="HTTP">
++        ```python height="500" expandable
++        import os
++        import time
++        import requests
++
++        workspace_id = "YOUR_WORKSPACE_ID"
++        target_model = "qwen-audio-3.1-tts-plus"
++        base_url = f"https://{workspace_id}.cn-beijing.maas.aliyuncs.com/api/v1"
++        headers = {"Authorization": f"Bearer {os.environ['DASHSCOPE_API_KEY']}"}
++
+         response = requests.post(
+             f"{base_url}/services/audio/tts/customization",
+             headers=headers,
+             json={
+                 "model": "voice-enrollment",
+-                "input": {"action": "query_voice", "voice_id": voice_id},
++                "input": {
++                    "action": "create_voice",
++                    "target_model": target_model,
++                    "prefix": "myvoice",
++                    "audio": "https://dashscope.oss-cn-beijing.aliyuncs.com/samples/audio/cosyvoice/cosyvoice-zeroshot-sample.wav",
++                },
+             },
+             timeout=60,
+         )
+         response.raise_for_status()
+-        status = response.json()["output"]["status"]
+-        if status == "OK":
+-            break
+-        if status != "DEPLOYING":
+-            raise RuntimeError(f"Voice status: {status}")
+-        time.sleep(1)
+-    else:
+-        raise TimeoutError("Voice is not ready")
+-
+-    response = requests.post(
+-        f"{base_url}/services/audio/tts/SpeechSynthesizer",
+-        headers=headers,
+-        json={
+-            "model": target_model,
+-            "input": {
+-                "text": "今天天气晴朗，适合外出散步。祝你度过愉快的一天。",
+-                "voice": voice_id,
+-                "format": "wav",
+-                "sample_rate": 24000,
++        voice_id = response.json()["output"]["voice_id"]
++        print(f"voice_id: {voice_id}")
++
++        for _ in range(30):
++            response = requests.post(
++                f"{base_url}/services/audio/tts/customization",
++                headers=headers,
++                json={
++                    "model": "voice-enrollment",
++                    "input": {"action": "query_voice", "voice_id": voice_id},
++                },
++                timeout=60,
++            )
++            response.raise_for_status()
++            status = response.json()["output"]["status"]
++            if status == "OK":
++                break
++            if status != "DEPLOYING":
++                raise RuntimeError(f"Voice status: {status}")
++            time.sleep(1)
++        else:
++            raise TimeoutError("Voice is not ready")
++
++        response = requests.post(
++            f"{base_url}/services/audio/tts/SpeechSynthesizer",
++            headers=headers,
++            json={
++                "model": target_model,
++                "input": {
++                    "text": "今天天气晴朗，适合外出散步。祝你度过愉快的一天。",
++                    "voice": voice_id,
++                    "format": "wav",
++                    "sample_rate": 24000,
++                },
+             },
+-        },
+-        timeout=60,
+-    )
+-    response.raise_for_status()
+-    audio_url = response.json()["output"]["audio"]["url"]
+-    audio_response = requests.get(audio_url, timeout=60)
+-    audio_response.raise_for_status()
+-    with open("output.wav", "wb") as f:
+-        f.write(audio_response.content)
+-    ```
++            timeout=60,
++        )
++        response.raise_for_status()
++        audio_url = response.json()["output"]["audio"]["url"]
++        audio_response = requests.get(audio_url, timeout=60)
++        audio_response.raise_for_status()
++        with open("output.wav", "wb") as f:
++            f.write(audio_response.content)
++        ```
++      </Tab>
++    </Tabs>
+ 
+     运行后，合成音频保存为 `output.wav`。保存打印的音色 ID，后续可继续使用。
+   </Tab>
+@@ -121,54 +170,84 @@
+ 
+     Qwen-Audio-Realtime 的复刻音色用于自定义实时语音对话的回复声音。以下以 `qwen-audio-3.1-realtime-plus` 为例创建音色。
+ 
+-    ```python height="500" expandable
+-    import os
+-    import time
+-    import requests
+-
+-    workspace_id = "YOUR_WORKSPACE_ID"
+-    target_model = "qwen-audio-3.1-realtime-plus"
+-    base_url = f"https://{workspace_id}.cn-beijing.maas.aliyuncs.com/api/v1"
+-    headers = {"Authorization": f"Bearer {os.environ['DASHSCOPE_API_KEY']}"}
+-
+-    response = requests.post(
+-        f"{base_url}/services/audio/tts/customization",
+-        headers=headers,
+-        json={
+-            "model": "voice-enrollment",
+-            "input": {
+-                "action": "create_voice",
+-                "target_model": target_model,
+-                "prefix": "myvoice",
+-                "audio": "https://dashscope.oss-cn-beijing.aliyuncs.com/samples/audio/cosyvoice/cosyvoice-zeroshot-sample.wav",
+-            },
+-        },
+-        timeout=60,
+-    )
+-    response.raise_for_status()
+-    voice_id = response.json()["output"]["voice_id"]
+-    print(f"voice_id: {voice_id}")
+-
+-    for _ in range(30):
++    <Tabs>
++      <Tab title="Python SDK">
++        ```python height="500" expandable
++        import os
++
++        import dashscope
++
++        # 以下为华北2（北京）地域的配置，调用时请将"{WorkspaceId}"替换为真实的业务空间ID，各地域的配置不同。
++        client = dashscope.Client(
++            # 若没有将API Key配置到环境变量中，请将下行替换为自己的API Key：api_key="sk-xxx"
++            api_key=os.getenv("DASHSCOPE_API_KEY"),
++            workspace="{WorkspaceId}",
++            region="cn-beijing",
++        )
++
++        target_model = "qwen-audio-3.1-realtime-plus"
++
++        # 创建音色。
++        voice = client.audio.voices.create(
++            target_model=target_model,
++            prefix="myvoice",
++            url="https://dashscope.oss-cn-beijing.aliyuncs.com/samples/audio/cosyvoice/cosyvoice-zeroshot-sample.wav",
++        )
++        print(f"voice_id: {voice.voice_id}")
++        ```
++      </Tab>
++
++      <Tab title="HTTP">
++        ```python height="500" expandable
++        import os
++        import time
++        import requests
++
++        workspace_id = "YOUR_WORKSPACE_ID"
++        target_model = "qwen-audio-3.1-realtime-plus"
++        base_url = f"https://{workspace_id}.cn-beijing.maas.aliyuncs.com/api/v1"
++        headers = {"Authorization": f"Bearer {os.environ['DASHSCOPE_API_KEY']}"}
++
+         response = requests.post(
+             f"{base_url}/services/audio/tts/customization",
+             headers=headers,
+             json={
+                 "model": "voice-enrollment",
+-                "input": {"action": "query_voice", "voice_id": voice_id},
++                "input": {
++                    "action": "create_voice",
++                    "target_model": target_model,
++                    "prefix": "myvoice",
++                    "audio": "https://dashscope.oss-cn-beijing.aliyuncs.com/samples/audio/cosyvoice/cosyvoice-zeroshot-sample.wav",
++                },
+             },
+             timeout=60,
+         )
+         response.raise_for_status()
+-        status = response.json()["output"]["status"]
+-        if status == "OK":
+-            break
+-        if status != "DEPLOYING":
+-            raise RuntimeError(f"Voice status: {status}")
+-        time.sleep(1)
+-    else:
+-        raise TimeoutError("Voice is not ready")
+-    ```
++        voice_id = response.json()["output"]["voice_id"]
++        print(f"voice_id: {voice_id}")
++
++        for _ in range(30):
++            response = requests.post(
++                f"{base_url}/services/audio/tts/customization",
++                headers=headers,
++                json={
++                    "model": "voice-enrollment",
++                    "input": {"action": "query_voice", "voice_id": voice_id},
++                },
++                timeout=60,
++            )
++            response.raise_for_status()
++            status = response.json()["output"]["status"]
++            if status == "OK":
++                break
++            if status != "DEPLOYING":
++                raise RuntimeError(f"Voice status: {status}")
++            time.sleep(1)
++        else:
++            raise TimeoutError("Voice is not ready")
++        ```
++      </Tab>
++    </Tabs>
+ 
+     建立实时语音对话连接后，在**首次** `session.update` 事件中，将 `session.voice` 设置为返回的音色 ID（替换下方的 `VOICE_ID`）。会话模型必须与创建音色时的 `target_model` 一致。
+ 
+@@ -478,7 +557,7 @@
+ 
+     - **Qwen-Audio-TTS**：qwen-audio-3.1-tts-plus、qwen-audio-3.1-tts-flash、qwen-audio-3.0-tts-plus、qwen-audio-3.0-tts-flash
+ 
+-    - **Qwen-Audio-Realtime**：qwen-audio-3.1-realtime-plus、qwen-audio-3.0-realtime-plus、qwen-audio-3.0-realtime-flash
++    - **Qwen-Audio-Realtime**：qwen-audio-3.1-realtime-plus、qwen-audio-3.1-realtime-flash、qwen-audio-3.0-realtime-plus、qwen-audio-3.0-realtime-flash
+ 
+     - **CosyVoice**：cosyvoice-v3.5-plus、cosyvoice-v3.5-flash、cosyvoice-v3-plus、cosyvoice-v3-flash、cosyvoice-v2
+ 

@@ -1,0 +1,31 @@
+--- reviewed/ali-bailian/bailian-model-directory
++++ current/ali-bailian/bailian-model-directory
+@@ -35,7 +35,7 @@
+     文本生成
+   </Card>
+ 
+-  <Card title="glm-5.2" icon="https://img.alicdn.com/imgextra/i3/O1CN01z34PDh1p053HKpLoW_!!6000000005297-55-tps-28-28.svg" href="https://bailian.console.aliyun.com/cn-beijing/model/market/detail/glm-5.2">
++  <Card title="glm-5.3" icon="https://img.alicdn.com/imgextra/i3/O1CN01z34PDh1p053HKpLoW_!!6000000005297-55-tps-28-28.svg" href="https://bailian.console.aliyun.com/cn-beijing/model/market/detail/glm-5.3">
+     文本生成
+   </Card>
+ 
+@@ -47,7 +47,7 @@
+     文本生成
+   </Card>
+ 
+-  <Card title="mimo-v2.5-pro" icon="https://img.alicdn.com/imgextra/i4/O1CN017XFdJt1jNXh3pAxhJ_!!6000000004536-2-tps-168-168.png" href="https://bailian.console.aliyun.com/cn-beijing/model/market/detail/xiaomi%2Fmimo-v2.5-pro">
++  <Card title="mimo-v2.6-pro-ultraspeed" icon="https://img.alicdn.com/imgextra/i4/O1CN017XFdJt1jNXh3pAxhJ_!!6000000004536-2-tps-168-168.png" href="https://bailian.console.aliyun.com/cn-beijing/model/market/detail/xiaomi%2Fmimo-v2.6-pro-ultraspeed">
+     文本生成
+   </Card>
+ </CardGroup>
+@@ -226,6 +226,10 @@
+   <Card title="qwen3.8-omni-flash-realtime" icon="https://img.alicdn.com/imgextra/i3/O1CN01Kmx9dR1wcHOaMMXAk_!!6000000006328-55-tps-28-28.svg" href="/zh/model-studio/qwen3-8-omni-flash-realtime">
+     语音转语音
+   </Card>
++
++  <Card title="qwen-audio-3.1-realtime-flash" href="/zh/model-studio/qwen-audio-3-1-realtime-flash">
++    语音转语音
++  </Card>
+ </CardGroup>
+ 
+ [查看更多](/zh/model-studio/s2s-model)

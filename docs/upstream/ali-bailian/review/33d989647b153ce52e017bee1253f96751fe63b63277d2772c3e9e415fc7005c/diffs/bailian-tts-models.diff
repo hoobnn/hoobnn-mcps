@@ -1,0 +1,1038 @@
+--- reviewed/ali-bailian/bailian-tts-models
++++ current/ali-bailian/bailian-tts-models
+@@ -1,606 +1,506 @@
+ # 语音合成概述
+ 
+-> 选择适合语音合成、声音复刻和声音设计场景的模型。
++> 百炼语音合成可将文本转换为语音，支持系统音色，也可通过声音复刻、声音设计创建自定义音色，并可控制语速、情感、发音等合成效果。
+ 
+ <meta property="og:title" content="语音合成概述" />
+ 
+-## 从闭源模型迁移到百炼？ <span id="mg1a2b3c4d5e02" /> <span id="mg1a2b3c4d5e01" />
+-
+-如果你正在使用 ElevenLabs、OpenAI 或 Google 的语音合成服务，可参考下表选择对应的百炼模型。
++## 模型选型 <span id="tts_model_selection" /> <span id="mg1a2b3c4d5e02" /> <span id="mg1a2b3c4d5e01" /> <span id="tts08_rec02" /> <span id="tts08_rec01" /> <span id="tts08_mm02" /> <span id="tts08_mm01" />
++
++实时交互、内容制作和精细朗读控制对模型能力的要求不同，可根据以下需求选择模型。
+ 
+ <table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
+   <colgroup>
+-    <col style={{ width: "18.125%" }} />
+-
+-    <col style={{ width: "45%" }} />
+-
+-    <col style={{ width: "36.875%" }} />
++    <col style={{ width: "25%" }} />
++
++    <col style={{ width: "31%" }} />
++
++    <col style={{ width: "44%" }} />
+   </colgroup>
+ 
+   <thead>
+     <tr>
+-      <th style={{ verticalAlign: "top" }}>
+-        <strong>使用场景</strong>
+-      </th>
+-
+-      <th style={{ verticalAlign: "top" }}>
+-        <strong>闭源模型代表</strong>
+-      </th>
+-
+-      <th style={{ verticalAlign: "top" }}>
+-        <strong>百炼推荐</strong>
+-      </th>
++      <th style={{ verticalAlign: "top" }}><strong>使用需求</strong></th>
++      <th style={{ verticalAlign: "top" }}><strong>推荐模型</strong></th>
++      <th style={{ verticalAlign: "top" }}><strong>选择说明</strong></th>
+     </tr>
+   </thead>
+ 
+   <tbody>
+     <tr>
+       <td style={{ verticalAlign: "top" }}>
+-        内置音色 / 标准合成
+-      </td>
+-
+-      <td style={{ verticalAlign: "top" }}>
+-        OpenAI gpt-4o-tts、Google Chirp 3
+-      </td>
+-
+-      <td style={{ verticalAlign: "top" }}>
+-        <code>qwen-audio-3.1-tts-plus</code><span>、<code>MiniMax/speech-2.8-hd</code></span>
+-      </td>
+-    </tr>
+-
+-    <tr>
+-      <td style={{ verticalAlign: "top" }}>
+-        自定义音色 / 声音复刻
+-      </td>
+-
+-      <td style={{ verticalAlign: "top" }}>
+-        ElevenLabs Multilingual v3
+-      </td>
+-
+-      <td style={{ verticalAlign: "top" }}>
+-        <code>qwen-audio-3.0-tts-flash</code>（声音复刻）<span>、<code>qwen-audio-3.1-tts-plus</code>、<code>qwen-audio-3.0-tts-flash</code>（声音设计）</span>、<code>cosyvoice-v3.5-plus</code>（声音设计）<span>、<code>MiniMax/speech-2.8-hd</code>（声音复刻）</span>
++        语音助手、实时对话、智能客服
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        [`qwen-audio-3.1-tts-flash`](/zh/model-studio/qwen-audio-3-1-tts-flash)
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        面向低延迟交互场景，支持系统音色、声音复刻、声音设计、自然语言指令及情感与富语言标签。
++      </td>
++    </tr>
++
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        有声书、影视配音、品牌声音与内容制作
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        [`qwen-audio-3.1-tts-plus`](/zh/model-studio/qwen-audio-3-1-tts-plus)
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        侧重音质、自然度和细节表现，支持系统音色、声音复刻、声音设计及丰富的表达控制。
+       </td>
+     </tr>
+   </tbody>
+ </table>
+ 
+-## 标准语音合成还是自定义音色？ <span id="tts08_std_vs_custom02" /> <span id="tts08_std_vs_custom01" />
+-
+-语音合成模型可将文本转换为自然语音。首先确定您需要使用内置音色还是自定义音色：
++各系列的模型 ID 参见[支持模型](#tts_supported_models)。
++
++## 音色选择 <span id="tts_voice_selection" /> <span id="tts08_std_vs_custom02" /> <span id="tts08_std_vs_custom01" /> <span id="tts08_vc_vs_vd02" /> <span id="tts08_vc_vs_vd01" />
++
++前往[音色试听广场](https://creative.cosyvoice.net.cn/voice-plaza)试听音色。各模型可用的系统音色、`voice` 参数和试听音频参见下表中的音色列表。
+ 
+ <table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
+   <colgroup>
+-    <col style={{ width: "24.964739%" }} />
+-
+-    <col style={{ width: "37.51763%" }} />
+-
+-    <col style={{ width: "37.51763%" }} />
++    <col style={{ width: "18%" }} />
++
++    <col style={{ width: "27%" }} />
++
++    <col style={{ width: "32%" }} />
++
++    <col style={{ width: "23%" }} />
+   </colgroup>
+ 
+   <thead>
+     <tr>
+-      <th style={{ verticalAlign: "top" }} />
+-
+-      <th style={{ verticalAlign: "top" }}>
+-        <strong>标准语音合成</strong>
+-      </th>
+-
+-      <th style={{ verticalAlign: "top" }}>
+-        <strong>自定义音色</strong>
+-      </th>
++      <th style={{ verticalAlign: "top" }}><strong>音色来源</strong></th>
++      <th style={{ verticalAlign: "top" }}><strong>需要准备</strong></th>
++      <th style={{ verticalAlign: "top" }}><strong>适用场景</strong></th>
++      <th style={{ verticalAlign: "top" }}><strong>使用入口</strong></th>
+     </tr>
+   </thead>
+ 
+   <tbody>
+     <tr>
+       <td style={{ verticalAlign: "top" }}>
+-        音色来源
+-      </td>
+-
+-      <td style={{ verticalAlign: "top" }}>
+-        模型内置音色库，选择即用
+-      </td>
+-
+-      <td style={{ verticalAlign: "top" }}>
+-        从音频样本复刻，或用文字描述创建
+-      </td>
+-    </tr>
+-
+-    <tr>
+-      <td style={{ verticalAlign: "top" }}>
+-        上手成本
+-      </td>
+-
+-      <td style={{ verticalAlign: "top" }}>
+-        无需额外配置，选择模型和音色即可合成
+-      </td>
+-
+-      <td style={{ verticalAlign: "top" }}>
+-        需提供音频样本或文字描述来创建音色
+-      </td>
+-    </tr>
+-
+-    <tr>
+-      <td style={{ verticalAlign: "top" }}>
+-        适用场景
+-      </td>
+-
+-      <td style={{ verticalAlign: "top" }}>
+-        智能客服、有声阅读、内容播报、电商直播
+-      </td>
+-
+-      <td style={{ verticalAlign: "top" }}>
+-        品牌专属音色、虚拟主播、游戏角色配音
+-      </td>
+-    </tr>
+-
+-    <tr>
+-      <td style={{ verticalAlign: "top" }}>
+-        推荐模型
+-      </td>
+-
+-      <td style={{ verticalAlign: "top" }}>
+-        <code>qwen-audio-3.1-tts-plus</code><span>、<code>MiniMax/speech-2.8-hd</code></span>
+-      </td>
+-
+-      <td style={{ verticalAlign: "top" }}>
+-        <code>qwen-audio-3.1-tts-plus</code>（声音复刻）<span>、<code>qwen-audio-3.1-tts-plus</code>、<code>qwen-audio-3.0-tts-flash</code>（声音设计）</span>、<code>cosyvoice-v3.5-plus</code>（声音设计）<span>、<code>MiniMax/speech-2.8-hd</code>（声音复刻）</span>
++        系统音色
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        无需音频样本或音色描述，选择已有音色即可。
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        智能客服、有声阅读、内容播报等已有音色能够满足的场景。
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        - [Qwen-Audio-TTS 音色列表](/zh/model-studio/qwen-audio-tts-voice-list)
++        - [CosyVoice 音色列表](/zh/model-studio/cosyvoice-voice-list)
++        - [Qwen-TTS 音色列表](/zh/model-studio/qwen-tts-voice-list)
++      </td>
++    </tr>
++
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        复刻音色
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        提供目标说话人的音频样本。
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        复用品牌代言人、主播等已有声音，创建个性化语音助手或虚拟主播。
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        [声音复刻](/zh/model-studio/voice-cloning-user-guide)
++      </td>
++    </tr>
++
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        设计音色
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        用文字描述期望的声音，例如“温暖的低音女声”。
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        没有录音素材，需要为品牌、游戏或动画角色创建新音色。
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        [声音设计](/zh/model-studio/voice-design-user-guide)
+       </td>
+     </tr>
+   </tbody>
+ </table>
+ 
+-- <strong>使用标准语音合成</strong>：当内置音色库能满足需求，希望快速上手、无需额外配置时。
+-- <strong>使用自定义音色</strong>：当需要品牌专属声音、复刻特定人物音色，或创建全新角色音色时。
+-
+-## 声音复刻还是声音设计？ <span id="tts08_vc_vs_vd02" /> <span id="tts08_vc_vs_vd01" />
+-
+-如果选择自定义音色，有两种方式创建：
++声音设计用于创建可重复使用的音色。如果只需在单次合成中调整语速、情感或说话方式，可使用[指令控制](#tts_synthesis_controls)。
++
++## 合成方式 <span id="tts_synthesis_modes" /> <span id="tts08_rt02" /> <span id="tts08_rt01" />
++
++合成方式的区别在于一次输入完整文本还是分段持续输入，以及一次获取完整音频还是边合成边获取音频。流式输出音频与流式输入文本是两种不同的能力。
+ 
+ <table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
+   <colgroup>
+-    <col style={{ width: "24.964739%" }} />
+-
+-    <col style={{ width: "37.51763%" }} />
+-
+-    <col style={{ width: "37.51763%" }} />
++    <col style={{ width: "19%" }} />
++
++    <col style={{ width: "25%" }} />
++
++    <col style={{ width: "25%" }} />
++
++    <col style={{ width: "31%" }} />
+   </colgroup>
+ 
+   <thead>
+     <tr>
+-      <th style={{ verticalAlign: "top" }} />
+-
+-      <th style={{ verticalAlign: "top" }}>
+-        <strong>声音复刻（Voice Cloning）</strong>
+-      </th>
+-
+-      <th style={{ verticalAlign: "top" }}>
+-        <strong>声音设计（Voice Design）</strong>
+-      </th>
++      <th style={{ verticalAlign: "top" }}><strong>合成方式</strong></th>
++      <th style={{ verticalAlign: "top" }}><strong>文本输入</strong></th>
++      <th style={{ verticalAlign: "top" }}><strong>音频输出</strong></th>
++      <th style={{ verticalAlign: "top" }}><strong>适用场景</strong></th>
+     </tr>
+   </thead>
+ 
+   <tbody>
+     <tr>
+       <td style={{ verticalAlign: "top" }}>
+-        输入方式
+-      </td>
+-
+-      <td style={{ verticalAlign: "top" }}>
+-        提供一段音频样本
+-      </td>
+-
+-      <td style={{ verticalAlign: "top" }}>
+-        用文字描述期望的音色（如“温暖的低音女声”）
+-      </td>
+-    </tr>
+-
+-    <tr>
+-      <td style={{ verticalAlign: "top" }}>
+-        效果
+-      </td>
+-
+-      <td style={{ verticalAlign: "top" }}>
+-        合成语音与原始说话人高度相似
+-      </td>
+-
+-      <td style={{ verticalAlign: "top" }}>
+-        根据描述从零生成全新音色
+-      </td>
+-    </tr>
+-
+-    <tr>
+-      <td style={{ verticalAlign: "top" }}>
+-        适用场景
+-      </td>
+-
+-      <td style={{ verticalAlign: "top" }}>
+-        品牌代言人/主播音色复用、虚拟主播、个性化语音助手
+-      </td>
+-
+-      <td style={{ verticalAlign: "top" }}>
+-        品牌音色定制（无录音素材）、游戏/动画角色配音、创意内容制作
+-      </td>
+-    </tr>
+-
+-    <tr>
+-      <td style={{ verticalAlign: "top" }}>
+-        推荐模型
+-      </td>
+-
+-      <td style={{ verticalAlign: "top" }}>
+-        <code>qwen-audio-3.1-tts-plus</code>、<code>qwen-audio-3.0-tts-flash</code><span>、<code>MiniMax/speech-2.8-hd</code></span>
+-      </td>
+-
+-      <td style={{ verticalAlign: "top" }}>
+-        <span><code>qwen-audio-3.1-tts-plus</code>、<code>qwen-audio-3.0-tts-flash</code>、</span><code>cosyvoice-v3.5-plus</code>、<code>cosyvoice-v3.5-flash</code>
+-      </td>
+-    </tr>
+-
+-    <tr>
+-      <td style={{ verticalAlign: "top" }}>
+-        音色管理服务
+-      </td>
+-
+-      <td style={{ verticalAlign: "top" }}>
+-        <code>voice-enrollment</code>（注册和管理音色）
+-      </td>
+-
+-      <td style={{ verticalAlign: "top" }}>
+-        <code>voice-enrollment</code>（注册和管理音色）
++        非流式
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        一次发送完整文本。
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        合成完成后获取完整音频。
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        无需边合成边播放的内容制作。
++      </td>
++    </tr>
++
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        单向流式
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        一次发送完整文本。
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        边合成边分段返回音频。
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        文本已准备好，希望尽早开始播放。
++      </td>
++    </tr>
++
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        双向流式
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        持续发送文本片段。
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        边合成边分段返回音频。
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        对接大模型等文本持续产生的实时交互。
+       </td>
+     </tr>
+   </tbody>
+ </table>
+ 
+-- <strong>使用声音复刻</strong>：当已有目标人物的录音素材，希望在合成中还原该音色时。
+-- <strong>使用声音设计</strong>：当没有录音素材，希望根据文字描述从零创建全新音色时。
+-
+-## WebSocket还是HTTP？ <span id="tts08_rt02" /> <span id="tts08_rt01" />
+-
+-- <strong>WebSocket</strong>：双向流式通信，支持流式输入和流式输出，音频边合成边返回，延迟最低。适用于智能客服、语音助手、呼叫中心等实时交互场景。
+-- <strong>HTTP</strong>：发送完整文本，支持流式返回音频（逐段输出）。适用于有声阅读、音频内容制作等场景。
+-
+-Qwen-Audio-TTS/CosyVoice 系列模型使用同一模型名称同时支持 WebSocket 和 HTTP 两种接入方式；Qwen 系列模型通过模型名称区分，带 `-realtime` 后缀的为 WebSocket 接入，不带后缀的为 HTTP 接入。
+-
+-Qwen-Audio-TTS/CosyVoice 和 Qwen 系列的 WebSocket 模型支持通过 DashScope SDK（Java、Python）接入。Qwen-Audio-TTS/CosyVoice 的 WebSocket 模型还支持Android、iOS SDK接入。其他模型需根据对应的 WebSocket 或 HTTP 协议直接调用。
+-
+-选择 WebSocket 接入请参考<strong>实时语音合成</strong>，选择 HTTP 接入请参考<strong>非实时语音合成</strong>。
+-
+-CosyVoice 系列模型还支持通过 AOQ 协议接入；如果是客户端对接，且更看重稳定的延迟、弱网下的交互能力、实时双工的降噪与回声消除，可优先考虑 AOQ，协议对比与选型请参见[Realtime API 概述](/zh/model-studio/realtime-api-overview#rtov-s02h2)。
+-
+-## 指令控制 <span id="tts08_ic02" /> <span id="tts08_ic01" />
+-
+-用自然语言描述期望的表达方式，可按请求动态控制语速、情绪和风格。例如“用温柔的语气，语速稍慢”或“用激动的播报风格”。适用于情感化内容制作、专业播报、有声读物等需要丰富表现力的场景。
+-
+-支持指令控制的模型：Qwen-Audio-TTS 系列（`qwen-audio-3.0-tts-plus`、`qwen-audio-3.0-tts-flash`）、CosyVoice 系列（`cosyvoice-v3.5-plus`、`cosyvoice-v3.5-flash`、`cosyvoice-v3-flash`）。详细使用方式请参见[实时语音合成 > 指令控制](/zh/model-studio/realtime-tts-user-guide)。
+-
+-## 推荐模型 <span id="tts08_rec02" /> <span id="tts08_rec01" />
+-
+-以下为各场景下最推荐的模型，可前往模型广场查看详情。
++- **非实时合成**：一次提交完整文本，可选择非流式或流式获取音频，参见[非实时语音合成](/zh/model-studio/non-realtime-tts-user-guide)。
++
++- **实时合成**：分段或持续提交文本，也可一次提交完整文本，参见[实时语音合成](/zh/model-studio/realtime-tts-user-guide)。对于移动端等实时交互应用，可按 [Realtime API 概述](/zh/model-studio/realtime-api-overview)选择可用的接入协议。其中，AOQ（AI over QUIC）针对低延迟和弱网传输进行优化，并内置回声消除和降噪能力。
++
++## 合成效果控制 <span id="tts_synthesis_controls" /> <span id="tts08_ic02" /> <span id="tts08_ic01" />
++
++除了选择音色，还可以通过参数、指令或标签调整合成效果。
+ 
+ <table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
+   <colgroup>
+-    <col style={{ width: "35.1%" }} />
+-
+-    <col style={{ width: "12.04%" }} />
+-
+-    <col style={{ width: "14.06%" }} />
+-
+-    <col style={{ width: "12.82%" }} />
+-
+-    <col style={{ width: "13.05%" }} />
+-
+-    <col style={{ width: "12.93%" }} />
++    <col style={{ width: "32%" }} />
++
++    <col style={{ width: "68%" }} />
+   </colgroup>
+ 
+   <thead>
+     <tr>
+-      <th style={{ verticalAlign: "top" }}>
+-        <strong>模型ID</strong>
+-      </th>
+-
+-      <th style={{ verticalAlign: "top" }}>
+-        <strong>系列</strong>
+-      </th>
+-
+-      <th style={{ verticalAlign: "top" }}>
+-        <strong>API</strong>
+-      </th>
+-
+-      <th style={{ verticalAlign: "top" }}>
+-        <strong>声音复刻</strong>
+-      </th>
+-
+-      <th style={{ verticalAlign: "top" }}>
+-        <strong>声音设计</strong>
+-      </th>
+-
+-      <th style={{ verticalAlign: "top" }}>
+-        <strong>指令控制</strong>
+-      </th>
++      <th style={{ verticalAlign: "top" }}><strong>希望调整的效果</strong></th>
++      <th style={{ verticalAlign: "top" }}><strong>控制方式</strong></th>
+     </tr>
+   </thead>
+ 
+   <tbody>
+     <tr>
+       <td style={{ verticalAlign: "top" }}>
+-        <code>qwen-audio-3.1-tts-plus</code>
+-      </td>
+-
+-      <td style={{ verticalAlign: "top" }}>
+-        Qwen-Audio-TTS
+-      </td>
+-
+-      <td style={{ verticalAlign: "top" }}>
+-        WebSocket / HTTP
+-      </td>
+-
+-      <td style={{ verticalAlign: "top" }}>
+-        支持
+-      </td>
+-
+-      <td style={{ verticalAlign: "top" }}>
+-        支持
+-      </td>
+-
+-      <td style={{ verticalAlign: "top" }}>
+-        支持
+-      </td>
+-    </tr>
+-
+-    <tr>
+-      <td style={{ verticalAlign: "top" }}>
+-        <code>cosyvoice-v3.5-plus</code>
+-      </td>
+-
+-      <td style={{ verticalAlign: "top" }}>
+-        CosyVoice
+-      </td>
+-
+-      <td style={{ verticalAlign: "top" }}>
+-        WebSocket<span>/ HTTP</span>
+-      </td>
+-
+-      <td style={{ verticalAlign: "top" }}>
+-        支持
+-      </td>
+-
+-      <td style={{ verticalAlign: "top" }}>
+-        支持
+-      </td>
+-
+-      <td style={{ verticalAlign: "top" }}>
+-        支持
+-      </td>
+-    </tr>
+-
+-    <tr>
+-      <td style={{ verticalAlign: "top" }}>
+-        <code>cosyvoice-v3-plus</code>
+-      </td>
+-
+-      <td style={{ verticalAlign: "top" }}>
+-        CosyVoice
+-      </td>
+-
+-      <td style={{ verticalAlign: "top" }}>
+-        WebSocket<span>/ HTTP</span>
+-      </td>
+-
+-      <td style={{ verticalAlign: "top" }}>
+-        支持
+-      </td>
+-
+-      <td style={{ verticalAlign: "top" }}>
+-        支持
+-      </td>
+-
+-      <td style={{ verticalAlign: "top" }}>
+-        不支持
+-      </td>
+-    </tr>
+-
+-    <tr>
+-      <td style={{ verticalAlign: "top" }}>
+-        <code>MiniMax/speech-2.8-hd</code>
+-      </td>
+-
+-      <td style={{ verticalAlign: "top" }}>
+-        MiniMax
+-      </td>
+-
+-      <td style={{ verticalAlign: "top" }}>
+-        HTTP
+-      </td>
+-
+-      <td style={{ verticalAlign: "top" }}>
+-        支持
+-      </td>
+-
+-      <td style={{ verticalAlign: "top" }}>
+-        不支持
+-      </td>
+-
+-      <td style={{ verticalAlign: "top" }}>
+-        不支持
++        语速、音调、音量
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        设置模型提供的对应合成参数。
++      </td>
++    </tr>
++
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        情感、风格、说话方式
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        使用自然语言指令，例如“用温柔的语气，语速稍慢”。
++      </td>
++    </tr>
++
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        局部情感及笑声、呼吸等表达
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        在待合成文本中加入情感与富语言标签。
++      </td>
++    </tr>
++
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        发音、停顿、数字读法等
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        使用 [SSML](/zh/model-studio/ssml-latex-user-guide#sl01_tagref_h3) 标签精细控制朗读。
++      </td>
++    </tr>
++
++    <tr>
++      <td style={{ verticalAlign: "top" }}>
++        数学公式朗读
++      </td>
++
++      <td style={{ verticalAlign: "top" }}>
++        使用 [LaTeX](/zh/model-studio/ssml-latex-user-guide#sl02_symbols_h3) 表达公式。
+       </td>
+     </tr>
+   </tbody>
+ </table>
+ 
+-## 所有模型 <span id="tts08_all02" /> <span id="tts08_all01" />
+-
+-### Qwen-Audio-TTS <span id="qat_all02" /> <span id="qat_all01" />
+-
+-<table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
+-  <colgroup>
+-    <col style={{ width: "46.83%" }} />
+-
+-    <col style={{ width: "14.65%" }} />
+-
+-    <col style={{ width: "13.15%" }} />
+-
+-    <col style={{ width: "12.69%" }} />
+-
+-    <col style={{ width: "12.68%" }} />
+-  </colgroup>
+-
+-  <thead>
+-    <tr>
+-      <th style={{ verticalAlign: "top" }}>
+-        <strong>模型ID</strong>
+-      </th>
+-
+-      <th style={{ verticalAlign: "top" }}>
+-        <strong>API</strong>
+-      </th>
+-
+-      <th style={{ verticalAlign: "top" }}>
+-        <strong>声音复刻</strong>
+-      </th>
+-
+-      <th style={{ verticalAlign: "top" }}>
+-        <strong>声音设计</strong>
+-      </th>
+-
+-      <th style={{ verticalAlign: "top" }}>
+-        <strong>指令控制</strong>
+-      </th>
+-    </tr>
+-  </thead>
+-
+-  <tbody>
+-    <tr>
+-      <td style={{ verticalAlign: "top" }}>
+-        `qwen-audio-3.1-tts-plus`
+-      </td>
+-
+-      <td style={{ verticalAlign: "top" }}>
+-        WebSocket / HTTP
+-      </td>
+-
+-      <td style={{ verticalAlign: "top" }}>
+-        支持
+-      </td>
+-
+-      <td style={{ verticalAlign: "top" }}>
+-        支持
+-      </td>
+-
+-      <td style={{ verticalAlign: "top" }}>
+-        支持
+-      </td>
+-    </tr>
+-
+-    <tr>
+-      <td style={{ verticalAlign: "top" }}>
+-        <code>qwen-audio-3.0-tts-plus</code>
+-      </td>
+-
+-      <td style={{ verticalAlign: "top" }}>
+-        WebSocket<span>/ HTTP</span>
+-      </td>
+-
+-      <td style={{ verticalAlign: "top" }}>
+-        支持
+-      </td>
+-
+-      <td style={{ verticalAlign: "top" }}>
+-        支持
+-      </td>
+-
+-      <td style={{ verticalAlign: "top" }}>
+-        支持
+-      </td>
+-    </tr>
+-
+-    <tr>
+-      <td style={{ verticalAlign: "top" }}>
+-        <a href="/zh/model-studio/qwen-audio-3-1-tts-flash"><code>qwen-audio-3.1-tts-flash</code></a>
+-      </td>
+-
+-      <td style={{ verticalAlign: "top" }}>
+-        WebSocket<span>/ HTTP</span>
+-      </td>
+-
+-      <td style={{ verticalAlign: "top" }}>
+-        支持
+-      </td>
+-
+-      <td style={{ verticalAlign: "top" }}>
+-        支持
+-      </td>
+-
+-      <td style={{ verticalAlign: "top" }}>
+-        支持
+-      </td>
+-    </tr>
+-
+-    <tr>
+-      <td style={{ verticalAlign: "top" }}>
+-        <code>qwen-audio-3.0-tts-flash</code>
+-      </td>
+-
+-      <td style={{ verticalAlign: "top" }}>
+-        WebSocket<span>/ HTTP</span>
+-      </td>
+-
+-      <td style={{ verticalAlign: "top" }}>
+-        支持
+-      </td>
+-
+-      <td style={{ verticalAlign: "top" }}>
+-        支持
+-      </td>
+-
+-      <td style={{ verticalAlign: "top" }}>
+-        支持
+-      </td>
+-    </tr>
+-  </tbody>
+-</table>
+-
+-<strong>支持的语言</strong>：
+-
+-- 系统音色（因音色而异）：中文（普通话）、英文
+-- 声音复刻音色（方言通过指令控制功能进行设置）：中文（普通话、广东话、重庆话、东北话、甘肃话、贵州话、浙江话、河北话、河南话、湖北话、湖南话、江西话、宁波话、宁夏话、青岛话、陕西话、山西话、山东话、上海话、四川话、云南话）、英语、日语、韩语、俄语、法语、德语、葡萄牙语、泰语、印尼语、越南语、西班牙语、意大利语、马来西亚语、菲律宾语、阿拉伯语
+-
+-### CosyVoice <span id="tts08_cosy02" /> <span id="tts08_cosy01" />
+-
+-部分 CosyVoice 模型支持 SSML 标记和 LaTeX 公式朗读。
+-
+-<table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}><colgroup><col style={{ width: "46.83%" }} /><col style={{ width: "14.65%" }} /><col style={{ width: "13.15%" }} /><col style={{ width: "12.69%" }} /><col style={{ width: "12.68%" }} /></colgroup><thead><tr><th style={{ verticalAlign: "top" }}><p><strong>模型ID</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>API</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>声音复刻</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>声音设计</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>指令控制</strong></p></th></tr></thead><tbody><tr><td style={{ verticalAlign: "top" }}><p><code>cosyvoice-v3.5-plus</code></p></td><td style={{ verticalAlign: "top" }}><p>WebSocket<span>/ HTTP</span></p></td><td style={{ verticalAlign: "top" }}><p>支持</p></td><td style={{ verticalAlign: "top" }}><p>支持</p></td><td style={{ verticalAlign: "top" }}><p>支持</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><code>cosyvoice-v3.5-flash</code></p></td><td style={{ verticalAlign: "top" }}><p>WebSocket<span>/ HTTP</span></p></td><td style={{ verticalAlign: "top" }}><p>支持</p></td><td style={{ verticalAlign: "top" }}><p>支持</p></td><td style={{ verticalAlign: "top" }}><p>支持</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><code>cosyvoice-v3-plus</code></p></td><td style={{ verticalAlign: "top" }}><p>WebSocket<span>/ HTTP</span></p></td><td style={{ verticalAlign: "top" }}><p>支持</p></td><td style={{ verticalAlign: "top" }}><p>支持</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><code>cosyvoice-v3-flash</code></p></td><td style={{ verticalAlign: "top" }}><p>WebSocket<span>/ HTTP</span></p></td><td style={{ verticalAlign: "top" }}><p>支持</p></td><td style={{ verticalAlign: "top" }}><p>支持</p></td><td style={{ verticalAlign: "top" }}><p>支持</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><code>cosyvoice-v2</code></p></td><td style={{ verticalAlign: "top" }}><p>WebSocket<span>/ HTTP</span></p></td><td style={{ verticalAlign: "top" }}><p>支持</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td></tr></tbody></table>
+-
+-<strong>支持的语言（按版本）</strong>：
+-
+-- `cosyvoice-v3.5-plus`<strong>、</strong>`cosyvoice-v3.5-flash`（不支持系统音色）：
+-
+-  - 声音复刻音色（方言通过指令控制功能进行设置）：中文（普通话、广东话、东北话、甘肃话、贵州话、河南话、湖北话、江西话、闽南话、宁夏话、山西话、陕西话、山东话、上海话、四川话、天津话、云南话）、英文、法语、德语、日语、韩语、俄语、葡萄牙语、泰语、印尼语、越南语
+-  - 声音设计音色：中文（普通话）、英文
+-- `cosyvoice-v3-plus`：
+-
+-  - 系统音色（因音色而异）：中文（普通话）、英文
+-  - 声音复刻音色（方言通过指令控制功能进行设置）：中文（普通话、广东话、东北话、甘肃话、贵州话、河南话、湖北话、江西话、闽南话、宁夏话、山西话、陕西话、山东话、上海话、四川话、天津话、云南话）、英文、法语、德语、日语、韩语、俄语
+-  - 声音设计音色：中文（普通话）、英文
+-- `cosyvoice-v3-flash`：
+-
+-  - 系统音色（因音色而异，部分方言由系统音色直接支持，部分通过指令控制功能设置）：中文（普通话、广东话、东北话、河南话、湖南话、陕西话、山东话、四川话、安徽话、闽南话）、英文、日语、韩语、印尼语
+-  - 声音复刻音色（方言通过指令控制功能进行设置）：中文（普通话、广东话、东北话、甘肃话、贵州话、河南话、湖北话、江西话、闽南话、宁夏话、山西话、陕西话、山东话、上海话、四川话、天津话、云南话）、英文、法语、德语、日语、韩语、俄语、葡萄牙语、泰语、印尼语、越南语
+-  - 声音设计音色：中文（普通话）、英文
+-- `cosyvoice-v2`（不支持声音设计音色）：
+-
+-  - 系统音色（因音色而异）：中文（普通话、粤语、东北话、闽南话、陕西话）、英文、日语、韩语
+-  - 声音复刻音色：中文（普通话）、英文
+-
+-### Qwen3-TTS <span id="tts08_q3tts02" /> <span id="tts08_q3tts01" />
+-
+-<table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}><colgroup><col style={{ width: "46.83%" }} /><col style={{ width: "14.76%" }} /><col style={{ width: "12.8%" }} /><col style={{ width: "12.8%" }} /><col style={{ width: "12.81%" }} /></colgroup><thead><tr><th style={{ verticalAlign: "top" }}><p><strong>模型ID</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>API</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>声音复刻</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>声音设计</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>指令控制</strong></p></th></tr></thead><tbody><tr><td style={{ verticalAlign: "top" }}><p><code>qwen3-tts-flash</code></p></td><td style={{ verticalAlign: "top" }}><p>HTTP</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><code>qwen3-tts-flash-realtime</code></p></td><td style={{ verticalAlign: "top" }}><p>WebSocket</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td></tr></tbody></table>
+-
+-<strong>支持的语言（按版本）</strong>：
+-
+-- <strong>Qwen3-TTS-Flash 系列</strong>（系统音色）（`qwen3-tts-flash`、`qwen3-tts-flash-realtime`）：中文（普通话、北京话、上海话、四川话、南京话、陕西话、闽南话、天津话、粤语，因音色而异）、英文、德语、意大利语、葡萄牙语、西班牙语、日语、韩语、法语、俄语
+-
+-### MiniMax <span id="tts08_mm02" /> <span id="tts08_mm01" />
+-
+-<table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}><colgroup><col style={{ width: "46.7%" }} /><col style={{ width: "14.83%" }} /><col style={{ width: "12.63%" }} /><col style={{ width: "12.98%" }} /><col style={{ width: "12.86%" }} /></colgroup><thead><tr><th style={{ verticalAlign: "top" }}><p><strong>模型ID</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>API</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>声音复刻</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>声音设计</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>指令控制</strong></p></th></tr></thead><tbody><tr><td style={{ verticalAlign: "top" }}><p><code>MiniMax/speech-2.8-hd</code></p></td><td style={{ verticalAlign: "top" }}><p>HTTP</p></td><td style={{ verticalAlign: "top" }}><p>支持</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><code>MiniMax/speech-02-hd</code></p></td><td style={{ verticalAlign: "top" }}><p>HTTP</p></td><td style={{ verticalAlign: "top" }}><p>支持</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><code>MiniMax/speech-2.8-turbo</code></p></td><td style={{ verticalAlign: "top" }}><p>HTTP</p></td><td style={{ verticalAlign: "top" }}><p>支持</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p><code>MiniMax/speech-02-turbo</code></p></td><td style={{ verticalAlign: "top" }}><p>HTTP</p></td><td style={{ verticalAlign: "top" }}><p>支持</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td><td style={{ verticalAlign: "top" }}><p>不支持</p></td></tr></tbody></table>
++按合成方式查看参数、支持条件和示例：
++
++- [非实时语音合成](/zh/model-studio/non-realtime-tts-user-guide#12884a10929p9)
++- [实时语音合成](/zh/model-studio/realtime-tts-user-guide#rt_advanced_h2)
++
++## 支持模型 <span id="tts_supported_models" /> <span id="tts08_all02" /> <span id="tts08_all01" />
++
++选择调用地域，查看各系列的模型 ID。
++
++<Tabs>
++  <Tab title="北京">
++    - **Qwen-Audio-TTS**：`qwen-audio-3.1-tts-plus`、`qwen-audio-3.1-tts-flash`、`qwen-audio-3.0-tts-plus`、`qwen-audio-3.0-tts-flash`
++    - **CosyVoice**：`cosyvoice-v3.5-plus`、`cosyvoice-v3.5-flash`、`cosyvoice-v3-plus`、`cosyvoice-v3-flash`、`cosyvoice-v2`
++    - **Qwen3-TTS**：`qwen3-tts-flash-realtime`、`qwen3-tts-flash`
++    - **MiniMax**：`MiniMax/speech-2.8-hd`、`MiniMax/speech-2.8-turbo`、`MiniMax/speech-02-hd`、`MiniMax/speech-02-turbo`
++  </Tab>
++
++  <Tab title="新加坡">
++    - **Qwen-Audio-TTS**：`qwen-audio-3.1-tts-plus`、`qwen-audio-3.1-tts-flash`、`qwen-audio-3.0-tts-plus`、`qwen-audio-3.0-tts-flash`
++    - **CosyVoice**：`cosyvoice-v3-plus`、`cosyvoice-v3-flash`
++    - **Qwen3-TTS**：`qwen3-tts-flash-realtime`、`qwen3-tts-flash`
++  </Tab>
++</Tabs>
++
++## 语言与方言支持 <span id="tts_languages" />
++
++按需要合成的语言或方言选择音色。下表按模型系列和音色类型列出支持范围。
++
++<Tabs>
++  <Tab title="Qwen-Audio-TTS">
++    <span id="qat_all02" />
++
++    <span id="qat_all01" />
++
++    <table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
++      <colgroup>
++        <col style={{ width: "22%" }} />
++
++        <col style={{ width: "78%" }} />
++      </colgroup>
++
++      <thead>
++        <tr>
++          <th style={{ verticalAlign: "top" }}><strong>音色类型</strong></th>
++          <th style={{ verticalAlign: "top" }}><strong>合成输出语言与方言</strong></th>
++        </tr>
++      </thead>
++
++      <tbody>
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
++            系统音色
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            支持中文、英语等语言，具体范围因模型和音色而异，参见[Qwen-Audio-TTS 音色列表](/zh/model-studio/qwen-audio-tts-voice-list)。
++          </td>
++        </tr>
++
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
++            复刻音色
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            中文（普通话、广东话、重庆话、东北话、甘肃话、贵州话、浙江话、河北话、河南话、湖北话、湖南话、江西话、宁波话、宁夏话、青岛话、陕西话、山西话、山东话、上海话、四川话、云南话）、英语、日语、韩语、俄语、法语、德语、葡萄牙语、泰语、印尼语、越南语、西班牙语、意大利语、马来西亚语、菲律宾语、阿拉伯语 （方言通过指令控制功能进行设置）
++          </td>
++        </tr>
++
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
++            设计音色
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            中文（普通话）、英文
++          </td>
++        </tr>
++      </tbody>
++    </table>
++  </Tab>
++
++  <Tab title="CosyVoice">
++    <span id="tts08_cosy02" />
++
++    <span id="tts08_cosy01" />
++
++    <table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
++      <colgroup>
++        <col style={{ width: "22%" }} />
++
++        <col style={{ width: "78%" }} />
++      </colgroup>
++
++      <thead>
++        <tr>
++          <th style={{ verticalAlign: "top" }}><strong>音色类型</strong></th>
++          <th style={{ verticalAlign: "top" }}><strong>合成输出语言与方言</strong></th>
++        </tr>
++      </thead>
++
++      <tbody>
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
++            系统音色
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            - `cosyvoice-v3.5-plus` / `cosyvoice-v3.5-flash`: 不支持
++            - `cosyvoice-v3-plus`（因音色而异）: 中文（普通话）、英文
++            - `cosyvoice-v3-flash`（因音色而异，部分方言由系统音色直接支持，部分通过指令控制功能设置）: 中文（普通话、广东话、东北话、河南话、湖南话、陕西话、山东话、四川话、安徽话、闽南话）、英文、日语、韩语、印尼语
++            - `cosyvoice-v2`（因音色而异）: 中文（普通话、粤语、东北话、闽南话、陕西话）、英文、日语、韩语
++
++            <Note>
++              系统音色的具体语言、方言和试听参见[CosyVoice 音色列表](/zh/model-studio/cosyvoice-voice-list)。
++            </Note>
++          </td>
++        </tr>
++
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
++            复刻音色
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            - `cosyvoice-v3.5-plus` / `cosyvoice-v3.5-flash`（方言通过指令控制功能进行设置）: 中文（普通话、广东话、东北话、甘肃话、贵州话、河南话、湖北话、江西话、闽南话、宁夏话、山西话、陕西话、山东话、上海话、四川话、天津话、云南话）、英文、法语、德语、日语、韩语、俄语、葡萄牙语、泰语、印尼语、越南语
++            - `cosyvoice-v3-plus`: 中文（普通话、广东话、东北话、甘肃话、贵州话、河南话、湖北话、江西话、闽南话、宁夏话、山西话、陕西话、山东话、上海话、四川话、天津话、云南话）、英文、法语、德语、日语、韩语、俄语
++            - `cosyvoice-v3-flash`（方言通过指令控制功能进行设置）: 中文（普通话、广东话、东北话、甘肃话、贵州话、河南话、湖北话、江西话、闽南话、宁夏话、山西话、陕西话、山东话、上海话、四川话、天津话、云南话）、英文、法语、德语、日语、韩语、俄语、葡萄牙语、泰语、印尼语、越南语
++            - `cosyvoice-v2`: 中文（普通话）、英文
++          </td>
++        </tr>
++
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
++            设计音色
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            - `cosyvoice-v3.5-plus` / `cosyvoice-v3.5-flash`: 中文（普通话）、英文
++            - `cosyvoice-v3-plus`: 中文（普通话）、英文
++            - `cosyvoice-v3-flash`: 中文（普通话）、英文
++            - `cosyvoice-v2`: 不支持
++          </td>
++        </tr>
++      </tbody>
++    </table>
++  </Tab>
++
++  <Tab title="Qwen3-TTS">
++    <span id="tts08_q3tts02" />
++
++    <span id="tts08_q3tts01" />
++
++    <table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
++      <colgroup>
++        <col style={{ width: "22%" }} />
++
++        <col style={{ width: "78%" }} />
++      </colgroup>
++
++      <thead>
++        <tr>
++          <th style={{ verticalAlign: "top" }}><strong>音色类型</strong></th>
++          <th style={{ verticalAlign: "top" }}><strong>合成输出语言与方言</strong></th>
++        </tr>
++      </thead>
++
++      <tbody>
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
++            系统音色
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            中文（普通话、北京话、上海话、四川话、南京话、陕西话、闽南话、天津话、粤语，因音色而异）、英文、德语、意大利语、葡萄牙语、西班牙语、日语、韩语、法语、俄语
++
++            <Note>
++              系统音色的具体语言、方言和试听参见[Qwen-TTS 音色列表](/zh/model-studio/qwen-tts-voice-list)。
++            </Note>
++          </td>
++        </tr>
++
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
++            复刻音色
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            不支持
++          </td>
++        </tr>
++
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
++            设计音色
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            不支持
++          </td>
++        </tr>
++      </tbody>
++    </table>
++  </Tab>
++</Tabs>

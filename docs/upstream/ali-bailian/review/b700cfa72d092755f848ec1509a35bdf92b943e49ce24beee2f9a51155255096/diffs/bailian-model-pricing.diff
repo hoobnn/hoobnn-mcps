@@ -1,0 +1,35 @@
+--- reviewed/ali-bailian/bailian-model-pricing
++++ current/ali-bailian/bailian-model-pricing
+@@ -11266,6 +11266,32 @@
+ 
+           <td style={{ verticalAlign: "top" }}>
+             28元
++          </td>
++        </tr>
++
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
++            glm-5.3
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            美国
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            非思考和思考模式
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            不区分阶梯
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            10.208元
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            32.084元
+           </td>
+         </tr>
+ 

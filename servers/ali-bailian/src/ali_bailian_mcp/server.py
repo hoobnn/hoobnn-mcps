@@ -158,6 +158,7 @@ def text_to_speech(
       Qwen-Audio-TTS/CosyVoice 必须指定：对应模型的系统音色（如 longanhuan_v3.6，见官方音色列表，不能跨模型混用；
       cosyvoice-v3.5 系列没有系统音色）或自定义音色 ID。
     - instructions：语气/情感/方言指令（官方字段 instruction），如「用温柔的语气，语速稍慢」「请用河南话表达」。
+      Qwen-Audio-TTS：系统音色按官方音色列表选择；支持方言指令的系统音色及复刻音色可用 instructions="请讲上海话。"，设计音色暂不支持方言。
       CosyVoice 不超过 100 字符（汉字按 2 计）；Qwen-Audio-TTS 官方未公布同一上限，交服务端校验。仅 Qwen-Audio-TTS 与 cosyvoice-v3.5/v3 系列支持；cosyvoice-v3-plus/v3-flash 的
       系统音色须用官方音色列表规定的固定指令，cosyvoice-v3-plus 的自定义音色不支持；qwen3-tts-flash 不支持。
     - language：qwen3-tts-flash 写 Chinese、English、Japanese 等；Qwen-Audio-TTS/CosyVoice 写语种代码（zh、en、ja…，

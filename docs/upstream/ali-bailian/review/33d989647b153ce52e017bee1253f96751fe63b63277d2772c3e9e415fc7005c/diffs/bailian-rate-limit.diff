@@ -1,0 +1,258 @@
+--- reviewed/ali-bailian/bailian-rate-limit
++++ current/ali-bailian/bailian-rate-limit
+@@ -1871,6 +1871,24 @@
+           </td>
+ 
+           <td style={{ verticalAlign: "top" }}>
++            欧盟
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            30,000
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            5,000,000
++          </td>
++        </tr>
++
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
++            qwen3.8-flash
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
+             全球
+           </td>
+ 
+@@ -2692,6 +2710,24 @@
+ 
+           <td style={{ verticalAlign: "top" }}>
+             150,000
++          </td>
++        </tr>
++
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
++            qwen3.8-flash
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            中国香港
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            30,000
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            5,000,000
+           </td>
+         </tr>
+ 
+@@ -9171,6 +9207,20 @@
+ 
+         <tr>
+           <td style={{ verticalAlign: "top" }}>
++            qwen-audio-3.1-realtime-flash
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            60
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            100,000
++          </td>
++        </tr>
++
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
+             qwen-audio-3.0-realtime-plus
+           </td>
+ 
+@@ -9246,6 +9296,24 @@
+         <tr>
+           <td style={{ verticalAlign: "top" }}>
+             qwen-audio-3.1-realtime-plus
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            国际
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            60
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            100,000
++          </td>
++        </tr>
++
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
++            qwen-audio-3.1-realtime-flash
+           </td>
+ 
+           <td style={{ verticalAlign: "top" }}>
+@@ -10757,23 +10825,147 @@
+           </td>
+ 
+           <td style={{ verticalAlign: "top" }}>
++            300
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            10
++          </td>
++        </tr>
++
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
++            Tripo/Tripo-P1.0
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            300
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
+             5
+           </td>
+-
+-          <td rowSpan={2} style={{ verticalAlign: "top" }}>
++        </tr>
++
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
++            Tripo/Tripo-ImageToSplat
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            300
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            5
++          </td>
++        </tr>
++
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
++            Tripo/Tripo-AutoRig
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            300
++          </td>
++
++          <td style={{ verticalAlign: "top" }} rowSpan={3}>
+             10
+ 
+-            > 同一个阿里云百炼API Key 在 2 个模型间共享额度。即这 2 个模型处于运行状态的任务总数加起来不能超过 10 个。
+-          </td>
+-        </tr>
+-
+-        <tr>
+-          <td style={{ verticalAlign: "top" }}>
+-            Tripo/Tripo-P1.0
+-          </td>
+-
+-          <td style={{ verticalAlign: "top" }}>
++            > 自动绑骨、绑骨前检查、动画重定向共享同一并发额度，三个模型处于运行状态的任务总数不能超过 10 个。
++          </td>
++        </tr>
++
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
++            Tripo/Tripo-RigCheck
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            300
++          </td>
++        </tr>
++
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
++            Tripo/Tripo-AnimationRetarget
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            300
++          </td>
++        </tr>
++
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
++            Tripo/Tripo-Texture
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            300
++          </td>
++
++          <td style={{ verticalAlign: "top" }} rowSpan={2}>
+             5
++
++            > 贴图、格式转换共享同一并发额度，两个模型处于运行状态的任务总数不能超过 5 个。
++          </td>
++        </tr>
++
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
++            Tripo/Tripo-ConvertFormat
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            300
++          </td>
++        </tr>
++
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
++            Tripo/Tripo-Segmentation
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            300
++          </td>
++
++          <td style={{ verticalAlign: "top" }} rowSpan={4}>
++            10
++
++            > 分割、智能分割、网格补全、重拓扑共享同一并发额度，四个模型处于运行状态的任务总数不能超过 10 个。
++          </td>
++        </tr>
++
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
++            Tripo/Tripo-SmartSegmentation
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            300
++          </td>
++        </tr>
++
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
++            Tripo/Tripo-MeshCompletion
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            300
++          </td>
++        </tr>
++
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
++            Tripo/Tripo-Retopology
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            300
+           </td>
+         </tr>
+       </tbody>
