@@ -1,0 +1,690 @@
+--- reviewed/doubao-speech/doubao-bidirectional-streaming-text-to-speech-websocket
++++ current/doubao-speech/doubao-bidirectional-streaming-text-to-speech-websocket
+@@ -1,252 +1,167 @@
+ 基于 WebSocket 的双向流式 TTS 接口，支持文本流式输入、音频流式输出，低时延，适用于实时交互场景，覆盖多语种与多方言
+ 
+-&nbsp;
+-
+ > **运行依赖文件**
+ 
+-> <Attachment link="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_5ec6e28945592c909158dc1e2cf9a89c.zip" name="TTS Websocket Bidirection protocols.zip">TTS Websocket Bidirection protocols.zip</Attachment>
+-
+-
+-
++> [TTS Websocket Bidirection protocols.zip](https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_5ec6e28945592c909158dc1e2cf9a89c.zip)
+ 
+ ---
+ 
+-
+-
+-<span data-label="purple">WSS</span>`wss://openspeech.bytedance.com/api/v3/tts/bidirection`
+-
+-
+-<span id="PCfPA9a9"></span>
++WSS`wss://openspeech.bytedance.com/api/v3/tts/bidirection`
++
+ ### 请求头
+ 
+-
+-**X\-Api\-Key ** `string` <span data-api-tag="require|9gv9Vz">必选</span>
++**X\-Api\-Key ** `string` 必选
+ 
+ API Key 可从 [控制台>API Key管理](https://console.volcengine.com/speech/new/setting/apikeys?projectName=default.) 获取
+ 
+-<div data-tips="true" data-tips-type="default" data-tips-is-title="true">说明</div>
+-
+-
+-<div data-tips="true" data-tips-type="default">同时支持<a href="https://console.volcengine.com/speech/service/10035">旧版控制台</a>的鉴权方式，详见<a href="https://www.volcengine.com/docs/6561/2534847?lang=zh">旧版控制台鉴权参考</a></div>
+-
+-
+-
+-
+-**X\-Api\-Resource\-Id ** `string` <span data-api-tag="require|M22Sxg">必选</span>
++> **说明**
++
++> 同时支持[旧版控制台](https://console.volcengine.com/speech/service/10035)的鉴权方式，详见[旧版控制台鉴权参考](https://www.volcengine.com/docs/6561/2534847?lang=zh)
++
++**X\-Api\-Resource\-Id ** `string` 必选
+ 
+ 请求的模型版本，可选值：
+ 
+-
+ * `seed-tts-2.0`:豆包语音合成大模型2.0，支持使用[豆包语音合成模型2.0音色](https://docs.volcengine.com/docs/6561/1257544?lang=zh#%E8%B1%86%E5%8C%85%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E6%A8%A1%E5%9E%8B2-0%E3%80%81s2s-o2-0%E3%80%81-s2s-%E5%85%A8%E5%8F%8C%E5%B7%A5-%E9%9F%B3%E8%89%B2%E5%88%97%E8%A1%A8)
+ 
+ * `seed-icl-2.0`:豆包声音复刻大模型2.0，支持使用声音复刻接口克隆的音色，具体音色详见[控制台>音色库](https://console.volcengine.com/speech/new/voices?projectName=default)
+ 
+-
+-
+ **X\-Api\-Connect\-Id** `string`
+ 
+ 用于追踪当前连接情况的标志 ID
+ 
+-
+-
+ **X\-Control\-Require\-Usage\-Tokens\-Return ** `string`
+ 
+ 若设置为`*`，会返回计费的字符数
+ 
+-
+-
+-
+-<span id="cdSz2CLG"></span>
+ ### 事件
+ 
+-
+ **建立连接**
+ 
+-
+ **EventType ** `string`
+ 
+ 请求事件类型。建立连接时，字段固定为`StartConnection`
+ 
+-
+-
+-
+ **创建会话**
+ 
+-
+ **EventType ** `string`
+ 
+ 请求事件类型。创建会话时，字段固定为`StartSession`
+ 
+-
+-
+ **session_id ** `string`
+ 
+ 合成会话id，由客户端生成
+ 
+-
+-
+-**req_params ** `object` <span data-api-tag="require|SL5CNq">必选</span>
+-
++**req_params ** `object` 必选
+ 
+ **model** `string`
+ 
+ 指定模型版本，默认值为`seed-tts-2.0-standard`
+ 
+-<div data-tips="true" data-tips-type="default" data-tips-is-title="true">说明</div>
+-
+-
+-<div data-tips="true" data-tips-type="default">仅当<code>speaker</code>参数为复刻音色时需指定此参数，且指定后不支持使用语音指令<code>context_texts</code></div>
+-
+-
+-
++> **说明**
++
++> 仅当`speaker`参数为复刻音色时需指定此参数，且指定后不支持使用语音指令`context_texts`
+ 
+ **text**`string`
+ 
+ 输入待合成的文本
+ 
+-
+-
+-**speaker** `string` <span data-api-tag="require|dQHTIf">必选</span>
++**speaker** `string` 必选
+ 
+ 指定音色 ID，具体的音色ID可从[控制台 > 音色库](https://console.volcengine.com/speech/new/voices?projectName=default)获取
+ 
+-
+-
+-**audio_params** `object` <span data-api-tag="require|TpaG6z">必选</span>
++**audio_params** `object` 必选
+ 
+ 音频参数
+ 
+-
+ **format** `string`
+ 
+ 指定音频格式，默认值为`mp3`，支持 `mp3` / `pcm` / `ogg_opus` / `wav`
+ 
+-<div data-tips="true" data-tips-type="default" data-tips-is-title="true">说明</div>
+-
+-
+-<div data-tips="true" data-tips-type="default">流式场景推荐使用<code>pcm</code>，不建议使用<code>wav</code></div>
+-
+-
+-
++> **说明**
++
++> 流式场景推荐使用`pcm`，不建议使用`wav`
+ 
+ **sample_rate** `int`
+ 
+ 指定输出音频的采样率，单位为Hz，不同音频格式支持的比特率不同，详细如下：
+ 
+-
+ * `wav`/`pcm`/`mp3`默认值为`24000`，取值范围为[`8000`,`16000`,`22050`，`24000`,`32000`,`44100`,`48000`]
+ 
+ * `ogg_opus`仅支持`48000`
+ 
+-
+-
+ **bit_rate** `int`
+ 
+ 指定音频比特率，单位 bps，不同音频格式对比特率支持的情况不同，详细如下：
+ 
+-
+ * `mp3`：默认为`64000` ，可选值[`64000`,`160000`]
+ 
+ * `ogg_opus`：可选值[`64000`,`160000`]
+ 
+ * `wav`/`pcm`：不支持指定比特率
+ 
+-
+-<div data-tips="true" data-tips-type="tip" data-tips-is-title="true">说明</div>
+-
+-
+-<div data-tips="true" data-tips-type="tip">当设置<code>disable_default_bit_rate</code>为<code>true</code>后，可选值[<code>16000</code>,<code>32000</code>,<code>64000</code>,<code>160000</code>]</div>
+-
+-
+-
++> **说明**
++
++> 当设置`disable_default_bit_rate`为`true`后，可选值[`16000`,`32000`,`64000`,`160000`]
+ 
+ **speech_rate** `int`
+ 
+ 指定音频的语速，取值范围 [`-50`, `100`]。其中，取值`100`代表2.0倍速，`-50`代表0.5倍速
+ 
+-
+-
+ **loudness_rate** `int`
+ 
+ 指定音频的音量，取值范围 [`-50`, `100`]。其中，取值`100`代表2.0倍音量，`-50`代表0.5倍音量
+ 
+-
+-
+ **enable_subtitle** `bool`
+ 
+ 启用字幕服务，开启后将返回字级别的时间戳，默认值为`false`
+ 
+-<div data-tips="true" data-tips-type="default" data-tips-is-title="true">说明</div>
+-
+-
+-<div data-tips="true" data-tips-type="default">仅支持中文和英文语种</div>
+-
+-
+-
+-
++> **说明**
++
++> 仅支持中文和英文语种
+ 
+ **additions** `string`
+ 
+-
+ **max_length_to_filter_parenthesis ** `int`
+ 
+ 指定过滤括号内文本的长度，单位为字符，默认为0（即不过滤），推荐取值范围0~100
+ 
+-<div data-tips="true" data-tips-type="default" data-tips-is-title="true">说明</div>
+-
+-
+-
+-* <div data-tips="true" data-tips-type="default">该参数用于过滤文本中括号内的注释、补充说明等无需朗读的内容</div>
+-
+-
+-* <div data-tips="true" data-tips-type="default">当括号内文本字符数超过设定值时，该括号的过滤功能将失效，括号内内容会被正常朗读。若存在较长的括号文本需要过滤，建议客户端在送入合成前自行完成前置过滤，以避免过滤失效及不必要的时延</div>
+-
+-
+-
++> **说明**
++
++* > 该参数用于过滤文本中括号内的注释、补充说明等无需朗读的内容
++
++* > 当括号内文本字符数超过设定值时，该括号的过滤功能将失效，括号内内容会被正常朗读。若存在较长的括号文本需要过滤，建议客户端在送入合成前自行完成前置过滤，以避免过滤失效及不必要的时延
+ 
+ **disable_markdown_filter**`bool`
+ 
+ Markdown解析过滤参数，默认值为`false`
+ 
+-
+ * `true`：启用后，系统会解析并去除Markdown语法，例如" \*\*你好\*\* "朗读为 "你好"
+ 
+ * `false`：停用后，系统会保留原始字符，例如 " \*\*你好\*\* " 朗读为 "星星你好星星"
+ 
+-
+-
+ **disable_emoji_filter** `bool`
+ 
+ Emoji解析过滤参数，默认值为`false`
+ 
+-
+ * `true`：启用后，系统会解析并去除文本中的Emoji符号
+ 
+ * `false`：停用后，系统会保留文本中的Emoji符号
+ 
+-
+-
+ **latex_parser** `string`
+ 
+ 启用Latex文本朗读能力功能。可取值：`v2`
+ 
+-<div data-tips="true" data-tips-type="default" data-tips-is-title="true">说明</div>
+-
+-
+-
+-* <div data-tips="true" data-tips-type="default">该参数适用于教育场景，启用后，会增加一定的时延。</div>
+-
+-
+-* <div data-tips="true" data-tips-type="default">启用该参数时，需同时将<code>disable_markdown_filter</code>设置为<code>true</code></div>
+-
+-
+-
++> **说明**
++
++* > 该参数适用于教育场景，启用后，会增加一定的时延。
++
++* > 启用该参数时，需同时将`disable_markdown_filter`设置为`true`
+ 
+ **explicit_language** `string`
+ 
+ 指定朗读语种。开启后，仅朗读指定语种的文本，其他语种的内容会被跳过或合成失败，支持的语种如下：
+ 
+-
+ * `zh-cn`：中文为主，支持中英混读
+ 
+ * `en`：英语
+@@ -309,46 +224,30 @@
+ 
+ * `es-es`: 西班牙西语
+ 
+-
+-<div data-tips="true" data-tips-type="default" data-tips-is-title="true">说明</div>
+-
+-
+-
+-* <div data-tips="true" data-tips-type="default">输入文本语种须与 <code>explicit_language</code> 指定的语种一致，不一致时合成效果不予保证</div>
+-
+-
+-* <div data-tips="true" data-tips-type="default"><a href="https://docs.volcengine.com/docs/DoubaoVoice/Tonelist-1?lang=zh#%E8%B1%86%E5%8C%85%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E6%A8%A1%E5%9E%8B2-0%E3%80%81s2s-o2-0%E3%80%81-s2s-%E5%85%A8%E5%8F%8C%E5%B7%A5-%E9%9F%B3%E8%89%B2%E5%88%97%E8%A1%A8">豆包语音合成模型 2.0 音色列表</a>中，仅命名为zh_<em>xxx</em>_<em>xxxx</em>_uranus_bigtts的音色支持<code>nl</code>、<code>no</code>、<code>uk</code>、<code>fi</code>、<code>da</code>、<code>cs</code>、<code>hu</code>、<code>el</code>、<code>ro</code>、<code>hi</code>、<code>es-es</code>等语种</div>
+-
+-
+-
++> **说明**
++
++* > 输入文本语种须与 `explicit_language` 指定的语种一致，不一致时合成效果不予保证
++
++* > [豆包语音合成模型 2.0 音色列表](https://docs.volcengine.com/docs/6561/1257544?lang=zh#%E8%B1%86%E5%8C%85%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E6%A8%A1%E5%9E%8B2-0%E3%80%81s2s-o2-0%E3%80%81-s2s-%E5%85%A8%E5%8F%8C%E5%B7%A5-%E9%9F%B3%E8%89%B2%E5%88%97%E8%A1%A8)中，仅命名为zh_*xxx*_*xxxx*_uranus_bigtts的音色支持`nl`、`no`、`uk`、`fi`、`da`、`cs`、`hu`、`el`、`ro`、`hi`、`es-es`等语种
+ 
+ **enable_auto_language_recognition**`bool`
+ 
+ 开启自动多语种识别，默认为`false`，开启后，系统将根据首句文本自动识别语种，并使用对应语种进行朗读
+ 
+-<div data-tips="true" data-tips-type="default" data-tips-is-title="true">说明</div>
+-
+-
+-
+-* <div data-tips="true" data-tips-type="default">支持的语种与 <code>explicit_language</code> 一致（<code>pt</code>与<code>es-es</code>除外）</div>
+-
+-
+-* <div data-tips="true" data-tips-type="default">指定语种的优先级高于自动多语种识别，当同时指定了<code>explicit_language</code>时，自动多语种识别不生效</div>
+-
+-
+-* <div data-tips="true" data-tips-type="default">自动识别语种时，葡萄牙语文本默认输出 <code>pt-br</code>（巴西口音），西班牙语文本默认输出 <code>es-mx</code>（墨西哥口音）。如需使用欧洲葡萄牙语<code>pt</code>或西班牙西班牙语<code>es-es</code>，须通过 <code>explicit_language</code> 参数显式指定</div>
+-
+-
+-* <div data-tips="true" data-tips-type="default">中英模型（中文、英文）与小语种模型（日、韩、法语、西语等小语种）相互独立，各自仅对对应语种合成效果最佳</div>
+-
+-
+-
++> **说明**
++
++* > 支持的语种与 `explicit_language` 一致（`pt`与`es-es`除外）
++
++* > 指定语种的优先级高于自动多语种识别，当同时指定了`explicit_language`时，自动多语种识别不生效
++
++* > 自动识别语种时，葡萄牙语文本默认输出 `pt-br`（巴西口音），西班牙语文本默认输出 `es-mx`（墨西哥口音）。如需使用欧洲葡萄牙语`pt`或西班牙西班牙语`es-es`，须通过 `explicit_language` 参数显式指定
++
++* > 中英模型（中文、英文）与小语种模型（日、韩、法语、西语等小语种）相互独立，各自仅对对应语种合成效果最佳
+ 
+ **explicit_dialect** `string`
+ 
+ 指定方言
+ 
+-
+ * `beijing`：北京话
+ 
+ * `dongbei`：东北话
+@@ -365,70 +264,47 @@
+ 
+ * `yue`：粤语
+ 
+-
+-<div data-tips="true" data-tips-type="default" data-tips-is-title="true">说明</div>
+-
+-
+-<div data-tips="true" data-tips-type="default">使用该参数时，<code>speaker</code>需设置支持方言的音色，音色的详细情况请参见：<a href="https://www.volcengine.com/docs/6561/1257544?lang=zh">音色列表</a></div>
+-
+-
+-
++> **说明**
++
++> 使用该参数时，`speaker`需设置支持方言的音色，音色的详细情况请参见：[音色列表](https://www.volcengine.com/docs/6561/1257544?lang=zh)
+ 
+ **aigc_watermark** `bool`
+ 
+ 启用AIGC生成标识，默认值：`false`。开启后，将在音频合成结尾添加节奏标识
+ 
+-
+-
+ **aigc_metadata** `object`
+ 
+ 在合成音频中添加meta水印，支持音频格式 `mp3` / `wav` / `ogg_opus`
+ 
+-
+ **enable ** `bool`
+ 
+ 启用meta隐式水印，默认值：`false`
+ 
+-
+-
+ **content_producer**`string`
+ 
+ 指定合成服务提供者的名称或编码
+ 
+-
+-
+ **produce_id ** `string`
+ 
+ 指定自定义的内容制作编号
+ 
+-
+-
+ **content_propagator**`string`
+ 
+ 指定内容传播服务提供者的名称或编码
+ 
+-
+-
+ **propagate_id ** `string`
+ 
+ 指定自定义的内容传播编号
+ 
+-
+-
+-
+ **post_process** `object`
+ 
+ 后处理相关配置
+ 
+-
+ **pitch ** `int`
+ 
+ 指定音调，默认值为0，默认不调整音调，取值范围：[\-12,12]
+ 
+ 取值越大，音调越高（声音越尖锐、越明亮）；取值越小，音调越低（声音越低沉，越厚重）
+-
+-
+-
+ 
+ **context_texts** `array`
+ 
+@@ -440,18 +316,11 @@
+ "context_texts":[ "你可以用特别特别痛心的语气说话吗?"]
+ ```
+ 
+-
+-<div data-tips="true" data-tips-type="default" data-tips-is-title="true">说明</div>
+-
+-
+-
+-* <div data-tips="true" data-tips-type="default">仅<code>speaker</code>参数设置为<a href="https://docs.volcengine.com/docs/6561/1257544?lang=zh#%E8%B1%86%E5%8C%85%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E6%A8%A1%E5%9E%8B2-0%E3%80%81s2s-o2-0%E3%80%81-s2s-%E5%85%A8%E5%8F%8C%E5%B7%A5-%E9%9F%B3%E8%89%B2%E5%88%97%E8%A1%A8">豆包语音合成模型2.0音色</a>时，支持使用语音指令</div>
+-
+-
+-* <div data-tips="true" data-tips-type="default">该字段文字不参与计费</div>
+-
+-
+-
++> **说明**
++
++* > 仅`speaker`参数设置为[豆包语音合成模型2.0音色](https://docs.volcengine.com/docs/6561/1257544?lang=zh#%E8%B1%86%E5%8C%85%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E6%A8%A1%E5%9E%8B2-0%E3%80%81s2s-o2-0%E3%80%81-s2s-%E5%85%A8%E5%8F%8C%E5%B7%A5-%E9%9F%B3%E8%89%B2%E5%88%97%E8%A1%A8)时，支持使用语音指令
++
++* > 该字段文字不参与计费
+ 
+ **section_id** `string`
+ 
+@@ -461,32 +330,23 @@
+ 
+ 示例：section_id="bf5b5771\-31cd\-4f7a\-b30c\-f4ddcbf2f9da"
+ 
+-<div data-tips="true" data-tips-type="default" data-tips-is-title="true">说明</div>
+-
+-
+-
+-* <div data-tips="true" data-tips-type="default">该参数仅支持<a href="https://docs.volcengine.com/docs/6561/1257544?lang=zh#%E8%B1%86%E5%8C%85%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E6%A8%A1%E5%9E%8B2-0%E3%80%81s2s-o2-0%E3%80%81-s2s-%E5%85%A8%E5%8F%8C%E5%B7%A5-%E9%9F%B3%E8%89%B2%E5%88%97%E8%A1%A8">豆包语音合成模型2.0音色</a>、豆包声音复刻大模型2.0音色</div>
+-
+-
+-* <div data-tips="true" data-tips-type="default">服务端对历史上下文有相应的轮数限制和超时时间。</div>
+-
+-
+-
++> **说明**
++
++* > 该参数仅支持[豆包语音合成模型2.0音色](https://docs.volcengine.com/docs/6561/1257544?lang=zh#%E8%B1%86%E5%8C%85%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E6%A8%A1%E5%9E%8B2-0%E3%80%81s2s-o2-0%E3%80%81-s2s-%E5%85%A8%E5%8F%8C%E5%B7%A5-%E9%9F%B3%E8%89%B2%E5%88%97%E8%A1%A8)、豆包声音复刻大模型2.0音色
++
++* > 服务端对历史上下文有相应的轮数限制和超时时间。
+ 
+ **pronunciation_dict**`object`
+ 
+ 配置发音词典，修正指定文本的发音
+ 
+-
+ **tone**`object`
+ 
+ 配置发音规则数组，支持发音修正与文本转写两类规则
+ 
+-
+ * 发音修正：`原词/(拼音音节)`，用于指定词汇的具体发音
+ 
+ * 文本转写：`原词/目标文本`，用于将原词替换为目标文本后再合成
+-
+ 
+  示例：
+ 
+@@ -502,91 +362,54 @@
+   }
+ ```
+ 
+-
+-<div data-tips="true" data-tips-type="default" data-tips-is-title="true">说明</div>
+-
+-
+-
+-* <div data-tips="true" data-tips-type="default"><code>tone </code>中每条规则采用<code> 原词/修正内容 </code>格式，以<code>/</code>分隔。服务端按文本从左到右进行贪心最长匹配，存在多个可匹配词条时，优先匹配更长的原词</div>
+-
+-
+-* <div data-tips="true" data-tips-type="default">最多支持配置 5000 个词条；每个原词长度不超过 9 个字符，不能为空、不能包含空格、不可重复</div>
+-
+-
+-* <div data-tips="true" data-tips-type="default">仅豆包语音合成大模型2.0、豆包语音复刻大模型2.0对应的中英文音色支持</div>
+-
+-
+-* <div data-tips="true" data-tips-type="default">命中发音字典规则的文本片段不支持 SSML 标签，同时使用时 SSML 标签将失效，建议二者择一</div>
+-
+-
+-
+-
+-
+-
+-
++> **说明**
++
++* > `tone`中每条规则采用`原词/修正内容`格式，以`/`分隔。服务端按文本从左到右进行贪心最长匹配，存在多个可匹配词条时，优先匹配更长的原词
++
++* > 最多支持配置 5000 个词条；每个原词长度不超过 9 个字符，不能为空、不能包含空格、不可重复
++
++* > 仅豆包语音合成大模型2.0、豆包语音复刻大模型2.0对应的中英文音色支持
++
++* > 命中发音字典规则的文本片段不支持 SSML 标签，同时使用时 SSML 标签将失效，建议二者择一
+ 
+ **发送请求**
+ 
+-
+ **EventType ** `string`
+ 
+ 请求事件类型。发送请求时，字段固定为`TaskRequest`
+ 
+-
+-
+ **session_id ** `string`
+ 
+ 合成会话ID
+ 
+-
+-
+-**text ** `string` <span data-api-tag="require|b6EFQy">必选</span>
++**text ** `string` 必选
+ 
+ 待合成的输入文本
+ 
+-
+-
+-
+ **取消会话**
+ 
+-
+ **EventType ** `string`
+ 
+ 请求事件类型。取消会话时，字段固定为`CancelSession`
+ 
+-
+-
+-
+ **结束会话**
+ 
+-
+ **EventType ** `string`
+ 
+ 请求事件类型。结束会话时，字段固定为`FinishSession`
+ 
+-
+-
+-
+ **结束连接**
+ 
+-
+ **EventType ** `string`
+ 
+ 请求事件类型。结束连接时，字段固定为`FinishConnection`
+ 
+-
+-
+-
+-
+-<span id="U2bG8YW8"></span>
+ ### 响应
+ 
+-
+ **EventType** `string`
+ 
+ 响应事件类型。包含以下几种事件：
+ 
+-
+ * `ConnectionStarted`：建连成功
+ 
+ * `SessionStarted`：会话开始
+@@ -609,97 +432,66 @@
+ 
+ * `SessionFailed`：会话失败
+ 
+-
+-
+ **MsgType ** `string`
+ 
+ 消息类型。响应消息类型有以下两种
+ 
+-
+ * `FullServerResponse`：全量服务端响应
+ 
+ * `AudioOnlyServer`：仅音频服务端响应
+ 
+-
+-
+-**SessioId ** `string`
++**SessionId ** `string`
+ 
+ 会话 ID，用于标识一次合成会话
+ 
+-
+-
+ **PayloadSize ** `int`
+ 
+ 返回的音频片段大小，单位是字节
+ 
+-
+-
+ **ConnectId ** `string`
+ 
+ 连接 ID，用于标识当前 WebSocket 连接
+ 
+-
+-
+ **Payload ** `object`
+ 
+ 当前事件携带的响应内容
+ 
+-
+ **phonemes ** `object`
+ 
+ 音素相关时间戳
+ 
+-
+-
+ **text ** `string`
+ 
+ 合成音频文本
+ 
+-
+-
+ **words ** `object`
+ 
+ 字级别时间戳
+ 
+-
+ **confidence ** `float`
+ 
+ 时间戳置信度，范围 0~1
+ 
+-
+-
+ **startTime ** `float`
+ 
+ 开始时间（秒）
+ 
+-
+-
+ **endTime ** `float`
+ 
+ 结束时间（秒）
+ 
+-
+-
+ **word ** `string`
+ 
+ 字
+ 
+-
+-
+-
+ **usage ** `object`
+ 
+ 本次请求的资源消耗统计
+ 
+-
+ **text_words ** `int`
+ 
+ 本次请求计费的文本字数（含标点）
+ 
+-
+-
+-
+-
+-&nbsp;
+-
+-&nbsp;
++```mixin-react
++return (<ApiSample data={"{\"type\":\"multiple\",\"config\":{\"inputName\":\"输入示例\",\"outputName\":\"输出示例\",\"envItems\":[{\"label\":\"ARK_API_KEY\",\"value\":\"ARK_API_KEY\"}]},\"data\":[{\"title\":\"完整示例\",\"key\":\"0\",\"inputCode\":\"import asyncio\\nimport copy\\nimport json\\nimport logging\\nimport sys\\nimport uuid\\nfrom pathlib import Path\\n\\nsys.path.insert(0, str(Path(__file__).resolve().parents[2]))\\n\\nimport websockets\\n\\nfrom protocols import (\\n    EventType,\\n    MsgType,\\n    finish_connection,\\n    finish_session,\\n    receive_message,\\n    start_connection,\\n    start_session,\\n    task_request,\\n    wait_for_event,\\n)\\n\\nlogging.basicConfig(level=logging.INFO)\\nlogger = logging.getLogger(__name__)\\n\\nURL = \\\"wss://openspeech.bytedance.com/api/v3/tts/bidirection\\\"\\nTEXT = \\\"你好，欢迎使用语音合成服务\\\"\\n\\nasync def main():\\n    # Connect to server.\\n    headers = {\\n        \\\"X-Api-Key\\\": \\\"your_api_key\\\",\\n        \\\"X-Api-Resource-Id\\\": \\\"seed-tts-2.0\\\",\\n        \\\"X-Api-Connect-Id\\\": str(uuid.uuid4()),\\n        \\\"X-Control-Require-Usage-Tokens-Return\\\": \\\"*\\\",\\n    }\\n\\n    logger.info(f\\\"Connecting to {URL}\\\")\\n    websocket = await websockets.connect(\\n        URL, additional_headers=headers, max_size=10 * 1024 * 1024\\n    )\\n    logger.info(\\n        f\\\"Connected to WebSocket server, Logid: {websocket.response.headers['x-tt-logid']}\\\",\\n    )\\n\\n    try:\\n        # Start connection.\\n        await start_connection(websocket)\\n        await wait_for_event(\\n            websocket, MsgType.FullServerResponse, EventType.ConnectionStarted\\n        )\\n\\n        audio_received = False\\n\\n        # Session-level parameters. Subtitle/timestamp is not enabled by default.\\n        base_request = {\\n            \\\"req_params\\\": {\\n                \\\"speaker\\\": \\\"zh_female_gaolengyujie_uranus_bigtts\\\",\\n                \\\"audio_params\\\": {\\n                    \\\"format\\\": \\\"mp3\\\",\\n                    \\\"sample_rate\\\": 24000,\\n                    # \\\"enable_subtitle\\\": True,\\n                },\\n            },\\n        }\\n\\n        # Start session.\\n        start_session_request = copy.deepcopy(base_request)\\n        start_session_request[\\\"event\\\"] = EventType.StartSession\\n        session_id = str(uuid.uuid4())\\n        await start_session(\\n            websocket, json.dumps(start_session_request).encode(), session_id\\n        )\\n        await wait_for_event(\\n            websocket, MsgType.FullServerResponse, EventType.SessionStarted\\n        )\\n\\n        # Send characters one by one.\\n        async def send_chars():\\n            for char in TEXT:\\n                synthesis_request = copy.deepcopy(base_request)\\n                synthesis_request[\\\"event\\\"] = EventType.TaskRequest\\n                synthesis_request[\\\"req_params\\\"][\\\"text\\\"] = char\\n                await task_request(\\n                    websocket, json.dumps(synthesis_request).encode(), session_id\\n                )\\n                await asyncio.sleep(0.005)  # 5ms delay between characters.\\n\\n            await finish_session(websocket, session_id)\\n\\n        send_task = asyncio.create_task(send_chars())\\n\\n        # Receive audio data.\\n        audio_data = bytearray()\\n        while True:\\n            msg = await receive_message(websocket)\\n\\n            if msg.type == MsgType.FullServerResponse:\\n                if msg.event == EventType.SessionFinished:\\n                    break\\n            elif msg.type == MsgType.AudioOnlyServer:\\n                audio_received = True\\n                audio_data.extend(msg.payload)\\n            else:\\n                raise RuntimeError(f\\\"TTS conversion failed: {msg}\\\")\\n\\n        await send_task\\n\\n        if audio_data:\\n            audio_format = base_request[\\\"req_params\\\"][\\\"audio_params\\\"][\\\"format\\\"]\\n            filename = f\\\"bidirectional_session_0.{audio_format}\\\"\\n            with open(filename, \\\"wb\\\") as f:\\n                f.write(audio_data)\\n            logger.info(f\\\"Audio received: {len(audio_data)}, saved to {filename}\\\")\\n\\n        if not audio_received:\\n            raise RuntimeError(\\\"No audio data received\\\")\\n\\n    finally:\\n        # Finish connection.\\n        await finish_connection(websocket)\\n        await wait_for_event(\\n            websocket, MsgType.FullServerResponse, EventType.ConnectionFinished\\n        )\\n        await websocket.close()\\n        logger.info(\\\"Connection closed\\\")\\n\\nif __name__ == \\\"__main__\\\":\\n    asyncio.run(main())\",\"outputCode\":\"[\\n  {\\n    \\\"MsgType\\\": \\\"FullServerResponse\\\",\\n    \\\"EventType\\\": \\\"ConnectionStarted\\\",\\n    \\\"ConnectId\\\": \\\"926b8fad-e2ef-453a-8f47-0497a88e7140\\\",\\n    \\\"Payload\\\": {}\\n  },\\n  {\\n    \\\"MsgType\\\": \\\"FullServerResponse\\\",\\n    \\\"EventType\\\": \\\"SessionStarted\\\",\\n    \\\"SessionId\\\": \\\"a61af389-4042-4a77-9958-0ff2ce8af537\\\",\\n    \\\"Payload\\\": {}\\n  },\\n  {\\n    \\\"MsgType\\\": \\\"FullServerResponse\\\",\\n    \\\"EventType\\\": \\\"TTSSentenceStart\\\",\\n    \\\"SessionId\\\": \\\"a61af389-4042-4a77-9958-0ff2ce8af537\\\",\\n    \\\"Payload\\\": {\\n      \\\"phonemes\\\": [],\\n      \\\"text\\\": \\\"\\\",\\n      \\\"words\\\": []\\n    }\\n  },\\n  {\\n    \\\"MsgType\\\": \\\"AudioOnlyServer\\\",\\n    \\\"EventType\\\": \\\"TTSResponse\\\",\\n    \\\"SessionId\\\": \\\"a61af389-4042-4a77-9958-0ff2ce8af537\\\",\\n    \\\"PayloadSize\\\": 2349\\n  },\\n  {\\n    \\\"MsgType\\\": \\\"AudioOnlyServer\\\",\\n    \\\"EventType\\\": \\\"TTSResponse\\\",\\n    \\\"SessionId\\\": \\\"a61af389-4042-4a77-9958-0ff2ce8af537\\\",\\n    \\\"PayloadSize\\\": 3264\\n  },\\n  {\\n    \\\"MsgType\\\": \\\"FullServerResponse\\\",\\n    \\\"EventType\\\": \\\"TTSSentenceEnd\\\",\\n    \\\"SessionId\\\": \\\"a61af389-4042-4a77-9958-0ff2ce8af537\\\",\\n    \\\"Payload\\\": {\\n      \\\"phonemes\\\": [],\\n      \\\"text\\\": \\\"你好，欢迎使用语音合成服务\\\",\\n      \\\"words\\\": []\\n    }\\n  },\\n  {\\n    \\\"MsgType\\\": \\\"FullServerResponse\\\",\\n    \\\"EventType\\\": \\\"SessionFinished\\\",\\n    \\\"SessionId\\\": \\\"a61af389-4042-4a77-9958-0ff2ce8af537\\\",\\n    \\\"Payload\\\": {\\n      \\\"usage\\\": {\\n        \\\"text_words\\\": 13\\n      }\\n    }\\n  },\\n  {\\n    \\\"MsgType\\\": \\\"FullServerResponse\\\",\\n    \\\"EventType\\\": \\\"ConnectionFinished\\\",\\n    \\\"ConnectId\\\": \\\"926b8fad-e2ef-453a-8f47-0497a88e7140\\\",\\n    \\\"Payload\\\": {}\\n  }\\n]\",\"inputLanguage\":\"python\",\"outputLanguage\":\"\",\"debug\":{\"openDebug\":false,\"debugParams\":{}}},{\"title\":\"建立连接\",\"key\":\"1\",\"inputCode\":\"{\\n  \\\"EventType\\\": \\\"StartConnection\\\"\\n}\",\"outputCode\":\"{\\n  \\\"MsgType\\\": \\\"FullServerResponse\\\",\\n  \\\"EventType\\\": \\\"ConnectionStarted\\\",\\n  \\\"ConnectId\\\": \\\"xxxxxx\\\",\\n  \\\"Payload\\\": {}\\n}\",\"inputLanguage\":\"\",\"outputLanguage\":\"\"},{\"title\":\"创建会话\",\"key\":\"fTdXaq2S\",\"inputCode\":\"{\\n  \\\"EventType\\\": \\\"StartSession\\\",\\n  \\\"session_id\\\": \\\"xxxxxxxx\\\",\\n  \\\"req_params\\\": {\\n    \\\"speaker\\\": \\\"zh_female_gaolengyujie_uranus_bigtts\\\",\\n    \\\"audio_params\\\": {\\n      \\\"format\\\": \\\"mp3\\\",\\n      \\\"sample_rate\\\": 24000\\n    }\\n  }\\n}\",\"outputCode\":\"{\\n  \\\"MsgType\\\": \\\"FullServerResponse\\\",\\n  \\\"EventType\\\": \\\"SessionStarted\\\",\\n  \\\"SessionId\\\": \\\"xxxxxx\\\",\\n  \\\"Payload\\\": {}\\n}\",\"inputLanguage\":\"\",\"outputLanguage\":\"\"},{\"title\":\"发送请求\",\"key\":\"caIxC87c\",\"inputCode\":\"{\\n  \\\"EventType\\\": \\\"TaskRequest\\\",\\n  \\\"session_id\\\": \\\"xxxxxxxx\\\",\\n  \\\"req_params\\\": {\\n    \\\"text\\\": \\\"你好，欢迎使用语音合成服务\\\"\\n  }\\n}\",\"outputCode\":\"[\\n{\\n  \\\"MsgType\\\": \\\"FullServerResponse\\\",\\n  \\\"EventType\\\": \\\"TTSSentenceStart\\\",\\n  \\\"SessionId\\\": \\\"xxxxxx\\\",\\n  \\\"Payload\\\": {\\n    \\\"phonemes\\\": [],\\n    \\\"text\\\": \\\"\\\",\\n    \\\"words\\\": []\\n  }\\n},\\n{\\n    \\\"MsgType\\\": \\\"AudioOnlyServer\\\",\\n    \\\"EventType\\\": \\\"TTSResponse\\\",\\n    \\\"SessionId\\\": \\\"xxxxxx\\\",\\n    \\\"PayloadSize\\\": 2349\\n  },\\n  {\\n    \\\"MsgType\\\": \\\"AudioOnlyServer\\\",\\n    \\\"EventType\\\": \\\"TTSResponse\\\",\\n    \\\"SessionId\\\": \\\"xxxxxx\\\",\\n    \\\"PayloadSize\\\": 3264\\n  },\\n{\\n  \\\"MsgType\\\": \\\"FullServerResponse\\\",\\n  \\\"EventType\\\": \\\"TTSSentenceEnd\\\",\\n  \\\"SessionId\\\": \\\"xxxxxx\\\",\\n  \\\"Payload\\\": {\\n    \\\"phonemes\\\": [],\\n    \\\"text\\\": \\\"你好，欢迎使用语音合成服务\\\",\\n    \\\"words\\\": []\\n  }\\n}\\n]\",\"inputLanguage\":\"\",\"outputLanguage\":\"\"},{\"title\":\"取消会话\",\"key\":\"RTqVaalJ\",\"inputCode\":\"{\\n  \\\"EventType\\\": \\\"CancelSession\\\",\\n  \\\"session_id\\\": \\\"xxxxxxxx\\\"\\n}\",\"outputCode\":\"{\\n  \\\"MsgType\\\": \\\"FullServerResponse\\\",\\n  \\\"EventType\\\": \\\"SessionCanceled\\\",\\n  \\\"SessionId\\\": \\\"xxxxxx\\\",\\n  \\\"Payload\\\": {}\\n}\",\"inputLanguage\":\"\",\"outputLanguage\":\"\"},{\"title\":\"结束会话\",\"key\":\"KvLuGgdS\",\"inputCode\":\"{\\n  \\\"EventType\\\": \\\"FinishSession\\\",\\n  \\\"session_id\\\": \\\"xxxxxxxx\\\"\\n}\",\"outputCode\":\"{\\n  \\\"MsgType\\\": \\\"FullServerResponse\\\",\\n  \\\"EventType\\\": \\\"SessionFinished\\\",\\n  \\\"SessionId\\\": \\\"xxxxxx\\\",\\n  \\\"Payload\\\": {\\n    \\\"usage\\\": {\\n      \\\"text_words\\\": 13\\n    }\\n  }\\n}\",\"inputLanguage\":\"\",\"outputLanguage\":\"\"},{\"title\":\"结束连接\",\"key\":\"TrciXPn6\",\"inputCode\":\"{\\n  \\\"EventType\\\": \\\"FinishConnection\\\"\\n}\",\"outputCode\":\"{\\n  \\\"MsgType\\\": \\\"FullServerResponse\\\",\\n  \\\"EventType\\\": \\\"ConnectionFinished\\\",\\n  \\\"ConnectId\\\": \\\"xxxxxx\\\",\\n  \\\"Payload\\\": {}\\n}\",\"inputLanguage\":\"\",\"outputLanguage\":\"\"}]}"} />);
++```

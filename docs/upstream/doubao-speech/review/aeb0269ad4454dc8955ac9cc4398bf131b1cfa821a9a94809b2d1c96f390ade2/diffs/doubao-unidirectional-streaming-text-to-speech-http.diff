@@ -1,0 +1,604 @@
+--- reviewed/doubao-speech/doubao-unidirectional-streaming-text-to-speech-http
++++ current/doubao-speech/doubao-unidirectional-streaming-text-to-speech-http
+@@ -1,230 +1,157 @@
+ 基于 HTTP Chunked 协议的单向流式合成接口，一次性输入文本，流式返回音频，支持中、英、日、西等多语种及多种方言口音。
+ 
+-<span data-label="purple">POST</span> `https://openspeech.bytedance.com/api/v3/tts/unidirectional`
+-
++POST `https://openspeech.bytedance.com/api/v3/tts/unidirectional`
+ 
+ 请求头
+ 
+-
+-**X\-Api\-Key** `string` <span data-api-tag="require|4AobfA">必选</span>
++**X\-Api\-Key** `string` 必选
+ 
+ API Key 可从 [控制台>API Key管理](https://console.volcengine.com/speech/new/setting/apikeys?projectName=default.) 获取
+ 
+-
+-
+-**X\-Api\-Resource\-Id** `string` <span data-api-tag="require|AMjHmz">必选</span>
++**X\-Api\-Resource\-Id** `string` 必选
+ 
+ 请求的模型版本，可选值：
+ 
+-
+ * `seed-tts-2.0`:豆包语音合成大模型2.0，支持使用[豆包语音合成模型2.0音色](https://docs.volcengine.com/docs/6561/1257544?lang=zh#%E8%B1%86%E5%8C%85%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E6%A8%A1%E5%9E%8B2-0%E3%80%81s2s-o2-0%E3%80%81-s2s-%E5%85%A8%E5%8F%8C%E5%B7%A5-%E9%9F%B3%E8%89%B2%E5%88%97%E8%A1%A8)
+ 
+ * `seed-icl-2.0`:豆包声音复刻大模型2.0，支持使用声音复刻接口克隆的音色，具体音色详见[控制台>音色库](https://console.volcengine.com/speech/new/voices?projectName=default)
+ 
+-
+-
+-**X\-Api\-Request\-Id** `string` <span data-api-tag="require|urxyGl">必选</span>
++**X\-Api\-Request\-Id** `string` 必选
+ 
+ 标识客户端请求ID，uuid随机字符串
+ 
+-
+-
+ **X\-Control\-Require\-Usage\-Tokens\-Return** `string`
+ 
+ 若设置为`*`，会返回计费的字符数
+ 
+-
+-
+-
+ 请求体
+ 
+-
+-**req_params** `object` <span data-api-tag="require|CErO7k">必选</span>
+-
+-
+-**text** `string` <span data-api-tag="require|OeKzcE">必选</span>
++**req_params** `object` 必选
++
++**text** `string` 必选
+ 
+ 输入待合成的文本
+ 
+-
+-
+ **model** `string`
+ 
+ 指定模型版本，默认值为`seed-tts-2.0-standard`
+ 
+-<div data-tips="true" data-tips-type="tip" data-tips-is-title="true">说明</div>
+-
+-
+-<div data-tips="true" data-tips-type="tip">仅当<code>speaker</code>参数为复刻音色时需指定此参数，且指定后不支持使用语音指令<code>context_texts</code></div>
+-
+-
+-
+-
+-**speaker** `string` <span data-api-tag="require|8WfXlw">必选</span>
++> **说明**
++
++> 仅当`speaker`参数为复刻音色时需指定此参数，且指定后不支持使用语音指令`context_texts`
++
++**speaker** `string` 必选
+ 
+ 指定音色ID，具体的音色ID可从[控制台 > 音色库](https://console.volcengine.com/speech/new/voices?projectName=default)获取
+ 
+-
+-
+ **ssml** `string`
+ 
+ SSML标记文本，启用后将按SSML规则解析 `text`。SSML规则请参考：[SSML标记语言](https://docs.volcengine.com/docs/6561/1330194?lang=zh)
+ 
+-<div data-tips="true" data-tips-type="tip" data-tips-is-title="true">说明</div>
+-
+-
+-
+-* <div data-tips="true" data-tips-type="tip">目前仅中英文音色支持ssml，音色详情请参考：<a href="https://docs.volcengine.com/docs/6561/1257544?lang=zh#%E8%B1%86%E5%8C%85%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E6%A8%A1%E5%9E%8B2-0%E3%80%81s2s-o2-0%E3%80%81-s2s-%E5%85%A8%E5%8F%8C%E5%B7%A5-%E9%9F%B3%E8%89%B2%E5%88%97%E8%A1%A8">豆包语音合成模型2.0音色</a></div>
+-
+-
+-* <div data-tips="true" data-tips-type="tip">启用后需将<code>disable_markdown_filter</code>设置为<code>false</code>，否则此参数不生效</div>
+-
+-
+-
+-
+-**audio_params** `object` <span data-api-tag="require|61E198">必选</span>
++> **说明**
++
++* > 目前仅中英文音色支持ssml，音色详情请参考：[豆包语音合成模型2.0音色](https://docs.volcengine.com/docs/6561/1257544?lang=zh#%E8%B1%86%E5%8C%85%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E6%A8%A1%E5%9E%8B2-0%E3%80%81s2s-o2-0%E3%80%81-s2s-%E5%85%A8%E5%8F%8C%E5%B7%A5-%E9%9F%B3%E8%89%B2%E5%88%97%E8%A1%A8)
++
++* > 启用后需将`disable_markdown_filter`设置为`false`，否则此参数不生效
++
++**audio_params** `object` 必选
+ 
+ 音频参数
+ 
+-
+ **format** `string`
+ 
+ 指定音频格式，默认值为`mp3`，支持 `mp3` / `pcm` / `ogg_opus` / `wav`
+ 
+-<div data-tips="true" data-tips-type="tip" data-tips-is-title="true">说明</div>
+-
+-
+-<div data-tips="true" data-tips-type="tip">流式场景推荐使用<code>pcm</code>，不建议使用<code>wav</code></div>
+-
+-
+-
++> **说明**
++
++> 流式场景推荐使用`pcm`，不建议使用`wav`
+ 
+ **sample_rate** `int`
+ 
+ 指定输出音频的采样率，单位为Hz，不同音频格式支持的采样率不同，详细如下：
+ 
+-
+ * `wav`/`pcm`/`mp3`默认值为`24000`，取值范围为[`8000`,`16000`,`22050`，`24000`,`32000`,`44100`,`48000`]
+ 
+ * `ogg_opus`仅支持`48000`
+ 
+-
+-
+ **bit_rate** `int`
+ 
+ 指定音频比特率，单位 bps，不同音频格式对比特率支持的情况不同，详细如下：
+ 
+-
+ * `mp3`：默认为`64000` ，可选值[`64000`,`160000`]
+ 
+ * `ogg_opus`：可选值[`64000`,`160000`]
+ 
+ * `wav`/`pcm`：不支持指定比特率
+ 
+-
+-<div data-tips="true" data-tips-type="tip" data-tips-is-title="true">说明</div>
+-
+-
+-<div data-tips="true" data-tips-type="tip">当设置<code>disable_default_bit_rate</code>为<code>true</code>后，可选值[<code>16000</code>,<code>32000</code>,<code>64000</code>,<code>160000</code>]</div>
+-
+-
+-
++> **说明**
++
++> 当设置`disable_default_bit_rate`为`true`后，可选值[`16000`,`32000`,`64000`,`160000`]
+ 
+ **speech_rate** `int`
+ 
+ 指定音频的语速，默认值为`0`，取值范围 [`-50`, `100`]。其中，取值`100`代表2.0倍速，`-50`代表0.5倍速
+ 
+-
+-
+ **loudness_rate** `int`
+ 
+ 指定音频的音量，默认值为`0`，取值范围 [`-50`, `100`]。其中，取值`100`代表2.0倍音量，`-50`代表0.5倍音量
+ 
+-
+-
+ **enable_subtitle** `bool`
+ 
+ 启用字幕服务，开启后将返回字级别的时间戳，默认值为`false`
+ 
+-<div data-tips="true" data-tips-type="tip" data-tips-is-title="true">说明</div>
+-
+-
+-<div data-tips="true" data-tips-type="tip">仅支持中文和英文语种</div>
+-
+-
+-
+-
++> **说明**
++
++> 仅支持中文和英文语种
+ 
+ **additions** `string`
+ 
+ 配置自定义附加参数，须传入JSON序列化后的字符串
+ 
+-
+ **max_length_to_filter_parenthesis** `int`
+ 
+ 指定过滤括号内文本的长度，单位为字符，默认为0（即不过滤），推荐取值范围0~100
+ 
+-<div data-tips="true" data-tips-type="default" data-tips-is-title="true">说明</div>
+-
+-
+-
+-* <div data-tips="true" data-tips-type="default">该参数用于过滤文本中括号内的注释、补充说明等无需朗读的内容</div>
+-
+-
+-* <div data-tips="true" data-tips-type="default">当括号内文本字符数超过设定值时，该括号的过滤功能将失效，括号内内容会被正常朗读。若存在较长的括号文本需要过滤，建议客户端在送入合成前自行完成前置过滤，以避免过滤失效及不必要的时延</div>
+-
+-
+-
++> **说明**
++
++* > 该参数用于过滤文本中括号内的注释、补充说明等无需朗读的内容
++
++* > 当括号内文本字符数超过设定值时，该括号的过滤功能将失效，括号内内容会被正常朗读。若存在较长的括号文本需要过滤，建议客户端在送入合成前自行完成前置过滤，以避免过滤失效及不必要的时延
+ 
+ **silence_duration** `int`
+ 
+ 配置文本末尾的静音时长，单位 ms，默认值为`0`，取值范围为[`0`,`30000`]
+ 
+-
+-
+ **disable_markdown_filter** `bool`
+ 
+ Markdown解析过滤参数，默认值为`false`
+ 
+-
+ * `true`：启用后，系统会解析并去除Markdown语法，例如" **你好** "朗读为 "你好"
+ 
+ * `false`：停用后，系统会保留原始字符，例如 " **你好** " 朗读为 "星星你好星星"
+ 
+-
+-
+ **disable_emoji_filter** `bool`
+ 
+ Emoji解析过滤参数，默认值为`false`
+ 
+-
+ * `true`：启用后，系统会解析并去除文本中的Emoji符号
+ 
+ * `false`：停用后，系统会保留文本中的Emoji符号
+ 
+-
+-
+ **latex_parser** `string`
+ 
+ 启用Latex文本朗读能力功能。可取值：`v2`
+ 
+-<div data-tips="true" data-tips-type="tip" data-tips-is-title="true">说明</div>
+-
+-
+-
+-* <div data-tips="true" data-tips-type="tip">该参数适用于教育场景，启用后，会增加一定的时延。</div>
+-
+-
+-* <div data-tips="true" data-tips-type="tip">启用该参数时，需同时将<code>disable_markdown_filter</code>设置为<code>true</code></div>
+-
+-
+-
++> **说明**
++
++* > 该参数适用于教育场景，启用后，会增加一定的时延。
++
++* > 启用该参数时，需同时将`disable_markdown_filter`设置为`true`
+ 
+ **explicit_language** `string`
+ 
+ 指定朗读语种。开启后，仅朗读指定语种的文本，其他语种的内容会被跳过或合成失败，支持的语种如下：
+ 
+-
+ * `zh-cn`：中文为主，支持中英混读
+ 
+ * `en`：英语
+@@ -287,46 +214,30 @@
+ 
+ * `es-es`: 西班牙西语
+ 
+-
+-<div data-tips="true" data-tips-type="default" data-tips-is-title="true">说明</div>
+-
+-
+-
+-* <div data-tips="true" data-tips-type="default">输入文本语种须与 <code>explicit_language</code> 指定的语种一致，不一致时合成效果不予保证</div>
+-
+-
+-* <div data-tips="true" data-tips-type="default"><a href="https://docs.volcengine.com/docs/DoubaoVoice/Tonelist-1?lang=zh#%E8%B1%86%E5%8C%85%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E6%A8%A1%E5%9E%8B2-0%E3%80%81s2s-o2-0%E3%80%81-s2s-%E5%85%A8%E5%8F%8C%E5%B7%A5-%E9%9F%B3%E8%89%B2%E5%88%97%E8%A1%A8">豆包语音合成模型 2.0 音色列表</a>中，仅命名为zh_<em>xxx</em>_<em>xxxx</em>_uranus_bigtts的音色支持<code>nl</code>、<code>no</code>、<code>uk</code>、<code>fi</code>、<code>da</code>、<code>cs</code>、<code>hu</code>、<code>el</code>、<code>ro</code>、<code>hi</code>、<code>es-es</code>等语种</div>
+-
+-
+-
++> **说明**
++
++* > 输入文本语种须与 `explicit_language` 指定的语种一致，不一致时合成效果不予保证
++
++* > [豆包语音合成模型 2.0 音色列表](https://docs.volcengine.com/docs/doubao-voice/tone-list-3?lang=zh#%E8%B1%86%E5%8C%85%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E6%A8%A1%E5%9E%8B2-0%E3%80%81s2s-o2-0%E3%80%81-s2s-%E5%85%A8%E5%8F%8C%E5%B7%A5-%E9%9F%B3%E8%89%B2%E5%88%97%E8%A1%A8)中，仅命名为zh_*xxx*_*xxxx*_uranus_bigtts的音色支持`nl`、`no`、`uk`、`fi`、`da`、`cs`、`hu`、`el`、`ro`、`hi`、`es-es`等语种
+ 
+ **enable_auto_language_recognition**`bool`
+ 
+ 开启自动多语种识别，默认为`false`，开启后，系统将根据首句文本自动识别语种，并使用对应语种进行朗读
+ 
+-<div data-tips="true" data-tips-type="default" data-tips-is-title="true">说明</div>
+-
+-
+-
+-* <div data-tips="true" data-tips-type="default">指定语种的优先级高于自动多语种识别，当同时指定了<code>explicit_language</code>时，自动多语种识别不生效</div>
+-
+-
+-* <div data-tips="true" data-tips-type="default">支持的语种与 <code>explicit_language</code> 一致（<code>pt</code>与<code>es-es</code>除外）</div>
+-
+-
+-* <div data-tips="true" data-tips-type="default">自动识别语种时，葡萄牙语文本默认输出 <code>pt-br</code>（巴西口音），西班牙语文本默认输出 <code>es-mx</code>（墨西哥口音）。如需使用欧洲葡萄牙语<code>pt</code>或西班牙西班牙语<code>es-es</code>，须通过 <code>explicit_language</code> 参数显式指定</div>
+-
+-
+-* <div data-tips="true" data-tips-type="default">中英模型（中文、英文）与小语种模型（日、韩、法语、西语等小语种）相互独立，各自仅对对应语种合成效果最佳</div>
+-
+-
+-
++> **说明**
++
++* > 指定语种的优先级高于自动多语种识别，当同时指定了`explicit_language`时，自动多语种识别不生效
++
++* > 支持的语种与 `explicit_language` 一致（`pt`与`es-es`除外）
++
++* > 自动识别语种时，葡萄牙语文本默认输出 `pt-br`（巴西口音），西班牙语文本默认输出 `es-mx`（墨西哥口音）。如需使用欧洲葡萄牙语`pt`或西班牙西班牙语`es-es`，须通过 `explicit_language` 参数显式指定
++
++* > 中英模型（中文、英文）与小语种模型（日、韩、法语、西语等小语种）相互独立，各自仅对对应语种合成效果最佳
+ 
+ **explicit_dialect** `string`
+ 
+ 指定方言
+ 
+-
+ * `beijing`：北京话
+ 
+ * `dongbei`：东北话
+@@ -343,70 +254,47 @@
+ 
+ * `yue`：粤语
+ 
+-
+-<div data-tips="true" data-tips-type="tip" data-tips-is-title="true">说明</div>
+-
+-
+-<div data-tips="true" data-tips-type="tip">使用该参数时，<code>speaker</code>需要设置支持方言的音色。音色的详细情况请参见：<a href="https://docs.volcengine.com/docs/6561/1257544?lang=zh">音色列表</a></div>
+-
+-
+-
++> **说明**
++
++> 使用该参数时，`speaker`需要设置支持方言的音色。音色的详细情况请参见：[音色列表](https://docs.volcengine.com/docs/6561/1257544?lang=zh)
+ 
+ **aigc_watermark** `bool`
+ 
+ 启用AIGC生成标识，默认值：`false`。开启后，将在音频合成结尾添加节奏标识。
+ 
+-
+-
+ **aigc_metadata** `object`
+ 
+ 在合成音频中添加meta水印，支持音频格式 `mp3` / `wav` / `ogg_opus`
+ 
+-
+ **enable** `bool`
+ 
+ 启用meta隐式水印，默认值：`false`
+ 
+-
+-
+ **content_producer** `string`
+ 
+ 指定合成服务提供者的名称或编码
+ 
+-
+-
+ **produce_id** `string`
+ 
+ 指定自定义的内容制作编号
+ 
+-
+-
+ **content_propagator** `string`
+ 
+ 指定内容传播服务提供者的名称或编码
+ 
+-
+-
+ **propagate_id** `string`
+ 
+ 指定自定义的内容传播编号
+ 
+-
+-
+-
+ **post_process** `object`
+ 
+ 后处理相关配置
+ 
+-
+ **pitch** `int`
+ 
+ 指定音调，默认值为0，默认不调整音调，取值范围：[\-12,12]
+ 
+ 取值越大，音调越高（声音越尖锐、越明亮）；取值越小，音调越低（声音越低沉，越厚重）
+-
+-
+-
+ 
+ **context_texts** `array`
+ 
+@@ -418,30 +306,19 @@
+ "context_texts":[ "你可以用特别特别痛心的语气说话吗?"]
+ ```
+ 
+-
+-<div data-tips="true" data-tips-type="tip" data-tips-is-title="true">说明</div>
+-
+-
+-
+-* <div data-tips="true" data-tips-type="tip">仅<code>speaker</code>参数设置为<a href="https://docs.volcengine.com/docs/6561/1257544?lang=zh#%E8%B1%86%E5%8C%85%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E6%A8%A1%E5%9E%8B2-0%E3%80%81s2s-o2-0%E3%80%81-s2s-%E5%85%A8%E5%8F%8C%E5%B7%A5-%E9%9F%B3%E8%89%B2%E5%88%97%E8%A1%A8">豆包语音合成模型2.0音色</a>时，支持使用语音指令</div>
+-
+-
+-* <div data-tips="true" data-tips-type="tip">该字段文字不参与计费</div>
+-
+-
+-
++> **说明**
++
++* > 仅`speaker`参数设置为[豆包语音合成模型2.0音色](https://docs.volcengine.com/docs/6561/1257544?lang=zh#%E8%B1%86%E5%8C%85%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E6%A8%A1%E5%9E%8B2-0%E3%80%81s2s-o2-0%E3%80%81-s2s-%E5%85%A8%E5%8F%8C%E5%B7%A5-%E9%9F%B3%E8%89%B2%E5%88%97%E8%A1%A8)时，支持使用语音指令
++
++* > 该字段文字不参与计费
+ 
+ **section_id** `string`
+ 
+ 配置段落标识，可用于保持跨包语义
+ 
+-<div data-tips="true" data-tips-type="tip" data-tips-is-title="true">说明</div>
+-
+-
+-<div data-tips="true" data-tips-type="tip">该参数仅支持<a href="https://docs.volcengine.com/docs/6561/1257544?lang=zh#%E8%B1%86%E5%8C%85%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E6%A8%A1%E5%9E%8B2-0%E3%80%81s2s-o2-0%E3%80%81-s2s-%E5%85%A8%E5%8F%8C%E5%B7%A5-%E9%9F%B3%E8%89%B2%E5%88%97%E8%A1%A8">豆包语音合成模型2.0音色</a>、豆包声音复刻大模型2.0音色</div>
+-
+-
+-
++> **说明**
++
++> 该参数仅支持[豆包语音合成模型2.0音色](https://docs.volcengine.com/docs/6561/1257544?lang=zh#%E8%B1%86%E5%8C%85%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E6%A8%A1%E5%9E%8B2-0%E3%80%81s2s-o2-0%E3%80%81-s2s-%E5%85%A8%E5%8F%8C%E5%B7%A5-%E9%9F%B3%E8%89%B2%E5%88%97%E8%A1%A8)、豆包声音复刻大模型2.0音色
+ 
+ **tone_fidelity** `bool`
+ 
+@@ -449,32 +326,23 @@
+ 
+ 默认值：`false`
+ 
+-<div data-tips="true" data-tips-type="tip" data-tips-is-title="true">说明</div>
+-
+-
+-
+-* <div data-tips="true" data-tips-type="tip"><strong>仅适用于</strong>豆包声音复刻大模型2.0音色</div>
+-
+-
+-* <div data-tips="true" data-tips-type="tip"><strong>仅支持</strong>合成和上传音频同语种的文本<strong>，不支持</strong>跨语种合成<strong>，不支持</strong>双向流合成接口</div>
+-
+-
+-
++> **说明**
++
++* > **仅适用于**豆包声音复刻大模型2.0音色
++
++* > **仅支持**合成和上传音频同语种的文本**，不支持**跨语种合成**，不支持**双向流合成接口
+ 
+ **pronunciation_dict**`object`
+ 
+ 配置发音词典，修正指定文本的发音
+ 
+-
+ **tone**`object`
+ 
+ 配置发音规则数组，支持发音修正与文本转写两类规则
+ 
+-
+ * 发音修正：`原词/(拼音音节)`，用于指定词汇的具体发音
+ 
+ * 文本转写：`原词/目标文本`，用于将原词替换为目标文本后再合成
+-
+ 
+  示例：
+ 
+@@ -490,107 +358,72 @@
+   }
+ ```
+ 
+-
+-<div data-tips="true" data-tips-type="default" data-tips-is-title="true">说明</div>
+-
+-
+-
+-* <div data-tips="true" data-tips-type="default"><code>tone </code>中每条规则采用<code> 原词/修正内容 </code>格式，以<code>/</code>分隔。服务端按文本从左到右进行贪心最长匹配，存在多个可匹配词条时，优先匹配更长的原词</div>
+-
+-
+-* <div data-tips="true" data-tips-type="default">最多支持配置 5000 个词条；每个原词长度不超过 9 个字符，不能为空、不能包含空格、不可重复</div>
+-
+-
+-* <div data-tips="true" data-tips-type="default">仅豆包语音合成大模型2.0、豆包语音复刻大模型2.0对应的中英文音色支持</div>
+-
+-
+-* <div data-tips="true" data-tips-type="default">命中发音字典规则的文本片段不支持 SSML 标签，同时使用时 SSML 标签将失效，建议二者择一</div>
+-
+-
+-
+-
+-
+-
+-
++> **说明**
++
++* > `tone`中每条规则采用`原词/修正内容`格式，以`/`分隔。服务端按文本从左到右进行贪心最长匹配，存在多个可匹配词条时，优先匹配更长的原词
++
++* > 最多支持配置 5000 个词条；每个原词长度不超过 9 个字符，不能为空、不能包含空格、不可重复
++
++* > 仅豆包语音合成大模型2.0、豆包语音复刻大模型2.0对应的中英文音色支持
++
++* > 命中发音字典规则的文本片段不支持 SSML 标签，同时使用时 SSML 标签将失效，建议二者择一
+ 
+ 响应
+ 
+-
+ **X\-Tt\-Logid** `string`
+ 
+ 服务端返回的 logid，用于在咨询或者反馈时定位问题
+ 
+-
+-
+ **code** `int`
+ 
+ 状态码，返回`0`则表示语音合成成功，非`0`表示合成失败（具体含义见[错误码查询](https://docs.volcengine.com/docs/6561/2534853?lang=zh)）
+ 
+-
+-
+ **message** `string`
+ 
+ 状态详情，返回`OK`则表示语音合成成功
+ 
+-
+-
+ **data** `string`
+ 
+ 合成音频数据，base64编码
+ 
+-
+-
+ **sentence** `object`
+ 
+-
+ **phonemes** `array`
+ 
+ 音素相关时间戳
+ 
+-
+-
+ **text** `string`
+ 
+ 合成音频文本
+ 
+-
+-
+ **words** `array`
+ 
+ 字级别时间戳
+ 
+-
+ **confidence** `float`
+ 
+ 时间戳置信度，范围 0~1
+ 
+-
+-
+ **startTime** `float`
+ 
+ 开始时间（秒）
+ 
+-
+-
+ **endTime** `float`
+ 
+ 结束时间（秒）
+ 
+-
+-
+ **word** `string`
+ 
+ 字
+ 
+-
+-
+-
+-
+ **usage** `object`
+ 
+ 本次请求的资源消耗统计
+ 
+-
+ **text_words** `int`
+ 
+ 本次请求计费的文本字数（含标点）
++
++```mixin-react
++return (<ApiSample data={"{\"type\":\"multiple\",\"config\":{\"inputName\":\"请求示例\",\"outputName\":\"响应示例\"},\"data\":[{\"title\":\"cURL\",\"key\":\"0\",\"inputCode\":\"curl -N -X POST 'https://openspeech.bytedance.com/api/v3/tts/unidirectional' \\\\\\n  -H 'X-Api-Key: your_api_key' \\\\\\n  -H 'X-Api-Resource-Id: seed-tts-2.0' \\\\\\n  -H 'Content-Type: application/json' \\\\\\n  -H 'Connection: keep-alive' \\\\\\n  -d '{\\n    \\\"req_params\\\": {\\n      \\\"text\\\": \\\"你好，这是一个语音测试\\\",\\n      \\\"speaker\\\": \\\"zh_female_vv_uranus_bigtts\\\",\\n      \\\"audio_params\\\": {\\n        \\\"format\\\": \\\"mp3\\\",\\n        \\\"sample_rate\\\": 24000\\n      }\\n    }\\n  }'\\n\",\"inputLanguage\":\"\",\"outputCode\":\"{\\n  \\\"code\\\": 0,\\n  \\\"message\\\": \\\"OK\\\",\\n  \\\"data\\\": \\\"<base64 encoded audio chunk>\\\",\\n  \\\"sentence\\\": {\\n    \\\"phonemes\\\": [],\\n    \\\"text\\\": \\\"你好，语音测试\\\",\\n    \\\"words\\\": [\\n      {\\n        \\\"confidence\\\": 0.89597625,\\n        \\\"endTime\\\": 0.335,\\n        \\\"startTime\\\": 0.195,\\n        \\\"word\\\": \\\"你\\\"\\n      },\\n      {\\n        \\\"confidence\\\": 0.9182152,\\n        \\\"endTime\\\": 0.725,\\n        \\\"startTime\\\": 0.335,\\n        \\\"word\\\": \\\"好，\\\"\\n      },\\n      {\\n        \\\"confidence\\\": 0.51327276,\\n        \\\"endTime\\\": 1.025,\\n        \\\"startTime\\\": 0.985,\\n        \\\"word\\\": \\\"语\\\"\\n      },\\n      {\\n        \\\"confidence\\\": 0.78543895,\\n        \\\"endTime\\\": 1.205,\\n        \\\"startTime\\\": 1.025,\\n        \\\"word\\\": \\\"音\\\"\\n      },\\n      {\\n        \\\"confidence\\\": 0.846961,\\n        \\\"endTime\\\": 1.395,\\n        \\\"startTime\\\": 1.205,\\n        \\\"word\\\": \\\"测\\\"\\n      },\\n      {\\n        \\\"confidence\\\": 0.96582335,\\n        \\\"endTime\\\": 1.695,\\n        \\\"startTime\\\": 1.395,\\n        \\\"word\\\": \\\"试\\\"\\n      }\\n    ]\\n  },\\n  \\\"usage\\\": {\\n    \\\"text_words\\\": 7\\n  }\\n}\\n\",\"outputLanguage\":\"\"},{\"title\":\"Python\",\"key\":\"1\",\"inputCode\":\"import requests\\nimport json\\nimport base64\\nimport os\\n\\nurl = \\\"https://openspeech.bytedance.com/api/v3/tts/unidirectional\\\"\\n\\ndef tts_http_stream():\\n    headers = {\\n        \\\"X-Api-Key\\\": \\\"your_api_key\\\", # API key可以从控制台获取\\n        \\\"X-Api-Resource-Id\\\": \\\"seed-tts-2.0\\\", \\n        \\\"Content-Type\\\": \\\"application/json\\\",\\n        \\\"Connection\\\": \\\"keep-alive\\\",\\n        \\\"X-Control-Require-Usage-Tokens-Return\\\": \\\"*\\\" \\n    }\\n\\n    additions = {\\n        \\\"disable_markdown_filter\\\": False,\\n        \\\"disable_emoji_filter\\\": False,\\n        \\\"enable_latex_tn\\\": True,\\n        \\\"context_texts\\\": [\\n            \\\"请说慢一些\\\"\\n        ]\\n    }\\n\\n    additions_json = json.dumps(additions)\\n\\n    payload = {\\n        \\\"req_params\\\": {\\n            \\\"text\\\": \\\"你好，语音测试\\\",\\n            \\\"speaker\\\": \\\"zh_female_vv_uranus_bigtts\\\",\\n            \\\"additions\\\": additions_json,\\n            \\\"audio_params\\\": {\\n                \\\"format\\\": \\\"mp3\\\",\\n                \\\"sample_rate\\\": 24000,\\n                \\\"enable_subtitle\\\": True\\n            }\\n        }\\n    }\\n    session = requests.Session()\\n    response = None\\n    try:\\n        response = session.post(url, headers=headers, json=payload, stream=True)\\n\\n        # used to save audio data\\n        audio_data = bytearray()\\n        total_audio_size = 0\\n        for chunk in response.iter_lines(decode_unicode=True):\\n            if not chunk:\\n                continue\\n            data = json.loads(chunk)\\n            print(f\\\"json data:{data}\\\")\\n            if data.get(\\\"code\\\", 0) == 0 and \\\"data\\\" in data and data[\\\"data\\\"]:\\n                chunk_audio = base64.b64decode(data[\\\"data\\\"])\\n                audio_size = len(chunk_audio)\\n                total_audio_size += audio_size\\n                audio_data.extend(chunk_audio)\\n            if data.get(\\\"code\\\", 0) == 20000000:\\n                break\\n            if data.get(\\\"code\\\", 0) > 0:\\n                print(f\\\"error response:{data}\\\")\\n                break\\n\\n        # save audio data to local file\\n        if audio_data:\\n            if not os.path.exists(\\\"tts\\\"):\\n                os.makedirs(\\\"tts\\\")\\n            output_file = os.path.join(\\\"tts/\\\", f\\\"tts_test.mp3\\\")\\n            with open(output_file, \\\"wb\\\") as f:\\n                f.write(audio_data)\\n            print(f\\\"file size: {len(audio_data) / 1024:.2f} KB\\\")\\n            # ensure that the generated audio file has the correct access permissions\\n            os.chmod(output_file, 0o644)\\n\\n    except Exception as e:\\n        print(f\\\"request error: {e}\\\")\\n    finally:\\n        if response:\\n            response.close()\\n        session.close()\\n\\nif __name__ == \\\"__main__\\\":\\n    tts_http_stream()\\n\",\"inputLanguage\":\"\",\"outputCode\":\"{\\n  \\\"code\\\": 0,\\n  \\\"message\\\": \\\"OK\\\",\\n  \\\"data\\\": \\\"<base64 encoded audio chunk>\\\",\\n  \\\"sentence\\\": {\\n    \\\"phonemes\\\": [],\\n    \\\"text\\\": \\\"你好，语音测试\\\",\\n    \\\"words\\\": [\\n      {\\n        \\\"confidence\\\": 0.89597625,\\n        \\\"endTime\\\": 0.335,\\n        \\\"startTime\\\": 0.195,\\n        \\\"word\\\": \\\"你\\\"\\n      },\\n      {\\n        \\\"confidence\\\": 0.9182152,\\n        \\\"endTime\\\": 0.725,\\n        \\\"startTime\\\": 0.335,\\n        \\\"word\\\": \\\"好，\\\"\\n      },\\n      {\\n        \\\"confidence\\\": 0.51327276,\\n        \\\"endTime\\\": 1.025,\\n        \\\"startTime\\\": 0.985,\\n        \\\"word\\\": \\\"语\\\"\\n      },\\n      {\\n        \\\"confidence\\\": 0.78543895,\\n        \\\"endTime\\\": 1.205,\\n        \\\"startTime\\\": 1.025,\\n        \\\"word\\\": \\\"音\\\"\\n      },\\n      {\\n        \\\"confidence\\\": 0.846961,\\n        \\\"endTime\\\": 1.395,\\n        \\\"startTime\\\": 1.205,\\n        \\\"word\\\": \\\"测\\\"\\n      },\\n      {\\n        \\\"confidence\\\": 0.96582335,\\n        \\\"endTime\\\": 1.695,\\n        \\\"startTime\\\": 1.395,\\n        \\\"word\\\": \\\"试\\\"\\n      }\\n    ]\\n  },\\n  \\\"usage\\\": {\\n    \\\"text_words\\\": 7\\n  }\\n}\\n\",\"outputLanguage\":\"\"},{\"title\":\"Java\",\"key\":\"2\",\"inputCode\":\"import java.io.BufferedReader;\\nimport java.io.ByteArrayOutputStream;\\nimport java.io.InputStream;\\nimport java.io.InputStreamReader;\\nimport java.net.URI;\\nimport java.net.http.HttpClient;\\nimport java.net.http.HttpRequest;\\nimport java.net.http.HttpResponse;\\nimport java.nio.charset.StandardCharsets;\\nimport java.nio.file.Files;\\nimport java.nio.file.Path;\\nimport java.time.Duration;\\nimport java.util.Base64;\\nimport java.util.regex.Matcher;\\nimport java.util.regex.Pattern;\\n\\npublic class HttpUnidirectionalStreaming {\\n    private static final String URL = \\\"https://openspeech.bytedance.com/api/v3/tts/unidirectional\\\";\\n    private static final String API_KEY = \\\"your_api_key\\\";\\n    private static final String RESOURCE_ID = \\\"seed-tts-2.0\\\";\\n\\n    private static final Pattern CODE_PATTERN = Pattern.compile(\\\"\\\\\\\"code\\\\\\\"\\\\\\\\s*:\\\\\\\\s*(-?\\\\\\\\d+)\\\");\\n    private static final Pattern DATA_PATTERN = Pattern.compile(\\\"\\\\\\\"data\\\\\\\"\\\\\\\\s*:\\\\\\\\s*\\\\\\\"([^\\\\\\\"]*)\\\\\\\"\\\");\\n\\n    public static void main(String[] args) {\\n        ttsHttpStream();\\n    }\\n\\n    private static void ttsHttpStream() {\\n        String payload = \\\"{\\\"\\n                + \\\"\\\\\\\"req_params\\\\\\\":{\\\"\\n                + \\\"\\\\\\\"text\\\\\\\":\\\\\\\"你好，这是一个语音测试\\\\\\\",\\\"\\n                + \\\"\\\\\\\"speaker\\\\\\\":\\\\\\\"zh_female_vv_uranus_bigtts\\\\\\\",\\\"\\n                + \\\"\\\\\\\"audio_params\\\\\\\":{\\\"\\n                + \\\"\\\\\\\"format\\\\\\\":\\\\\\\"mp3\\\\\\\",\\\"\\n                + \\\"\\\\\\\"sample_rate\\\\\\\":24000\\\"\\n                + \\\"}\\\"\\n                + \\\"}\\\"\\n                + \\\"}\\\";\\n\\n        HttpClient client = HttpClient.newBuilder()\\n                .connectTimeout(Duration.ofSeconds(30))\\n                .build();\\n\\n        HttpRequest request = HttpRequest.newBuilder()\\n                .uri(URI.create(URL))\\n                .timeout(Duration.ofMinutes(5))\\n                .header(\\\"X-Api-Key\\\", API_KEY)\\n                .header(\\\"X-Api-Resource-Id\\\", RESOURCE_ID)\\n                .header(\\\"Content-Type\\\", \\\"application/json\\\")\\n                .POST(HttpRequest.BodyPublishers.ofString(payload, StandardCharsets.UTF_8))\\n                .build();\\n\\n        ByteArrayOutputStream audioData = new ByteArrayOutputStream();\\n\\n        try {\\n            HttpResponse<InputStream> response = client.send(request, HttpResponse.BodyHandlers.ofInputStream());\\n\\n            try (BufferedReader reader = new BufferedReader(\\n                    new InputStreamReader(response.body(), StandardCharsets.UTF_8))) {\\n                String line;\\n                while ((line = reader.readLine()) != null) {\\n                    if (line.isBlank()) {\\n                        continue;\\n                    }\\n\\n                    System.out.println(\\\"json data:\\\" + line);\\n\\n                    int code = extractCode(line);\\n                    String data = extractData(line);\\n\\n                    if (code == 0 && data != null && !data.isEmpty()) {\\n                        byte[] chunkAudio = Base64.getDecoder().decode(data);\\n                        audioData.write(chunkAudio);\\n                    }\\n\\n                    if (code == 20000000) {\\n                        break;\\n                    }\\n\\n                    if (code > 0) {\\n                        System.out.println(\\\"error response:\\\" + line);\\n                        break;\\n                    }\\n                }\\n            }\\n\\n            if (audioData.size() > 0) {\\n                Path outputDir = Path.of(\\\"tts\\\");\\n                Files.createDirectories(outputDir);\\n\\n                Path outputFile = outputDir.resolve(\\\"tts_test.mp3\\\");\\n                Files.write(outputFile, audioData.toByteArray());\\n                System.out.printf(\\\"file size: %.2f KB%n\\\", audioData.size() / 1024.0);\\n            }\\n        } catch (Exception e) {\\n            System.out.println(\\\"request error: \\\" + e.getMessage());\\n        }\\n    }\\n\\n    private static int extractCode(String jsonLine) {\\n        Matcher matcher = CODE_PATTERN.matcher(jsonLine);\\n        if (!matcher.find()) {\\n            return 0;\\n        }\\n        return Integer.parseInt(matcher.group(1));\\n    }\\n\\n    private static String extractData(String jsonLine) {\\n        Matcher matcher = DATA_PATTERN.matcher(jsonLine);\\n        if (!matcher.find()) {\\n            return null;\\n        }\\n        return matcher.group(1);\\n    }\\n}\\n\",\"inputLanguage\":\"\",\"outputCode\":\"{\\n  \\\"code\\\": 0,\\n  \\\"message\\\": \\\"OK\\\",\\n  \\\"data\\\": \\\"<base64 encoded audio chunk>\\\",\\n  \\\"sentence\\\": {\\n    \\\"phonemes\\\": [],\\n    \\\"text\\\": \\\"你好，语音测试\\\",\\n    \\\"words\\\": [\\n      {\\n        \\\"confidence\\\": 0.89597625,\\n        \\\"endTime\\\": 0.335,\\n        \\\"startTime\\\": 0.195,\\n        \\\"word\\\": \\\"你\\\"\\n      },\\n      {\\n        \\\"confidence\\\": 0.9182152,\\n        \\\"endTime\\\": 0.725,\\n        \\\"startTime\\\": 0.335,\\n        \\\"word\\\": \\\"好，\\\"\\n      },\\n      {\\n        \\\"confidence\\\": 0.51327276,\\n        \\\"endTime\\\": 1.025,\\n        \\\"startTime\\\": 0.985,\\n        \\\"word\\\": \\\"语\\\"\\n      },\\n      {\\n        \\\"confidence\\\": 0.78543895,\\n        \\\"endTime\\\": 1.205,\\n        \\\"startTime\\\": 1.025,\\n        \\\"word\\\": \\\"音\\\"\\n      },\\n      {\\n        \\\"confidence\\\": 0.846961,\\n        \\\"endTime\\\": 1.395,\\n        \\\"startTime\\\": 1.205,\\n        \\\"word\\\": \\\"测\\\"\\n      },\\n      {\\n        \\\"confidence\\\": 0.96582335,\\n        \\\"endTime\\\": 1.695,\\n        \\\"startTime\\\": 1.395,\\n        \\\"word\\\": \\\"试\\\"\\n      }\\n    ]\\n  },\\n  \\\"usage\\\": {\\n    \\\"text_words\\\": 7\\n  }\\n}\\n\",\"outputLanguage\":\"\"},{\"title\":\"Go\",\"key\":\"3\",\"inputCode\":\"package main\\n\\nimport (\\n    \\\"bufio\\\"\\n    \\\"bytes\\\"\\n    \\\"encoding/base64\\\"\\n    \\\"encoding/json\\\"\\n    \\\"fmt\\\"\\n    \\\"io\\\"\\n    \\\"net/http\\\"\\n    \\\"os\\\"\\n    \\\"path/filepath\\\"\\n)\\n\\nconst ttsURL = \\\"https://openspeech.bytedance.com/api/v3/tts/unidirectional\\\"\\nconst apiKey = \\\"your_api_key\\\"\\n\\ntype requestPayload struct {\\n    ReqParams reqParams `json:\\\"req_params\\\"`\\n}\\n\\ntype reqParams struct {\\n    Text        string      `json:\\\"text\\\"`\\n    Speaker     string      `json:\\\"speaker\\\"`\\n    AudioParams audioParams `json:\\\"audio_params\\\"`\\n}\\n\\ntype audioParams struct {\\n    Format     string `json:\\\"format\\\"`\\n    SampleRate int    `json:\\\"sample_rate\\\"`\\n}\\n\\ntype streamResponse struct {\\n    Code int    `json:\\\"code\\\"`\\n    Data string `json:\\\"data\\\"`\\n}\\n\\nfunc ttsHTTPStream() error {\\n    payload := requestPayload{\\n        ReqParams: reqParams{\\n            Text:    \\\"你好，这是一个语音测试\\\",\\n            Speaker: \\\"zh_female_vv_uranus_bigtts\\\",\\n            AudioParams: audioParams{\\n                Format:     \\\"mp3\\\",\\n                SampleRate: 24000,\\n            },\\n        },\\n    }\\n\\n    body, err := json.Marshal(payload)\\n    if err != nil {\\n        return fmt.Errorf(\\\"marshal request payload: %w\\\", err)\\n    }\\n\\n    req, err := http.NewRequest(http.MethodPost, ttsURL, bytes.NewReader(body))\\n    if err != nil {\\n        return fmt.Errorf(\\\"create request: %w\\\", err)\\n    }\\n\\n    req.Header.Set(\\\"X-Api-Key\\\", apiKey)\\n    req.Header.Set(\\\"X-Api-Resource-Id\\\", \\\"seed-tts-2.0\\\")\\n    req.Header.Set(\\\"Content-Type\\\", \\\"application/json\\\")\\n    req.Header.Set(\\\"Connection\\\", \\\"keep-alive\\\")\\n\\n    client := &http.Client{}\\n    resp, err := client.Do(req)\\n    if err != nil {\\n        return fmt.Errorf(\\\"request TTS stream: %w\\\", err)\\n    }\\n    defer resp.Body.Close()\\n\\n    if resp.StatusCode < 200 || resp.StatusCode >= 300 {\\n        respBody, _ := io.ReadAll(resp.Body)\\n        return fmt.Errorf(\\\"unexpected status %s: %s\\\", resp.Status, string(respBody))\\n    }\\n\\n    var audioData []byte\\n    scanner := bufio.NewScanner(resp.Body)\\n    scanner.Buffer(make([]byte, 64*1024), 10*1024*1024)\\n\\n    for scanner.Scan() {\\n        line := scanner.Bytes()\\n        if len(bytes.TrimSpace(line)) == 0 {\\n            continue\\n        }\\n\\n        var data streamResponse\\n        if err := json.Unmarshal(line, &data); err != nil {\\n            return fmt.Errorf(\\\"parse stream line %q: %w\\\", string(line), err)\\n        }\\n        fmt.Printf(\\\"json data:%+v\\\\n\\\", data)\\n\\n        if data.Code == 0 && data.Data != \\\"\\\" {\\n            chunkAudio, err := base64.StdEncoding.DecodeString(data.Data)\\n            if err != nil {\\n                return fmt.Errorf(\\\"decode audio chunk: %w\\\", err)\\n            }\\n            audioData = append(audioData, chunkAudio...)\\n        }\\n\\n        if data.Code == 20000000 {\\n            break\\n        }\\n\\n        if data.Code > 0 {\\n            fmt.Printf(\\\"error response:%+v\\\\n\\\", data)\\n            break\\n        }\\n    }\\n\\n    if err := scanner.Err(); err != nil {\\n        return fmt.Errorf(\\\"read stream response: %w\\\", err)\\n    }\\n\\n    if len(audioData) == 0 {\\n        return nil\\n    }\\n\\n    if err := os.MkdirAll(\\\"tts\\\", 0755); err != nil {\\n        return fmt.Errorf(\\\"create output directory: %w\\\", err)\\n    }\\n\\n    outputFile := filepath.Join(\\\"tts\\\", \\\"tts_test.mp3\\\")\\n    if err := os.WriteFile(outputFile, audioData, 0644); err != nil {\\n        return fmt.Errorf(\\\"write audio file: %w\\\", err)\\n    }\\n\\n    fmt.Printf(\\\"file size: %.2f KB\\\\n\\\", float64(len(audioData))/1024)\\n    return nil\\n}\\n\\nfunc main() {\\n    if err := ttsHTTPStream(); err != nil {\\n        fmt.Printf(\\\"request error: %v\\\\n\\\", err)\\n    }\\n}\\n\",\"inputLanguage\":\"\",\"outputCode\":\"{\\n  \\\"code\\\": 0,\\n  \\\"message\\\": \\\"OK\\\",\\n  \\\"data\\\": \\\"<base64 encoded audio chunk>\\\",\\n  \\\"sentence\\\": {\\n    \\\"phonemes\\\": [],\\n    \\\"text\\\": \\\"你好，语音测试\\\",\\n    \\\"words\\\": [\\n      {\\n        \\\"confidence\\\": 0.89597625,\\n        \\\"endTime\\\": 0.335,\\n        \\\"startTime\\\": 0.195,\\n        \\\"word\\\": \\\"你\\\"\\n      },\\n      {\\n        \\\"confidence\\\": 0.9182152,\\n        \\\"endTime\\\": 0.725,\\n        \\\"startTime\\\": 0.335,\\n        \\\"word\\\": \\\"好，\\\"\\n      },\\n      {\\n        \\\"confidence\\\": 0.51327276,\\n        \\\"endTime\\\": 1.025,\\n        \\\"startTime\\\": 0.985,\\n        \\\"word\\\": \\\"语\\\"\\n      },\\n      {\\n        \\\"confidence\\\": 0.78543895,\\n        \\\"endTime\\\": 1.205,\\n        \\\"startTime\\\": 1.025,\\n        \\\"word\\\": \\\"音\\\"\\n      },\\n      {\\n        \\\"confidence\\\": 0.846961,\\n        \\\"endTime\\\": 1.395,\\n        \\\"startTime\\\": 1.205,\\n        \\\"word\\\": \\\"测\\\"\\n      },\\n      {\\n        \\\"confidence\\\": 0.96582335,\\n        \\\"endTime\\\": 1.695,\\n        \\\"startTime\\\": 1.395,\\n        \\\"word\\\": \\\"试\\\"\\n      }\\n    ]\\n  },\\n  \\\"usage\\\": {\\n    \\\"text_words\\\": 7\\n  }\\n}\\n\",\"outputLanguage\":\"\"}]}"} />);
++```
