@@ -12,6 +12,8 @@ An MCP server for Alibaba Cloud Model Studio (Bailian, DashScope) that saves res
 
 </div>
 
+`0.7.2` syncs the voice-cloning region scope: Singapore now accepts `qwen-audio-3.1-tts-flash` as a clone target model. Official documentation was reviewed through 2026-10-29.
+
 `0.7.1` clarifies Qwen-Audio-TTS dialect controls: supported system voices and cloned voices use `instructions="请讲上海话。"` (mapped to `input.instruction`); designed voices do not support dialects yet. Official documentation was reviewed through 2026-10-28; SDK 2.0 example changes do not alter this server's HTTP requests.
 
 `0.7.0` adds local recordings / Base64 Data URIs for voice cloning, `qwen-audio-3.1-tts-plus`, and thinking controls for MiniMax models hosted on Bailian, with updated workspace and region guidance. TTS usage keeps the provider's units; legacy counters whose units were lost are returned as `legacy_untyped` rather than guessed as characters or tokens.

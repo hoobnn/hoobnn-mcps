@@ -1,0 +1,92 @@
+--- reviewed/ali-bailian/bailian-rate-limit
++++ current/ali-bailian/bailian-rate-limit
+@@ -6042,12 +6042,8 @@
+             deepseek-v4.1-flash-1017
+           </td>
+ 
+-          <td style={{ verticalAlign: "top" }}>
+-            15,000
+-          </td>
+-
+-          <td style={{ verticalAlign: "top" }}>
+-            1,200,000
++          <td colSpan={2} style={{ verticalAlign: "top" }}>
++            [动态限流](/zh/model-studio/quota-management)
+           </td>
+         </tr>
+ 
+@@ -6056,12 +6052,8 @@
+             deepseek-v4.1-flash
+           </td>
+ 
+-          <td style={{ verticalAlign: "top" }}>
+-            15,000
+-          </td>
+-
+-          <td style={{ verticalAlign: "top" }}>
+-            1,200,000
++          <td colSpan={2} style={{ verticalAlign: "top" }}>
++            [动态限流](/zh/model-studio/quota-management)
+           </td>
+         </tr>
+ 
+@@ -6358,12 +6350,8 @@
+             国际
+           </td>
+ 
+-          <td style={{ verticalAlign: "top" }}>
+-            10,000
+-          </td>
+-
+-          <td style={{ verticalAlign: "top" }}>
+-            1,200,000
++          <td colSpan={2} style={{ verticalAlign: "top" }}>
++            [动态限流](/zh/model-studio/quota-management)
+           </td>
+         </tr>
+ 
+@@ -6376,12 +6364,8 @@
+             国际
+           </td>
+ 
+-          <td style={{ verticalAlign: "top" }}>
+-            10,000
+-          </td>
+-
+-          <td style={{ verticalAlign: "top" }}>
+-            1,200,000
++          <td colSpan={2} style={{ verticalAlign: "top" }}>
++            [动态限流](/zh/model-studio/quota-management)
+           </td>
+         </tr>
+ 
+@@ -7856,12 +7840,8 @@
+             glm-5.3
+           </td>
+ 
+-          <td style={{ verticalAlign: "top" }}>
+-            15,000
+-          </td>
+-
+-          <td style={{ verticalAlign: "top" }}>
+-            5,000,000
++          <td colSpan={2} style={{ verticalAlign: "top" }}>
++            [动态限流](/zh/model-studio/quota-management)
+           </td>
+         </tr>
+ 
+@@ -8280,12 +8260,8 @@
+             国际
+           </td>
+ 
+-          <td style={{ verticalAlign: "top" }}>
+-            10,000
+-          </td>
+-
+-          <td style={{ verticalAlign: "top" }}>
+-            5,000,000
++          <td colSpan={2} style={{ verticalAlign: "top" }}>
++            [动态限流](/zh/model-studio/quota-management)
+           </td>
+         </tr>
+ 

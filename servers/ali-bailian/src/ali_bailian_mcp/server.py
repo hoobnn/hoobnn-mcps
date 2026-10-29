@@ -281,7 +281,7 @@ def clone_voice(audio: str | None = None, target_model: str = "qwen-audio-3.0-tt
     - language：样本语种代码（zh、en…，language_hints），cosyvoice-v2 不支持。
     - enable_preprocess（降噪增强）、max_prompt_audio_length（3–30 秒）：cosyvoice-v3-plus/v2 不支持。
     音色需审核：用 get_voice 确认 status=OK 后，再 text_to_speech(voice=音色ID) 合成。响应缺少音色 ID 时不自动重建。
-    每个账号复刻/设计合计最多1000个音色。北京支持上述全部模型；新加坡支持3.1-tts-plus、3.0-tts-plus/flash和cosyvoice-v3-plus/flash。
+    每个账号复刻/设计合计最多1000个音色。北京支持上述全部模型；新加坡支持3.1/3.0-tts-plus/flash和cosyvoice-v3-plus/flash。
     使用同地域API Key和workspace根域名；模型列出不代表账号授权。Qwen-Audio-Realtime协议尚未接入。
     """
     return products.clone_voice(audio, target_model, prefix, language, enable_preprocess, max_prompt_audio_length, url=url)
