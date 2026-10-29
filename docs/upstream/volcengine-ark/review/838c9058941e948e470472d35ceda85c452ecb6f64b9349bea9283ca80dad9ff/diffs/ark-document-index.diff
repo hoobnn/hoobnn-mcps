@@ -1,0 +1,282 @@
+--- reviewed/volcengine-ark/ark-document-index
++++ current/volcengine-ark/ark-document-index
+@@ -2051,6 +2051,13 @@
+     "Status": 5
+   },
+   {
++    "DocumentCode": "context-compaction",
++    "DocumentID": 2781263,
++    "Title": "配置上下文压缩",
++    "ParentCode": "managed-agents-context",
++    "Status": 2
++  },
++  {
+     "DocumentCode": "context-management",
+     "DocumentID": 2123288,
+     "Title": "上下文管理",
+@@ -2310,6 +2317,13 @@
+     "Status": 2
+   },
+   {
++    "DocumentCode": "create-webhook-endpoint-api",
++    "DocumentID": 2780805,
++    "Title": "创建 Webhook 接入点",
++    "ParentCode": "webhooks",
++    "Status": 2
++  },
++  {
+     "DocumentCode": "creative-materials-terms",
+     "DocumentID": 2644327,
+     "Title": "版权作品承诺函",
+@@ -2534,6 +2548,13 @@
+     "Status": 2
+   },
+   {
++    "DocumentCode": "delete-webhook-endpoint-api",
++    "DocumentID": 2780809,
++    "Title": "删除 Webhook 接入点",
++    "ParentCode": "webhooks",
++    "Status": 2
++  },
++  {
+     "DocumentCode": "deployment-modes",
+     "DocumentID": 2121999,
+     "Title": "推理",
+@@ -2569,6 +2590,13 @@
+     "Status": 2
+   },
+   {
++    "DocumentCode": "disable-webhook-endpoint-api",
++    "DocumentID": 2780811,
++    "Title": "停用 Webhook 接入点",
++    "ParentCode": "webhooks",
++    "Status": 2
++  },
++  {
+     "DocumentCode": "document-understanding",
+     "DocumentID": 1902647,
+     "Title": "文档理解",
+@@ -2667,6 +2695,13 @@
+     "Status": 2
+   },
+   {
++    "DocumentCode": "enable-webhook-endpoint-api",
++    "DocumentID": 2780810,
++    "Title": "启用 Webhook 接入点",
++    "ParentCode": "webhooks",
++    "Status": 2
++  },
++  {
+     "DocumentCode": "enterprise-collaboration-program",
+     "DocumentID": 2521025,
+     "Title": "企业协作计划 活动规则和数据授权协议",
+@@ -3143,6 +3178,20 @@
+     "Status": 2
+   },
+   {
++    "DocumentCode": "get-webhook-endpoint-api",
++    "DocumentID": 2780807,
++    "Title": "查询 Webhook 接入点详情",
++    "ParentCode": "webhooks",
++    "Status": 2
++  },
++  {
++    "DocumentCode": "get-webhook-event-api",
++    "DocumentID": 2780815,
++    "Title": "查询 Webhook 事件详情",
++    "ParentCode": "webhooks",
++    "Status": 2
++  },
++  {
+     "DocumentCode": "get-work-item-api",
+     "DocumentID": 2650668,
+     "Title": "查询 Work 详情",
+@@ -3311,6 +3360,13 @@
+     "Status": 2
+   },
+   {
++    "DocumentCode": "image-generation-tutorial",
++    "DocumentID": 2742760,
++    "Title": "图片生成教程",
++    "ParentCode": "image-generation",
++    "Status": 2
++  },
++  {
+     "DocumentCode": "image-process",
+     "DocumentID": 1798161,
+     "Title": "Image Process（图像处理）",
+@@ -3759,6 +3815,20 @@
+     "Status": 2
+   },
+   {
++    "DocumentCode": "list-webhook-endpoints-api",
++    "DocumentID": 2780806,
++    "Title": "查询 Webhook 接入点列表",
++    "ParentCode": "webhooks",
++    "Status": 2
++  },
++  {
++    "DocumentCode": "list-webhook-events-api",
++    "DocumentID": 2780814,
++    "Title": "查询 Webhook 事件列表",
++    "ParentCode": "webhooks",
++    "Status": 2
++  },
++  {
+     "DocumentCode": "list-work-items-api",
+     "DocumentID": 2650667,
+     "Title": "查询 Work 列表",
+@@ -3773,6 +3843,13 @@
+     "Status": 5
+   },
+   {
++    "DocumentCode": "lts-mechanism",
++    "DocumentID": 2763175,
++    "Title": "LTS 机制说明",
++    "ParentCode": "product-announcements",
++    "Status": 2
++  },
++  {
+     "DocumentCode": "manage-api-keys",
+     "DocumentID": 1361424,
+     "Title": "管理 API Key",
+@@ -4214,6 +4291,13 @@
+     "Status": 5
+   },
+   {
++    "DocumentCode": "ocr-supported-fonts",
++    "DocumentID": 2769091,
++    "Title": "Seedream 5.5 OCR 支持字体",
++    "ParentCode": "image-generation",
++    "Status": 5
++  },
++  {
+     "DocumentCode": "online-content-plugin-guide",
+     "DocumentID": 1338552,
+     "Title": "联网内容插件功能说明",
+@@ -4564,6 +4648,13 @@
+     "Status": 2
+   },
+   {
++    "DocumentCode": "read-docs-from-urls",
++    "DocumentID": 2731236,
++    "Title": "通过 URL",
++    "ParentCode": "ai-suite-document-access",
++    "Status": 2
++  },
++  {
+     "DocumentCode": "read-docs-with-ai-agents",
+     "DocumentID": 2731235,
+     "Title": "选择读取方式",
+@@ -4585,6 +4676,13 @@
+     "Status": 5
+   },
+   {
++    "DocumentCode": "receive-webhook-events",
++    "DocumentID": 2780804,
++    "Title": "使用 Webhook 接收事件通知",
++    "ParentCode": "managed-agents-task-delegation",
++    "Status": 2
++  },
++  {
+     "DocumentCode": "record-work-heartbeat-api",
+     "DocumentID": 2650670,
+     "Title": "续租 Work",
+@@ -4634,6 +4732,13 @@
+     "Status": 5
+   },
+   {
++    "DocumentCode": "reset-webhook-signing-secret-api",
++    "DocumentID": 2780813,
++    "Title": "重置 Webhook 签名密钥",
++    "ParentCode": "webhooks",
++    "Status": 2
++  },
++  {
+     "DocumentCode": "resource-activation",
+     "DocumentID": 2693875,
+     "Title": "管理资源开通",
+@@ -4837,6 +4942,20 @@
+     "Status": 1
+   },
+   {
++    "DocumentCode": "seed3d-badcase-query",
++    "DocumentID": 2781107,
++    "Title": "查询 3D 生成效果问题结果",
++    "ParentCode": "Effectreporting",
++    "Status": 2
++  },
++  {
++    "DocumentCode": "seed3d-badcase-report",
++    "DocumentID": 2745449,
++    "Title": "上报 3D 生成效果问题",
++    "ParentCode": "Effectreporting",
++    "Status": 2
++  },
++  {
+     "DocumentCode": "seedance-1-0-pro-pro-fast",
+     "DocumentID": 1631633,
+     "Title": "Seedance 1.0 系列提示词指南",
+@@ -4900,13 +5019,6 @@
+     "Status": 2
+   },
+   {
+-    "DocumentCode": "seedream-4-0-5-0",
+-    "DocumentID": 1824121,
+-    "Title": "图片生成教程",
+-    "ParentCode": "image-generation",
+-    "Status": 2
+-  },
+-  {
+     "DocumentCode": "seedream-4-0-5-0-prompt-guide",
+     "DocumentID": 1829186,
+     "Title": "Seedream 4.0-5.0 提示词指南",
+@@ -5292,6 +5404,13 @@
+     "Status": 5
+   },
+   {
++    "DocumentCode": "test-webhook-endpoint-api",
++    "DocumentID": 2780812,
++    "Title": "发送 Webhook 测试事件",
++    "ParentCode": "webhooks",
++    "Status": 2
++  },
++  {
+     "DocumentCode": "tests",
+     "DocumentID": 2528939,
+     "Title": "测试目录",
+@@ -5523,6 +5642,13 @@
+     "Status": 2
+   },
+   {
++    "DocumentCode": "update-webhook-endpoint-api",
++    "DocumentID": 2780808,
++    "Title": "更新 Webhook 接入点",
++    "ParentCode": "webhooks",
++    "Status": 2
++  },
++  {
+     "DocumentCode": "upgrade-session-api",
+     "DocumentID": 2673930,
+     "Title": "升级会话",
+@@ -5810,6 +5936,20 @@
+     "Status": 2
+   },
+   {
++    "DocumentCode": "webhook-events-reference",
++    "DocumentID": 2780816,
++    "Title": "Webhook 事件结构参考",
++    "ParentCode": "webhooks",
++    "Status": 2
++  },
++  {
++    "DocumentCode": "webhooks",
++    "DocumentID": 2780803,
++    "Title": "Webhooks",
++    "ParentCode": "managed-agents-api",
++    "Status": 1
++  },
++  {
+     "DocumentCode": "webpage-parsing-plugin-guide",
+     "DocumentID": 1284852,
+     "Title": "网页解析插件功能说明",

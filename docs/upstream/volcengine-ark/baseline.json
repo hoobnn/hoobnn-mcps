@@ -1,13 +1,13 @@
 {
   "format_version": 1,
-  "reviewed_at": "2026-10-24T16:03:04.640369+00:00",
+  "reviewed_at": "2026-10-29T08:41:07.168482+00:00",
   "sources": [
     {
       "key": "volcengine-ark/ark-base-url-and-authentication",
       "server": "volcengine-ark",
       "id": "ark-base-url-and-authentication",
       "url": "https://docs.volcengine.com/docs/ark/base-url-and-authentication?lang=zh",
-      "fetch_url": "https://www.volcengine.com/api/doc/getDocDetail?LibraryCode=ark&DocumentCode=base-url-and-authentication",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=82379&DocumentID=1298459",
       "kind": "guide",
       "tools": [
         "chat",
@@ -43,13 +43,13 @@
       "server": "volcengine-ark",
       "id": "ark-chat-api",
       "url": "https://docs.volcengine.com/docs/ark/chat-api?lang=zh",
-      "fetch_url": "https://www.volcengine.com/api/doc/getDocDetail?LibraryCode=ark&DocumentCode=chat-api",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=82379&DocumentID=1494384",
       "kind": "api",
       "tools": [
         "chat"
       ],
-      "sha256": "35f2fecd7bd865c015786e2083fbfc4185c5a7cc243373c710bf4d1ada74afd0",
-      "bytes": 54644,
+      "sha256": "b8e2191e3211a8dbf330a45860466cc4071cda6bb866ca0215e0d7ebb440bf32",
+      "bytes": 161475,
       "models": [
         "deepseek-v4-1-flash-260910",
         "deepseek-v4-1-flash-261017",
@@ -62,14 +62,17 @@
         "doubao-seed-2-0-lite-260215",
         "doubao-seed-2-0-lite-260428",
         "doubao-seed-2-0-pro-260215",
-        "doubao-seed-2-1-lite-260915"
+        "doubao-seed-2-1-lite-260915",
+        "doubao-seed-2-1-pro-260915",
+        "kimi-k3-1-pro-261024"
       ],
       "endpoints": [
+        "https://ark.cn-beijing.volces.com/api/v3",
         "https://ark.cn-beijing.volces.com/api/v3/chat/completions"
       ],
       "doc_links": [],
       "title": "对话(Chat) API",
-      "updated_at": "2026-10-22T11:38:16Z",
+      "updated_at": "2026-10-28T12:32:45Z",
       "document_id": "1494384",
       "headers": {
         "ETag": null,
@@ -82,24 +85,30 @@
       "server": "volcengine-ark",
       "id": "ark-create-model-responses-api",
       "url": "https://docs.volcengine.com/docs/ark/create-model-responses-api?lang=zh",
-      "fetch_url": "https://www.volcengine.com/api/doc/getDocDetail?LibraryCode=ark&DocumentCode=create-model-responses-api",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=82379&DocumentID=1569618",
       "kind": "api",
       "tools": [
         "chat"
       ],
-      "sha256": "52023767e466c8cb5a8300397fd4e283304ef3f505c26ca9efcc3159cb01a091",
-      "bytes": 114938,
+      "sha256": "20d3fca6fa2d3b1c2d9e2f9cdc66fcd035193e742401e834d6869c85ec129dc5",
+      "bytes": 217060,
       "models": [
         "Doubao",
         "deepseek-v4-1-flash-260910",
         "deepseek-v4-1-flash-261017",
         "deepseek-v4-1-flash-economy-261017",
         "doubao",
+        "doubao-seed-2-0-code-preview-260215",
+        "doubao-seed-2-0-lite-260215",
         "doubao-seed-2-0-lite-260428",
+        "doubao-seed-2-0-pro-260215",
+        "doubao-seed-2-1-pro-260915",
         "doubao_app",
-        "doubao_app_call"
+        "doubao_app_call",
+        "kimi-k3-1-pro-261024"
       ],
       "endpoints": [
+        "https://ark.cn-beijing.volces.com/api/v3",
         "https://ark.cn-beijing.volces.com/api/v3/responses"
       ],
       "doc_links": [
@@ -107,7 +116,7 @@
         "https://www.volcengine.com/docs/84313/1419289#filter-%E8%A1%A8%E8%BE%BE%E5%BC%8F"
       ],
       "title": "创建 Response",
-      "updated_at": "2026-10-22T11:38:16Z",
+      "updated_at": "2026-10-28T12:32:45Z",
       "document_id": "1569618",
       "headers": {
         "ETag": null,
@@ -120,24 +129,29 @@
       "server": "volcengine-ark",
       "id": "ark-create-video-generation-task-api",
       "url": "https://docs.volcengine.com/docs/ark/create-video-generation-task-api?lang=zh",
-      "fetch_url": "https://www.volcengine.com/api/doc/getDocDetail?LibraryCode=ark&DocumentCode=create-video-generation-task-api",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=82379&DocumentID=1520757",
       "kind": "api",
       "tools": [
         "generate_video"
       ],
-      "sha256": "4ecdd7dfa6e29e35d42d3abc3bb60383a1a8f35599d28e7e423e764561146aa8",
-      "bytes": 36528,
+      "sha256": "2a6a992f00a347110463b5a228a8988aa5c526b6548f6f1b40df57998b4a1d30",
+      "bytes": 138674,
       "models": [
         "Doubao",
         "Seedance",
-        "doubao-seedance-1-0-pro-250528"
+        "doubao-seedance-1-0-lite-i2v-250428",
+        "doubao-seedance-1-0-pro-250528",
+        "doubao-seedance-2-0-260128",
+        "doubao-seedance-2-5-260628"
       ],
       "endpoints": [
+        "https://ark.cn-beijing.volces.com/api/v3",
+        "https://ark.cn-beijing.volces.com/api/v3/",
         "https://ark.cn-beijing.volces.com/api/v3/contents/generations/tasks"
       ],
       "doc_links": [],
       "title": "创建视频生成任务",
-      "updated_at": "2026-10-20T02:28:50Z",
+      "updated_at": "2026-10-28T02:00:16Z",
       "document_id": "1520757",
       "headers": {
         "ETag": null,
@@ -150,11 +164,11 @@
       "server": "volcengine-ark",
       "id": "ark-document-index",
       "url": "https://docs.volcengine.com/docs/ark/model-list?lang=zh",
-      "fetch_url": "https://www.volcengine.com/api/doc/getDocList?LibraryCode=ark",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocList?LibraryID=82379",
       "kind": "guide",
       "tools": [],
-      "sha256": "8202e80748a4bf274d2207389b1ca2b7fa749f0ef95d6bef509a09430a8b87f7",
-      "bytes": 150921,
+      "sha256": "49cc8877cf8b6df37eb28398c3c4c2b7556adde5b497355d69d859a4c70781d9",
+      "bytes": 154431,
       "models": [
         "DeepSeek-V4.1-Flash",
         "Doubao",
@@ -180,7 +194,6 @@
         "seedance-2-5-prompt-guide",
         "seedance-model-activation-usage-and-refund",
         "seedance-portrait-asset-guide",
-        "seedream-4-0-5-0",
         "seedream-4-0-5-0-prompt-guide",
         "seedream-4-0-seedance",
         "seedream-5-0-pro",
@@ -189,7 +202,7 @@
       "endpoints": [],
       "doc_links": [],
       "title": "ark-document-index",
-      "documents": 833,
+      "documents": 853,
       "document_codes": [
         "2024-announcements",
         "2025-announcements",
@@ -484,6 +497,7 @@
         "context-cache",
         "context-cache-conversation-api",
         "context-caching-api",
+        "context-compaction",
         "context-management",
         "continuation-mode",
         "control-plane",
@@ -521,6 +535,7 @@
         "create-team-seats-api",
         "create-vault-api",
         "create-video-generation-task-api",
+        "create-webhook-endpoint-api",
         "creative-materials-terms",
         "credentials",
         "cua-service-rules",
@@ -553,11 +568,13 @@
         "delete-skill-api",
         "delete-skill-version-api",
         "delete-vault-api",
+        "delete-webhook-endpoint-api",
         "deployment-modes",
         "deployment-overview",
         "direct-preference-optimization-best-practices",
         "disable-auto-model-activation-api",
         "disable-model-inference-limit-api",
+        "disable-webhook-endpoint-api",
         "document-understanding",
         "domain-models",
         "doubao-assistant",
@@ -572,6 +589,7 @@
         "dsl",
         "enable-auto-model-activation-api",
         "enable-model-inference-limit-api",
+        "enable-webhook-endpoint-api",
         "enterprise-collaboration-program",
         "environment-variable-configuration-guide",
         "environments",
@@ -640,6 +658,8 @@
         "get-usage-details-api",
         "get-vault-api",
         "get-video-generation-task-api",
+        "get-webhook-endpoint-api",
+        "get-webhook-event-api",
         "get-work-item-api",
         "get-work-queue-stats-api",
         "go-live",
@@ -664,6 +684,7 @@
         "image-generation-api",
         "image-generation-api-reference",
         "image-generation-streaming-responses",
+        "image-generation-tutorial",
         "image-process",
         "image-understanding",
         "import-github-skills-api",
@@ -728,8 +749,11 @@
         "list-threads-api",
         "list-vaults-api",
         "list-video-generation-tasks-api",
+        "list-webhook-endpoints-api",
+        "list-webhook-events-api",
         "list-work-items-api",
         "low-code-app-overview",
+        "lts-mechanism",
         "manage-api-keys",
         "manage-custom-models",
         "manage-inference-endpoints",
@@ -793,6 +817,7 @@
         "new-dsl",
         "no-code-app-guide",
         "no-code-app-overview",
+        "ocr-supported-fonts",
         "online-content-plugin-guide",
         "online-content-plugin-pricing",
         "online-inference",
@@ -843,9 +868,11 @@
         "quick-start-code",
         "quick-start-console",
         "rag",
+        "read-docs-from-urls",
         "read-docs-with-ai-agents",
         "real-person-actor-image-ai-creation-commitment",
         "real-person-ip-video-api",
+        "receive-webhook-events",
         "record-work-heartbeat-api",
         "redirects",
         "regenerate-personal-api-key-api",
@@ -853,6 +880,7 @@
         "reinforcement-learning-best-practices",
         "renew-personal-plan-api",
         "renew-team-seats-api",
+        "reset-webhook-signing-secret-api",
         "resource-activation",
         "resources",
         "response-lifecycle",
@@ -882,6 +910,8 @@
         "security-management-overview",
         "seed-prover-api",
         "seed3d-api",
+        "seed3d-badcase-query",
+        "seed3d-badcase-report",
         "seedance-1-0-pro-pro-fast",
         "seedance-2-0",
         "seedance-2-0-model-resource-pack-rules",
@@ -891,7 +921,6 @@
         "seedance-2-5-prompt-guide",
         "seedance-model-activation-usage-and-refund",
         "seedance-portrait-asset-guide",
-        "seedream-4-0-5-0",
         "seedream-4-0-5-0-prompt-guide",
         "seedream-4-0-seedance",
         "seedream-5-0-pro",
@@ -947,6 +976,7 @@
         "terminate-evaluation-job-api",
         "terminate-model-customization-job-api",
         "test",
+        "test-webhook-endpoint-api",
         "tests",
         "text-generation",
         "token-calculator",
@@ -980,6 +1010,7 @@
         "update-session-api",
         "update-skill-api",
         "update-vault-api",
+        "update-webhook-endpoint-api",
         "upgrade-session-api",
         "upload-and-mount-files",
         "upload-copyright",
@@ -1021,6 +1052,8 @@
         "volcengine-face-information-processing-rules-for-real-person-and-lookalike-verification",
         "volcengine-usage-specification-for-real-person-and-lookalike-verification",
         "web-search",
+        "webhook-events-reference",
+        "webhooks",
         "webpage-parsing-plugin-guide",
         "yingmou-model-service-agreement",
         "zhipu-ai-model-service-agreement"
@@ -1036,25 +1069,28 @@
       "server": "volcengine-ark",
       "id": "ark-get-video-generation-task-api",
       "url": "https://docs.volcengine.com/docs/ark/get-video-generation-task-api?lang=zh",
-      "fetch_url": "https://www.volcengine.com/api/doc/getDocDetail?LibraryCode=ark&DocumentCode=get-video-generation-task-api",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=82379&DocumentID=1521309",
       "kind": "api",
       "tools": [
         "get_job",
         "recover_job"
       ],
-      "sha256": "4e9a35b5dd56720abb3b6de52595a12316032f4f0e89d185302d7a8dbdebfa55",
-      "bytes": 6413,
+      "sha256": "5715125bf3af058dd12969390dbb7271a2718f0053033a5c0bcd147b973217bd",
+      "bytes": 14061,
       "models": [
-        "Seedance"
+        "Seedance",
+        "doubao-seedance-2-0-260128"
       ],
       "endpoints": [
+        "https://ark.cn-beijing.volces.com/api/v3",
+        "https://ark.cn-beijing.volces.com/api/v3/contents/generations/tasks/$TASK_ID",
         "https://ark.cn-beijing.volces.com/api/v3/contents/generations/tasks/{id}"
       ],
       "doc_links": [
         "https://docs.volcengine.com/docs/TorchObjectStorage/Datasubscription-5?lang=zh"
       ],
       "title": "查询视频生成任务",
-      "updated_at": "2026-10-20T02:28:50Z",
+      "updated_at": "2026-10-28T02:00:16Z",
       "document_id": "1521309",
       "headers": {
         "ETag": null,
@@ -1067,7 +1103,7 @@
       "server": "volcengine-ark",
       "id": "ark-image-generation-api",
       "url": "https://docs.volcengine.com/docs/ark/image-generation-api?lang=zh",
-      "fetch_url": "https://www.volcengine.com/api/doc/getDocDetail?LibraryCode=ark&DocumentCode=image-generation-api",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=82379&DocumentID=1541523",
       "kind": "api",
       "tools": [
         "generate_image",
@@ -1095,11 +1131,49 @@
       }
     },
     {
+      "key": "volcengine-ark/ark-image-generation-tutorial",
+      "server": "volcengine-ark",
+      "id": "ark-image-generation-tutorial",
+      "url": "https://docs.volcengine.com/docs/ark/image-generation-tutorial?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=82379&DocumentID=2742760",
+      "kind": "guide",
+      "tools": [
+        "generate_image"
+      ],
+      "sha256": "3106dcaa05356f6791bb04c6ba28ce78d9f32374a1e6431b32a76630f33db08e",
+      "bytes": 104361,
+      "models": [
+        "Doubao",
+        "Seedream",
+        "doubao",
+        "doubao-seedream-4-0-250828",
+        "doubao-seedream-5-0-flash-260915",
+        "doubao-seedream-5-0-lite-260128",
+        "seedream"
+      ],
+      "endpoints": [
+        "https://ark.cn-beijing.volces.com/api/v3",
+        "https://ark.cn-beijing.volces.com/api/v3/images/generations"
+      ],
+      "doc_links": [
+        "https://docs.volcengine.com/docs/TorchObjectStorage/Datasubscription-5?lang=zh",
+        "https://www.volcengine.com/experience/ark?mode=vision&model=doubao-seedream-4-0-250828"
+      ],
+      "title": "图片生成教程",
+      "updated_at": "2026-10-25T11:51:02Z",
+      "document_id": "2742760",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
       "key": "volcengine-ark/ark-model-deprecation-notice",
       "server": "volcengine-ark",
       "id": "ark-model-deprecation-notice",
       "url": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
-      "fetch_url": "https://www.volcengine.com/api/doc/getDocDetail?LibraryCode=ark&DocumentCode=model-deprecation-notice",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=82379&DocumentID=1350667",
       "kind": "models",
       "tools": [
         "chat",
@@ -1107,8 +1181,8 @@
         "generate_image",
         "generate_video"
       ],
-      "sha256": "dac82c9284debee2e6d2247046864ffb9a15a09d2401c201de10248ab4209fa4",
-      "bytes": 20095,
+      "sha256": "b21223f3f2ac82050a20eaa3b9188094993bd7579903e9f455de1ca9b370c1d3",
+      "bytes": 22261,
       "models": [
         "doubao",
         "seedance",
@@ -1117,7 +1191,7 @@
       "endpoints": [],
       "doc_links": [],
       "title": "模型下线公告",
-      "updated_at": "2026-10-14T15:23:28Z",
+      "updated_at": "2026-10-29T03:22:59Z",
       "document_id": "1350667",
       "headers": {
         "ETag": null,
@@ -1130,7 +1204,7 @@
       "server": "volcengine-ark",
       "id": "ark-model-list",
       "url": "https://docs.volcengine.com/docs/ark/model-list?lang=zh",
-      "fetch_url": "https://www.volcengine.com/api/doc/getDocDetail?LibraryCode=ark&DocumentCode=model-list",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=82379&DocumentID=1330310",
       "kind": "models",
       "tools": [
         "chat",
@@ -1139,8 +1213,8 @@
         "generate_video",
         "list_capabilities"
       ],
-      "sha256": "717ad6c5bc6d5c8573b2343164f560671edb60950c4922b23987ce7a9bd10712",
-      "bytes": 63744,
+      "sha256": "c758901a3a16767696b1761d2716a4853b2f4e19bdc6a36db7040818195db0ec",
+      "bytes": 66552,
       "models": [
         "Doubao",
         "Seedance",
@@ -1180,12 +1254,13 @@
         "doubao-seedream-5-0-260128",
         "doubao-seedream-5-0-flash-260915",
         "doubao-seedream-5-0-pro-260628",
+        "kimi-k3-1-pro-261024",
         "seedream"
       ],
       "endpoints": [],
       "doc_links": [],
       "title": "模型列表",
-      "updated_at": "2026-10-24T11:43:57Z",
+      "updated_at": "2026-10-29T06:47:37Z",
       "document_id": "1330310",
       "headers": {
         "ETag": null,
@@ -1198,7 +1273,7 @@
       "server": "volcengine-ark",
       "id": "ark-multimodal-vectorization-api",
       "url": "https://docs.volcengine.com/docs/ark/multimodal-vectorization-api?lang=zh",
-      "fetch_url": "https://www.volcengine.com/api/doc/getDocDetail?LibraryCode=ark&DocumentCode=multimodal-vectorization-api",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=82379&DocumentID=1523520",
       "kind": "api",
       "tools": [
         "embed"
@@ -1226,7 +1301,7 @@
       "server": "volcengine-ark",
       "id": "ark-seedance-2-0",
       "url": "https://docs.volcengine.com/docs/ark/seedance-2-0?lang=zh",
-      "fetch_url": "https://www.volcengine.com/api/doc/getDocDetail?LibraryCode=ark&DocumentCode=seedance-2-0",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=82379&DocumentID=2291680",
       "kind": "guide",
       "tools": [
         "generate_video"
@@ -1258,15 +1333,15 @@
       "server": "volcengine-ark",
       "id": "ark-seedance-2-5",
       "url": "https://docs.volcengine.com/docs/ark/seedance-2-5?lang=zh",
-      "fetch_url": "https://www.volcengine.com/api/doc/getDocDetail?LibraryCode=ark&DocumentCode=seedance-2-5",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=82379&DocumentID=2607688",
       "kind": "guide",
       "tools": [
         "generate_video",
         "get_job",
         "recover_job"
       ],
-      "sha256": "6350ce4b06a12a33ec3b39f4ad642a8135a6a396308d91fbbb0ac7743fab4302",
-      "bytes": 149503,
+      "sha256": "0162ec63900132eabad38bda65c4e770e5c63a9d80af62e43b734e6829abb495",
+      "bytes": 150613,
       "models": [
         "Doubao",
         "Seedance",
@@ -1284,46 +1359,8 @@
         "https://docs.volcengine.com/docs/TorchObjectStorage/Datasubscription-5?lang=zh)）"
       ],
       "title": "Doubao Seedance 2.5 教程",
-      "updated_at": "2026-10-19T15:25:34Z",
+      "updated_at": "2026-10-28T02:00:16Z",
       "document_id": "2607688",
-      "headers": {
-        "ETag": null,
-        "Last-Modified": null,
-        "Content-Type": "application/json; charset=utf-8"
-      }
-    },
-    {
-      "key": "volcengine-ark/ark-seedream-4-0-5-0",
-      "server": "volcengine-ark",
-      "id": "ark-seedream-4-0-5-0",
-      "url": "https://docs.volcengine.com/docs/ark/seedream-4-0-5-0?lang=zh",
-      "fetch_url": "https://www.volcengine.com/api/doc/getDocDetail?LibraryCode=ark&DocumentCode=seedream-4-0-5-0",
-      "kind": "guide",
-      "tools": [
-        "generate_image"
-      ],
-      "sha256": "37c311d4c2ebad37baeaabe37a002a34c70eac657f0dfc170050e30a11f7fc43",
-      "bytes": 110365,
-      "models": [
-        "Doubao",
-        "Seedream",
-        "doubao",
-        "doubao-seedream-4-0-250828",
-        "doubao-seedream-5-0-flash-260915",
-        "doubao-seedream-5-0-lite-260128",
-        "seedream"
-      ],
-      "endpoints": [
-        "https://ark.cn-beijing.volces.com/api/v3",
-        "https://ark.cn-beijing.volces.com/api/v3/images/generations"
-      ],
-      "doc_links": [
-        "https://docs.volcengine.com/docs/TorchObjectStorage/Datasubscription-5?lang=zh",
-        "https://www.volcengine.com/experience/ark?mode=vision&model=doubao-seedream-4-0-250828"
-      ],
-      "title": "图片生成教程",
-      "updated_at": "2026-10-13T03:25:35Z",
-      "document_id": "1824121",
       "headers": {
         "ETag": null,
         "Last-Modified": null,
@@ -1335,7 +1372,7 @@
       "server": "volcengine-ark",
       "id": "ark-seedream-5-0-pro",
       "url": "https://docs.volcengine.com/docs/ark/seedream-5-0-pro?lang=zh",
-      "fetch_url": "https://www.volcengine.com/api/doc/getDocDetail?LibraryCode=ark&DocumentCode=seedream-5-0-pro",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=82379&DocumentID=2582774",
       "kind": "guide",
       "tools": [
         "generate_image"
@@ -1369,7 +1406,7 @@
       "server": "volcengine-ark",
       "id": "ark-textvectorizationapi",
       "url": "https://docs.volcengine.com/docs/ark/TextVectorizationAPI?lang=zh",
-      "fetch_url": "https://www.volcengine.com/api/doc/getDocDetail?LibraryCode=ark&DocumentCode=TextVectorizationAPI",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=82379&DocumentID=1302003",
       "kind": "api",
       "tools": [
         "embed"
@@ -1405,7 +1442,7 @@
       "server": "volcengine-ark",
       "id": "ark-vectorization",
       "url": "https://docs.volcengine.com/docs/ark/vectorization?lang=zh",
-      "fetch_url": "https://www.volcengine.com/api/doc/getDocDetail?LibraryCode=ark&DocumentCode=vectorization",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=82379&DocumentID=1409291",
       "kind": "guide",
       "tools": [
         "embed"
@@ -1441,13 +1478,13 @@
       "server": "volcengine-ark",
       "id": "ark-web-search",
       "url": "https://docs.volcengine.com/docs/ark/web-search?lang=zh",
-      "fetch_url": "https://www.volcengine.com/api/doc/getDocDetail?LibraryCode=ark&DocumentCode=web-search",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=82379&DocumentID=1756990",
       "kind": "guide",
       "tools": [
         "chat"
       ],
-      "sha256": "f6fc3357390d9d5793454e4e22f4a7b9e219c07d47ea4951478493e615d82397",
-      "bytes": 27817,
+      "sha256": "99602bb8abcc8b72d611a64427ffc953dc81394b4ba172bb252dc4b916006683",
+      "bytes": 29420,
       "models": [
         "doubao",
         "doubao-seed-2-1-pro-260915"
@@ -1455,13 +1492,14 @@
       "endpoints": [
         "https://ark.cn-beijing.volces.com/api/compatible/v1/messages",
         "https://ark.cn-beijing.volces.com/api/v3",
+        "https://ark.cn-beijing.volces.com/api/v3/chat/completions",
         "https://ark.cn-beijing.volces.com/api/v3/responses"
       ],
       "doc_links": [
         "https://docs.volcengine.com/docs/87772/2272951?lang=zh#yQ0Kqmsy"
       ],
       "title": "联网搜索工具",
-      "updated_at": "2026-10-14T07:16:41Z",
+      "updated_at": "2026-10-27T06:55:40Z",
       "document_id": "1756990",
       "headers": {
         "ETag": null,

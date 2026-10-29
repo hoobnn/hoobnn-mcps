@@ -98,6 +98,20 @@
 - `ark-seedance-2-5`：示例素材迁移到 arkdocs 域名、体验中心链接更新、所有示例新增 `watermark: true`；Draft 转正式视频的 `resolution` 由「默认且仅支持 1080p」改为「必须传入，仅支持 1080p」。示例取值不改变 API 默认值，本工具始终显式发送 watermark；本工具不支持 `content.draft_task`（parameters 不能覆盖 content），且每次都发送 resolution，因此不受影响。
 - `ark-seedream-4-0-5-0`、`ark-seedream-5-0-pro`：示例改为 `watermark: true`、Python SDK 包名改为 `arkruntime`、Java 示例改用 FAST 提示词优化并注明 ark-runtime ≥0.6.0、素材迁移域名、提示块缩进调整；参考数量、尺寸档位、像素范围和 1.5K/1K 同价说明均未变。
 
+## 2026-10-29 上游正文复核（review/838c9058…）
+
+17/17 官方来源抓取成功、0 错误，18 项变化（其中 8 个 diff 为 0 行），完整差异见 [报告](../upstream/volcengine-ark/review/838c9058941e948e470472d35ceda85c452ecb6f64b9349bea9283ca80dad9ff/report.md)，逐项判断见 [人工复核记录](../upstream/volcengine-ark/review/838c9058941e948e470472d35ceda85c452ecb6f64b9349bea9283ca80dad9ff/review-notes.md)。
+
+|变化 |实现与处理结果 |
+|---|---|
+|下线公告新增 LTS 说明与标记、内链迁移，清单本身未变 |包内默认和别名模型均不在名单，无需改代码 |
+|Draft 视频任务 ID 自 2026-10-28 10:00（UTC+8）起有效期 14 天，此前及其他任务 ID 为 7 天 |已更新 `generate_video` 工具说明和中英 README，包版本升到 0.6.3；包内无硬编码有效期 |
+|`kimi-k3-1-pro-261024`、`doubao-seed-2-1-pro-260915` 进入 Chat API 文档；kimi 的 temperature、top_p、penalty 固定值与停止词上限 |`chat` 完整模型 ID 透传可用且默认不注入这些参数，中英 README 补充限制；不增别名 |
+|Chat API 新增 `web_search_options`；Responses 文档字段说明重写 |不接入 Chat 内置搜索，`web_search=true` 仍走 Responses，仅记录 |
+|文档目录新增 webhook、Seed3D badcase、LTS 等；Seedream 4.0-5.0 教程迁到 `image-generation-tutorial` |独立能力不接入；新教程模型 ID 与包内一致 |
+
+本次相对 PR 待审基线重抓 0 差异；volcengine-ark 33 项与跨包文档链路 43 项测试通过，覆盖、共享源码漂移、空白检查和 0.6.3 构建均通过，未发真实付费请求。
+
 ## 2026-10-24 上游正文复核（review/e7f00015…）
 
 17/17 官方来源抓取成功、0 错误，仅 [模型列表](https://docs.volcengine.com/docs/ark/model-list?lang=zh) 1 篇变化，完整差异见 [报告](../upstream/volcengine-ark/review/e7f00015d86c7da8391f2cf5df073f3d69a63df2a3aa345a31c496298b914a85/report.md)。

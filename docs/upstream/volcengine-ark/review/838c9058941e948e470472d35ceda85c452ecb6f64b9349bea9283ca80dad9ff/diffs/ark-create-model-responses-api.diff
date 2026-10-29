@@ -1,0 +1,3902 @@
+--- reviewed/volcengine-ark/ark-create-model-responses-api
++++ current/volcengine-ark/ark-create-model-responses-api
+@@ -2122,13 +2122,9 @@
+ 
+ > **注意**
+ 
+-> 调用下列模型时，本字段取值固定为 1，手动指定的参数值将被忽略。
+-
+-* > doubao\-seed\-2\-0\-code\-preview\-260215
+-
+-* > doubao\-seed\-2\-0\-pro\-260215
+-
+-* > doubao\-seed\-2\-0\-lite\-260215
++* > `doubao-seed-2-0-code-preview-260215`、`doubao-seed-2-0-pro-260215`、`doubao-seed-2-0-lite-260215` 模型 **temperature** 参数取值固定为 `1.0`，手动指定的参数值将被忽略。
++
++* > `kimi-k3-1-pro-261024` 模型 **temperature** 参数取值固定为 `1.0`，传入其他取值会报错。
+ 
+ **取值范围**：`[0, 2]`
+ 
+@@ -2820,13 +2816,9 @@
+ 
+ > **注意**
+ 
+-* > 当调用下列模型，字段取值固定为 0.95，手动指定的参数值将被忽略。
+-
+-   * > doubao\-seed\-2\-0\-code\-preview\-260215
+-
+-   * > doubao\-seed\-2\-0\-pro\-260215
+-
+-   * > doubao\-seed\-2\-0\-lite\-260215
++* > `doubao-seed-2-0-code-preview-260215`、`doubao-seed-2-0-pro-260215`、`doubao-seed-2-0-lite-260215` 模型 top_p 参数取值固定为 `0.95`，手动指定的参数值将被忽略。
++
++* > `kimi-k3-1-pro-261024` 模型 top_p 参数取值固定为 `0.95`，传入其他值会报错。
+ 
+ * > `glm-5-3-flash-260828` 模型默认值为 0.95。
+ 
+@@ -2882,10 +2874,440 @@
+ 
+ 模型生成的最终回答文本。
+ 
++**type** `string` `默认值 output_text`  |  类型
++
++`output.content.type`
++
++内容类型判别字段，用于区分 union 变体。
++
++取值固定为 `output_text`。
++
++**annotations** `object[]`  |  标注列表
++
++`output.content.annotations`
++
++文本附带的标注信息列表（如引用来源等）
++
++网页引用 `object`
++
++引用自互联网网页的标注信息。
++
++**title** `string`  |  标题
++
++`output.content.annotations.title`
++
++引用网页的标题。
++
+ **type** `string`  |  类型
+ 
++`output.content.annotations.type`
++
++标注类型的判别字段（discriminator）。
++
++取值固定为 `url_citation`。
++
++**url** `string`  |  网址
++
++`output.content.annotations.url`
++
++引用网页的 URL 地址。
++
++**cover_image** `object`  |  封面图
++
++`output.content.annotations.cover_image`
++
++网页封面图片信息。
++
++**height** `integer`  |  高度
++
++`output.content.annotations.cover_image.height`
++
++封面图片高度（像素）
++
++**url** `string`  |  图片地址
++
++`output.content.annotations.cover_image.url`
++
++封面图片的 URL 地址。
++
++**width** `integer`  |  宽度
++
++`output.content.annotations.cover_image.width`
++
++封面图片宽度（像素）
++
++**freshness_info** `string`  |  新鲜度
++
++`output.content.annotations.freshness_info`
++
++内容新鲜度信息。
++
++**logo_url** `string`  |  Logo 地址
++
++`output.content.annotations.logo_url`
++
++网站 Logo 图标地址。
++
++**mobile_url** `string`  |  移动端地址
++
++`output.content.annotations.mobile_url`
++
++移动端访问地址。
++
++**publish_time** `string`  |  发布时间
++
++`output.content.annotations.publish_time`
++
++网页发布时间。
++
++**site_name** `string`  |  站点名
++
++`output.content.annotations.site_name`
++
++站点名称。
++
++**summary** `string`  |  摘要
++
++`output.content.annotations.summary`
++
++网页内容摘要。
++
++文档引用 `object`
++
++引用自私域知识库文档的标注信息。
++
++**type** `string`  |  类型
++
++`output.content.annotations.type`
++
++标注类型。
++
++取值固定为 `doc_citation`。
++
++**chunk_attachment** `object[]`  |  分块附件
++
++`output.content.annotations.chunk_attachment`
++
++引用分块附带的附件信息列表。
++
++**chunk_id** `integer`  |  分块 ID
++
++`output.content.annotations.chunk_id`
++
++引用文档分块的 ID。
++
++**doc_id** `string`  |  文档 ID
++
++`output.content.annotations.doc_id`
++
++引用文档的 ID。
++
++**doc_name** `string`  |  文档名
++
++`output.content.annotations.doc_name`
++
++引用文档的名称。
++
++**text** `string`  |  文本内容
++
++`output.content.text`
++
++模型生成的文本内容。
++
++模型思维链文本 `object`
++
++模型生成的思维链文本。
++
++**type** `string`  |  类型
++
+ `output.content.type`
+ 
++内容类型标识，用于区分 union 变体。
++
++取值固定为 `reasoning_text`。
++
++**annotations** `object[]`  |  标注列表
++
++`output.content.annotations`
++
++思维链附带的标注信息列表。
++
++网页引用 `object`
++
++引用自互联网网页的标注信息。
++
++**title** `string`  |  标题
++
++`output.content.annotations.title`
++
++引用网页的标题。
++
++**type** `string`  |  类型
++
++`output.content.annotations.type`
++
++标注类型的判别字段（discriminator）。
++
++取值固定为 `url_citation`。
++
++**url** `string`  |  网址
++
++`output.content.annotations.url`
++
++引用网页的 URL 地址。
++
++**cover_image** `object`  |  封面图
++
++`output.content.annotations.cover_image`
++
++网页封面图片信息。
++
++**height** `integer`  |  高度
++
++`output.content.annotations.cover_image.height`
++
++封面图片高度（像素）
++
++**url** `string`  |  图片地址
++
++`output.content.annotations.cover_image.url`
++
++封面图片的 URL 地址。
++
++**width** `integer`  |  宽度
++
++`output.content.annotations.cover_image.width`
++
++封面图片宽度（像素）
++
++**freshness_info** `string`  |  新鲜度
++
++`output.content.annotations.freshness_info`
++
++内容新鲜度信息。
++
++**logo_url** `string`  |  Logo 地址
++
++`output.content.annotations.logo_url`
++
++网站 Logo 图标地址。
++
++**mobile_url** `string`  |  移动端地址
++
++`output.content.annotations.mobile_url`
++
++移动端访问地址。
++
++**publish_time** `string`  |  发布时间
++
++`output.content.annotations.publish_time`
++
++网页发布时间。
++
++**site_name** `string`  |  站点名
++
++`output.content.annotations.site_name`
++
++站点名称。
++
++**summary** `string`  |  摘要
++
++`output.content.annotations.summary`
++
++网页内容摘要。
++
++文档引用 `object`
++
++引用自私域知识库文档的标注信息。
++
++**type** `string`  |  类型
++
++`output.content.annotations.type`
++
++标注类型。
++
++取值固定为 `doc_citation`。
++
++**chunk_attachment** `object[]`  |  分块附件
++
++`output.content.annotations.chunk_attachment`
++
++引用分块附带的附件信息列表。
++
++**chunk_id** `integer`  |  分块 ID
++
++`output.content.annotations.chunk_id`
++
++引用文档分块的 ID。
++
++**doc_id** `string`  |  文档 ID
++
++`output.content.annotations.doc_id`
++
++引用文档的 ID。
++
++**doc_name** `string`  |  文档名
++
++`output.content.annotations.doc_name`
++
++引用文档的名称。
++
++**text** `string`  |  文本内容
++
++`output.content.text`
++
++模型思维链文本内容。
++
++**id** `string`  |  条目 ID
++
++`output.id`
++
++输出条目唯一标识。
++
++**role** `string`  |  角色
++
++`output.role`
++
++消息发送者的角色。
++
++取值固定为 `assistant`。
++
++**status** `string`  |  状态
++
++`output.status`
++
++消息输出条目的当前状态。
++
++* `completed`：消息已生成完毕。
++
++* `in_progress`：消息正在生成中（流式场景）。
++
++* `incomplete`：消息未完整生成（例如达到 `max_output_tokens` 上限）。
++
++* `failed`：消息生成失败。
++
++**type** `string`  |  类型
++
++`output.type`
++
++输出条目的类型标识。
++
++取值固定为 `message`。
++
++**partial** `boolean`  |  增量片段
++
++`output.partial`
++
++是否为流式增量片段。
++
++**phase** `string`  |  消息阶段
++
++`output.phase`
++
++标记 assistant 消息属于中间讲解还是最终回答。在回放 assistant 历史消息时，建议保留并原样回传该字段。可选值：`commentary`、`final_answer`。
++
++函数调用输出 `object`
++
++模型发起的函数调用请求。
++
++**type** `string`  |  类型
++
++`output.type`
++
++输出条目类型标识，用于区分 OutputItem 变体。
++
++取值固定为 `function_call`。
++
++**arguments** `string`  |  参数
++
++`output.arguments`
++
++函数参数的 JSON 字符串。
++
++**call_id** `string`  |  调用 ID
++
++`output.call_id`
++
++函数调用的唯一标识 ID，用于将该 function_call 输出与后续回传的 function_call_output 关联匹配。
++
++**id** `string`  |  条目 ID
++
++`output.id`
++
++输出条目唯一标识。
++
++**name** `string`  |  函数名
++
++`output.name`
++
++调用的函数名称。
++
++**status** `string`  |  状态
++
++`output.status`
++
++函数调用条目的当前状态。
++
++* `completed`：函数调用请求已生成完毕。
++
++* `in_progress`：函数调用请求正在生成中（流式场景）。
++
++* `incomplete`：函数调用请求未完整生成（例如达到 `max_output_tokens` 上限）。
++
++* `failed`：函数调用生成失败。
++
++思维链输出 `object`
++
++模型的深度思考过程输出。
++
++**status** `string`  |  状态
++
++`output.status`
++
++推理条目的处理状态，用于判断思维链是否生成完成。可选值：`completed`、`failed`、`in_progress`、`incomplete`。
++
++**summary** `object[]`  |  推理摘要
++
++`output.summary`
++
++推理摘要内容列表。
++
++**type** `string`  |  类型
++
++`output.summary.type`
++
++摘要片段类型标识。
++
++取值固定为 `summary_text`。
++
++**text** `string`  |  摘要文本
++
++`output.summary.text`
++
++思维链摘要文本内容。
++
++**type** `string`  |  类型
++
++`output.type`
++
++输出条目类型标识，用于区分 OutputItem 变体。
++
++取值固定为 `reasoning`。
++
++**content** `object[]`  |  推理内容
++
++`output.content`
++
++思维链推理过程的内容元素列表。
++
++模型回答文本 `object`
++
++模型生成的最终回答文本。
++
++**type** `string` `默认值 output_text`  |  类型
++
++`output.content.type`
++
+ 内容类型判别字段，用于区分 union 变体。
+ 
+ 取值固定为 `output_text`。
+@@ -3166,77 +3588,403 @@
+ 
+ 模型思维链文本内容。
+ 
++**encrypted_content** `string`  |  加密思维链
++
++`output.encrypted_content`
++
++思考内容加密原文。经加密及压缩处理后的思考内容原文。
++
++相关文档：
++
++* [关键规则](https://ark.volcengine.com/region:cn-beijing/docs/agent-model-invocation-practice#key-rules)
++
++* [回传思考内容加密块使用示例](https://ark.volcengine.com/region:cn-beijing/docs/agent-model-invocation-practice#encrypted-thinking-block-examples)
++
++> **说明**
++
++> 流式输出场景下，思考内容加密原文通过 `response.output_item.added`、`response.output_item.done`、`response.completed` 等相关事件下发，需要按事件中 `encrypted_content` 字段非空过滤获取。
++
++**模型支持**：
++
++* `doubao-seed-2-0-lite-260428 及后续版本`
++
+ **id** `string`  |  条目 ID
+ 
+ `output.id`
+ 
+ 输出条目唯一标识。
+ 
+-**role** `string`  |  角色
+-
+-`output.role`
+-
+-消息发送者的角色。
+-
+-取值固定为 `assistant`。
++语音转写输出 `object`
++
++模型返回的语音转写输出。
+ 
+ **status** `string`  |  状态
+ 
+ `output.status`
+ 
+-消息输出条目的当前状态。
+-
+-* `completed`：消息已生成完毕。
+-
+-* `in_progress`：消息正在生成中（流式场景）。
+-
+-* `incomplete`：消息未完整生成（例如达到 `max_output_tokens` 上限）。
+-
+-* `failed`：消息生成失败。
++语音转写条目的当前状态。
++
++* `completed`：转写已生成完毕。
++
++* `in_progress`：转写正在生成中（流式场景）。
++
++* `incomplete`：转写未完整生成（例如达到输出上限而截断）。
++
++* `failed`：转写生成失败。
+ 
+ **type** `string`  |  类型
+ 
+ `output.type`
+ 
+-输出条目的类型标识。
+-
+-取值固定为 `message`。
+-
+-**partial** `boolean`  |  增量片段
+-
+-`output.partial`
+-
+-是否为流式增量片段。
+-
+-**phase** `string`  |  消息阶段
+-
+-`output.phase`
+-
+-标记 assistant 消息属于中间讲解还是最终回答。在回放 assistant 历史消息时，建议保留并原样回传该字段。可选值：`commentary`、`final_answer`。
+-
+-函数调用输出 `object`
+-
+-模型发起的函数调用请求。
++输出条目类型标识。
++
++取值固定为 `transcription`。
++
++**id** `string`  |  条目 ID
++
++`output.id`
++
++输出条目唯一标识。
++
++**transcription** `object[]`  |  转写内容
++
++`output.transcription`
++
++语音转写结果片段列表。
+ 
+ **type** `string`  |  类型
+ 
++`output.transcription.type`
++
++转写片段类型。
++
++取值固定为 `transcription_text`。
++
++**chunks** `object[]`  |  音频小段
++
++`output.transcription.chunks`
++
++当前片段对应的音频小段列表。
++
++**end_time** `integer`  |  结束时间
++
++`output.transcription.chunks.end_time`
++
++片段结束时间（毫秒）
++
++**start_time** `integer`  |  开始时间
++
++`output.transcription.chunks.start_time`
++
++片段开始时间（毫秒）
++
++**text** `string`  |  文字内容
++
++`output.transcription.chunks.text`
++
++当前片段对应的文字内容。
++
++**text** `string`  |  转写文本
++
++`output.transcription.text`
++
++当前片段的转写文本。
++
++网页搜索调用 `object`
++
++模型发起的网页搜索调用记录。
++
++**id** `string`  |  条目 ID
++
++`output.id`
++
++输出条目唯一标识。
++
++**status** `string`  |  状态
++
++`output.status`
++
++网页搜索调用的当前状态。可选值：`in_progress`、`searching`、`completed`、`incomplete`、`failed`。
++
++**type** `string`  |  类型
++
+ `output.type`
+ 
+ 输出条目类型标识，用于区分 OutputItem 变体。
+ 
+-取值固定为 `function_call`。
+-
+-**arguments** `string`  |  参数
++取值固定为 `web_search_call`。
++
++**action** `object`  |  搜索动作
++
++`output.action`
++
++描述模型执行的网页搜索动作，包括搜索类型与查询关键字。
++
++**query** `string`  |  查询语句
++
++`output.action.query`
++
++模型实际发起的搜索查询语句。
++
++**type** `string`  |  类型
++
++`output.action.type`
++
++网页搜索动作的类型标识。
++
++取值固定为 `search`。
++
++**queries** `string[]`  |  查询语句列表
++
++`output.action.queries`
++
++本次网页搜索产生的查询语句列表。
++
++图像处理调用 `object`
++
++模型发起的图像处理调用记录。
++
++**id** `string`  |  条目 ID
++
++`output.id`
++
++输出条目唯一标识。
++
++**status** `string`  |  状态
++
++`output.status`
++
++图像处理调用的当前状态。
++
++* `completed`：图像处理已完成。
++
++* `in_progress`：图像处理正在执行中。
++
++* `incomplete`：图像处理未完整执行（例如被中断或截断）。
++
++* `failed`：图像处理执行失败，具体原因见 `error` 字段。
++
++**type** `string`  |  类型
++
++`output.type`
++
++输出条目类型标识，用于区分 OutputItem 变体。
++
++取值固定为 `image_process`。
++
++**action** `object`  |  处理动作
++
++`output.action`
++
++图像处理动作详情。
++
++**type** `string`  |  类型
++
++`output.action.type`
++
++图像处理动作类型。
++
++**result_image_url** `string`  |  结果图地址
++
++`output.action.result_image_url`
++
++处理后图像的 URL 地址。
++
++**arguments** `object`  |  处理参数
+ 
+ `output.arguments`
+ 
+-函数参数的 JSON 字符串。
+-
+-**call_id** `string`  |  调用 ID
+-
+-`output.call_id`
+-
+-函数调用的唯一标识 ID，用于将该 function_call 输出与后续回传的 function_call_output 关联匹配。
++图像处理动作的输入参数，以键值对形式承载具体处理选项。
++
++**error** `object`  |  图像处理错误
++
++`output.error`
++
++图像处理失败时的错误信息。
++
++**message** `string`  |  错误描述
++
++`output.error.message`
++
++错误的可读描述。
++
++MCP 审批请求 `object`
++
++MCP 工具调用前的审批请求记录。
++
++**arguments** `string`  |  调用参数
++
++`output.arguments`
++
++工具调用参数的 JSON 字符串。
++
++**name** `string`  |  工具名
++
++`output.name`
++
++待运行的工具名称。
++
++**server_label** `string`  |  服务标签
++
++`output.server_label`
++
++发起请求的 MCP Server 标签。
++
++**type** `string`  |  类型
++
++`output.type`
++
++输出项类型标识符，用于区分 OutputItem 的变体。
++
++取值固定为 `mcp_approval_request`。
++
++**id** `string`  |  请求 ID
++
++`output.id`
++
++审批请求的唯一 ID。
++
++MCP 工具清单 `object`
++
++MCP Server 提供的工具清单输出。
++
++**server_label** `string`  |  服务标签
++
++`output.server_label`
++
++MCP Server 标签。
++
++**type** `string`  |  类型
++
++`output.type`
++
++输出项类型标识。
++
++取值固定为 `mcp_list_tools`。
++
++**error** `string`  |  错误信息
++
++`output.error`
++
++当 MCP Server 无法返回工具列表时的错误信息。
++
++**id** `string`  |  列表 ID
++
++`output.id`
++
++工具列表的唯一 ID。
++
++**tools** `object[]`  |  工具列表
++
++`output.tools`
++
++该 MCP Server 上可用的工具列表。
++
++**name** `string`  |  工具名
++
++`output.tools.name`
++
++工具名称。
++
++**annotations** `object`  |  注解信息
++
++`output.tools.annotations`
++
++工具的附加注解信息。
++
++**description** `string`  |  工具描述
++
++`output.tools.description`
++
++工具的功能描述。
++
++**input_schema** `object`  |  入参 Schema
++
++`output.tools.input_schema`
++
++描述工具入参的 JSON Schema。
++
++MCP 工具调用 `object`
++
++模型对 MCP 工具的实际调用记录及结果。
++
++**name** `string`  |  工具名
++
++`output.name`
++
++实际运行的工具名称。
++
++**server_label** `string`  |  服务标签
++
++`output.server_label`
++
++运行工具的 MCP Server 标签。
++
++**type** `string`  |  类型
++
++`output.type`
++
++标识该输出项为 MCP 工具调用记录。
++
++取值固定为 `mcp_call`。
++
++**arguments** `string`  |  调用参数
++
++`output.arguments`
++
++传递给 MCP 工具的调用参数，格式为 JSON 字符串。
++
++> **说明**
++
++> 该字段通过 `response.mcp_call_arguments.delta` 事件流式追加，初始 `output_item.added` 事件可能不携带该字段。
++
++**error** `string`  |  错误信息
++
++`output.error`
++
++工具调用失败时的错误信息。
++
++**id** `string`  |  调用 ID
++
++`output.id`
++
++工具调用的唯一 ID。
++
++**output** `string`  |  返回结果
++
++`output.output`
++
++工具调用的返回结果。
++
++知识库检索调用 `object`
++
++模型发起的私域知识库检索调用记录。
++
++**knowledge_resource_id** `string`  |  知识库 ID
++
++`output.knowledge_resource_id`
++
++检索使用的知识库 ID。
++
++**queries** `string[]`  |  查询语句
++
++`output.queries`
++
++模型实际执行的检索查询语句。
++
++**status** `string`  |  状态
++
++`output.status`
++
++知识库检索调用的执行状态。可选值：`in_progress`、`searching`、`completed`、`failed`、`incomplete`。
++
++**type** `string`  |  类型
++
++`output.type`
++
++输出条目类型标识，用于区分不同类型的输出条目。
++
++取值固定为 `knowledge_search_call`。
+ 
+ **id** `string`  |  条目 ID
+ 
+@@ -3244,1424 +3992,1118 @@
+ 
+ 输出条目唯一标识。
+ 
++豆包应用调用 `object`
++
++模型对豆包助手能力的调用记录。
++
++**type** `string`  |  类型
++
++`output.type`
++
++输出条目类型标识。
++
++取值固定为 `doubao_app_call`。
++
++**blocks** `object[]`  |  内容块
++
++`output.blocks`
++
++豆包应用调用产出的内容块列表。
++
++文本输出 `object`
++
++豆包应用产出的文本输出内容块。
++
++**type** `string`  |  类型
++
++`output.blocks.type`
++
++内容块类型标识符。
++
++取值固定为 `output_text`。
++
++**id** `string`  |  块 ID
++
++`output.blocks.id`
++
++内容块的唯一标识。
++
++**parent_id** `string`  |  父级 ID
++
++`output.blocks.parent_id`
++
++所属父级条目的 ID。
++
++**status** `string`  |  状态
++
++`output.blocks.status`
++
++内容块状态。
++
++**text** `string`  |  文本内容
++
++`output.blocks.text`
++
++思维链文本 `object`
++
++豆包应用产出的思维链文本内容块。
++
++**type** `string`  |  类型
++
++`output.blocks.type`
++
++内容块类型标识符。
++
++取值固定为 `reasoning_text`。
++
++**id** `string`  |  块 ID
++
++`output.blocks.id`
++
++内容块的唯一标识。
++
++**parent_id** `string`  |  父级 ID
++
++`output.blocks.parent_id`
++
++所属父级条目的 ID。
++
++**reasoning_text** `string`  |  思考文本
++
++`output.blocks.reasoning_text`
++
++思维链文本内容。
++
++**status** `string`  |  状态
++
++`output.blocks.status`
++
++内容块状态。
++
++搜索过程 `object`
++
++豆包应用 AI 搜索过程产出的内容块。
++
++**type** `string`  |  类型
++
++`output.blocks.type`
++
++内容块类型标识符。
++
++取值固定为 `search`。
++
++**id** `string`  |  块 ID
++
++`output.blocks.id`
++
++内容块的唯一标识。
++
++**parent_id** `string`  |  父级 ID
++
++`output.blocks.parent_id`
++
++所属父级条目的 ID。
++
++**queries** `string[]`  |  查询语句
++
++`output.blocks.queries`
++
++搜索查询语句列表。
++
++**results** `object[]`  |  搜索结果
++
++`output.blocks.results`
++
++搜索结果列表。
++
++**text_card** `object`  |  文本卡片
++
++`output.blocks.results.text_card`
++
++文本卡片形式的搜索结果。
++
++**sitename** `string`  |  站点名
++
++`output.blocks.results.text_card.sitename`
++
++来源站点名称。
++
++**title** `string`  |  标题
++
++`output.blocks.results.text_card.title`
++
++搜索结果标题。
++
++**url** `string`  |  网址
++
++`output.blocks.results.text_card.url`
++
++搜索结果 URL 地址。
++
++**status** `string`  |  状态
++
++`output.blocks.status`
++
++内容块状态。
++
++**summary** `string`  |  搜索总结
++
++`output.blocks.summary`
++
++AI 搜索过程中对本轮搜索结果的总结性文字，概括从搜索结果中提取的核心信息。
++
++推理搜索过程 `object`
++
++豆包应用推理搜索过程产出的内容块。
++
++**type** `string`  |  类型
++
++`output.blocks.type`
++
++内容块类型。
++
++取值固定为 `reasoning_search`。
++
++**id** `string`  |  块 ID
++
++`output.blocks.id`
++
++内容块的唯一标识。
++
++**parent_id** `string`  |  父级 ID
++
++`output.blocks.parent_id`
++
++所属父级条目的 ID。
++
++**queries** `string[]`  |  查询语句
++
++`output.blocks.queries`
++
++搜索查询语句列表。
++
++**results** `object[]`  |  搜索结果
++
++`output.blocks.results`
++
++搜索结果列表。
++
++**text_card** `object`  |  文本卡片
++
++`output.blocks.results.text_card`
++
++文本卡片形式的搜索结果。
++
++**sitename** `string`  |  站点名
++
++`output.blocks.results.text_card.sitename`
++
++来源站点名称。
++
++**title** `string`  |  标题
++
++`output.blocks.results.text_card.title`
++
++搜索结果标题。
++
++**url** `string`  |  网址
++
++`output.blocks.results.text_card.url`
++
++搜索结果 URL 地址。
++
++**status** `string`  |  状态
++
++`output.blocks.status`
++
++推理搜索内容块的处理状态。可选值：`in_progress`、`searching`、`completed`、`incomplete`、`failed`。
++
++**summary** `string`  |  搜索总结
++
++`output.blocks.summary`
++
++推理搜索过程中对本轮搜索结果的总结性文字，概括从搜索结果中提取的核心信息。
++
++**feature** `string`  |  功能名
++
++`output.feature`
++
++本次调用触发的豆包子功能名称。可选值：`chat`、`deep_chat`、`ai_search`、`reasoning_search`。
++
++**id** `string`  |  条目 ID
++
++`output.id`
++
++输出条目唯一标识。
++
++**status** `string`  |  状态
++
++`output.status`
++
++输出状态。可选值：`completed`、`failed`、`in_progress`、`incomplete`。
++
++智能体工具调用 `object`
++
++模型发起的智能体工具调用记录。
++
++**name** `string`  |  工具名
++
++`output.name`
++
++被调用的智能体工具名称。
++
++**status** `string`  |  状态
++
++`output.status`
++
++智能体工具调用的执行状态。可选值：`completed`、`failed`、`in_progress`、`incomplete`。
++
++**type** `string`  |  类型
++
++`output.type`
++
++输出条目类型标识符，用于区分 OutputItem 的 variant。
++
++取值固定为 `agent_tool_call`。
++
++**id** `string`  |  条目 ID
++
++`output.id`
++
++输出条目唯一标识。
++
++**caching** `object`  |  上下文缓存
++
++是否开启缓存。
++
++**prefix** `boolean`  |  仅写缓存
++
++`caching.prefix`
++
++是否仅写入前缀缓存，不生成回复。`true` 只写缓存，不返回模型输出；`false` 正常生成回复并写缓存。
++
++**type** `string` `默认值 disabled`  |  缓存模式
++
++`caching.type`
++
++缓存模式。
++
++* `enabled`：开启上下文缓存。
++
++* `disabled`：关闭上下文缓存。
++
++**context_management** `object`  |  上下文管理
++
++本次请求实际应用的上下文管理策略信息。
++
++**applied_edits** `object[]`  |  已应用编辑
++
++`context_management.applied_edits`
++
++已应用的上下文编辑结果列表。
++
++清理工具调用 `object`
++
++已应用的清理工具调用编辑结果。
++
++**cleared_tool_uses** `integer`  |  清理次数
++
++`context_management.applied_edits.cleared_tool_uses`
++
++已清理的工具调用数量。
++
++**type** `string`  |  类型
++
++`context_management.applied_edits.type`
++
++编辑类型。
++
++取值固定为 `clear_tool_uses`。
++
++清理思维链 `object`
++
++已应用的清理思维链编辑结果。
++
++**cleared_thinking_turns** `integer`  |  清理轮次
++
++`context_management.applied_edits.cleared_thinking_turns`
++
++已清理的思维链轮次数量。
++
++**type** `string`  |  类型
++
++`context_management.applied_edits.type`
++
++编辑类型。
++
++取值固定为 `clear_thinking`。
++
++**error** `object`  |  响应错误
++
++模型未能生成响应时返回的错误对象。
++
++**code** `string`  |  错误码
++
++`error.code`
++
++**message** `string`  |  错误描述
++
++`error.message`
++
++错误信息的可读描述。
++
++**expire_at** `integer`  |  过期时间戳
++
++响应储存的过期时刻 Unix 时间戳（秒），回显请求中的 expire_at 设置，对 store 与 caching 均生效。
++
++> **说明**
++
++> 最多保留 7 天。
++
++**incomplete_details** `object`  |  未完成详情
++
++响应未能完成的细节。
++
++**reason** `string`  |  原因
++
++`incomplete_details.reason`
++
++响应未完成的原因。
++
++**content_filter** `object`  |  内容过滤
++
++`incomplete_details.content_filter`
++
++内容过滤详情。
++
++**details** `string`  |  详情
++
++`incomplete_details.content_filter.details`
++
++内容过滤命中的详细描述。
++
++**type** `string`  |  类型
++
++`incomplete_details.content_filter.type`
++
++内容过滤命中的类型。
++
++**instructions** `string`  |  系统指令
++
++在模型上下文中插入的系统（或开发者）指令，作为首项。
++
++> **说明**
++
++> 与 `previous_response_id` 一起使用时，前一响应中的指令不会延续到下一响应。
++
++**max_output_tokens** `integer`  |  最大输出长度
++
++模型输出最大 token 数，包含模型回答和思维链内容。
++
++**max_tool_calls** `integer`  |  最大调用轮次
++
++本次请求生效的最大工具调用轮次。
++
++**metadata** `object`  |  自定义元数据
++
++回显请求中的 metadata 键值对元数据。最多支持 16 对键值，key 长度不超过 64 个字符，value 长度不超过 512 个字符，服务端不会解释其中内容。
++
++**previous_response_id** `string`  |  上轮响应 ID
++
++本次请求时传入的历史响应 ID。
++
++**reasoning** `object`  |  思考工作量
++
++本次请求实际生效的深度思考工作量配置。
++
++**effort** `string`  |  思考深度
++
++`reasoning.effort`
++
++限制思考的工作量。减少思考深度可提升速度，思考花费的 token 更少。
++
++* `none`：关闭思考。
++
++* `minimal`：关闭思考，直接回答。
++
++* `low`：轻量思考，侧重快速响应。
++
++* `medium`：均衡模式，兼顾速度与深度。
++
++* `high`：深度分析，处理复杂问题。
++
++* `xhigh`：更高程度思考。
++
++* `max`：最高程度思考，适配高难度推理任务。
++
++> **说明**
++
++> 支持该字段的模型、默认取值、参数兼容映射规则，以及与 `thinking.type` 字段的关系，详见 [文档](https://ark.volcengine.com/region:cn-beijing/docs/responses-api-deep-thinking#dc4c1547)。
++
++**service_tier** `string`  |  推理模式
++
++本次请求实际使用的推理模式。
++
++* `fast`：本次请求使用 [在线推理（低延迟）](https://ark.volcengine.com/region:cn-beijing/docs/online-inference-low-latency) 模式。
++
++* `auto`：本次请求使用 [在线推理（TPM 保障包）](https://ark.volcengine.com/region:cn-beijing/docs/tpm-guarantee-package) 模式。
++
++* `default`：本次请求使用 [在线推理（常规）](https://ark.volcengine.com/region:cn-beijing/docs/online-inference-standard) 模式。
++
++* `flex`：本次请求使用 [在线推理（低优）](https://ark.volcengine.com/region:cn-beijing/docs/online-inference-flex) 模式。
++
++**status** `string`  |  响应状态
++
++生成响应的状态。
++
++**store** `boolean`  |  存储响应
++
++响应是否被储存的实际状态。
++
++**temperature** `number`  |  采样温度
++
++本次请求实际使用的采样温度。
++
++**text** `object`  |  输出格式
++
++用于定义输出的格式，可以是纯文本，也可以是结构化的 JSON 数据。
++
++**format** `object`  |  输出格式
++
++`text.format`
++
++文本输出格式定义。
++
++**type** `string`  |  格式类型
++
++`text.format.type`
++
++输出格式类型。可选值：`text`、`json_schema`、`json_object`。
++
++> **注意**
++
++> `json_object` / `json_schema` 能力尚在 beta 阶段，请谨慎在生产环境使用。
++
++**description** `string`  |  格式描述
++
++`text.format.description`
++
++格式描述信息。
++
++**name** `string`  |  格式名称
++
++`text.format.name`
++
++格式名称，作为 JSON Schema 输出格式的标识。
++
++> **注意**
++
++> 仅当 *type* 为 `json_schema` 时需要提供此字段。
++
++**schema** `object`  |  Schema 定义
++
++`text.format.schema`
++
++JSON Schema 定义。当 *type* 为 `json_schema` 时必填。
++
++**strict** `boolean`  |  严格模式
++
++`text.format.strict`
++
++是否严格按 JSON Schema 校验模型输出。
++
++> **注意**
++
++> 仅当 *type* 为 `json_schema` 时生效。
++
++**thinking** `object`  |  深度思考配置
++
++本次请求实际生效的深度思考模式配置。
++
++**type** `string`  |  思考模式
++
++`thinking.type`
++
++深度思考模式。
++
++* `enabled`：开启深度思考。
++
++* `disabled`：关闭深度思考。
++
++**tool_choice** `string / object`  |  工具调用策略
++
++本次请求实际生效的工具调用策略。
++
++> **说明**
++
++> 未指定工具时默认值为 `none`；存在工具时默认值为 `auto`。
++
++简单策略 `string`
++
++直接传入字符串 `none`、`auto` 或 `required`，控制工具调用整体策略。
++
++指定工具 `object`
++
++通过对象指定具体工具类型或工具名进行调用。
++
++**type** `string`  |  工具类型
++
++`tool_choice.type`
++
++指定要调用的工具类型，用于精确路由到对应工具。可选值：
++
++* `function`
++
++* `web_search`
++
++* `image_process`
++
++* `mcp`
++
++* `knowledge_search`
++
++* `doubao_app`
++
++**name** `string`  |  工具名称
++
++`tool_choice.name`
++
++指定要调用的具体工具名，如函数名或 MCP 服务下的工具名。
++
++**tools** `object[]`  |  工具列表
++
++模型可以调用的工具列表。
++
++函数调用 `object`
++
++自定义函数调用（Function Calling），让模型生成结构化的函数参数。
++
+ **name** `string`  |  函数名
+ 
+-`output.name`
+-
+-调用的函数名称。
+-
+-**status** `string`  |  状态
+-
+-`output.status`
+-
+-函数调用条目的当前状态。
+-
+-* `completed`：函数调用请求已生成完毕。
+-
+-* `in_progress`：函数调用请求正在生成中（流式场景）。
+-
+-* `incomplete`：函数调用请求未完整生成（例如达到 `max_output_tokens` 上限）。
+-
+-* `failed`：函数调用生成失败。
+-
+-思维链输出 `object`
+-
+-模型的深度思考过程输出。
+-
+-**status** `string`  |  状态
+-
+-`output.status`
+-
+-推理条目的处理状态，用于判断思维链是否生成完成。可选值：`completed`、`failed`、`in_progress`、`incomplete`。
+-
+-**summary** `object[]`  |  推理摘要
+-
+-`output.summary`
+-
+-推理摘要内容列表。
++`tools.name`
++
++供模型调用的函数名称，模型在 function_call 输出中以该名称回传，用于匹配对应函数。
+ 
+ **type** `string`  |  类型
+ 
+-`output.summary.type`
+-
+-摘要片段类型标识。
+-
+-取值固定为 `summary_text`。
+-
+-**text** `string`  |  摘要文本
+-
+-`output.summary.text`
+-
+-思维链摘要文本内容。
++`tools.type`
++
++工具类型标识，用于在 union 中区分不同工具类别。
++
++取值固定为 `function`。
++
++**description** `string`  |  函数描述
++
++`tools.description`
++
++函数的描述信息，帮助模型理解何时使用该函数。
++
++**parameters** `object`  |  参数定义
++
++`tools.parameters`
++
++函数参数定义，遵循 JSON Schema 格式。
++
++联网搜索 `object`
++
++联网搜索工具，让模型在需要时自动进行网页搜索获取实时信息。
+ 
+ **type** `string`  |  类型
+ 
+-`output.type`
+-
+-输出条目类型标识，用于区分 OutputItem 变体。
+-
+-取值固定为 `reasoning`。
+-
+-**content** `object[]`  |  推理内容
+-
+-`output.content`
+-
+-思维链推理过程的内容元素列表。
+-
+-模型回答文本 `object`
+-
+-模型生成的最终回答文本。
++`tools.type`
++
++工具类型标识，用于区分 Tool 的不同变体。
++
++取值固定为 `web_search`。
++
++**limit** `integer`  |  最大结果数
++
++`tools.limit`
++
++每轮搜索最大返回结果数量。
++
++> **说明**
++
++> 单次搜索最多返回 20 条；单轮可能有多次搜索，最终召回条数受此参数限制影响。
++
++**取值范围**：`[1, 50]`
++
++**max_keyword** `integer`  |  最大关键词数
++
++`tools.max_keyword`
++
++最大并行搜索关键词数量。
++
++**取值范围**：`[1, 50]`
++
++**sources** `string[]`  |  搜索来源
++
++`tools.sources`
++
++搜索信息来源限制，指定模型可从哪些渠道检索网页内容。可选值：`toutiao`、`douyin`、`moji`、`search_engine`、`doubao`。
++
++> **说明**
++
++> `doubao` 不能与其他搜索来源同时配置。传入 `["doubao"]` 时，`tools.limit`、`tools.max_keyword`、`tools.user_location` 均不生效，向它们传入的值将被忽略。
++
++**user_location** `object`  |  用户位置
++
++`tools.user_location`
++
++用户地理位置信息，用于搜索优化。
+ 
+ **type** `string`  |  类型
+ 
+-`output.content.type`
+-
+-内容类型判别字段，用于区分 union 变体。
+-
+-取值固定为 `output_text`。
+-
+-**annotations** `object[]`  |  标注列表
+-
+-`output.content.annotations`
+-
+-文本附带的标注信息列表（如引用来源等）
+-
+-网页引用 `object`
+-
+-引用自互联网网页的标注信息。
+-
+-**title** `string`  |  标题
+-
+-`output.content.annotations.title`
+-
+-引用网页的标题。
++`tools.user_location.type`
++
++位置类型。
++
++取值固定为 `approximate`。
++
++**city** `string`  |  城市
++
++`tools.user_location.city`
++
++用户所在城市。
++
++**country** `string`  |  国家
++
++`tools.user_location.country`
++
++用户所在国家。
++
++**region** `string`  |  地区
++
++`tools.user_location.region`
++
++用户所在地区。
++
++**timezone** `number`  |  时区
++
++`tools.user_location.timezone`
++
++用户所在时区。
++
++图像处理 `object`
++
++图像处理工具，让模型对图片进行画点、选区、缩放、旋转等操作。
+ 
+ **type** `string`  |  类型
+ 
+-`output.content.annotations.type`
+-
+-标注类型的判别字段（discriminator）。
+-
+-取值固定为 `url_citation`。
+-
+-**url** `string`  |  网址
+-
+-`output.content.annotations.url`
+-
+-引用网页的 URL 地址。
+-
+-**cover_image** `object`  |  封面图
+-
+-`output.content.annotations.cover_image`
+-
+-网页封面图片信息。
+-
+-**height** `integer`  |  高度
+-
+-`output.content.annotations.cover_image.height`
+-
+-封面图片高度（像素）
+-
+-**url** `string`  |  图片地址
+-
+-`output.content.annotations.cover_image.url`
+-
+-封面图片的 URL 地址。
+-
+-**width** `integer`  |  宽度
+-
+-`output.content.annotations.cover_image.width`
+-
+-封面图片宽度（像素）
+-
+-**freshness_info** `string`  |  新鲜度
+-
+-`output.content.annotations.freshness_info`
+-
+-内容新鲜度信息。
+-
+-**logo_url** `string`  |  Logo 地址
+-
+-`output.content.annotations.logo_url`
+-
+-网站 Logo 图标地址。
+-
+-**mobile_url** `string`  |  移动端地址
+-
+-`output.content.annotations.mobile_url`
+-
+-移动端访问地址。
+-
+-**publish_time** `string`  |  发布时间
+-
+-`output.content.annotations.publish_time`
+-
+-网页发布时间。
+-
+-**site_name** `string`  |  站点名
+-
+-`output.content.annotations.site_name`
+-
+-站点名称。
+-
+-**summary** `string`  |  摘要
+-
+-`output.content.annotations.summary`
+-
+-网页内容摘要。
+-
+-文档引用 `object`
+-
+-引用自私域知识库文档的标注信息。
++`tools.type`
++
++工具类型标识，用于区分 Tool 的不同变体。
++
++取值固定为 `image_process`。
++
++**grounding** `object`  |  选区功能
++
++`tools.grounding`
++
++选区/裁切功能配置，启用后模型可返回图像中目标的检测框或裁切区域坐标。
++
++**type** `string` `默认值 enabled`  |  开关
++
++`tools.grounding.type`
++
++功能开关。可选值：`enabled`、`disabled`。
++
++**point** `object`  |  画点功能
++
++`tools.point`
++
++画点/画线功能开关。
++
++**type** `string` `默认值 enabled`  |  开关
++
++`tools.point.type`
++
++功能开关。可选值：`enabled`、`disabled`。
++
++**rotate** `object`  |  旋转功能
++
++`tools.rotate`
++
++旋转功能开关。启用后模型可请求对图片按指定角度进行旋转。
++
++> **注意**
++
++> 旋转角度支持范围为 0\-359 度。
++
++**type** `string` `默认值 enabled`  |  开关
++
++`tools.rotate.type`
++
++功能开关。可选值：`enabled`、`disabled`。
++
++**zoom** `object`  |  缩放功能
++
++`tools.zoom`
++
++缩放功能开关，启用后模型可对图像目标区域执行缩放操作。
++
++> **说明**
++
++> 缩放倍率支持范围 0.5\-2.0 倍。
++
++**type** `string` `默认值 enabled`  |  开关
++
++`tools.zoom.type`
++
++功能开关。可选值：`enabled`、`disabled`。
++
++MCP 工具 `object`
++
++MCP（Model Context Protocol）工具，让模型调用外部 MCP Server 提供的工具。
++
++**server_label** `string`  |  服务标签
++
++`tools.server_label`
++
++MCP Server 的唯一标识标签。模型在工具调用输出中通过该标签指向对应 Server，便于在多个 MCP Server 场景下区分调用来源。
++
++**server_url** `string`  |  服务地址
++
++`tools.server_url`
++
++MCP Server 的 HTTP(S) 访问地址，模型通过该地址向 Server 发起工具调用请求。
+ 
+ **type** `string`  |  类型
+ 
+-`output.content.annotations.type`
+-
+-标注类型。
+-
+-取值固定为 `doc_citation`。
+-
+-**chunk_attachment** `object[]`  |  分块附件
+-
+-`output.content.annotations.chunk_attachment`
+-
+-引用分块附带的附件信息列表。
+-
+-**chunk_id** `integer`  |  分块 ID
+-
+-`output.content.annotations.chunk_id`
+-
+-引用文档分块的 ID。
+-
+-**doc_id** `string`  |  文档 ID
+-
+-`output.content.annotations.doc_id`
+-
+-引用文档的 ID。
+-
+-**doc_name** `string`  |  文档名
+-
+-`output.content.annotations.doc_name`
+-
+-引用文档的名称。
+-
+-**text** `string`  |  文本内容
+-
+-`output.content.text`
+-
+-模型生成的文本内容。
+-
+-模型思维链文本 `object`
+-
+-模型生成的思维链文本。
++`tools.type`
++
++工具类型标识，用于区分 Tool 的不同变体。
++
++取值固定为 `mcp`。
++
++**allowed_tools** `string[] / object`  |  允许工具
++
++`tools.allowed_tools`
++
++允许模型调用的工具范围。可传工具名称字符串数组，或包含 `tool_names` 字段的过滤器对象。
++
++工具名数组 `string[]`
++
++直接传入允许调用的工具名称数组。
++
++工具过滤器 `object`
++
++通过过滤器对象指定允许调用的工具范围。
++
++**tool_names** `string[]`  |  工具名列表
++
++`tools.allowed_tools.tool_names`
++
++允许调用的工具名称列表。
++
++**headers** `object`  |  请求头
++
++`tools.headers`
++
++调用 MCP Server 时附加的 HTTP 请求头，以字符串键值对形式指定 header 名与值。
++
++> **说明**
++
++* > 常用于传递鉴权信息（如 `Authorization`）。
++
++* > `Authorization` 字段不会被服务端存储。
++
++**require_approval** `string / object`  |  审批策略
++
++`tools.require_approval`
++
++MCP 工具调用前的审批策略；支持简单模式（字符串）或按工具粒度控制（过滤器对象）。
++
++简单策略 `string`
++
++直接传入字符串 `always` 或 `never`，对所有工具应用统一审批策略。
++
++工具过滤器 `object`
++
++通过过滤器对象按工具粒度配置审批策略。
++
++**always** `object`  |  始终审批
++
++`tools.require_approval.always`
++
++始终需要审批的工具过滤器。
++
++**tool_names** `string[]`  |  工具名列表
++
++`tools.require_approval.always.tool_names`
++
++始终需要审批的工具名称列表。
++
++**never** `object`  |  无需审批
++
++`tools.require_approval.never`
++
++无需审批的工具过滤器。
++
++**tool_names** `string[]`  |  工具名列表
++
++`tools.require_approval.never.tool_names`
++
++无需审批即可调用的工具名称列表。
++
++**server_description** `string`  |  服务描述
++
++`tools.server_description`
++
++MCP Server 的描述信息，帮助模型理解何时使用该 Server。
++
++知识库搜索 `object`
++
++私域知识库搜索工具，让模型检索企业内部知识库中的文档内容。
++
++**knowledge_resource_id** `string`  |  知识库 ID
++
++`tools.knowledge_resource_id`
+ 
+ **type** `string`  |  类型
+ 
+-`output.content.type`
+-
+-内容类型标识，用于区分 union 变体。
+-
+-取值固定为 `reasoning_text`。
+-
+-**annotations** `object[]`  |  标注列表
+-
+-`output.content.annotations`
+-
+-思维链附带的标注信息列表。
+-
+-网页引用 `object`
+-
+-引用自互联网网页的标注信息。
+-
+-**title** `string`  |  标题
+-
+-`output.content.annotations.title`
+-
+-引用网页的标题。
++`tools.type`
++
++工具类型标识，用于区分 Tool 的不同变体。
++
++取值固定为 `knowledge_search`。
++
++**dense_weight** `number`  |  稠密权重
++
++`tools.dense_weight`
++
++混合检索中稠密向量（语义）检索的权重，值越大越偏向语义匹配，越小越偏向关键词匹配。
++
++> **说明**
++
++> 仅在混合检索（索引算法为 `hnsw_hybrid`）下生效。
++
++**取值范围**：`[0.2, 1]`
++
++**description** `string`  |  知识库描述
++
++`tools.description`
++
++知识库描述信息，帮助模型理解何时使用该知识库。
++
++**doc_filter** `object`  |  文档过滤
++
++`tools.doc_filter`
++
++设置文档字段级别的检索过滤条件，确保只在符合条件的文档中检索。
++
++> **说明**
++
++* > 支持用作过滤条件的文档字段：
++
++   * > 系统字段：`doc_id`（仅手动创建的知识库）、`_sys_auto_doc_id`（手动 + API 创建均适用）
++
++   * > 自定义字段：已为知识库文档添加的**文档标签**（对应知识库 `index_config.fields` 中的 `field`）
++
++* > 支持单一条件过滤和多条件组合过滤（支持 `And` / `Or` 逻辑运算）。
++
++* > 详细使用方式和支持字段参见 [filter 表达式](https://www.volcengine.com/docs/84313/1419289#filter-%E8%A1%A8%E8%BE%BE%E5%BC%8F)。
++
++* > 若自定义字段类型为 `Boolean`，取值范围是 `True` / `False`，大小写规则：cURL 用 `true` / `false`，Python 用 `True` / `False`。
++
++**limit** `integer`  |  最大结果数
++
++`tools.limit`
++
++最大搜索结果数量。
++
++**取值范围**：`[1, 200]`
++
++**max_keyword** `integer`  |  最大关键词数
++
++`tools.max_keyword`
++
++最大并行搜索关键词数量。
++
++**取值范围**：`[1, 50]`
++
++**ranking_options** `object`  |  排序选项
++
++`tools.ranking_options`
++
++检索后处理选项。可参考 [知识库 API 文档](https://www.volcengine.com/docs/84313/1350012) `post_processing` 字段。
++
++**chunk_diffusion_count** `integer`  |  切片扩散数
++
++`tools.ranking_options.chunk_diffusion_count`
++
++检索阶段返回命中切片的上下几片邻近切片。取 `0` 表示不进行 chunk diffusion。
++
++**取值范围**：`[0, 5]`
++
++**chunk_group** `boolean`  |  文本聚合
++
++`tools.ranking_options.chunk_group`
++
++文本聚合。
++
++* 默认不聚合。
++
++* 对于非结构化文件，可开启文本聚合以更好保留原文档内容语序。
++
++* 开启后，会根据文档及文档顺序，对切片重新聚合排序返回。
++
++**get_attachment_link** `boolean`  |  获取附件链接
++
++`tools.ranking_options.get_attachment_link`
++
++是否获取切片中图片的临时下载链接。
++
++**rerank_model** `string` `默认值 base-multilingual-rerank`  |  Rerank 模型
++
++`tools.ranking_options.rerank_model`
++
++rerank 模型选择。可选值：`base-multilingual-rerank`、`m3-v2-rerank`。
++
++> **说明**
++
++* > 仅在 `rerank_switch` 为 `true` 时生效。
++
++* > `base-multilingual-rerank`（推荐）：速度快、长文本、支持 70+ 种语言。
++
++* > `m3-v2-rerank`：常规文本、支持 100+ 种语言。
++
++**rerank_only_chunk** `boolean`  |  仅切片重排
++
++`tools.ranking_options.rerank_only_chunk`
++
++是否仅根据 chunk 内容计算重排分数。`true` 只根据 chunk 内容计算分；`false` 根据 chunk title + 内容一起计算排序分。
++
++**rerank_switch** `boolean`  |  开启重排
++
++`tools.ranking_options.rerank_switch`
++
++是否自动对检索结果做 rerank。若设置为 `true`，则会自动请求 rerank 模型排序。
++
++**retrieve_count** `integer`  |  重排切片数
++
++`tools.ranking_options.retrieve_count`
++
++进入重排的切片数量。
++
++> **注意**
++
++* > 仅在 `rerank_switch` 为 `true` 时生效。
++
++* > `retrieve_count` 需要大于等于 `limit`，否则会抛出错误。
++
++豆包助手 `object`
++
++豆包助手工具，让模型使用豆包的聊天、深度思考、AI 搜索和推理搜索能力。
++
++**feature** `object`  |  功能配置
++
++`tools.feature`
++
++豆包助手的子功能配置，用于按需开启聊天、深度思考、AI 搜索、推理搜索四类能力并设置对应角色描述。
++
++**ai_search** `object`  |  AI 搜索
++
++`tools.feature.ai_search`
++
++AI 搜索功能配置。
++
++**role_description** `string`  |  角色描述
++
++`tools.feature.ai_search.role_description`
++
++使用豆包助手时修改角色设定。默认值：`你的名字是豆包,有很强的专业性。`
++
++> **注意**
++
++> 此字段与 `system prompt`、`instructions` 互斥，同时配置时以本字段为准。
++
++**type** `string` `默认值 disabled`  |  开关
++
++`tools.feature.ai_search.type`
++
++功能开关。可选值：`enabled`、`disabled`。
++
++**chat** `object`  |  普通聊天
++
++`tools.feature.chat`
++
++普通聊天功能配置。
++
++**role_description** `string`  |  角色描述
++
++`tools.feature.chat.role_description`
++
++使用豆包助手时修改角色设定。默认值：`你的名字是豆包,有很强的专业性。`
++
++> **注意**
++
++> 此字段与 `system prompt`、`instructions` 互斥，同时配置时以本字段为准。
++
++**type** `string` `默认值 disabled`  |  开关
++
++`tools.feature.chat.type`
++
++功能开关。可选值：`enabled`、`disabled`。
++
++**deep_chat** `object`  |  深度聊天
++
++`tools.feature.deep_chat`
++
++深度聊天功能配置。
++
++**role_description** `string`  |  角色描述
++
++`tools.feature.deep_chat.role_description`
++
++使用豆包助手时修改角色设定。默认值：`你的名字是豆包,有很强的专业性。`
++
++> **注意**
++
++> 此字段与 `system prompt`、`instructions` 互斥，同时配置时以本字段为准。
++
++**type** `string` `默认值 disabled`  |  开关
++
++`tools.feature.deep_chat.type`
++
++功能开关。可选值：`enabled`、`disabled`。
++
++**reasoning_search** `object`  |  推理搜索
++
++`tools.feature.reasoning_search`
++
++推理搜索功能配置。
++
++**role_description** `string`  |  角色描述
++
++`tools.feature.reasoning_search.role_description`
++
++使用豆包助手时修改角色设定。默认值：`你的名字是豆包,有很强的专业性。`
++
++> **注意**
++
++> 此字段与 `system prompt`、`instructions` 互斥，同时配置时以本字段为准。
++
++**type** `string` `默认值 disabled`  |  开关
++
++`tools.feature.reasoning_search.type`
++
++功能开关。可选值：`enabled`、`disabled`。
+ 
+ **type** `string`  |  类型
+ 
+-`output.content.annotations.type`
+-
+-标注类型的判别字段（discriminator）。
+-
+-取值固定为 `url_citation`。
+-
+-**url** `string`  |  网址
+-
+-`output.content.annotations.url`
+-
+-引用网页的 URL 地址。
+-
+-**cover_image** `object`  |  封面图
+-
+-`output.content.annotations.cover_image`
+-
+-网页封面图片信息。
+-
+-**height** `integer`  |  高度
+-
+-`output.content.annotations.cover_image.height`
+-
+-封面图片高度（像素）
+-
+-**url** `string`  |  图片地址
+-
+-`output.content.annotations.cover_image.url`
+-
+-封面图片的 URL 地址。
+-
+-**width** `integer`  |  宽度
+-
+-`output.content.annotations.cover_image.width`
+-
+-封面图片宽度（像素）
+-
+-**freshness_info** `string`  |  新鲜度
+-
+-`output.content.annotations.freshness_info`
+-
+-内容新鲜度信息。
+-
+-**logo_url** `string`  |  Logo 地址
+-
+-`output.content.annotations.logo_url`
+-
+-网站 Logo 图标地址。
+-
+-**mobile_url** `string`  |  移动端地址
+-
+-`output.content.annotations.mobile_url`
+-
+-移动端访问地址。
+-
+-**publish_time** `string`  |  发布时间
+-
+-`output.content.annotations.publish_time`
+-
+-网页发布时间。
+-
+-**site_name** `string`  |  站点名
+-
+-`output.content.annotations.site_name`
+-
+-站点名称。
+-
+-**summary** `string`  |  摘要
+-
+-`output.content.annotations.summary`
+-
+-网页内容摘要。
+-
+-文档引用 `object`
+-
+-引用自私域知识库文档的标注信息。
++`tools.type`
++
++工具类型，此处固定为 `doubao_app`
++
++**user_location** `object`  |  用户位置
++
++`tools.user_location`
++
++用户地理位置信息，用于搜索优化。
+ 
+ **type** `string`  |  类型
+ 
+-`output.content.annotations.type`
+-
+-标注类型。
+-
+-取值固定为 `doc_citation`。
+-
+-**chunk_attachment** `object[]`  |  分块附件
+-
+-`output.content.annotations.chunk_attachment`
+-
+-引用分块附带的附件信息列表。
+-
+-**chunk_id** `integer`  |  分块 ID
+-
+-`output.content.annotations.chunk_id`
+-
+-引用文档分块的 ID。
+-
+-**doc_id** `string`  |  文档 ID
+-
+-`output.content.annotations.doc_id`
+-
+-引用文档的 ID。
+-
+-**doc_name** `string`  |  文档名
+-
+-`output.content.annotations.doc_name`
+-
+-引用文档的名称。
+-
+-**text** `string`  |  文本内容
+-
+-`output.content.text`
+-
+-模型思维链文本内容。
+-
+-**encrypted_content** `string`  |  加密思维链
+-
+-`output.encrypted_content`
+-
+-思考内容加密原文。经加密及压缩处理后的思考内容原文。
+-
+-相关文档：
+-
+-* [关键规则](https://ark.volcengine.com/region:cn-beijing/docs/agent-model-invocation-practice#key-rules)
+-
+-* [回传思考内容加密块使用示例](https://ark.volcengine.com/region:cn-beijing/docs/agent-model-invocation-practice#encrypted-thinking-block-examples)
+-
+-> **说明**
+-
+-> 流式输出场景下，思考内容加密原文通过 `response.output_item.added`、`response.output_item.done`、`response.completed` 等相关事件下发，需要按事件中 `encrypted_content` 字段非空过滤获取。
+-
+-**模型支持**：
+-
+-* `doubao-seed-2-0-lite-260428 及后续版本`
+-
+-**id** `string`  |  条目 ID
+-
+-`output.id`
+-
+-输出条目唯一标识。
+-
+-语音转写输出 `object`
+-
+-模型返回的语音转写输出。
+-
+-**status** `string`  |  状态
+-
+-`output.status`
+-
+-语音转写条目的当前状态。
+-
+-* `completed`：转写已生成完毕。
+-
+-* `in_progress`：转写正在生成中（流式场景）。
+-
+-* `incomplete`：转写未完整生成（例如达到输出上限而截断）。
+-
+-* `failed`：转写生成失败。
+-
+-**type** `string`  |  类型
+-
+-`output.type`
+-
+-输出条目类型标识。
+-
+-取值固定为 `transcription`。
+-
+-**id** `string`  |  条目 ID
+-
+-`output.id`
+-
+-输出条目唯一标识。
+-
+-**transcription** `object[]`  |  转写内容
+-
+-`output.transcription`
+-
+-语音转写结果片段列表。
+-
+-**type** `string`  |  类型
+-
+-`output.transcription.type`
+-
+-转写片段类型。
+-
+-取值固定为 `transcription_text`。
+-
+-**chunks** `object[]`  |  音频小段
+-
+-`output.transcription.chunks`
+-
+-当前片段对应的音频小段列表。
+-
+-**end_time** `integer`  |  结束时间
+-
+-`output.transcription.chunks.end_time`
+-
+-片段结束时间（毫秒）
+-
+-**start_time** `integer`  |  开始时间
+-
+-`output.transcription.chunks.start_time`
+-
+-片段开始时间（毫秒）
+-
+-**text** `string`  |  文字内容
+-
+-`output.transcription.chunks.text`
+-
+-当前片段对应的文字内容。
+-
+-**text** `string`  |  转写文本
+-
+-`output.transcription.text`
+-
+-当前片段的转写文本。
+-
+-网页搜索调用 `object`
+-
+-模型发起的网页搜索调用记录。
+-
+-**id** `string`  |  条目 ID
+-
+-`output.id`
+-
+-输出条目唯一标识。
+-
+-**status** `string`  |  状态
+-
+-`output.status`
+-
+-网页搜索调用的当前状态。可选值：`in_progress`、`searching`、`completed`、`incomplete`、`failed`。
+-
+-**type** `string`  |  类型
+-
+-`output.type`
+-
+-输出条目类型标识，用于区分 OutputItem 变体。
+-
+-取值固定为 `web_search_call`。
+-
+-**action** `object`  |  搜索动作
+-
+-`output.action`
+-
+-描述模型执行的网页搜索动作，包括搜索类型与查询关键字。
+-
+-**query** `string`  |  查询语句
+-
+-`output.action.query`
+-
+-模型实际发起的搜索查询语句。
+-
+-**type** `string`  |  类型
+-
+-`output.action.type`
+-
+-网页搜索动作的类型标识。
+-
+-取值固定为 `search`。
+-
+-**queries** `string[]`  |  查询语句列表
+-
+-`output.action.queries`
+-
+-本次网页搜索产生的查询语句列表。
+-
+-图像处理调用 `object`
+-
+-模型发起的图像处理调用记录。
+-
+-**id** `string`  |  条目 ID
+-
+-`output.id`
+-
+-输出条目唯一标识。
+-
+-**status** `string`  |  状态
+-
+-`output.status`
+-
+-图像处理调用的当前状态。
+-
+-* `completed`：图像处理已完成。
+-
+-* `in_progress`：图像处理正在执行中。
+-
+-* `incomplete`：图像处理未完整执行（例如被中断或截断）。
+-
+-* `failed`：图像处理执行失败，具体原因见 `error` 字段。
+-
+-**type** `string`  |  类型
+-
+-`output.type`
+-
+-输出条目类型标识，用于区分 OutputItem 变体。
+-
+-取值固定为 `image_process`。
+-
+-**action** `object`  |  处理动作
+-
+-`output.action`
+-
+-图像处理动作详情。
+-
+-**type** `string`  |  类型
+-
+-`output.action.type`
+-
+-图像处理动作类型。
+-
+-**result_image_url** `string`  |  结果图地址
+-
+-`output.action.result_image_url`
+-
+-处理后图像的 URL 地址。
+-
+-**arguments** `object`  |  处理参数
+-
+-`output.arguments`
+-
+-图像处理动作的输入参数，以键值对形式承载具体处理选项。
+-
+-**error** `object`  |  图像处理错误
+-
+-`output.error`
+-
+-图像处理失败时的错误信息。
+-
+-**message** `string`  |  错误描述
+-
+-`output.error.message`
+-
+-错误的可读描述。
+-
+-MCP 审批请求 `object`
+-
+-MCP 工具调用前的审批请求记录。
+-
+-**arguments** `string`  |  调用参数
+-
+-`output.arguments`
+-
+-工具调用参数的 JSON 字符串。
+-
+-**name** `string`  |  工具名
+-
+-`output.name`
+-
+-待运行的工具名称。
+-
+-**server_label** `string`  |  服务标签
+-
+-`output.server_label`
+-
+-发起请求的 MCP Server 标签。
+-
+-**type** `string`  |  类型
+-
+-`output.type`
+-
+-输出项类型标识符，用于区分 OutputItem 的变体。
+-
+-取值固定为 `mcp_approval_request`。
+-
+-**id** `string`  |  请求 ID
+-
+-`output.id`
+-
+-审批请求的唯一 ID。
+-
+-MCP 工具清单 `object`
+-
+-MCP Server 提供的工具清单输出。
+-
+-**server_label** `string`  |  服务标签
+-
+-`output.server_label`
+-
+-MCP Server 标签。
+-
+-**type** `string`  |  类型
+-
+-`output.type`
+-
+-输出项类型标识。
+-
+-取值固定为 `mcp_list_tools`。
+-
+-**error** `string`  |  错误信息
+-
+-`output.error`
+-
+-当 MCP Server 无法返回工具列表时的错误信息。
+-
+-**id** `string`  |  列表 ID
+-
+-`output.id`
+-
+-工具列表的唯一 ID。
+-
+-**tools** `object[]`  |  工具列表
+-
+-`output.tools`
+-
+-该 MCP Server 上可用的工具列表。
+-
+-**name** `string`  |  工具名
+-
+-`output.tools.name`
+-
+-工具名称。
+-
+-**annotations** `object`  |  注解信息
+-
+-`output.tools.annotations`
+-
+-工具的附加注解信息。
+-
+-**description** `string`  |  工具描述
+-
+-`output.tools.description`
+-
+-工具的功能描述。
+-
+-**input_schema** `object`  |  入参 Schema
+-
+-`output.tools.input_schema`
+-
+-描述工具入参的 JSON Schema。
+-
+-MCP 工具调用 `object`
+-
+-模型对 MCP 工具的实际调用记录及结果。
+-
+-**name** `string`  |  工具名
+-
+-`output.name`
+-
+-实际运行的工具名称。
+-
+-**server_label** `string`  |  服务标签
+-
+-`output.server_label`
+-
+-运行工具的 MCP Server 标签。
+-
+-**type** `string`  |  类型
+-
+-`output.type`
+-
+-标识该输出项为 MCP 工具调用记录。
+-
+-取值固定为 `mcp_call`。
+-
+-**arguments** `string`  |  调用参数
+-
+-`output.arguments`
+-
+-传递给 MCP 工具的调用参数，格式为 JSON 字符串。
+-
+-> **说明**
+-
+-> 该字段通过 `response.mcp_call_arguments.delta` 事件流式追加，初始 `output_item.added` 事件可能不携带该字段。
+-
+-**error** `string`  |  错误信息
+-
+-`output.error`
+-
+-工具调用失败时的错误信息。
+-
+-**id** `string`  |  调用 ID
+-
+-`output.id`
+-
+-工具调用的唯一 ID。
+-
+-**output** `string`  |  返回结果
+-
+-`output.output`
+-
+-工具调用的返回结果。
+-
+-知识库检索调用 `object`
+-
+-模型发起的私域知识库检索调用记录。
+-
+-**knowledge_resource_id** `string`  |  知识库 ID
+-
+-`output.knowledge_resource_id`
+-
+-检索使用的知识库 ID。
+-
+-**queries** `string[]`  |  查询语句
+-
+-`output.queries`
+-
+-模型实际执行的检索查询语句。
+-
+-**status** `string`  |  状态
+-
+-`output.status`
+-
+-知识库检索调用的执行状态。可选值：`in_progress`、`searching`、`completed`、`failed`、`incomplete`。
+-
+-**type** `string`  |  类型
+-
+-`output.type`
+-
+-输出条目类型标识，用于区分不同类型的输出条目。
+-
+-取值固定为 `knowledge_search_call`。
+-
+-**id** `string`  |  条目 ID
+-
+-`output.id`
+-
+-输出条目唯一标识。
+-
+-豆包应用调用 `object`
+-
+-模型对豆包助手能力的调用记录。
+-
+-**type** `string`  |  类型
+-
+-`output.type`
+-
+-输出条目类型标识。
+-
+-取值固定为 `doubao_app_call`。
+-
+-**blocks** `object[]`  |  内容块
+-
+-`output.blocks`
+-
+-豆包应用调用产出的内容块列表。
+-
+-文本输出 `object`
+-
+-豆包应用产出的文本输出内容块。
+-
+-**type** `string`  |  类型
+-
+-`output.blocks.type`
+-
+-内容块类型标识符。
+-
+-取值固定为 `output_text`。
+-
+-**id** `string`  |  块 ID
+-
+-`output.blocks.id`
+-
+-内容块的唯一标识。
+-
+-**parent_id** `string`  |  父级 ID
+-
+-`output.blocks.parent_id`
+-
+-所属父级条目的 ID。
+-
+-**status** `string`  |  状态
+-
+-`output.blocks.status`
+-
+-内容块状态。
+-
+-**text** `string`  |  文本内容
+-
+-`output.blocks.text`
+-
+-思维链文本 `object`
+-
+-豆包应用产出的思维链文本内容块。
+-
+-**type** `string`  |  类型
+-
+-`output.blocks.type`
+-
+-内容块类型标识符。
+-
+-取值固定为 `reasoning_text`。
+-
+-**id** `string`  |  块 ID
+-
+-`output.blocks.id`
+-
+-内容块的唯一标识。
+-
+-**parent_id** `string`  |  父级 ID
+-
+-`output.blocks.parent_id`
+-
+-所属父级条目的 ID。
+-
+-**reasoning_text** `string`  |  思考文本
+-
+-`output.blocks.reasoning_text`
+-
+-思维链文本内容。
+-
+-**status** `string`  |  状态
+-
+-`output.blocks.status`
+-
+-内容块状态。
+-
+-搜索过程 `object`
+-
+-豆包应用 AI 搜索过程产出的内容块。
+-
+-**type** `string`  |  类型
+-
+-`output.blocks.type`
+-
+-内容块类型标识符。
+-
+-取值固定为 `search`。
+-
+-**id** `string`  |  块 ID
+-
+-`output.blocks.id`
+-
+-内容块的唯一标识。
+-
+-**parent_id** `string`  |  父级 ID
+-
+-`output.blocks.parent_id`
+-
+-所属父级条目的 ID。
+-
+-**queries** `string[]`  |  查询语句
+-
+-`output.blocks.queries`
+-
+-搜索查询语句列表。
+-
+-**results** `object[]`  |  搜索结果
+-
+-`output.blocks.results`
+-
+-搜索结果列表。
+-
+-**text_card** `object`  |  文本卡片
+-
+-`output.blocks.results.text_card`
+-
+-文本卡片形式的搜索结果。
+-
+-**sitename** `string`  |  站点名
+-
+-`output.blocks.results.text_card.sitename`
+-
+-来源站点名称。
+-
+-**title** `string`  |  标题
+-
+-`output.blocks.results.text_card.title`
+-
+-搜索结果标题。
+-
+-**url** `string`  |  网址
+-
+-`output.blocks.results.text_card.url`
+-
+-搜索结果 URL 地址。
+-
+-**status** `string`  |  状态
+-
+-`output.blocks.status`
+-
+-内容块状态。
+-
+-**summary** `string`  |  搜索总结
+-
+-`output.blocks.summary`
+-
+-AI 搜索过程中对本轮搜索结果的总结性文字，概括从搜索结果中提取的核心信息。
+-
+-推理搜索过程 `object`
+-
+-豆包应用推理搜索过程产出的内容块。
+-
+-**type** `string`  |  类型
+-
+-`output.blocks.type`
+-
+-内容块类型。
+-
+-取值固定为 `reasoning_search`。
+-
+-**id** `string`  |  块 ID
+-
+-`output.blocks.id`
+-
+-内容块的唯一标识。
+-
+-**parent_id** `string`  |  父级 ID
+-
+-`output.blocks.parent_id`
+-
+-所属父级条目的 ID。
+-
+-**queries** `string[]`  |  查询语句
+-
+-`output.blocks.queries`
+-
+-搜索查询语句列表。
+-
+-**results** `object[]`  |  搜索结果
+-
+-`output.blocks.results`
+-
+-搜索结果列表。
+-
+-**text_card** `object`  |  文本卡片
+-
+-`output.blocks.results.text_card`
+-
+-文本卡片形式的搜索结果。
+-
+-**sitename** `string`  |  站点名
+-
+-`output.blocks.results.text_card.sitename`
+-
+-来源站点名称。
+-
+-**title** `string`  |  标题
+-
+-`output.blocks.results.text_card.title`
+-
+-搜索结果标题。
+-
+-**url** `string`  |  网址
+-
+-`output.blocks.results.text_card.url`
+-
+-搜索结果 URL 地址。
+-
+-**status** `string`  |  状态
+-
+-`output.blocks.status`
+-
+-推理搜索内容块的处理状态。可选值：`in_progress`、`searching`、`completed`、`incomplete`、`failed`。
+-
+-**summary** `string`  |  搜索总结
+-
+-`output.blocks.summary`
+-
+-推理搜索过程中对本轮搜索结果的总结性文字，概括从搜索结果中提取的核心信息。
+-
+-**feature** `string`  |  功能名
+-
+-`output.feature`
+-
+-本次调用触发的豆包子功能名称。可选值：`chat`、`deep_chat`、`ai_search`、`reasoning_search`。
+-
+-**id** `string`  |  条目 ID
+-
+-`output.id`
+-
+-输出条目唯一标识。
+-
+-**status** `string`  |  状态
+-
+-`output.status`
+-
+-输出状态。可选值：`completed`、`failed`、`in_progress`、`incomplete`。
+-
+-智能体工具调用 `object`
+-
+-模型发起的智能体工具调用记录。
+-
+-**name** `string`  |  工具名
+-
+-`output.name`
+-
+-被调用的智能体工具名称。
+-
+-**status** `string`  |  状态
+-
+-`output.status`
+-
+-智能体工具调用的执行状态。可选值：`completed`、`failed`、`in_progress`、`incomplete`。
+-
+-**type** `string`  |  类型
+-
+-`output.type`
+-
+-输出条目类型标识符，用于区分 OutputItem 的 variant。
+-
+-取值固定为 `agent_tool_call`。
+-
+-**id** `string`  |  条目 ID
+-
+-`output.id`
+-
+-输出条目唯一标识。
+-
+-**caching** `object`  |  上下文缓存
+-
+-是否开启缓存。
+-
+-**prefix** `boolean`  |  仅写缓存
+-
+-`caching.prefix`
+-
+-是否仅写入前缀缓存，不生成回复。`true` 只写缓存，不返回模型输出；`false` 正常生成回复并写缓存。
+-
+-**type** `string`  |  缓存模式
+-
+-`caching.type`
+-
+-缓存模式。
+-
+-* `enabled`：开启上下文缓存。
+-
+-* `disabled`：关闭上下文缓存。
+-
+-**context_management** `object`  |  上下文管理
+-
+-本次请求实际应用的上下文管理策略信息。
+-
+-**applied_edits** `object[]`  |  已应用编辑
+-
+-`context_management.applied_edits`
+-
+-已应用的上下文编辑结果列表。
+-
+-清理工具调用 `object`
+-
+-已应用的清理工具调用编辑结果。
+-
+-**cleared_tool_uses** `integer`  |  清理次数
+-
+-`context_management.applied_edits.cleared_tool_uses`
+-
+-已清理的工具调用数量。
+-
+-**type** `string`  |  类型
+-
+-`context_management.applied_edits.type`
+-
+-编辑类型。
+-
+-取值固定为 `clear_tool_uses`。
+-
+-清理思维链 `object`
+-
+-已应用的清理思维链编辑结果。
+-
+-**cleared_thinking_turns** `integer`  |  清理轮次
+-
+-`context_management.applied_edits.cleared_thinking_turns`
+-
+-已清理的思维链轮次数量。
+-
+-**type** `string`  |  类型
+-
+-`context_management.applied_edits.type`
+-
+-编辑类型。
+-
+-取值固定为 `clear_thinking`。
+-
+-**error** `object`  |  响应错误
+-
+-模型未能生成响应时返回的错误对象。
+-
+-**code** `string`  |  错误码
+-
+-`error.code`
+-
+-**message** `string`  |  错误描述
+-
+-`error.message`
+-
+-错误信息的可读描述。
+-
+-**expire_at** `integer`  |  过期时间戳
+-
+-响应储存的过期时刻 Unix 时间戳（秒），回显请求中的 expire_at 设置，对 store 与 caching 均生效。
+-
+-> **说明**
+-
+-> 最多保留 7 天。
+-
+-**incomplete_details** `object`  |  未完成详情
+-
+-响应未能完成的细节。
+-
+-**reason** `string`  |  原因
+-
+-`incomplete_details.reason`
+-
+-响应未完成的原因。
+-
+-**content_filter** `object`  |  内容过滤
+-
+-`incomplete_details.content_filter`
+-
+-内容过滤详情。
+-
+-**details** `string`  |  详情
+-
+-`incomplete_details.content_filter.details`
+-
+-内容过滤命中的详细描述。
+-
+-**type** `string`  |  类型
+-
+-`incomplete_details.content_filter.type`
+-
+-内容过滤命中的类型。
+-
+-**instructions** `string`  |  系统指令
+-
+-在模型上下文中插入的系统（或开发者）指令，作为首项。
+-
+-> **说明**
+-
+-> 与 `previous_response_id` 一起使用时，前一响应中的指令不会延续到下一响应。
+-
+-**max_output_tokens** `integer`  |  最大输出长度
+-
+-模型输出最大 token 数，包含模型回答和思维链内容。
+-
+-**max_tool_calls** `integer`  |  最大调用轮次
+-
+-本次请求生效的最大工具调用轮次。
+-
+-**metadata** `object`  |  自定义元数据
+-
+-回显请求中的 metadata 键值对元数据。最多支持 16 对键值，key 长度不超过 64 个字符，value 长度不超过 512 个字符，服务端不会解释其中内容。
+-
+-**previous_response_id** `string`  |  上轮响应 ID
+-
+-本次请求时传入的历史响应 ID。
+-
+-**reasoning** `object`  |  思考工作量
+-
+-本次请求实际生效的深度思考工作量配置。
+-
+-**effort** `string`  |  思考深度
+-
+-`reasoning.effort`
+-
+-限制思考的工作量。减少思考深度可提升速度，思考花费的 token 更少。
+-
+-* `none`：关闭思考。
+-
+-* `minimal`：关闭思考，直接回答。
+-
+-* `low`：轻量思考，侧重快速响应。
+-
+-* `medium`：均衡模式，兼顾速度与深度。
+-
+-* `high`：深度分析，处理复杂问题。
+-
+-* `xhigh`：更高程度思考。
+-
+-* `max`：最高程度思考，适配高难度推理任务。
+-
+-> **说明**
+-
+-> 支持该字段的模型、默认取值、参数兼容映射规则，以及与 `thinking.type` 字段的关系，详见 [文档](https://ark.volcengine.com/region:cn-beijing/docs/responses-api-deep-thinking#dc4c1547)。
+-
+-**service_tier** `string`  |  推理模式
+-
+-本次请求实际使用的推理模式。
+-
+-* `fast`：本次请求使用 [在线推理（低延迟）](https://ark.volcengine.com/region:cn-beijing/docs/online-inference-low-latency) 模式。
+-
+-* `auto`：本次请求使用 [在线推理（TPM 保障包）](https://ark.volcengine.com/region:cn-beijing/docs/tpm-guarantee-package) 模式。
+-
+-* `default`：本次请求使用 [在线推理（常规）](https://ark.volcengine.com/region:cn-beijing/docs/online-inference-standard) 模式。
+-
+-* `flex`：本次请求使用 [在线推理（低优）](https://ark.volcengine.com/region:cn-beijing/docs/online-inference-flex) 模式。
+-
+-**status** `string`  |  响应状态
+-
+-生成响应的状态。
+-
+-**store** `boolean`  |  存储响应
+-
+-响应是否被储存的实际状态。
+-
+-**temperature** `number`  |  采样温度
+-
+-本次请求实际使用的采样温度。
+-
+-**text** `object`  |  输出格式
+-
+-用于定义输出的格式，可以是纯文本，也可以是结构化的 JSON 数据。
+-
+-**format** `object`  |  输出格式
+-
+-`text.format`
+-
+-文本输出格式定义。
+-
+-**type** `string`  |  格式类型
+-
+-`text.format.type`
+-
+-输出格式类型。可选值：`text`、`json_schema`、`json_object`。
+-
+-> **注意**
+-
+-> `json_object` / `json_schema` 能力尚在 beta 阶段，请谨慎在生产环境使用。
+-
+-**description** `string`  |  格式描述
+-
+-`text.format.description`
+-
+-格式描述信息。
+-
+-**name** `string`  |  格式名称
+-
+-`text.format.name`
+-
+-格式名称，作为 JSON Schema 输出格式的标识。
+-
+-> **注意**
+-
+-> 仅当 *type* 为 `json_schema` 时需要提供此字段。
+-
+-**schema** `object`  |  Schema 定义
+-
+-`text.format.schema`
+-
+-JSON Schema 定义。当 *type* 为 `json_schema` 时必填。
+-
+-**strict** `boolean`  |  严格模式
+-
+-`text.format.strict`
+-
+-是否严格按 JSON Schema 校验模型输出。
+-
+-> **注意**
+-
+-> 仅当 *type* 为 `json_schema` 时生效。
+-
+-**thinking** `object`  |  深度思考配置
+-
+-本次请求实际生效的深度思考模式配置。
+-
+-**type** `string`  |  思考模式
+-
+-`thinking.type`
+-
+-深度思考模式。
+-
+-* `enabled`：开启深度思考。
+-
+-* `disabled`：关闭深度思考。
+-
+-**tool_choice** `string / object`  |  工具调用策略
+-
+-本次请求实际生效的工具调用策略。
+-
+-> **说明**
+-
+-> 未指定工具时默认值为 `none`；存在工具时默认值为 `auto`。
+-
+-简单策略 `string`
+-
+-直接传入字符串 `none`、`auto` 或 `required`，控制工具调用整体策略。
+-
+-指定工具 `object`
+-
+-通过对象指定具体工具类型或工具名进行调用。
+-
+-**type** `string`  |  工具类型
+-
+-`tool_choice.type`
+-
+-指定要调用的工具类型，用于精确路由到对应工具。可选值：
+-
+-* `function`
+-
+-* `web_search`
+-
+-* `image_process`
+-
+-* `mcp`
+-
+-* `knowledge_search`
+-
+-* `doubao_app`
+-
+-**name** `string`  |  工具名称
+-
+-`tool_choice.name`
+-
+-指定要调用的具体工具名，如函数名或 MCP 服务下的工具名。
+-
+-**tools** `object[]`  |  工具列表
+-
+-模型可以调用的工具列表。
+-
+-函数调用 `object`
+-
+-自定义函数调用（Function Calling），让模型生成结构化的函数参数。
+-
+-**name** `string`  |  函数名
+-
+-`tools.name`
+-
+-供模型调用的函数名称，模型在 function_call 输出中以该名称回传，用于匹配对应函数。
+-
+-**type** `string`  |  类型
+-
+-`tools.type`
+-
+-工具类型标识，用于在 union 中区分不同工具类别。
+-
+-取值固定为 `function`。
+-
+-**description** `string`  |  函数描述
+-
+-`tools.description`
+-
+-函数的描述信息，帮助模型理解何时使用该函数。
+-
+-**parameters** `object`  |  参数定义
+-
+-`tools.parameters`
+-
+-函数参数定义，遵循 JSON Schema 格式。
+-
+-联网搜索 `object`
+-
+-联网搜索工具，让模型在需要时自动进行网页搜索获取实时信息。
+-
+-**type** `string`  |  类型
+-
+-`tools.type`
+-
+-工具类型标识，用于区分 Tool 的不同变体。
+-
+-取值固定为 `web_search`。
+-
+-**limit** `integer`  |  最大结果数
+-
+-`tools.limit`
+-
+-每轮搜索最大返回结果数量。
+-
+-> **说明**
+-
+-> 单次搜索最多返回 20 条；单轮可能有多次搜索，最终召回条数受此参数限制影响。
+-
+-**取值范围**：`[1, 50]`
+-
+-**max_keyword** `integer`  |  最大关键词数
+-
+-`tools.max_keyword`
+-
+-最大并行搜索关键词数量。
+-
+-**取值范围**：`[1, 50]`
+-
+-**sources** `string[]`  |  搜索来源
+-
+-`tools.sources`
+-
+-搜索信息来源限制，指定模型可从哪些渠道检索网页内容。可选值：`toutiao`、`douyin`、`moji`、`search_engine`、`doubao`。
+-
+-> **说明**
+-
+-> `doubao` 不能与其他搜索来源同时配置。传入 `["doubao"]` 时，`tools.limit`、`tools.max_keyword`、`tools.user_location` 均不生效，向它们传入的值将被忽略。
+-
+-**user_location** `object`  |  用户位置
+-
+-`tools.user_location`
+-
+-用户地理位置信息，用于搜索优化。
+-
+-**type** `string`  |  类型
+-
+ `tools.user_location.type`
+ 
+ 位置类型。
+@@ -4692,456 +5134,6 @@
+ 
+ 用户所在时区。
+ 
+-图像处理 `object`
+-
+-图像处理工具，让模型对图片进行画点、选区、缩放、旋转等操作。
+-
+-**type** `string`  |  类型
+-
+-`tools.type`
+-
+-工具类型标识，用于区分 Tool 的不同变体。
+-
+-取值固定为 `image_process`。
+-
+-**grounding** `object`  |  选区功能
+-
+-`tools.grounding`
+-
+-选区/裁切功能配置，启用后模型可返回图像中目标的检测框或裁切区域坐标。
+-
+-**type** `string`  |  开关
+-
+-`tools.grounding.type`
+-
+-功能开关。可选值：`enabled`、`disabled`。
+-
+-**point** `object`  |  画点功能
+-
+-`tools.point`
+-
+-画点/画线功能开关。
+-
+-**type** `string`  |  开关
+-
+-`tools.point.type`
+-
+-功能开关。可选值：`enabled`、`disabled`。
+-
+-**rotate** `object`  |  旋转功能
+-
+-`tools.rotate`
+-
+-旋转功能开关。启用后模型可请求对图片按指定角度进行旋转。
+-
+-> **注意**
+-
+-> 旋转角度支持范围为 0\-359 度。
+-
+-**type** `string`  |  开关
+-
+-`tools.rotate.type`
+-
+-功能开关。可选值：`enabled`、`disabled`。
+-
+-**zoom** `object`  |  缩放功能
+-
+-`tools.zoom`
+-
+-缩放功能开关，启用后模型可对图像目标区域执行缩放操作。
+-
+-> **说明**
+-
+-> 缩放倍率支持范围 0.5\-2.0 倍。
+-
+-**type** `string`  |  开关
+-
+-`tools.zoom.type`
+-
+-功能开关。可选值：`enabled`、`disabled`。
+-
+-MCP 工具 `object`
+-
+-MCP（Model Context Protocol）工具，让模型调用外部 MCP Server 提供的工具。
+-
+-**server_label** `string`  |  服务标签
+-
+-`tools.server_label`
+-
+-MCP Server 的唯一标识标签。模型在工具调用输出中通过该标签指向对应 Server，便于在多个 MCP Server 场景下区分调用来源。
+-
+-**server_url** `string`  |  服务地址
+-
+-`tools.server_url`
+-
+-MCP Server 的 HTTP(S) 访问地址，模型通过该地址向 Server 发起工具调用请求。
+-
+-**type** `string`  |  类型
+-
+-`tools.type`
+-
+-工具类型标识，用于区分 Tool 的不同变体。
+-
+-取值固定为 `mcp`。
+-
+-**allowed_tools** `string[] / object`  |  允许工具
+-
+-`tools.allowed_tools`
+-
+-允许模型调用的工具范围。可传工具名称字符串数组，或包含 `tool_names` 字段的过滤器对象。
+-
+-工具名数组 `string[]`
+-
+-直接传入允许调用的工具名称数组。
+-
+-工具过滤器 `object`
+-
+-通过过滤器对象指定允许调用的工具范围。
+-
+-**tool_names** `string[]`  |  工具名列表
+-
+-`tools.allowed_tools.tool_names`
+-
+-允许调用的工具名称列表。
+-
+-**headers** `object`  |  请求头
+-
+-`tools.headers`
+-
+-调用 MCP Server 时附加的 HTTP 请求头，以字符串键值对形式指定 header 名与值。
+-
+-> **说明**
+-
+-* > 常用于传递鉴权信息（如 `Authorization`）。
+-
+-* > `Authorization` 字段不会被服务端存储。
+-
+-**require_approval** `string / object`  |  审批策略
+-
+-`tools.require_approval`
+-
+-MCP 工具调用前的审批策略；支持简单模式（字符串）或按工具粒度控制（过滤器对象）。
+-
+-简单策略 `string`
+-
+-直接传入字符串 `always` 或 `never`，对所有工具应用统一审批策略。
+-
+-工具过滤器 `object`
+-
+-通过过滤器对象按工具粒度配置审批策略。
+-
+-**always** `object`  |  始终审批
+-
+-`tools.require_approval.always`
+-
+-始终需要审批的工具过滤器。
+-
+-**tool_names** `string[]`  |  工具名列表
+-
+-`tools.require_approval.always.tool_names`
+-
+-始终需要审批的工具名称列表。
+-
+-**never** `object`  |  无需审批
+-
+-`tools.require_approval.never`
+-
+-无需审批的工具过滤器。
+-
+-**tool_names** `string[]`  |  工具名列表
+-
+-`tools.require_approval.never.tool_names`
+-
+-无需审批即可调用的工具名称列表。
+-
+-**server_description** `string`  |  服务描述
+-
+-`tools.server_description`
+-
+-MCP Server 的描述信息，帮助模型理解何时使用该 Server。
+-
+-知识库搜索 `object`
+-
+-私域知识库搜索工具，让模型检索企业内部知识库中的文档内容。
+-
+-**knowledge_resource_id** `string`  |  知识库 ID
+-
+-`tools.knowledge_resource_id`
+-
+-**type** `string`  |  类型
+-
+-`tools.type`
+-
+-工具类型标识，用于区分 Tool 的不同变体。
+-
+-取值固定为 `knowledge_search`。
+-
+-**dense_weight** `number`  |  稠密权重
+-
+-`tools.dense_weight`
+-
+-混合检索中稠密向量（语义）检索的权重，值越大越偏向语义匹配，越小越偏向关键词匹配。
+-
+-> **说明**
+-
+-> 仅在混合检索（索引算法为 `hnsw_hybrid`）下生效。
+-
+-**取值范围**：`[0.2, 1]`
+-
+-**description** `string`  |  知识库描述
+-
+-`tools.description`
+-
+-知识库描述信息，帮助模型理解何时使用该知识库。
+-
+-**doc_filter** `object`  |  文档过滤
+-
+-`tools.doc_filter`
+-
+-设置文档字段级别的检索过滤条件，确保只在符合条件的文档中检索。
+-
+-> **说明**
+-
+-* > 支持用作过滤条件的文档字段：
+-
+-   * > 系统字段：`doc_id`（仅手动创建的知识库）、`_sys_auto_doc_id`（手动 + API 创建均适用）
+-
+-   * > 自定义字段：已为知识库文档添加的**文档标签**（对应知识库 `index_config.fields` 中的 `field`）
+-
+-* > 支持单一条件过滤和多条件组合过滤（支持 `And` / `Or` 逻辑运算）。
+-
+-* > 详细使用方式和支持字段参见 [filter 表达式](https://www.volcengine.com/docs/84313/1419289#filter-%E8%A1%A8%E8%BE%BE%E5%BC%8F)。
+-
+-* > 若自定义字段类型为 `Boolean`，取值范围是 `True` / `False`，大小写规则：cURL 用 `true` / `false`，Python 用 `True` / `False`。
+-
+-**limit** `integer`  |  最大结果数
+-
+-`tools.limit`
+-
+-最大搜索结果数量。
+-
+-**取值范围**：`[1, 200]`
+-
+-**max_keyword** `integer`  |  最大关键词数
+-
+-`tools.max_keyword`
+-
+-最大并行搜索关键词数量。
+-
+-**取值范围**：`[1, 50]`
+-
+-**ranking_options** `object`  |  排序选项
+-
+-`tools.ranking_options`
+-
+-检索后处理选项。可参考 [知识库 API 文档](https://www.volcengine.com/docs/84313/1350012) `post_processing` 字段。
+-
+-**chunk_diffusion_count** `integer`  |  切片扩散数
+-
+-`tools.ranking_options.chunk_diffusion_count`
+-
+-检索阶段返回命中切片的上下几片邻近切片。取 `0` 表示不进行 chunk diffusion。
+-
+-**取值范围**：`[0, 5]`
+-
+-**chunk_group** `boolean`  |  文本聚合
+-
+-`tools.ranking_options.chunk_group`
+-
+-文本聚合。
+-
+-* 默认不聚合。
+-
+-* 对于非结构化文件，可开启文本聚合以更好保留原文档内容语序。
+-
+-* 开启后，会根据文档及文档顺序，对切片重新聚合排序返回。
+-
+-**get_attachment_link** `boolean`  |  获取附件链接
+-
+-`tools.ranking_options.get_attachment_link`
+-
+-是否获取切片中图片的临时下载链接。
+-
+-**rerank_model** `string`  |  Rerank 模型
+-
+-`tools.ranking_options.rerank_model`
+-
+-rerank 模型选择。默认值：`base-multilingual-rerank`。取值：`base-multilingual-rerank` / `m3-v2-rerank`。
+-
+-> **说明**
+-
+-* > 仅在 `rerank_switch` 为 `true` 时生效。
+-
+-* > `base-multilingual-rerank`（推荐）：速度快、长文本、支持 70+ 种语言。
+-
+-* > `m3-v2-rerank`：常规文本、支持 100+ 种语言。
+-
+-**rerank_only_chunk** `boolean`  |  仅切片重排
+-
+-`tools.ranking_options.rerank_only_chunk`
+-
+-是否仅根据 chunk 内容计算重排分数。`true` 只根据 chunk 内容计算分；`false` 根据 chunk title + 内容一起计算排序分。
+-
+-**rerank_switch** `boolean`  |  开启重排
+-
+-`tools.ranking_options.rerank_switch`
+-
+-是否自动对检索结果做 rerank。若设置为 `true`，则会自动请求 rerank 模型排序。
+-
+-**retrieve_count** `integer`  |  重排切片数
+-
+-`tools.ranking_options.retrieve_count`
+-
+-进入重排的切片数量。
+-
+-> **注意**
+-
+-* > 仅在 `rerank_switch` 为 `true` 时生效。
+-
+-* > `retrieve_count` 需要大于等于 `limit`，否则会抛出错误。
+-
+-豆包助手 `object`
+-
+-豆包助手工具，让模型使用豆包的聊天、深度思考、AI 搜索和推理搜索能力。
+-
+-**feature** `object`  |  功能配置
+-
+-`tools.feature`
+-
+-豆包助手的子功能配置，用于按需开启聊天、深度思考、AI 搜索、推理搜索四类能力并设置对应角色描述。
+-
+-**ai_search** `object`  |  AI 搜索
+-
+-`tools.feature.ai_search`
+-
+-AI 搜索功能配置。
+-
+-**role_description** `string`  |  角色描述
+-
+-`tools.feature.ai_search.role_description`
+-
+-使用豆包助手时修改角色设定。默认值：`你的名字是豆包,有很强的专业性。`
+-
+-> **注意**
+-
+-> 此字段与 `system prompt`、`instructions` 互斥，同时配置时以本字段为准。
+-
+-**type** `string`  |  开关
+-
+-`tools.feature.ai_search.type`
+-
+-功能开关。可选值：`enabled`、`disabled`。
+-
+-**chat** `object`  |  普通聊天
+-
+-`tools.feature.chat`
+-
+-普通聊天功能配置。
+-
+-**role_description** `string`  |  角色描述
+-
+-`tools.feature.chat.role_description`
+-
+-使用豆包助手时修改角色设定。默认值：`你的名字是豆包,有很强的专业性。`
+-
+-> **注意**
+-
+-> 此字段与 `system prompt`、`instructions` 互斥，同时配置时以本字段为准。
+-
+-**type** `string`  |  开关
+-
+-`tools.feature.chat.type`
+-
+-功能开关。可选值：`enabled`、`disabled`。
+-
+-**deep_chat** `object`  |  深度聊天
+-
+-`tools.feature.deep_chat`
+-
+-深度聊天功能配置。
+-
+-**role_description** `string`  |  角色描述
+-
+-`tools.feature.deep_chat.role_description`
+-
+-使用豆包助手时修改角色设定。默认值：`你的名字是豆包,有很强的专业性。`
+-
+-> **注意**
+-
+-> 此字段与 `system prompt`、`instructions` 互斥，同时配置时以本字段为准。
+-
+-**type** `string`  |  开关
+-
+-`tools.feature.deep_chat.type`
+-
+-功能开关。可选值：`enabled`、`disabled`。
+-
+-**reasoning_search** `object`  |  推理搜索
+-
+-`tools.feature.reasoning_search`
+-
+-推理搜索功能配置。
+-
+-**role_description** `string`  |  角色描述
+-
+-`tools.feature.reasoning_search.role_description`
+-
+-使用豆包助手时修改角色设定。默认值：`你的名字是豆包,有很强的专业性。`
+-
+-> **注意**
+-
+-> 此字段与 `system prompt`、`instructions` 互斥，同时配置时以本字段为准。
+-
+-**type** `string`  |  开关
+-
+-`tools.feature.reasoning_search.type`
+-
+-功能开关。可选值：`enabled`、`disabled`。
+-
+-**type** `string`  |  类型
+-
+-`tools.type`
+-
+-工具类型，此处固定为 `doubao_app`
+-
+-**user_location** `object`  |  用户位置
+-
+-`tools.user_location`
+-
+-用户地理位置信息，用于搜索优化。
+-
+-**type** `string`  |  类型
+-
+-`tools.user_location.type`
+-
+-位置类型。
+-
+-取值固定为 `approximate`。
+-
+-**city** `string`  |  城市
+-
+-`tools.user_location.city`
+-
+-用户所在城市。
+-
+-**country** `string`  |  国家
+-
+-`tools.user_location.country`
+-
+-用户所在国家。
+-
+-**region** `string`  |  地区
+-
+-`tools.user_location.region`
+-
+-用户所在地区。
+-
+-**timezone** `number`  |  时区
+-
+-`tools.user_location.timezone`
+-
+-用户所在时区。
+-
+ **top_p** `number`  |  核采样阈值
+ 
+ 本次请求实际使用的核采样概率阈值。
+@@ -5279,3 +5271,7 @@
+ ### 工具调用事件。
+ 
+ 字段结构详见 [工具调用事件](https://ark.volcengine.com/region:cn-beijing/docs/streaming-responses-tools)。
++
++```mixin-react
++return (<ApiSample data={"{\"config\":{\"inputName\":\"Request\",\"outputName\":\"Response\",\"envItems\":[{\"label\":\"ARK_API_KEY\",\"value\":\"ARK_API_KEY\"}]},\"type\":\"multiple\",\"data\":[{\"title\":\"单轮对话\",\"children\":[{\"title\":\"cURL\",\"debug\":{\"openDebug\":true,\"debugParams\":{\"envs\":[\"ARK_API_KEY\"],\"value\":[1]}},\"inputCode\":\"curl --location \\\"https://ark.cn-beijing.volces.com/api/v3/responses\\\" \\\\\\n--header \\\"Authorization: Bearer $ARK_API_KEY\\\" \\\\\\n--header \\\"Content-Type: application/json\\\" \\\\\\n--data '{\\n    \\\"model\\\": \\\"doubao-seed-2-1-pro-260915\\\",\\n    \\\"input\\\": \\\"你好呀。\\\"\\n}'\",\"inputLanguage\":\"bash\",\"outputCode\":\"{\\n  \\\"id\\\": \\\"resp_0217****\\\",\\n  \\\"created_at\\\": 1756280722.0,\\n  \\\"error\\\": null,\\n  \\\"incomplete_details\\\": null,\\n  \\\"instructions\\\": null,\\n  \\\"model\\\": \\\"doubao-seed-2-1-pro-260915\\\",\\n  \\\"object\\\": \\\"response\\\",\\n  \\\"output\\\": [\\n    {\\n      \\\"id\\\": \\\"rs_0217****404a\\\",\\n      \\\"summary\\\": [\\n        {\\n          \\\"text\\\": \\\"\\\\n用户说“你好呀。”，这是一个很友好的问候，我需要用同样友好的方式回应。首先，应该回应用户的问候，然后可以表达一下愿意帮助的态度，让对话能够继续下去。用户可能接下来会有其他问题或者想聊聊天，所以回应要自然、亲切。\\\\n\\\\n首先，直接回“你好呀！”来呼应对方的问候，保持一致的语气。然后加上一句“很高兴见到你～ 有什么我可以帮你的吗？”这样既表达了友好，又主动提供帮助，让用户知道我在这里可以协助他们。这样的回应比较温暖，也符合日常交流的习惯，不会显得太生硬。\\\\n\\\\n需要注意的是，用户可能只是想打个招呼，所以回应不要太复杂，保持简洁和亲切就好。避免使用太正式的语言，保持口语化，让用户感觉舒适。总结一下，回应应该包含问候、表达高兴见到对方，以及提供帮助的意愿。\\\",\\n          \\\"type\\\": \\\"summary_text\\\"\\n        }\\n      ],\\n      \\\"type\\\": \\\"reasoning\\\",\\n      \\\"status\\\": \\\"completed\\\"\\n    },\\n    {\\n      \\\"id\\\": \\\"msg_0217****a93c\\\",\\n      \\\"content\\\": [\\n        {\\n          \\\"text\\\": \\\"你好呀！很高兴见到你～ 有什么我可以帮你的吗？ 😊\\\",\\n          \\\"type\\\": \\\"output_text\\\",\\n          \\\"annotations\\\": null\\n        }\\n      ],\\n      \\\"role\\\": \\\"assistant\\\",\\n      \\\"status\\\": \\\"completed\\\",\\n      \\\"type\\\": \\\"message\\\"\\n    }\\n  ],\\n  \\\"parallel_tool_calls\\\": null,\\n  \\\"temperature\\\": null,\\n  \\\"tool_choice\\\": null,\\n  \\\"tools\\\": null,\\n  \\\"top_p\\\": null,\\n  \\\"max_output_tokens\\\": 32768,\\n  \\\"previous_response_id\\\": null,\\n  \\\"thinking\\\": null,\\n  \\\"service_tier\\\": \\\"default\\\",\\n  \\\"status\\\": \\\"completed\\\",\\n  \\\"text\\\": null,\\n  \\\"usage\\\": {\\n    \\\"input_tokens\\\": 88,\\n    \\\"input_tokens_details\\\": {\\n      \\\"cached_tokens\\\": 0\\n    },\\n    \\\"output_tokens\\\": 230,\\n    \\\"output_tokens_details\\\": {\\n      \\\"reasoning_tokens\\\": 211\\n    },\\n    \\\"total_tokens\\\": 318\\n  },\\n  \\\"caching\\\": {\\n    \\\"type\\\": \\\"disabled\\\"\\n  },\\n  \\\"store\\\": true,\\n  \\\"expire_at\\\": 1756539922\\n}\",\"outputLanguage\":\"\",\"key\":\"GRUcNvXK\"},{\"title\":\"Python-OpenAI\",\"debug\":{\"openDebug\":true,\"debugParams\":{\"envs\":[\"ARK_API_KEY\"],\"packages\":[{\"packageName\":\"openai\",\"packageVersion\":\"\"}],\"value\":[1,2]}},\"inputCode\":\"import os\\nfrom openai import OpenAI\\n\\n# 从环境变量中获取您的API KEY，配置方法见：https://ark.volcengine.com/region:cn-beijing/docs/quick-start\\napi_key = os.getenv('ARK_API_KEY')\\n\\nclient = OpenAI(\\n    base_url='https://ark.cn-beijing.volces.com/api/v3',\\n    api_key=api_key,\\n)\\n\\n# 创建一个对话请求\\nresponse = client.responses.create(\\n    # 替换为模型的Model ID\\n    model=\\\"doubao-seed-2-1-pro-260915\\\",\\n    input=\\\"你好呀。\\\"\\n)\\n\\nprint(response)\",\"inputLanguage\":\"python\",\"outputCode\":\"{\\n  \\\"id\\\": \\\"resp_0217****\\\",\\n  \\\"created_at\\\": 1756280722.0,\\n  \\\"error\\\": null,\\n  \\\"incomplete_details\\\": null,\\n  \\\"instructions\\\": null,\\n  \\\"model\\\": \\\"doubao-seed-2-1-pro-260915\\\",\\n  \\\"object\\\": \\\"response\\\",\\n  \\\"output\\\": [\\n    {\\n      \\\"id\\\": \\\"rs_0217****404a\\\",\\n      \\\"summary\\\": [\\n        {\\n          \\\"text\\\": \\\"\\\\n用户说“你好呀。”，这是一个很友好的问候，我需要用同样友好的方式回应。首先，应该回应用户的问候，然后可以表达一下愿意帮助的态度，让对话能够继续下去。用户可能接下来会有其他问题或者想聊聊天，所以回应要自然、亲切。\\\\n\\\\n首先，直接回“你好呀！”来呼应对方的问候，保持一致的语气。然后加上一句“很高兴见到你～ 有什么我可以帮你的吗？”这样既表达了友好，又主动提供帮助，让用户知道我在这里可以协助他们。这样的回应比较温暖，也符合日常交流的习惯，不会显得太生硬。\\\\n\\\\n需要注意的是，用户可能只是想打个招呼，所以回应不要太复杂，保持简洁和亲切就好。避免使用太正式的语言，保持口语化，让用户感觉舒适。总结一下，回应应该包含问候、表达高兴见到对方，以及提供帮助的意愿。\\\",\\n          \\\"type\\\": \\\"summary_text\\\"\\n        }\\n      ],\\n      \\\"type\\\": \\\"reasoning\\\",\\n      \\\"status\\\": \\\"completed\\\"\\n    },\\n    {\\n      \\\"id\\\": \\\"msg_0217****a93c\\\",\\n      \\\"content\\\": [\\n        {\\n          \\\"text\\\": \\\"你好呀！很高兴见到你～ 有什么我可以帮你的吗？ 😊\\\",\\n          \\\"type\\\": \\\"output_text\\\",\\n          \\\"annotations\\\": null\\n        }\\n      ],\\n      \\\"role\\\": \\\"assistant\\\",\\n      \\\"status\\\": \\\"completed\\\",\\n      \\\"type\\\": \\\"message\\\"\\n    }\\n  ],\\n  \\\"parallel_tool_calls\\\": null,\\n  \\\"temperature\\\": null,\\n  \\\"tool_choice\\\": null,\\n  \\\"tools\\\": null,\\n  \\\"top_p\\\": null,\\n  \\\"max_output_tokens\\\": 32768,\\n  \\\"previous_response_id\\\": null,\\n  \\\"thinking\\\": null,\\n  \\\"service_tier\\\": \\\"default\\\",\\n  \\\"status\\\": \\\"completed\\\",\\n  \\\"text\\\": null,\\n  \\\"usage\\\": {\\n    \\\"input_tokens\\\": 88,\\n    \\\"input_tokens_details\\\": {\\n      \\\"cached_tokens\\\": 0\\n    },\\n    \\\"output_tokens\\\": 230,\\n    \\\"output_tokens_details\\\": {\\n      \\\"reasoning_tokens\\\": 211\\n    },\\n    \\\"total_tokens\\\": 318\\n  },\\n  \\\"caching\\\": {\\n    \\\"type\\\": \\\"disabled\\\"\\n  },\\n  \\\"store\\\": true,\\n  \\\"expire_at\\\": 1756539922\\n}\",\"outputLanguage\":\"\",\"key\":\"nRpe0w2C\"},{\"title\":\"Python\",\"debug\":{\"openDebug\":true,\"debugParams\":{\"envs\":[\"ARK_API_KEY\"],\"packages\":[{\"packageName\":\"arkruntime\",\"packageVersion\":\"\"}],\"value\":[1,2]}},\"inputCode\":\"import os\\nfrom arkruntime import Ark\\n\\n# 从环境变量中获取您的API KEY，配置方法见：https://ark.volcengine.com/region:cn-beijing/docs/quick-start\\napi_key = os.getenv('ARK_API_KEY')\\n\\nclient = Ark(\\n    base_url='https://ark.cn-beijing.volces.com/api/v3',\\n    api_key=api_key,\\n)\\n\\n# 创建一个对话请求\\nresponse = client.responses.create(\\n    # 替换为模型的Model ID\\n    model=\\\"doubao-seed-2-1-pro-260915\\\",\\n    input=\\\"你好呀。\\\"\\n)\\n\\nprint(response)\",\"inputLanguage\":\"python\",\"outputCode\":\"{\\n  \\\"id\\\": \\\"resp_0217****\\\",\\n  \\\"created_at\\\": 1756280722.0,\\n  \\\"error\\\": null,\\n  \\\"incomplete_details\\\": null,\\n  \\\"instructions\\\": null,\\n  \\\"model\\\": \\\"doubao-seed-2-1-pro-260915\\\",\\n  \\\"object\\\": \\\"response\\\",\\n  \\\"output\\\": [\\n    {\\n      \\\"id\\\": \\\"rs_0217****404a\\\",\\n      \\\"summary\\\": [\\n        {\\n          \\\"text\\\": \\\"\\\\n用户说“你好呀。”，这是一个很友好的问候，我需要用同样友好的方式回应。首先，应该回应用户的问候，然后可以表达一下愿意帮助的态度，让对话能够继续下去。用户可能接下来会有其他问题或者想聊聊天，所以回应要自然、亲切。\\\\n\\\\n首先，直接回“你好呀！”来呼应对方的问候，保持一致的语气。然后加上一句“很高兴见到你～ 有什么我可以帮你的吗？”这样既表达了友好，又主动提供帮助，让用户知道我在这里可以协助他们。这样的回应比较温暖，也符合日常交流的习惯，不会显得太生硬。\\\\n\\\\n需要注意的是，用户可能只是想打个招呼，所以回应不要太复杂，保持简洁和亲切就好。避免使用太正式的语言，保持口语化，让用户感觉舒适。总结一下，回应应该包含问候、表达高兴见到对方，以及提供帮助的意愿。\\\",\\n          \\\"type\\\": \\\"summary_text\\\"\\n        }\\n      ],\\n      \\\"type\\\": \\\"reasoning\\\",\\n      \\\"status\\\": \\\"completed\\\"\\n    },\\n    {\\n      \\\"id\\\": \\\"msg_0217****a93c\\\",\\n      \\\"content\\\": [\\n        {\\n          \\\"text\\\": \\\"你好呀！很高兴见到你～ 有什么我可以帮你的吗？ 😊\\\",\\n          \\\"type\\\": \\\"output_text\\\",\\n          \\\"annotations\\\": null\\n        }\\n      ],\\n      \\\"role\\\": \\\"assistant\\\",\\n      \\\"status\\\": \\\"completed\\\",\\n      \\\"type\\\": \\\"message\\\"\\n    }\\n  ],\\n  \\\"parallel_tool_calls\\\": null,\\n  \\\"temperature\\\": null,\\n  \\\"tool_choice\\\": null,\\n  \\\"tools\\\": null,\\n  \\\"top_p\\\": null,\\n  \\\"max_output_tokens\\\": 32768,\\n  \\\"previous_response_id\\\": null,\\n  \\\"thinking\\\": null,\\n  \\\"service_tier\\\": \\\"default\\\",\\n  \\\"status\\\": \\\"completed\\\",\\n  \\\"text\\\": null,\\n  \\\"usage\\\": {\\n    \\\"input_tokens\\\": 88,\\n    \\\"input_tokens_details\\\": {\\n      \\\"cached_tokens\\\": 0\\n    },\\n    \\\"output_tokens\\\": 230,\\n    \\\"output_tokens_details\\\": {\\n      \\\"reasoning_tokens\\\": 211\\n    },\\n    \\\"total_tokens\\\": 318\\n  },\\n  \\\"caching\\\": {\\n    \\\"type\\\": \\\"disabled\\\"\\n  },\\n  \\\"store\\\": true,\\n  \\\"expire_at\\\": 1756539922\\n}\",\"outputLanguage\":\"\",\"key\":\"onKzJHxk\"},{\"title\":\"Go\",\"debug\":{\"openDebug\":true,\"debugParams\":{\"envs\":[\"ARK_API_KEY\"],\"packages\":[{\"packageName\":\"github.com/volcengine/volcengine-go-sdk\",\"packageVersion\":\"\"}],\"value\":[1,2]}},\"inputCode\":\"package main\\n\\nimport (\\n    \\\"context\\\"\\n    \\\"fmt\\\"\\n    \\\"github.com/volcengine/ark-runtime-go/arkruntime\\\"\\n    \\\"github.com/volcengine/ark-runtime-go/arkruntime/model/responses\\\"\\n    \\\"os\\\"\\n)\\n\\nfunc main() {\\n    client := arkruntime.NewClientWithApiKey(\\n        os.Getenv(\\\"ARK_API_KEY\\\"),\\n        arkruntime.WithBaseUrl(\\\"https://ark.cn-beijing.volces.com/api/v3\\\"),\\n    )\\n    ctx := context.Background()\\n\\n    resp, err := client.CreateResponses(ctx, &responses.ResponsesRequest{\\n        Model: \\\"doubao-seed-2-1-pro-260915\\\",\\n        Input: responses.NewStringResponsesInput(\\\"你好呀。\\\"),\\n    })\\n    if err != nil {\\n        fmt.Printf(\\\"response error: %v\\\\n\\\", err)\\n        return\\n    }\\n    fmt.Println(resp)\\n}\",\"inputLanguage\":\"go\",\"outputCode\":\"{\\n  \\\"id\\\": \\\"resp_0217****\\\",\\n  \\\"created_at\\\": 1756280722.0,\\n  \\\"error\\\": null,\\n  \\\"incomplete_details\\\": null,\\n  \\\"instructions\\\": null,\\n  \\\"model\\\": \\\"doubao-seed-2-1-pro-260915\\\",\\n  \\\"object\\\": \\\"response\\\",\\n  \\\"output\\\": [\\n    {\\n      \\\"id\\\": \\\"rs_0217****404a\\\",\\n      \\\"summary\\\": [\\n        {\\n          \\\"text\\\": \\\"\\\\n用户说“你好呀。”，这是一个很友好的问候，我需要用同样友好的方式回应。首先，应该回应用户的问候，然后可以表达一下愿意帮助的态度，让对话能够继续下去。用户可能接下来会有其他问题或者想聊聊天，所以回应要自然、亲切。\\\\n\\\\n首先，直接回“你好呀！”来呼应对方的问候，保持一致的语气。然后加上一句“很高兴见到你～ 有什么我可以帮你的吗？”这样既表达了友好，又主动提供帮助，让用户知道我在这里可以协助他们。这样的回应比较温暖，也符合日常交流的习惯，不会显得太生硬。\\\\n\\\\n需要注意的是，用户可能只是想打个招呼，所以回应不要太复杂，保持简洁和亲切就好。避免使用太正式的语言，保持口语化，让用户感觉舒适。总结一下，回应应该包含问候、表达高兴见到对方，以及提供帮助的意愿。\\\",\\n          \\\"type\\\": \\\"summary_text\\\"\\n        }\\n      ],\\n      \\\"type\\\": \\\"reasoning\\\",\\n      \\\"status\\\": \\\"completed\\\"\\n    },\\n    {\\n      \\\"id\\\": \\\"msg_0217****a93c\\\",\\n      \\\"content\\\": [\\n        {\\n          \\\"text\\\": \\\"你好呀！很高兴见到你～ 有什么我可以帮你的吗？ 😊\\\",\\n          \\\"type\\\": \\\"output_text\\\",\\n          \\\"annotations\\\": null\\n        }\\n      ],\\n      \\\"role\\\": \\\"assistant\\\",\\n      \\\"status\\\": \\\"completed\\\",\\n      \\\"type\\\": \\\"message\\\"\\n    }\\n  ],\\n  \\\"parallel_tool_calls\\\": null,\\n  \\\"temperature\\\": null,\\n  \\\"tool_choice\\\": null,\\n  \\\"tools\\\": null,\\n  \\\"top_p\\\": null,\\n  \\\"max_output_tokens\\\": 32768,\\n  \\\"previous_response_id\\\": null,\\n  \\\"thinking\\\": null,\\n  \\\"service_tier\\\": \\\"default\\\",\\n  \\\"status\\\": \\\"completed\\\",\\n  \\\"text\\\": null,\\n  \\\"usage\\\": {\\n    \\\"input_tokens\\\": 88,\\n    \\\"input_tokens_details\\\": {\\n      \\\"cached_tokens\\\": 0\\n    },\\n    \\\"output_tokens\\\": 230,\\n    \\\"output_tokens_details\\\": {\\n      \\\"reasoning_tokens\\\": 211\\n    },\\n    \\\"total_tokens\\\": 318\\n  },\\n  \\\"caching\\\": {\\n    \\\"type\\\": \\\"disabled\\\"\\n  },\\n  \\\"store\\\": true,\\n  \\\"expire_at\\\": 1756539922\\n}\",\"outputLanguage\":\"\",\"key\":\"DgL0hVSN\"},{\"title\":\"Java\",\"debug\":{\"openDebug\":true,\"debugParams\":{\"envs\":[\"ARK_API_KEY\"],\"packages\":[{\"packageName\":\"com.fasterxml.jackson.core:jackson-core\",\"packageVersion\":\"2.21.3\"},{\"packageName\":\"com.volcengine:ark-runtime\",\"packageVersion\":\"0.9.0\"}],\"value\":[1,2]}},\"inputCode\":\"package com.ark.example;\\nimport com.volcengine.ark.runtime.service.ArkService;\\nimport com.volcengine.ark.runtime.models.responses.*;\\npublic class demo {\\n    public static void main(String[] args) {\\n        String apiKey = System.getenv(\\\"ARK_API_KEY\\\");\\n\\n        ArkService arkService = ArkService.builder().apiKey(apiKey)\\n                .baseUrl(\\\"https://ark.cn-beijing.volces.com/api/v3\\\")\\n                .build();\\n\\n        ResponsesRequest request = ResponsesRequest.builder()\\n                .model(\\\"doubao-seed-2-1-pro-260915\\\")\\n                .stream(false)\\n                .input(ResponsesInput.ofString(\\\"你好呀。\\\"))\\n                .thinking(Thinking.builder().type(ThinkingMode.DISABLED).build())\\n                .build();\\n        Response resp = arkService.createResponse(request);\\n        System.out.println(resp);\\n\\n        arkService.shutdownExecutor();\\n    }\\n}\",\"inputLanguage\":\"java\",\"outputCode\":\"{\\n  \\\"id\\\": \\\"resp_0217****\\\",\\n  \\\"created_at\\\": 1756280722.0,\\n  \\\"error\\\": null,\\n  \\\"incomplete_details\\\": null,\\n  \\\"instructions\\\": null,\\n  \\\"model\\\": \\\"doubao-seed-2-1-pro-260915\\\",\\n  \\\"object\\\": \\\"response\\\",\\n  \\\"output\\\": [\\n    {\\n      \\\"id\\\": \\\"rs_0217****404a\\\",\\n      \\\"summary\\\": [\\n        {\\n          \\\"text\\\": \\\"\\\\n用户说“你好呀。”，这是一个很友好的问候，我需要用同样友好的方式回应。首先，应该回应用户的问候，然后可以表达一下愿意帮助的态度，让对话能够继续下去。用户可能接下来会有其他问题或者想聊聊天，所以回应要自然、亲切。\\\\n\\\\n首先，直接回“你好呀！”来呼应对方的问候，保持一致的语气。然后加上一句“很高兴见到你～ 有什么我可以帮你的吗？”这样既表达了友好，又主动提供帮助，让用户知道我在这里可以协助他们。这样的回应比较温暖，也符合日常交流的习惯，不会显得太生硬。\\\\n\\\\n需要注意的是，用户可能只是想打个招呼，所以回应不要太复杂，保持简洁和亲切就好。避免使用太正式的语言，保持口语化，让用户感觉舒适。总结一下，回应应该包含问候、表达高兴见到对方，以及提供帮助的意愿。\\\",\\n          \\\"type\\\": \\\"summary_text\\\"\\n        }\\n      ],\\n      \\\"type\\\": \\\"reasoning\\\",\\n      \\\"status\\\": \\\"completed\\\"\\n    },\\n    {\\n      \\\"id\\\": \\\"msg_0217****a93c\\\",\\n      \\\"content\\\": [\\n        {\\n          \\\"text\\\": \\\"你好呀！很高兴见到你～ 有什么我可以帮你的吗？ 😊\\\",\\n          \\\"type\\\": \\\"output_text\\\",\\n          \\\"annotations\\\": null\\n        }\\n      ],\\n      \\\"role\\\": \\\"assistant\\\",\\n      \\\"status\\\": \\\"completed\\\",\\n      \\\"type\\\": \\\"message\\\"\\n    }\\n  ],\\n  \\\"parallel_tool_calls\\\": null,\\n  \\\"temperature\\\": null,\\n  \\\"tool_choice\\\": null,\\n  \\\"tools\\\": null,\\n  \\\"top_p\\\": null,\\n  \\\"max_output_tokens\\\": 32768,\\n  \\\"previous_response_id\\\": null,\\n  \\\"thinking\\\": null,\\n  \\\"service_tier\\\": \\\"default\\\",\\n  \\\"status\\\": \\\"completed\\\",\\n  \\\"text\\\": null,\\n  \\\"usage\\\": {\\n    \\\"input_tokens\\\": 88,\\n    \\\"input_tokens_details\\\": {\\n      \\\"cached_tokens\\\": 0\\n    },\\n    \\\"output_tokens\\\": 230,\\n    \\\"output_tokens_details\\\": {\\n      \\\"reasoning_tokens\\\": 211\\n    },\\n    \\\"total_tokens\\\": 318\\n  },\\n  \\\"caching\\\": {\\n    \\\"type\\\": \\\"disabled\\\"\\n  },\\n  \\\"store\\\": true,\\n  \\\"expire_at\\\": 1756539922\\n}\",\"outputLanguage\":\"\",\"key\":\"MbtEmCUE\"}],\"key\":\"b1YRexoq\"},{\"title\":\"多轮对话\",\"children\":[{\"title\":\"Python-OpenAI\",\"debug\":{\"openDebug\":true,\"debugParams\":{\"envs\":[\"ARK_API_KEY\"],\"packages\":[{\"packageName\":\"openai\",\"packageVersion\":\"\"}],\"value\":[1,2]}},\"inputCode\":\"from openai import OpenAI\\nimport os\\n\\n# 从环境变量中获取您的API KEY，配置方法见：https://ark.volcengine.com/region:cn-beijing/docs/quick-start\\napi_key = os.getenv('ARK_API_KEY')\\n\\nclient = OpenAI(\\n    base_url='https://ark.cn-beijing.volces.com/api/v3',\\n    api_key=api_key,\\n)\\n\\n# 创建第一轮对话请求\\nresponse = client.responses.create(\\n    model=\\\"doubao-seed-2-1-pro-260915\\\",\\n    input=\\\"Hi，帮我讲个笑话。\\\"\\n)\\nprint(response)\\n\\n# 创建第二轮对话请求\\nsecond_response = client.responses.create(\\n    model=\\\"doubao-seed-2-1-pro-260915\\\",\\n    previous_response_id=response.id,\\n    input=[{\\\"role\\\": \\\"user\\\", \\\"content\\\": \\\"这个笑话的笑点在哪？\\\"}],\\n)\\nprint(second_response)\",\"inputLanguage\":\"python\",\"outputCode\":\"[\\n  {\\n    \\\"id\\\": \\\"resp_****87fa\\\",\\n    \\\"created_at\\\": 1756475482.0,\\n    \\\"error\\\": null,\\n    \\\"incomplete_details\\\": null,\\n    \\\"instructions\\\": null,\\n    \\\"model\\\": \\\"doubao-seed-2-1-pro-260915\\\",\\n    \\\"object\\\": \\\"response\\\",\\n    \\\"output\\\": [\\n      {\\n        \\\"id\\\": \\\"msg_0217****5328\\\",\\n        \\\"content\\\": [\\n          {\\n            \\\"text\\\": \\\"好的，给你讲一个：\\\\n\\\\n病人：“医生，我最近睡不着，吃不下，心情很差，我是不是得了抑郁症啊？”\\\\n医生：“你几岁了？”\\\\n病人：“我16。”\\\\n医生：“你那不是抑郁症，你是快开学了。”\\\\n\\\\n希望你喜欢！😄\\\",\\n            \\\"type\\\": \\\"output_text\\\",\\n            \\\"annotations\\\": null\\n          }\\n        ],\\n        \\\"role\\\": \\\"assistant\\\",\\n        \\\"status\\\": \\\"completed\\\",\\n        \\\"type\\\": \\\"message\\\"\\n      }\\n    ],\\n    \\\"parallel_tool_calls\\\": null,\\n    \\\"temperature\\\": null,\\n    \\\"tool_choice\\\": null,\\n    \\\"tools\\\": null,\\n    \\\"top_p\\\": null,\\n    \\\"max_output_tokens\\\": 32768,\\n    \\\"previous_response_id\\\": null,\\n    \\\"thinking\\\": {\\n      \\\"type\\\": \\\"disabled\\\"\\n    },\\n    \\\"service_tier\\\": \\\"default\\\",\\n    \\\"status\\\": \\\"completed\\\",\\n    \\\"text\\\": null,\\n    \\\"usage\\\": {\\n      \\\"input_tokens\\\": 43,\\n      \\\"input_tokens_details\\\": {\\n        \\\"cached_tokens\\\": 0\\n      },\\n      \\\"output_tokens\\\": 71,\\n      \\\"output_tokens_details\\\": {\\n        \\\"reasoning_tokens\\\": 0\\n      },\\n      \\\"total_tokens\\\": 114\\n    },\\n    \\\"caching\\\": {\\n      \\\"type\\\": \\\"disabled\\\"\\n    },\\n    \\\"store\\\": true,\\n    \\\"expire_at\\\": 1756734682\\n  },\\n  {\\n    \\\"id\\\": \\\"resp_0217****e74a\\\",\\n    \\\"created_at\\\": 1756475484.0,\\n    \\\"error\\\": null,\\n    \\\"incomplete_details\\\": null,\\n    \\\"instructions\\\": null,\\n    \\\"model\\\": \\\"doubao-seed-2-1-pro-260915\\\",\\n    \\\"object\\\": \\\"response\\\",\\n    \\\"output\\\": [\\n      {\\n        \\\"id\\\": \\\"msg_0217****bd53\\\",\\n        \\\"content\\\": [\\n          {\\n            \\\"text\\\": \\\"这个笑话的笑点主要来自于**“预期违背”**和**“对青少年生活场景的共鸣式调侃”**：\\\\n\\\\n\\\\n### 1. **预期违背（反差感）**  \\\\n病人用非常严肃的语气描述了“睡不着、吃不下、心情差”等典型的抑郁症状，引导听者（包括医生和读者）产生“他可能真的有心理问题”的预期。但医生的回答却完全跳出了这个严肃框架——**“你不是抑郁症，是快开学了”**，用一个极其日常、贴近学生生活的“小烦恼”，消解了之前营造的沉重感，形成强烈的反差萌。这种“一本正经地胡说八道”式反转，让人觉得意外又好笑。\\\\n\\\\n\\\\n### 2. **共鸣式调侃（精准戳中痛点）**  \\\\n对于学生群体（尤其是经历过开学焦虑的人）来说，“开学前的焦虑”是一个普遍的生活体验：假期结束、作业没写完、要面对早起和学业压力……这些真实的小烦恼，确实可能导致短暂的“情绪低落”，但本质上和“抑郁症”这种严肃的心理疾病完全不是一个量级。笑话通过夸张的对比（把“开学焦虑”伪装成“抑郁症”），精准戳中了学生时代的共同记忆，让人会心一笑——“啊，我当年开学前也这样！”这种共鸣感放大了笑点，让成年人也能回忆起自己的青春，产生亲切感。\\\\n\\\\n\\\\n### 3. **语言的“一本正经”与“真相的简单粗暴”**  \\\\n医生的提问“你几岁了？”看似专业，仿佛要进行严肃诊断，结果答案却直白到“扎心”，这种“伪专业”与“真吐槽”的结合，也增加了幽默效果。就像用“医学问诊”的外壳，包装了一个学生党都懂的“生活梗”，既荒诞又真实。\\\\n\\\\n\\\\n简单说，就是用**“大题小做”的反差**和**“共同经历的共鸣”**，把一个日常小焦虑变成了一个轻松的笑话～ 😄\\\",\\n            \\\"type\\\": \\\"output_text\\\",\\n            \\\"annotations\\\": null\\n          }\\n        ],\\n        \\\"role\\\": \\\"assistant\\\",\\n        \\\"status\\\": \\\"completed\\\",\\n        \\\"type\\\": \\\"message\\\"\\n      }\\n    ],\\n    \\\"parallel_tool_calls\\\": null,\\n    \\\"temperature\\\": null,\\n    \\\"tool_choice\\\": null,\\n    \\\"tools\\\": null,\\n    \\\"top_p\\\": null,\\n    \\\"max_output_tokens\\\": 32768,\\n    \\\"previous_response_id\\\": \\\"resp_0217****87fa\\\",\\n    \\\"thinking\\\": {\\n      \\\"type\\\": \\\"disabled\\\"\\n    },\\n    \\\"service_tier\\\": \\\"default\\\",\\n    \\\"status\\\": \\\"completed\\\",\\n    \\\"text\\\": null,\\n    \\\"usage\\\": {\\n      \\\"input_tokens\\\": 130,\\n      \\\"input_tokens_details\\\": {\\n        \\\"cached_tokens\\\": 0\\n      },\\n      \\\"output_tokens\\\": 445,\\n      \\\"output_tokens_details\\\": {\\n        \\\"reasoning_tokens\\\": 0\\n      },\\n      \\\"total_tokens\\\": 575\\n    },\\n    \\\"caching\\\": {\\n      \\\"type\\\": \\\"disabled\\\"\\n    },\\n    \\\"store\\\": true,\\n    \\\"expire_at\\\": 1756734684\\n  }\\n]\",\"outputLanguage\":\"\",\"key\":\"gWM0ZaYU\"},{\"title\":\"Python\",\"debug\":{\"openDebug\":true,\"debugParams\":{\"envs\":[\"ARK_API_KEY\"],\"packages\":[{\"packageName\":\"arkruntime\",\"packageVersion\":\"\"}],\"value\":[1,2]}},\"inputCode\":\"import os\\nfrom arkruntime import Ark\\n\\n# 从环境变量中获取您的API KEY，配置方法见：https://ark.volcengine.com/region:cn-beijing/docs/quick-start\\napi_key = os.getenv('ARK_API_KEY')\\n\\nclient = Ark(\\n    base_url='https://ark.cn-beijing.volces.com/api/v3',\\n    api_key=api_key,\\n)\\n\\n# 创建第一轮对话请求\\nresponse = client.responses.create(\\n    model=\\\"doubao-seed-2-1-pro-260915\\\",\\n    input=\\\"Hi，帮我讲个笑话。\\\",\\n    extra_body={\\n        \\\"thinking\\\":{\\\"type\\\":\\\"disabled\\\"}\\n    }\\n)\\nprint(response)\\n\\n# 创建第二轮对话请求\\nsecond_response = client.responses.create(\\n    model=\\\"doubao-seed-2-1-pro-260915\\\",\\n    previous_response_id=response.id,\\n    input=\\\"这个笑话的笑点在哪？\\\",\\n    extra_body={\\n        \\\"thinking\\\":{\\\"type\\\":\\\"disabled\\\"}\\n    }\\n)\\nprint(second_response)\",\"inputLanguage\":\"python\",\"outputCode\":\"[\\n  {\\n    \\\"id\\\": \\\"resp_****87fa\\\",\\n    \\\"created_at\\\": 1756475482.0,\\n    \\\"error\\\": null,\\n    \\\"incomplete_details\\\": null,\\n    \\\"instructions\\\": null,\\n    \\\"model\\\": \\\"doubao-seed-2-1-pro-260915\\\",\\n    \\\"object\\\": \\\"response\\\",\\n    \\\"output\\\": [\\n      {\\n        \\\"id\\\": \\\"msg_0217****5328\\\",\\n        \\\"content\\\": [\\n          {\\n            \\\"text\\\": \\\"好的，给你讲一个：\\\\n\\\\n病人：“医生，我最近睡不着，吃不下，心情很差，我是不是得了抑郁症啊？”\\\\n医生：“你几岁了？”\\\\n病人：“我16。”\\\\n医生：“你那不是抑郁症，你是快开学了。”\\\\n\\\\n希望你喜欢！😄\\\",\\n            \\\"type\\\": \\\"output_text\\\",\\n            \\\"annotations\\\": null\\n          }\\n        ],\\n        \\\"role\\\": \\\"assistant\\\",\\n        \\\"status\\\": \\\"completed\\\",\\n        \\\"type\\\": \\\"message\\\"\\n      }\\n    ],\\n    \\\"parallel_tool_calls\\\": null,\\n    \\\"temperature\\\": null,\\n    \\\"tool_choice\\\": null,\\n    \\\"tools\\\": null,\\n    \\\"top_p\\\": null,\\n    \\\"max_output_tokens\\\": 32768,\\n    \\\"previous_response_id\\\": null,\\n    \\\"thinking\\\": {\\n      \\\"type\\\": \\\"disabled\\\"\\n    },\\n    \\\"service_tier\\\": \\\"default\\\",\\n    \\\"status\\\": \\\"completed\\\",\\n    \\\"text\\\": null,\\n    \\\"usage\\\": {\\n      \\\"input_tokens\\\": 43,\\n      \\\"input_tokens_details\\\": {\\n        \\\"cached_tokens\\\": 0\\n      },\\n      \\\"output_tokens\\\": 71,\\n      \\\"output_tokens_details\\\": {\\n        \\\"reasoning_tokens\\\": 0\\n      },\\n      \\\"total_tokens\\\": 114\\n    },\\n    \\\"caching\\\": {\\n      \\\"type\\\": \\\"disabled\\\"\\n    },\\n    \\\"store\\\": true,\\n    \\\"expire_at\\\": 1756734682\\n  },\\n  {\\n    \\\"id\\\": \\\"resp_0217****e74a\\\",\\n    \\\"created_at\\\": 1756475484.0,\\n    \\\"error\\\": null,\\n    \\\"incomplete_details\\\": null,\\n    \\\"instructions\\\": null,\\n    \\\"model\\\": \\\"doubao-seed-2-1-pro-260915\\\",\\n    \\\"object\\\": \\\"response\\\",\\n    \\\"output\\\": [\\n      {\\n        \\\"id\\\": \\\"msg_0217****bd53\\\",\\n        \\\"content\\\": [\\n          {\\n            \\\"text\\\": \\\"这个笑话的笑点主要来自于**“预期违背”**和**“对青少年生活场景的共鸣式调侃”**：\\\\n\\\\n\\\\n### 1. **预期违背（反差感）**  \\\\n病人用非常严肃的语气描述了“睡不着、吃不下、心情差”等典型的抑郁症状，引导听者（包括医生和读者）产生“他可能真的有心理问题”的预期。但医生的回答却完全跳出了这个严肃框架——**“你不是抑郁症，是快开学了”**，用一个极其日常、贴近学生生活的“小烦恼”，消解了之前营造的沉重感，形成强烈的反差萌。这种“一本正经地胡说八道”式反转，让人觉得意外又好笑。\\\\n\\\\n\\\\n### 2. **共鸣式调侃（精准戳中痛点）**  \\\\n对于学生群体（尤其是经历过开学焦虑的人）来说，“开学前的焦虑”是一个普遍的生活体验：假期结束、作业没写完、要面对早起和学业压力……这些真实的小烦恼，确实可能导致短暂的“情绪低落”，但本质上和“抑郁症”这种严肃的心理疾病完全不是一个量级。笑话通过夸张的对比（把“开学焦虑”伪装成“抑郁症”），精准戳中了学生时代的共同记忆，让人会心一笑——“啊，我当年开学前也这样！”这种共鸣感放大了笑点，让成年人也能回忆起自己的青春，产生亲切感。\\\\n\\\\n\\\\n### 3. **语言的“一本正经”与“真相的简单粗暴”**  \\\\n医生的提问“你几岁了？”看似专业，仿佛要进行严肃诊断，结果答案却直白到“扎心”，这种“伪专业”与“真吐槽”的结合，也增加了幽默效果。就像用“医学问诊”的外壳，包装了一个学生党都懂的“生活梗”，既荒诞又真实。\\\\n\\\\n\\\\n简单说，就是用**“大题小做”的反差**和**“共同经历的共鸣”**，把一个日常小焦虑变成了一个轻松的笑话～ 😄\\\",\\n            \\\"type\\\": \\\"output_text\\\",\\n            \\\"annotations\\\": null\\n          }\\n        ],\\n        \\\"role\\\": \\\"assistant\\\",\\n        \\\"status\\\": \\\"completed\\\",\\n        \\\"type\\\": \\\"message\\\"\\n      }\\n    ],\\n    \\\"parallel_tool_calls\\\": null,\\n    \\\"temperature\\\": null,\\n    \\\"tool_choice\\\": null,\\n    \\\"tools\\\": null,\\n    \\\"top_p\\\": null,\\n    \\\"max_output_tokens\\\": 32768,\\n    \\\"previous_response_id\\\": \\\"resp_0217****87fa\\\",\\n    \\\"thinking\\\": {\\n      \\\"type\\\": \\\"disabled\\\"\\n    },\\n    \\\"service_tier\\\": \\\"default\\\",\\n    \\\"status\\\": \\\"completed\\\",\\n    \\\"text\\\": null,\\n    \\\"usage\\\": {\\n      \\\"input_tokens\\\": 130,\\n      \\\"input_tokens_details\\\": {\\n        \\\"cached_tokens\\\": 0\\n      },\\n      \\\"output_tokens\\\": 445,\\n      \\\"output_tokens_details\\\": {\\n        \\\"reasoning_tokens\\\": 0\\n      },\\n      \\\"total_tokens\\\": 575\\n    },\\n    \\\"caching\\\": {\\n      \\\"type\\\": \\\"disabled\\\"\\n    },\\n    \\\"store\\\": true,\\n    \\\"expire_at\\\": 1756734684\\n  }\\n]\",\"outputLanguage\":\"\",\"key\":\"SesHxhZe\"},{\"title\":\"Go\",\"debug\":{\"openDebug\":true,\"debugParams\":{\"envs\":[\"ARK_API_KEY\"],\"packages\":[{\"packageName\":\"github.com/volcengine/volcengine-go-sdk\",\"packageVersion\":\"\"}],\"value\":[1,2]}},\"inputCode\":\"package main\\n\\nimport (\\n    \\\"context\\\"\\n    \\\"fmt\\\"\\n    \\\"os\\\"\\n\\n    \\\"github.com/volcengine/ark-runtime-go/arkruntime\\\"\\n    \\\"github.com/volcengine/ark-runtime-go/arkruntime/model/responses\\\"\\n)\\n\\nfunc main() {\\n    client := arkruntime.NewClientWithApiKey(\\n        os.Getenv(\\\"ARK_API_KEY\\\"),\\n        arkruntime.WithBaseUrl(\\\"https://ark.cn-beijing.volces.com/api/v3\\\"),\\n    )\\n    ctx := context.Background()\\n\\n    resp, err := client.CreateResponses(ctx, &responses.ResponsesRequest{\\n        Model: \\\"doubao-seed-2-1-pro-260915\\\",\\n        Input: responses.NewStringResponsesInput(\\\"你好，帮我讲个笑话。\\\"),\\n    })\\n    if err != nil {\\n        fmt.Printf(\\\"response error: %v\\\\n\\\", err)\\n        return\\n    }\\n    fmt.Println(resp)\\n\\n    second_resp, second_err := client.CreateResponses(ctx, &responses.ResponsesRequest{\\n        Model:              \\\"doubao-seed-2-1-pro-260915\\\",\\n        PreviousResponseID: responses.NewOptString(resp.ID),\\n        Input:              responses.NewStringResponsesInput(\\\"这个笑话的笑点在哪里？\\\"),\\n    })\\n    if second_err != nil {\\n        fmt.Printf(\\\"second response error: %v\\\\n\\\", second_err)\\n        return\\n    }\\n    fmt.Println(second_resp)\\n}\",\"inputLanguage\":\"go\",\"outputCode\":\"[\\n  {\\n    \\\"id\\\": \\\"resp_****87fa\\\",\\n    \\\"created_at\\\": 1756475482.0,\\n    \\\"error\\\": null,\\n    \\\"incomplete_details\\\": null,\\n    \\\"instructions\\\": null,\\n    \\\"model\\\": \\\"doubao-seed-2-1-pro-260915\\\",\\n    \\\"object\\\": \\\"response\\\",\\n    \\\"output\\\": [\\n      {\\n        \\\"id\\\": \\\"msg_0217****5328\\\",\\n        \\\"content\\\": [\\n          {\\n            \\\"text\\\": \\\"好的，给你讲一个：\\\\n\\\\n病人：“医生，我最近睡不着，吃不下，心情很差，我是不是得了抑郁症啊？”\\\\n医生：“你几岁了？”\\\\n病人：“我16。”\\\\n医生：“你那不是抑郁症，你是快开学了。”\\\\n\\\\n希望你喜欢！😄\\\",\\n            \\\"type\\\": \\\"output_text\\\",\\n            \\\"annotations\\\": null\\n          }\\n        ],\\n        \\\"role\\\": \\\"assistant\\\",\\n        \\\"status\\\": \\\"completed\\\",\\n        \\\"type\\\": \\\"message\\\"\\n      }\\n    ],\\n    \\\"parallel_tool_calls\\\": null,\\n    \\\"temperature\\\": null,\\n    \\\"tool_choice\\\": null,\\n    \\\"tools\\\": null,\\n    \\\"top_p\\\": null,\\n    \\\"max_output_tokens\\\": 32768,\\n    \\\"previous_response_id\\\": null,\\n    \\\"thinking\\\": {\\n      \\\"type\\\": \\\"disabled\\\"\\n    },\\n    \\\"service_tier\\\": \\\"default\\\",\\n    \\\"status\\\": \\\"completed\\\",\\n    \\\"text\\\": null,\\n    \\\"usage\\\": {\\n      \\\"input_tokens\\\": 43,\\n      \\\"input_tokens_details\\\": {\\n        \\\"cached_tokens\\\": 0\\n      },\\n      \\\"output_tokens\\\": 71,\\n      \\\"output_tokens_details\\\": {\\n        \\\"reasoning_tokens\\\": 0\\n      },\\n      \\\"total_tokens\\\": 114\\n    },\\n    \\\"caching\\\": {\\n      \\\"type\\\": \\\"disabled\\\"\\n    },\\n    \\\"store\\\": true,\\n    \\\"expire_at\\\": 1756734682\\n  },\\n  {\\n    \\\"id\\\": \\\"resp_0217****e74a\\\",\\n    \\\"created_at\\\": 1756475484.0,\\n    \\\"error\\\": null,\\n    \\\"incomplete_details\\\": null,\\n    \\\"instructions\\\": null,\\n    \\\"model\\\": \\\"doubao-seed-2-1-pro-260915\\\",\\n    \\\"object\\\": \\\"response\\\",\\n    \\\"output\\\": [\\n      {\\n        \\\"id\\\": \\\"msg_0217****bd53\\\",\\n        \\\"content\\\": [\\n          {\\n            \\\"text\\\": \\\"这个笑话的笑点主要来自于**“预期违背”**和**“对青少年生活场景的共鸣式调侃”**：\\\\n\\\\n\\\\n### 1. **预期违背（反差感）**  \\\\n病人用非常严肃的语气描述了“睡不着、吃不下、心情差”等典型的抑郁症状，引导听者（包括医生和读者）产生“他可能真的有心理问题”的预期。但医生的回答却完全跳出了这个严肃框架——**“你不是抑郁症，是快开学了”**，用一个极其日常、贴近学生生活的“小烦恼”，消解了之前营造的沉重感，形成强烈的反差萌。这种“一本正经地胡说八道”式反转，让人觉得意外又好笑。\\\\n\\\\n\\\\n### 2. **共鸣式调侃（精准戳中痛点）**  \\\\n对于学生群体（尤其是经历过开学焦虑的人）来说，“开学前的焦虑”是一个普遍的生活体验：假期结束、作业没写完、要面对早起和学业压力……这些真实的小烦恼，确实可能导致短暂的“情绪低落”，但本质上和“抑郁症”这种严肃的心理疾病完全不是一个量级。笑话通过夸张的对比（把“开学焦虑”伪装成“抑郁症”），精准戳中了学生时代的共同记忆，让人会心一笑——“啊，我当年开学前也这样！”这种共鸣感放大了笑点，让成年人也能回忆起自己的青春，产生亲切感。\\\\n\\\\n\\\\n### 3. **语言的“一本正经”与“真相的简单粗暴”**  \\\\n医生的提问“你几岁了？”看似专业，仿佛要进行严肃诊断，结果答案却直白到“扎心”，这种“伪专业”与“真吐槽”的结合，也增加了幽默效果。就像用“医学问诊”的外壳，包装了一个学生党都懂的“生活梗”，既荒诞又真实。\\\\n\\\\n\\\\n简单说，就是用**“大题小做”的反差**和**“共同经历的共鸣”**，把一个日常小焦虑变成了一个轻松的笑话～ 😄\\\",\\n            \\\"type\\\": \\\"output_text\\\",\\n            \\\"annotations\\\": null\\n          }\\n        ],\\n        \\\"role\\\": \\\"assistant\\\",\\n        \\\"status\\\": \\\"completed\\\",\\n        \\\"type\\\": \\\"message\\\"\\n      }\\n    ],\\n    \\\"parallel_tool_calls\\\": null,\\n    \\\"temperature\\\": null,\\n    \\\"tool_choice\\\": null,\\n    \\\"tools\\\": null,\\n    \\\"top_p\\\": null,\\n    \\\"max_output_tokens\\\": 32768,\\n    \\\"previous_response_id\\\": \\\"resp_0217****87fa\\\",\\n    \\\"thinking\\\": {\\n      \\\"type\\\": \\\"disabled\\\"\\n    },\\n    \\\"service_tier\\\": \\\"default\\\",\\n    \\\"status\\\": \\\"completed\\\",\\n    \\\"text\\\": null,\\n    \\\"usage\\\": {\\n      \\\"input_tokens\\\": 130,\\n      \\\"input_tokens_details\\\": {\\n        \\\"cached_tokens\\\": 0\\n      },\\n      \\\"output_tokens\\\": 445,\\n      \\\"output_tokens_details\\\": {\\n        \\\"reasoning_tokens\\\": 0\\n      },\\n      \\\"total_tokens\\\": 575\\n    },\\n    \\\"caching\\\": {\\n      \\\"type\\\": \\\"disabled\\\"\\n    },\\n    \\\"store\\\": true,\\n    \\\"expire_at\\\": 1756734684\\n  }\\n]\",\"outputLanguage\":\"\",\"key\":\"KLtkgoCe\"},{\"title\":\"Java\",\"debug\":{\"openDebug\":true,\"debugParams\":{\"envs\":[\"ARK_API_KEY\"],\"packages\":[{\"packageName\":\"com.fasterxml.jackson.core:jackson-core\",\"packageVersion\":\"2.21.3\"},{\"packageName\":\"com.volcengine:ark-runtime\",\"packageVersion\":\"0.9.0\"}],\"value\":[1,2]}},\"inputCode\":\"package com.ark.example;\\nimport com.volcengine.ark.runtime.service.ArkService;\\nimport com.volcengine.ark.runtime.models.responses.*;\\nimport java.util.Collections;\\nimport com.fasterxml.jackson.databind.ObjectMapper;\\nimport com.fasterxml.jackson.databind.JsonNode;\\nimport java.util.*;\\n\\npublic class demo {\\n    public static void main(String[] args) {\\n        String apiKey = System.getenv(\\\"ARK_API_KEY\\\");\\n\\n        ArkService arkService = ArkService.builder().apiKey(apiKey)\\n                .baseUrl(\\\"https://ark.cn-beijing.volces.com/api/v3\\\")\\n                .build();\\n        // create a response first\\n        ResponsesRequest request = ResponsesRequest.builder()\\n                .model(\\\"doubao-seed-2-1-pro-260915\\\")\\n                .input(ResponsesInput.ofString(\\\"Hi，帮我讲个笑话。\\\"))\\n                .build();\\n        Response resp = arkService.createResponse(request);\\n        System.out.println(resp);\\n        // create second response\\n        ResponsesRequest request2 = ResponsesRequest.builder()\\n                .model(\\\"doubao-seed-2-1-pro-260915\\\")\\n                .previousResponseId(resp.getId())\\n                .input(ResponsesInput.ofList(java.util.Arrays.asList(ItemEasyMessage.builder().role(MessageRole.USER).content(\\n                                MessageContent.ofList(java.util.Arrays.asList(ContentItemText.builder().text(\\\"这个笑话的笑点在哪？\\\").build()))\\n                        ).build())))\\n                .build();\\n        Response resp2 = arkService.createResponse(request2);\\n        System.out.println(resp2);\\n\\n        arkService.shutdownExecutor();\\n    }\\n}\",\"inputLanguage\":\"java\",\"outputCode\":\"[\\n  {\\n    \\\"id\\\": \\\"resp_****87fa\\\",\\n    \\\"created_at\\\": 1756475482.0,\\n    \\\"error\\\": null,\\n    \\\"incomplete_details\\\": null,\\n    \\\"instructions\\\": null,\\n    \\\"model\\\": \\\"doubao-seed-2-1-pro-260915\\\",\\n    \\\"object\\\": \\\"response\\\",\\n    \\\"output\\\": [\\n      {\\n        \\\"id\\\": \\\"msg_0217****5328\\\",\\n        \\\"content\\\": [\\n          {\\n            \\\"text\\\": \\\"好的，给你讲一个：\\\\n\\\\n病人：“医生，我最近睡不着，吃不下，心情很差，我是不是得了抑郁症啊？”\\\\n医生：“你几岁了？”\\\\n病人：“我16。”\\\\n医生：“你那不是抑郁症，你是快开学了。”\\\\n\\\\n希望你喜欢！😄\\\",\\n            \\\"type\\\": \\\"output_text\\\",\\n            \\\"annotations\\\": null\\n          }\\n        ],\\n        \\\"role\\\": \\\"assistant\\\",\\n        \\\"status\\\": \\\"completed\\\",\\n        \\\"type\\\": \\\"message\\\"\\n      }\\n    ],\\n    \\\"parallel_tool_calls\\\": null,\\n    \\\"temperature\\\": null,\\n    \\\"tool_choice\\\": null,\\n    \\\"tools\\\": null,\\n    \\\"top_p\\\": null,\\n    \\\"max_output_tokens\\\": 32768,\\n    \\\"previous_response_id\\\": null,\\n    \\\"thinking\\\": {\\n      \\\"type\\\": \\\"disabled\\\"\\n    },\\n    \\\"service_tier\\\": \\\"default\\\",\\n    \\\"status\\\": \\\"completed\\\",\\n    \\\"text\\\": null,\\n    \\\"usage\\\": {\\n      \\\"input_tokens\\\": 43,\\n      \\\"input_tokens_details\\\": {\\n        \\\"cached_tokens\\\": 0\\n      },\\n      \\\"output_tokens\\\": 71,\\n      \\\"output_tokens_details\\\": {\\n        \\\"reasoning_tokens\\\": 0\\n      },\\n      \\\"total_tokens\\\": 114\\n    },\\n    \\\"caching\\\": {\\n      \\\"type\\\": \\\"disabled\\\"\\n    },\\n    \\\"store\\\": true,\\n    \\\"expire_at\\\": 1756734682\\n  },\\n  {\\n    \\\"id\\\": \\\"resp_0217****e74a\\\",\\n    \\\"created_at\\\": 1756475484.0,\\n    \\\"error\\\": null,\\n    \\\"incomplete_details\\\": null,\\n    \\\"instructions\\\": null,\\n    \\\"model\\\": \\\"doubao-seed-2-1-pro-260915\\\",\\n    \\\"object\\\": \\\"response\\\",\\n    \\\"output\\\": [\\n      {\\n        \\\"id\\\": \\\"msg_0217****bd53\\\",\\n        \\\"content\\\": [\\n          {\\n            \\\"text\\\": \\\"这个笑话的笑点主要来自于**“预期违背”**和**“对青少年生活场景的共鸣式调侃”**：\\\\n\\\\n\\\\n### 1. **预期违背（反差感）**  \\\\n病人用非常严肃的语气描述了“睡不着、吃不下、心情差”等典型的抑郁症状，引导听者（包括医生和读者）产生“他可能真的有心理问题”的预期。但医生的回答却完全跳出了这个严肃框架——**“你不是抑郁症，是快开学了”**，用一个极其日常、贴近学生生活的“小烦恼”，消解了之前营造的沉重感，形成强烈的反差萌。这种“一本正经地胡说八道”式反转，让人觉得意外又好笑。\\\\n\\\\n\\\\n### 2. **共鸣式调侃（精准戳中痛点）**  \\\\n对于学生群体（尤其是经历过开学焦虑的人）来说，“开学前的焦虑”是一个普遍的生活体验：假期结束、作业没写完、要面对早起和学业压力……这些真实的小烦恼，确实可能导致短暂的“情绪低落”，但本质上和“抑郁症”这种严肃的心理疾病完全不是一个量级。笑话通过夸张的对比（把“开学焦虑”伪装成“抑郁症”），精准戳中了学生时代的共同记忆，让人会心一笑——“啊，我当年开学前也这样！”这种共鸣感放大了笑点，让成年人也能回忆起自己的青春，产生亲切感。\\\\n\\\\n\\\\n### 3. **语言的“一本正经”与“真相的简单粗暴”**  \\\\n医生的提问“你几岁了？”看似专业，仿佛要进行严肃诊断，结果答案却直白到“扎心”，这种“伪专业”与“真吐槽”的结合，也增加了幽默效果。就像用“医学问诊”的外壳，包装了一个学生党都懂的“生活梗”，既荒诞又真实。\\\\n\\\\n\\\\n简单说，就是用**“大题小做”的反差**和**“共同经历的共鸣”**，把一个日常小焦虑变成了一个轻松的笑话～ 😄\\\",\\n            \\\"type\\\": \\\"output_text\\\",\\n            \\\"annotations\\\": null\\n          }\\n        ],\\n        \\\"role\\\": \\\"assistant\\\",\\n        \\\"status\\\": \\\"completed\\\",\\n        \\\"type\\\": \\\"message\\\"\\n      }\\n    ],\\n    \\\"parallel_tool_calls\\\": null,\\n    \\\"temperature\\\": null,\\n    \\\"tool_choice\\\": null,\\n    \\\"tools\\\": null,\\n    \\\"top_p\\\": null,\\n    \\\"max_output_tokens\\\": 32768,\\n    \\\"previous_response_id\\\": \\\"resp_0217****87fa\\\",\\n    \\\"thinking\\\": {\\n      \\\"type\\\": \\\"disabled\\\"\\n    },\\n    \\\"service_tier\\\": \\\"default\\\",\\n    \\\"status\\\": \\\"completed\\\",\\n    \\\"text\\\": null,\\n    \\\"usage\\\": {\\n      \\\"input_tokens\\\": 130,\\n      \\\"input_tokens_details\\\": {\\n        \\\"cached_tokens\\\": 0\\n      },\\n      \\\"output_tokens\\\": 445,\\n      \\\"output_tokens_details\\\": {\\n        \\\"reasoning_tokens\\\": 0\\n      },\\n      \\\"total_tokens\\\": 575\\n    },\\n    \\\"caching\\\": {\\n      \\\"type\\\": \\\"disabled\\\"\\n    },\\n    \\\"store\\\": true,\\n    \\\"expire_at\\\": 1756734684\\n  }\\n]\",\"outputLanguage\":\"\",\"key\":\"Zzq28usV\"}],\"key\":\"GwBhPYGf\"},{\"title\":\"上下文缓存\",\"children\":[{\"title\":\"Python-OpenAI\",\"debug\":{\"openDebug\":true,\"debugParams\":{\"envs\":[\"ARK_API_KEY\"],\"packages\":[{\"packageName\":\"openai\",\"packageVersion\":\"\"}],\"value\":[1,2]}},\"inputCode\":\"import os\\nfrom openai import OpenAI\\n\\n# 从环境变量中获取您的API KEY，配置方法见：https://ark.volcengine.com/region:cn-beijing/docs/quick-start\\napi_key = os.getenv('ARK_API_KEY')\\n\\nclient = OpenAI(\\n    base_url='https://ark.cn-beijing.volces.com/api/v3',\\n    api_key=api_key,\\n)\\n\\nresponse = client.responses.create(\\n    model=\\\"doubao-seed-2-1-pro-260915\\\",\\n    input=[\\n            {\\n             \\\"role\\\": \\\"system\\\",\\n             \\\"content\\\": \\\"你是三字经小能手。每次用户输入时，你只能用三个汉字作出回应。用户输入如果是三个字，就用三个字像对对联一样进行匹配回应；如果不是三个字，就将用户输入的意思总结成三个字。无论何时，回复都严格限制为三个字。\\\"\\n            },\\n            {\\n            \\\"role\\\": \\\"user\\\",\\n            \\\"content\\\":\\\"人之初\\\"\\n            }\\n          ],\\n    extra_body={\\n        \\\"caching\\\": {\\\"type\\\": \\\"enabled\\\"},\\n        \\\"thinking\\\":{\\\"type\\\":\\\"disabled\\\"}\\n    }\\n)\\nprint(response)\\n\\nsecond_response = client.responses.create(\\n    model=\\\"doubao-seed-2-1-pro-260915\\\",\\n    previous_response_id=response.id,\\n    input=[{\\\"role\\\": \\\"user\\\", \\\"content\\\": \\\"下一句\\\"}],\\n    extra_body={\\n        \\\"caching\\\": {\\\"type\\\": \\\"enabled\\\"},\\n        \\\"thinking\\\":{\\\"type\\\":\\\"disabled\\\"}\\n    }\\n)\\nprint(second_response)\\n\\nthird_response = client.responses.create(\\n    model=\\\"doubao-seed-2-1-pro-260915\\\",\\n    previous_response_id=second_response.id,\\n    input=[{\\\"role\\\": \\\"user\\\", \\\"content\\\": \\\"下一句\\\"}],\\n    extra_body={\\n        \\\"caching\\\": {\\\"type\\\": \\\"enabled\\\"},\\n        \\\"thinking\\\":{\\\"type\\\":\\\"disabled\\\"}\\n    }\\n)\\nprint(third_response)\",\"inputLanguage\":\"python\",\"outputCode\":\"[{\\n    \\\"created_at\\\": 1760168118,\\n    \\\"id\\\": \\\"resp_0217*****\\\",\\n    \\\"max_output_tokens\\\": 32768,\\n    \\\"model\\\": \\\"doubao-seed-2-1-pro-260915\\\",\\n    \\\"object\\\": \\\"response\\\",\\n    \\\"output\\\": [\\n        {\\n            \\\"type\\\": \\\"message\\\",\\n            \\\"role\\\": \\\"assistant\\\",\\n            \\\"content\\\": [\\n                {\\n                    \\\"type\\\": \\\"output_text\\\",\\n                    \\\"text\\\": \\\"性本善\\\"\\n                }\\n            ],\\n            \\\"status\\\": \\\"completed\\\",\\n            \\\"id\\\": \\\"msg_02176016811859200000000000000000000ffffac15aa1fde96cd\\\"\\n        }\\n    ],\\n    \\\"thinking\\\": {\\n        \\\"type\\\": \\\"disabled\\\"\\n    },\\n    \\\"service_tier\\\": \\\"default\\\",\\n    \\\"status\\\": \\\"completed\\\",\\n    \\\"usage\\\": {\\n        \\\"input_tokens\\\": 101,\\n        \\\"output_tokens\\\": 3,\\n        \\\"total_tokens\\\": 104,\\n        \\\"input_tokens_details\\\": {\\n            \\\"cached_tokens\\\": 0\\n        },\\n        \\\"output_tokens_details\\\": {\\n            \\\"reasoning_tokens\\\": 0\\n        }\\n    },\\n    \\\"caching\\\": {\\n        \\\"type\\\": \\\"enabled\\\"\\n    },\\n    \\\"store\\\": true,\\n    \\\"expire_at\\\": 1760427318\\n},\\n{\\n    \\\"created_at\\\": 1760168211,\\n    \\\"id\\\": \\\"resp_0217*****\\\",\\n    \\\"max_output_tokens\\\": 32768,\\n    \\\"model\\\": \\\"doubao-seed-2-1-pro-260915\\\",\\n    \\\"object\\\": \\\"response\\\",\\n    \\\"output\\\": [\\n        {\\n            \\\"type\\\": \\\"message\\\",\\n            \\\"role\\\": \\\"assistant\\\",\\n            \\\"content\\\": [\\n                {\\n                    \\\"type\\\": \\\"output_text\\\",\\n                    \\\"text\\\": \\\"性相近\\\"\\n                }\\n            ],\\n            \\\"status\\\": \\\"completed\\\",\\n            \\\"id\\\": \\\"msg_02176016821111700000000000000000000ffffac15aa7b89be5a\\\"\\n        }\\n    ],\\n    \\\"previous_response_id\\\": \\\"resp_0217*****\\\",\\n    \\\"thinking\\\": {\\n        \\\"type\\\": \\\"disabled\\\"\\n    },\\n    \\\"service_tier\\\": \\\"default\\\",\\n    \\\"status\\\": \\\"completed\\\",\\n    \\\"usage\\\": {\\n        \\\"input_tokens\\\": 116,\\n        \\\"output_tokens\\\": 2,\\n        \\\"total_tokens\\\": 118,\\n        \\\"input_tokens_details\\\": {\\n            \\\"cached_tokens\\\": 104\\n        },\\n        \\\"output_tokens_details\\\": {\\n            \\\"reasoning_tokens\\\": 0\\n        }\\n    },\\n    \\\"caching\\\": {\\n        \\\"type\\\": \\\"enabled\\\"\\n    },\\n    \\\"store\\\": true,\\n    \\\"expire_at\\\": 1760427411\\n},\\n{\\n    \\\"created_at\\\": 1760168277,\\n    \\\"id\\\": \\\"resp_0217*****\\\",\\n    \\\"max_output_tokens\\\": 32768,\\n    \\\"model\\\": \\\"doubao-seed-2-1-pro-260915\\\",\\n    \\\"object\\\": \\\"response\\\",\\n    \\\"output\\\": [\\n        {\\n            \\\"type\\\": \\\"message\\\",\\n            \\\"role\\\": \\\"assistant\\\",\\n            \\\"content\\\": [\\n                {\\n                    \\\"type\\\": \\\"output_text\\\",\\n                    \\\"text\\\": \\\"习相远\\\"\\n                }\\n            ],\\n            \\\"status\\\": \\\"completed\\\",\\n            \\\"id\\\": \\\"msg_02176016827706700000000000000000000ffffac15aa29c2672a\\\"\\n        }\\n    ],\\n    \\\"previous_response_id\\\": \\\"resp_0217*****\\\",\\n    \\\"thinking\\\": {\\n        \\\"type\\\": \\\"disabled\\\"\\n    },\\n    \\\"service_tier\\\": \\\"default\\\",\\n    \\\"status\\\": \\\"completed\\\",\\n    \\\"usage\\\": {\\n        \\\"input_tokens\\\": 130,\\n        \\\"output_tokens\\\": 3,\\n        \\\"total_tokens\\\": 133,\\n        \\\"input_tokens_details\\\": {\\n            \\\"cached_tokens\\\": 118\\n        },\\n        \\\"output_tokens_details\\\": {\\n            \\\"reasoning_tokens\\\": 0\\n        }\\n    },\\n    \\\"caching\\\": {\\n        \\\"type\\\": \\\"enabled\\\"\\n    },\\n    \\\"store\\\": true,\\n    \\\"expire_at\\\": 1760427477\\n}]\",\"outputLanguage\":\"\",\"key\":\"lwj0O7tL\"},{\"title\":\"Python\",\"debug\":{\"openDebug\":true,\"debugParams\":{\"envs\":[\"ARK_API_KEY\"],\"packages\":[{\"packageName\":\"arkruntime\",\"packageVersion\":\"\"}],\"value\":[1,2]}},\"inputCode\":\"import os\\nfrom arkruntime import Ark\\n\\n# 从环境变量中获取您的API KEY，配置方法见：https://ark.volcengine.com/region:cn-beijing/docs/quick-start\\napi_key = os.getenv('ARK_API_KEY')\\n\\nclient = Ark(\\n    base_url='https://ark.cn-beijing.volces.com/api/v3',\\n    api_key=api_key,\\n)\\n\\nresponse = client.responses.create(\\n    model=\\\"doubao-seed-2-1-pro-260915\\\",\\n    input=[\\n            {\\n             \\\"role\\\": \\\"system\\\",\\n             \\\"content\\\": \\\"你是三字经小能手。每次用户输入时，你只能用三个汉字作出回应。用户输入如果是三个字，就用三个字像对对联一样进行匹配回应；如果不是三个字，就将用户输入的意思总结成三个字。无论何时，回复都严格限制为三个字。\\\"\\n            },\\n            {\\n            \\\"role\\\": \\\"user\\\",\\n            \\\"content\\\":\\\"人之初\\\"\\n            }\\n          ],\\n    caching={\\\"type\\\": \\\"enabled\\\"},\\n    thinking={\\\"type\\\": \\\"disabled\\\"},\\n)\\nprint(response)\\n\\nsecond_response = client.responses.create(\\n    model=\\\"doubao-seed-2-1-pro-260915\\\",\\n    previous_response_id=response.id,\\n    input=[{\\\"role\\\": \\\"user\\\", \\\"content\\\": \\\"下一句\\\"}],\\n    caching={\\\"type\\\": \\\"enabled\\\"},\\n    thinking={\\\"type\\\": \\\"disabled\\\"},\\n)\\nprint(second_response)\\n\\nthird_response = client.responses.create(\\n    model=\\\"doubao-seed-2-1-pro-260915\\\",\\n    previous_response_id=second_response.id,\\n    input=[{\\\"role\\\": \\\"user\\\", \\\"content\\\": \\\"下一句\\\"}],\\n    caching={\\\"type\\\": \\\"enabled\\\"},\\n    thinking={\\\"type\\\": \\\"disabled\\\"},\\n)\\nprint(third_response)\",\"inputLanguage\":\"python\",\"outputCode\":\"[{\\n    \\\"created_at\\\": 1760168118,\\n    \\\"id\\\": \\\"resp_0217*****\\\",\\n    \\\"max_output_tokens\\\": 32768,\\n    \\\"model\\\": \\\"doubao-seed-2-1-pro-260915\\\",\\n    \\\"object\\\": \\\"response\\\",\\n    \\\"output\\\": [\\n        {\\n            \\\"type\\\": \\\"message\\\",\\n            \\\"role\\\": \\\"assistant\\\",\\n            \\\"content\\\": [\\n                {\\n                    \\\"type\\\": \\\"output_text\\\",\\n                    \\\"text\\\": \\\"性本善\\\"\\n                }\\n            ],\\n            \\\"status\\\": \\\"completed\\\",\\n            \\\"id\\\": \\\"msg_02176016811859200000000000000000000ffffac15aa1fde96cd\\\"\\n        }\\n    ],\\n    \\\"thinking\\\": {\\n        \\\"type\\\": \\\"disabled\\\"\\n    },\\n    \\\"service_tier\\\": \\\"default\\\",\\n    \\\"status\\\": \\\"completed\\\",\\n    \\\"usage\\\": {\\n        \\\"input_tokens\\\": 101,\\n        \\\"output_tokens\\\": 3,\\n        \\\"total_tokens\\\": 104,\\n        \\\"input_tokens_details\\\": {\\n            \\\"cached_tokens\\\": 0\\n        },\\n        \\\"output_tokens_details\\\": {\\n            \\\"reasoning_tokens\\\": 0\\n        }\\n    },\\n    \\\"caching\\\": {\\n        \\\"type\\\": \\\"enabled\\\"\\n    },\\n    \\\"store\\\": true,\\n    \\\"expire_at\\\": 1760427318\\n},\\n{\\n    \\\"created_at\\\": 1760168211,\\n    \\\"id\\\": \\\"resp_0217*****\\\",\\n    \\\"max_output_tokens\\\": 32768,\\n    \\\"model\\\": \\\"doubao-seed-2-1-pro-260915\\\",\\n    \\\"object\\\": \\\"response\\\",\\n    \\\"output\\\": [\\n        {\\n            \\\"type\\\": \\\"message\\\",\\n            \\\"role\\\": \\\"assistant\\\",\\n            \\\"content\\\": [\\n                {\\n                    \\\"type\\\": \\\"output_text\\\",\\n                    \\\"text\\\": \\\"性相近\\\"\\n                }\\n            ],\\n            \\\"status\\\": \\\"completed\\\",\\n            \\\"id\\\": \\\"msg_02176016821111700000000000000000000ffffac15aa7b89be5a\\\"\\n        }\\n    ],\\n    \\\"previous_response_id\\\": \\\"resp_0217*****\\\",\\n    \\\"thinking\\\": {\\n        \\\"type\\\": \\\"disabled\\\"\\n    },\\n    \\\"service_tier\\\": \\\"default\\\",\\n    \\\"status\\\": \\\"completed\\\",\\n    \\\"usage\\\": {\\n        \\\"input_tokens\\\": 116,\\n        \\\"output_tokens\\\": 2,\\n        \\\"total_tokens\\\": 118,\\n        \\\"input_tokens_details\\\": {\\n            \\\"cached_tokens\\\": 104\\n        },\\n        \\\"output_tokens_details\\\": {\\n            \\\"reasoning_tokens\\\": 0\\n        }\\n    },\\n    \\\"caching\\\": {\\n        \\\"type\\\": \\\"enabled\\\"\\n    },\\n    \\\"store\\\": true,\\n    \\\"expire_at\\\": 1760427411\\n},\\n{\\n    \\\"created_at\\\": 1760168277,\\n    \\\"id\\\": \\\"resp_0217*****\\\",\\n    \\\"max_output_tokens\\\": 32768,\\n    \\\"model\\\": \\\"doubao-seed-2-1-pro-260915\\\",\\n    \\\"object\\\": \\\"response\\\",\\n    \\\"output\\\": [\\n        {\\n            \\\"type\\\": \\\"message\\\",\\n            \\\"role\\\": \\\"assistant\\\",\\n            \\\"content\\\": [\\n                {\\n                    \\\"type\\\": \\\"output_text\\\",\\n                    \\\"text\\\": \\\"习相远\\\"\\n                }\\n            ],\\n            \\\"status\\\": \\\"completed\\\",\\n            \\\"id\\\": \\\"msg_02176016827706700000000000000000000ffffac15aa29c2672a\\\"\\n        }\\n    ],\\n    \\\"previous_response_id\\\": \\\"resp_0217*****\\\",\\n    \\\"thinking\\\": {\\n        \\\"type\\\": \\\"disabled\\\"\\n    },\\n    \\\"service_tier\\\": \\\"default\\\",\\n    \\\"status\\\": \\\"completed\\\",\\n    \\\"usage\\\": {\\n        \\\"input_tokens\\\": 130,\\n        \\\"output_tokens\\\": 3,\\n        \\\"total_tokens\\\": 133,\\n        \\\"input_tokens_details\\\": {\\n            \\\"cached_tokens\\\": 118\\n        },\\n        \\\"output_tokens_details\\\": {\\n            \\\"reasoning_tokens\\\": 0\\n        }\\n    },\\n    \\\"caching\\\": {\\n        \\\"type\\\": \\\"enabled\\\"\\n    },\\n    \\\"store\\\": true,\\n    \\\"expire_at\\\": 1760427477\\n}]\",\"outputLanguage\":\"\",\"key\":\"34Wxerbz\"},{\"title\":\"Go\",\"debug\":{\"openDebug\":true,\"debugParams\":{\"envs\":[\"ARK_API_KEY\"],\"packages\":[{\"packageName\":\"github.com/volcengine/volcengine-go-sdk\",\"packageVersion\":\"\"}],\"value\":[1,2]}},\"inputCode\":\"package main\\n\\nimport (\\n    \\\"context\\\"\\n    \\\"fmt\\\"\\n    \\\"os\\\"\\n\\n    \\\"github.com/volcengine/ark-runtime-go/arkruntime\\\"\\n    \\\"github.com/volcengine/ark-runtime-go/arkruntime/model/responses\\\"\\n)\\n\\nfunc main() {\\n    client := arkruntime.NewClientWithApiKey(\\n        //通过 os.Getenv 从环境变量中获取 ARK_API_KEY\\n        os.Getenv(\\\"ARK_API_KEY\\\"),\\n        arkruntime.WithBaseUrl(\\\"https://ark.cn-beijing.volces.com/api/v3\\\"),\\n    )\\n    // 创建一个上下文，通常用于传递请求的上下文信息，如超时、取消等\\n    ctx := context.Background()\\n\\n    resp, err := client.CreateResponses(ctx, &responses.ResponsesRequest{\\n        Model: \\\"doubao-seed-2-1-pro-260915\\\",\\n        Input: responses.NewInputItemArrayResponsesInput([]responses.InputItem{\\n            easyMessage(responses.MessageRoleSystem, \\\"你是三字经小能手。每次用户输入时，你只能用三个汉字作出回应。用户输入如果是三个字，就用三个字像对对联一样进行匹配回应；如果不是三个字，就将用户输入的意思总结成三个字。无论何时，回复都严格限制为三个字。\\\"),\\n            easyMessage(responses.MessageRoleUser, \\\"人之初\\\"),\\n        }),\\n        Caching:  responses.NewOptResponseCaching(responses.ResponseCaching{Type: responses.NewOptCacheMode(responses.CacheModeEnabled)}),\\n        Thinking: responses.NewOptThinking(responses.Thinking{Type: responses.NewOptThinkingMode(responses.ThinkingModeDisabled)}),\\n    })\\n    if err != nil {\\n        fmt.Printf(\\\"response error: %v\\\\n\\\", err)\\n        return\\n    }\\n    fmt.Println(resp)\\n\\n    second_resp, second_err := client.CreateResponses(ctx, &responses.ResponsesRequest{\\n        Model:              \\\"doubao-seed-2-1-pro-260915\\\",\\n        PreviousResponseID: responses.NewOptString(resp.ID),\\n        Input: responses.NewInputItemArrayResponsesInput([]responses.InputItem{\\n            easyMessage(responses.MessageRoleUser, \\\"下一句\\\"),\\n        }),\\n        Caching:  responses.NewOptResponseCaching(responses.ResponseCaching{Type: responses.NewOptCacheMode(responses.CacheModeEnabled)}),\\n        Thinking: responses.NewOptThinking(responses.Thinking{Type: responses.NewOptThinkingMode(responses.ThinkingModeDisabled)}),\\n    })\\n    if second_err != nil {\\n        fmt.Printf(\\\"second response error: %v\\\\n\\\", second_err)\\n        return\\n    }\\n    fmt.Println(second_resp)\\n\\n    third_resp, third_err := client.CreateResponses(ctx, &responses.ResponsesRequest{\\n        Model:              \\\"doubao-seed-2-1-pro-260915\\\",\\n        PreviousResponseID: responses.NewOptString(second_resp.ID),\\n        Input: responses.NewInputItemArrayResponsesInput([]responses.InputItem{\\n            easyMessage(responses.MessageRoleUser, \\\"下一句\\\"),\\n        }),\\n        Caching:  responses.NewOptResponseCaching(responses.ResponseCaching{Type: responses.NewOptCacheMode(responses.CacheModeEnabled)}),\\n        Thinking: responses.NewOptThinking(responses.Thinking{Type: responses.NewOptThinkingMode(responses.ThinkingModeDisabled)}),\\n    })\\n    if third_err != nil {\\n        fmt.Printf(\\\"second response error: %v\\\\n\\\", third_err)\\n        return\\n    }\\n    fmt.Println(third_resp)\\n}\\n\\nfunc easyMessage(role responses.MessageRole, content string) responses.InputItem {\\n    return responses.InputItem{\\n        OneOf: responses.NewItemEasyMessageInputItemSum(\\n            responses.ItemEasyMessage{\\n                Role:    responses.NewOptMessageRole(role),\\n                Content: responses.NewStringMessageContent(content),\\n            },\\n        ),\\n    }\\n}\",\"inputLanguage\":\"go\",\"outputCode\":\"[{\\n    \\\"created_at\\\": 1760168118,\\n    \\\"id\\\": \\\"resp_0217*****\\\",\\n    \\\"max_output_tokens\\\": 32768,\\n    \\\"model\\\": \\\"doubao-seed-2-1-pro-260915\\\",\\n    \\\"object\\\": \\\"response\\\",\\n    \\\"output\\\": [\\n        {\\n            \\\"type\\\": \\\"message\\\",\\n            \\\"role\\\": \\\"assistant\\\",\\n            \\\"content\\\": [\\n                {\\n                    \\\"type\\\": \\\"output_text\\\",\\n                    \\\"text\\\": \\\"性本善\\\"\\n                }\\n            ],\\n            \\\"status\\\": \\\"completed\\\",\\n            \\\"id\\\": \\\"msg_02176016811859200000000000000000000ffffac15aa1fde96cd\\\"\\n        }\\n    ],\\n    \\\"thinking\\\": {\\n        \\\"type\\\": \\\"disabled\\\"\\n    },\\n    \\\"service_tier\\\": \\\"default\\\",\\n    \\\"status\\\": \\\"completed\\\",\\n    \\\"usage\\\": {\\n        \\\"input_tokens\\\": 101,\\n        \\\"output_tokens\\\": 3,\\n        \\\"total_tokens\\\": 104,\\n        \\\"input_tokens_details\\\": {\\n            \\\"cached_tokens\\\": 0\\n        },\\n        \\\"output_tokens_details\\\": {\\n            \\\"reasoning_tokens\\\": 0\\n        }\\n    },\\n    \\\"caching\\\": {\\n        \\\"type\\\": \\\"enabled\\\"\\n    },\\n    \\\"store\\\": true,\\n    \\\"expire_at\\\": 1760427318\\n},\\n{\\n    \\\"created_at\\\": 1760168211,\\n    \\\"id\\\": \\\"resp_0217*****\\\",\\n    \\\"max_output_tokens\\\": 32768,\\n    \\\"model\\\": \\\"doubao-seed-2-1-pro-260915\\\",\\n    \\\"object\\\": \\\"response\\\",\\n    \\\"output\\\": [\\n        {\\n            \\\"type\\\": \\\"message\\\",\\n            \\\"role\\\": \\\"assistant\\\",\\n            \\\"content\\\": [\\n                {\\n                    \\\"type\\\": \\\"output_text\\\",\\n                    \\\"text\\\": \\\"性相近\\\"\\n                }\\n            ],\\n            \\\"status\\\": \\\"completed\\\",\\n            \\\"id\\\": \\\"msg_02176016821111700000000000000000000ffffac15aa7b89be5a\\\"\\n        }\\n    ],\\n    \\\"previous_response_id\\\": \\\"resp_0217*****\\\",\\n    \\\"thinking\\\": {\\n        \\\"type\\\": \\\"disabled\\\"\\n    },\\n    \\\"service_tier\\\": \\\"default\\\",\\n    \\\"status\\\": \\\"completed\\\",\\n    \\\"usage\\\": {\\n        \\\"input_tokens\\\": 116,\\n        \\\"output_tokens\\\": 2,\\n        \\\"total_tokens\\\": 118,\\n        \\\"input_tokens_details\\\": {\\n            \\\"cached_tokens\\\": 104\\n        },\\n        \\\"output_tokens_details\\\": {\\n            \\\"reasoning_tokens\\\": 0\\n        }\\n    },\\n    \\\"caching\\\": {\\n        \\\"type\\\": \\\"enabled\\\"\\n    },\\n    \\\"store\\\": true,\\n    \\\"expire_at\\\": 1760427411\\n},\\n{\\n    \\\"created_at\\\": 1760168277,\\n    \\\"id\\\": \\\"resp_0217*****\\\",\\n    \\\"max_output_tokens\\\": 32768,\\n    \\\"model\\\": \\\"doubao-seed-2-1-pro-260915\\\",\\n    \\\"object\\\": \\\"response\\\",\\n    \\\"output\\\": [\\n        {\\n            \\\"type\\\": \\\"message\\\",\\n            \\\"role\\\": \\\"assistant\\\",\\n            \\\"content\\\": [\\n                {\\n                    \\\"type\\\": \\\"output_text\\\",\\n                    \\\"text\\\": \\\"习相远\\\"\\n                }\\n            ],\\n            \\\"status\\\": \\\"completed\\\",\\n            \\\"id\\\": \\\"msg_02176016827706700000000000000000000ffffac15aa29c2672a\\\"\\n        }\\n    ],\\n    \\\"previous_response_id\\\": \\\"resp_0217*****\\\",\\n    \\\"thinking\\\": {\\n        \\\"type\\\": \\\"disabled\\\"\\n    },\\n    \\\"service_tier\\\": \\\"default\\\",\\n    \\\"status\\\": \\\"completed\\\",\\n    \\\"usage\\\": {\\n        \\\"input_tokens\\\": 130,\\n        \\\"output_tokens\\\": 3,\\n        \\\"total_tokens\\\": 133,\\n        \\\"input_tokens_details\\\": {\\n            \\\"cached_tokens\\\": 118\\n        },\\n        \\\"output_tokens_details\\\": {\\n            \\\"reasoning_tokens\\\": 0\\n        }\\n    },\\n    \\\"caching\\\": {\\n        \\\"type\\\": \\\"enabled\\\"\\n    },\\n    \\\"store\\\": true,\\n    \\\"expire_at\\\": 1760427477\\n}]\",\"outputLanguage\":\"\",\"key\":\"PVoBjfqC\"},{\"title\":\"Java\",\"debug\":{\"openDebug\":true,\"debugParams\":{\"envs\":[\"ARK_API_KEY\"],\"packages\":[{\"packageName\":\"com.fasterxml.jackson.core:jackson-core\",\"packageVersion\":\"2.21.3\"},{\"packageName\":\"com.volcengine:ark-runtime\",\"packageVersion\":\"0.9.0\"}],\"value\":[1,2]}},\"inputCode\":\"package com.ark.example;\\nimport com.volcengine.ark.runtime.service.ArkService;\\nimport com.volcengine.ark.runtime.models.responses.*;\\npublic class demo {\\n    public static void main(String[] args) {\\n        String apiKey = System.getenv(\\\"ARK_API_KEY\\\");\\n        // 创建ArkService实例\\n        ArkService arkService = ArkService.builder().apiKey(apiKey)\\n                .baseUrl(\\\"https://ark.cn-beijing.volces.com/api/v3\\\")\\n                .build();\\n\\n        ResponsesRequest request = ResponsesRequest.builder()\\n                .model(\\\"doubao-seed-2-1-pro-260915\\\")\\n                .input(ResponsesInput.ofList(java.util.Arrays.asList(ItemEasyMessage.builder().role(MessageRole.SYSTEM).content(\\n                                MessageContent.ofString(\\\"你是三字经小能手。每次用户输入时，你只能用三个汉字作出回应。用户输入如果是三个字，就用三个字像对对联一样进行匹配回应；如果不是三个字，就将用户输入的意思总结成三个字。无论何时，回复都严格限制为三个字。\\\")\\n                        ).build(), ItemEasyMessage.builder().role(MessageRole.SYSTEM).content(\\n                                MessageContent.ofString(\\\"人之初\\\")\\n                        ).build())))\\n                .caching(ResponseCaching.builder().type(CacheMode.ENABLED).build())\\n                .thinking(Thinking.builder().type(ThinkingMode.DISABLED).build())\\n                .build();\\n        Response resp = arkService.createResponse(request);\\n        System.out.println(resp);\\n        System.out.println(\\\"---------------------\\\");\\n        ResponsesRequest request2 = ResponsesRequest.builder()\\n                .model(\\\"doubao-seed-2-1-pro-260915\\\")\\n                .previousResponseId(resp.getId())\\n                .input(ResponsesInput.ofList(java.util.Arrays.asList(ItemEasyMessage.builder().role(MessageRole.USER).content(\\n                                MessageContent.ofString(\\\"下一句\\\")\\n                        ).build())))\\n                .caching(ResponseCaching.builder().type(CacheMode.ENABLED).build())\\n                .thinking(Thinking.builder().type(ThinkingMode.DISABLED).build())\\n                .build();\\n        Response resp2 = arkService.createResponse(request2);\\n        System.out.println(resp2);\\n        System.out.println(\\\"---------------------\\\");\\n        ResponsesRequest request3 = ResponsesRequest.builder()\\n                .model(\\\"doubao-seed-2-1-pro-260915\\\")\\n                .previousResponseId(resp2.getId())\\n                .input(ResponsesInput.ofList(java.util.Arrays.asList(ItemEasyMessage.builder().role(MessageRole.USER).content(\\n                                MessageContent.ofString(\\\"下一句\\\")\\n                        ).build())))\\n                .caching(ResponseCaching.builder().type(CacheMode.ENABLED).build())\\n                .thinking(Thinking.builder().type(ThinkingMode.DISABLED).build())\\n                .build();\\n        Response resp3 = arkService.createResponse(request3);\\n        System.out.println(resp3);\\n\\n        arkService.shutdownExecutor();\\n    }\\n}\",\"inputLanguage\":\"java\",\"outputCode\":\"[{\\n    \\\"created_at\\\": 1760168118,\\n    \\\"id\\\": \\\"resp_0217*****\\\",\\n    \\\"max_output_tokens\\\": 32768,\\n    \\\"model\\\": \\\"doubao-seed-2-1-pro-260915\\\",\\n    \\\"object\\\": \\\"response\\\",\\n    \\\"output\\\": [\\n        {\\n            \\\"type\\\": \\\"message\\\",\\n            \\\"role\\\": \\\"assistant\\\",\\n            \\\"content\\\": [\\n                {\\n                    \\\"type\\\": \\\"output_text\\\",\\n                    \\\"text\\\": \\\"性本善\\\"\\n                }\\n            ],\\n            \\\"status\\\": \\\"completed\\\",\\n            \\\"id\\\": \\\"msg_02176016811859200000000000000000000ffffac15aa1fde96cd\\\"\\n        }\\n    ],\\n    \\\"thinking\\\": {\\n        \\\"type\\\": \\\"disabled\\\"\\n    },\\n    \\\"service_tier\\\": \\\"default\\\",\\n    \\\"status\\\": \\\"completed\\\",\\n    \\\"usage\\\": {\\n        \\\"input_tokens\\\": 101,\\n        \\\"output_tokens\\\": 3,\\n        \\\"total_tokens\\\": 104,\\n        \\\"input_tokens_details\\\": {\\n            \\\"cached_tokens\\\": 0\\n        },\\n        \\\"output_tokens_details\\\": {\\n            \\\"reasoning_tokens\\\": 0\\n        }\\n    },\\n    \\\"caching\\\": {\\n        \\\"type\\\": \\\"enabled\\\"\\n    },\\n    \\\"store\\\": true,\\n    \\\"expire_at\\\": 1760427318\\n},\\n{\\n    \\\"created_at\\\": 1760168211,\\n    \\\"id\\\": \\\"resp_0217*****\\\",\\n    \\\"max_output_tokens\\\": 32768,\\n    \\\"model\\\": \\\"doubao-seed-2-1-pro-260915\\\",\\n    \\\"object\\\": \\\"response\\\",\\n    \\\"output\\\": [\\n        {\\n            \\\"type\\\": \\\"message\\\",\\n            \\\"role\\\": \\\"assistant\\\",\\n            \\\"content\\\": [\\n                {\\n                    \\\"type\\\": \\\"output_text\\\",\\n                    \\\"text\\\": \\\"性相近\\\"\\n                }\\n            ],\\n            \\\"status\\\": \\\"completed\\\",\\n            \\\"id\\\": \\\"msg_02176016821111700000000000000000000ffffac15aa7b89be5a\\\"\\n        }\\n    ],\\n    \\\"previous_response_id\\\": \\\"resp_0217*****\\\",\\n    \\\"thinking\\\": {\\n        \\\"type\\\": \\\"disabled\\\"\\n    },\\n    \\\"service_tier\\\": \\\"default\\\",\\n    \\\"status\\\": \\\"completed\\\",\\n    \\\"usage\\\": {\\n        \\\"input_tokens\\\": 116,\\n        \\\"output_tokens\\\": 2,\\n        \\\"total_tokens\\\": 118,\\n        \\\"input_tokens_details\\\": {\\n            \\\"cached_tokens\\\": 104\\n        },\\n        \\\"output_tokens_details\\\": {\\n            \\\"reasoning_tokens\\\": 0\\n        }\\n    },\\n    \\\"caching\\\": {\\n        \\\"type\\\": \\\"enabled\\\"\\n    },\\n    \\\"store\\\": true,\\n    \\\"expire_at\\\": 1760427411\\n},\\n{\\n    \\\"created_at\\\": 1760168277,\\n    \\\"id\\\": \\\"resp_0217*****\\\",\\n    \\\"max_output_tokens\\\": 32768,\\n    \\\"model\\\": \\\"doubao-seed-2-1-pro-260915\\\",\\n    \\\"object\\\": \\\"response\\\",\\n    \\\"output\\\": [\\n        {\\n            \\\"type\\\": \\\"message\\\",\\n            \\\"role\\\": \\\"assistant\\\",\\n            \\\"content\\\": [\\n                {\\n                    \\\"type\\\": \\\"output_text\\\",\\n                    \\\"text\\\": \\\"习相远\\\"\\n                }\\n            ],\\n            \\\"status\\\": \\\"completed\\\",\\n            \\\"id\\\": \\\"msg_02176016827706700000000000000000000ffffac15aa29c2672a\\\"\\n        }\\n    ],\\n    \\\"previous_response_id\\\": \\\"resp_0217*****\\\",\\n    \\\"thinking\\\": {\\n        \\\"type\\\": \\\"disabled\\\"\\n    },\\n    \\\"service_tier\\\": \\\"default\\\",\\n    \\\"status\\\": \\\"completed\\\",\\n    \\\"usage\\\": {\\n        \\\"input_tokens\\\": 130,\\n        \\\"output_tokens\\\": 3,\\n        \\\"total_tokens\\\": 133,\\n        \\\"input_tokens_details\\\": {\\n            \\\"cached_tokens\\\": 118\\n        },\\n        \\\"output_tokens_details\\\": {\\n            \\\"reasoning_tokens\\\": 0\\n        }\\n    },\\n    \\\"caching\\\": {\\n        \\\"type\\\": \\\"enabled\\\"\\n    },\\n    \\\"store\\\": true,\\n    \\\"expire_at\\\": 1760427477\\n}]\",\"outputLanguage\":\"\",\"key\":\"eKDWOKe3\"}],\"key\":\"PwuB9bVA\"},{\"title\":\"函数调用 Function Calling\",\"children\":[{\"title\":\"cURL\",\"debug\":{\"openDebug\":true,\"debugParams\":{\"envs\":[\"ARK_API_KEY\"],\"value\":[1]}},\"inputCode\":\"curl --location 'https://ark.cn-beijing.volces.com/api/v3/responses' \\\\\\n--header \\\"Authorization: Bearer $ARK_API_KEY\\\" \\\\\\n--header 'Content-Type: application/json' \\\\\\n--data '{\\n    \\\"model\\\": \\\"doubao-seed-2-1-pro-260915\\\",\\n    \\\"input\\\": \\\"查询北京今天的天气\\\",\\n    \\\"tools\\\":[\\n        {\\n            \\\"type\\\": \\\"function\\\",\\n            \\\"name\\\": \\\"获取天气信息\\\",\\n            \\\"description\\\": \\\"根据给出的位置获取天气信息\\\",\\n            \\\"parameters\\\": {\\n                \\\"type\\\": \\\"object\\\",\\n                \\\"properties\\\": {\\n                    \\\"location\\\": {\\n                        \\\"type\\\": \\\"string\\\",\\n                        \\\"description\\\": \\\"城市名称，例如：北京\\\"\\n                    }\\n                },\\n                \\\"required\\\": [\\n                    \\\"location\\\"\\n                ]\\n            }\\n        }\\n    ]\\n}'\",\"inputLanguage\":\"bash\",\"outputCode\":\"{\\n  \\\"id\\\": \\\"resp_0217****b63e\\\",\\n  \\\"created_at\\\": 1756477803.0,\\n  \\\"error\\\": null,\\n  \\\"incomplete_details\\\": null,\\n  \\\"instructions\\\": null,\\n  \\\"model\\\": \\\"doubao-seed-2-1-pro-260915\\\",\\n  \\\"object\\\": \\\"response\\\",\\n  \\\"output\\\": [\\n    {\\n      \\\"id\\\": \\\"rs_0217****6b15\\\",\\n      \\\"summary\\\": [\\n        {\\n          \\\"text\\\": \\\"让我思考一下，我现在需要回答用户的问题：“北京的天气怎么样？”根据系统提示，我需要调用工具来获取天气信息。首先，我要确认用户的问题是否需要调用工具。用户询问的是当前北京的天气，这属于实时信息，无法通过常识直接回答，所以必须使用提供的工具。\\\\n\\\\n接下来，查看可用的工具列表，只有一个工具叫做“获取天气信息”，它的参数需要一个“location”，类型是字符串，必填项。用户的问题中明确提到了“北京”，所以location参数应该是“北京”。\\\\n\\\\n然后，我需要按照格式要求生成工具调用。系统提示说调用工具需要用包裹，里面是一个JSON数组。这里只需要调用一个工具，所以是单工具调用。参数部分应该是{\\\\\\\"location\\\\\\\": \\\\\\\"北京\\\\\\\"}。\\\\n\\\\n检查是否有其他需要注意的地方，比如参数是否正确，格式是否符合要求。确认无误后，生成调用语句。不需要并行调用，因为只有一个工具可用，且只需要一次调用就能获取所需信息。因此，最终的调用应该是：\\\\n\\\\n\\\",\\n          \\\"type\\\": \\\"summary_text\\\"\\n        }\\n      ],\\n      \\\"type\\\": \\\"reasoning\\\",\\n      \\\"status\\\": \\\"completed\\\"\\n    },\\n    {\\n      \\\"arguments\\\": \\\"{\\\\\\\"location\\\\\\\":\\\\\\\"北京\\\\\\\"}\\\",\\n      \\\"call_id\\\": \\\"call_****a6al\\\",\\n      \\\"name\\\": \\\"获取天气信息\\\",\\n      \\\"type\\\": \\\"function_call\\\",\\n      \\\"id\\\": \\\"fc_0217****c976b\\\",\\n      \\\"status\\\": \\\"completed\\\"\\n    }\\n  ],\\n  \\\"parallel_tool_calls\\\": null,\\n  \\\"temperature\\\": null,\\n  \\\"tool_choice\\\": null,\\n  \\\"tools\\\": [\\n    {\\n      \\\"name\\\": \\\"获取天气信息\\\",\\n      \\\"parameters\\\": {\\n        \\\"type\\\": \\\"object\\\",\\n        \\\"properties\\\": {\\n          \\\"location\\\": {\\n            \\\"type\\\": \\\"string\\\",\\n            \\\"description\\\": \\\"城市名称，例如：北京\\\"\\n          }\\n        },\\n        \\\"required\\\": [\\\"location\\\"]\\n      },\\n      \\\"type\\\": \\\"function\\\",\\n      \\\"description\\\": \\\"根据给出的位置获取天气信息\\\"\\n    }\\n  ],\\n  \\\"top_p\\\": null,\\n  \\\"max_output_tokens\\\": 32768,\\n  \\\"previous_response_id\\\": null,\\n  \\\"thinking\\\": null,\\n  \\\"service_tier\\\": \\\"default\\\",\\n  \\\"status\\\": \\\"completed\\\",\\n  \\\"text\\\": null,\\n  \\\"usage\\\": {\\n    \\\"input_tokens\\\": 454,\\n    \\\"input_tokens_details\\\": {\\n      \\\"cached_tokens\\\": 0\\n    },\\n    \\\"output_tokens\\\": 306,\\n    \\\"output_tokens_details\\\": {\\n      \\\"reasoning_tokens\\\": 279\\n    },\\n    \\\"total_tokens\\\": 760\\n  },\\n  \\\"caching\\\": {\\n    \\\"type\\\": \\\"disabled\\\"\\n  },\\n  \\\"store\\\": true,\\n  \\\"expire_at\\\": 1756737003\\n}\",\"outputLanguage\":\"\",\"key\":\"5JDwrd7Z\"},{\"title\":\"Python-OpenAI\",\"debug\":{\"openDebug\":true,\"debugParams\":{\"envs\":[\"ARK_API_KEY\"],\"packages\":[{\"packageName\":\"openai\",\"packageVersion\":\"\"}],\"value\":[1,2]}},\"inputCode\":\"from openai import OpenAI\\nimport os\\n\\n# 从环境变量中获取您的API KEY，配置方法见：https://ark.volcengine.com/region:cn-beijing/docs/quick-start\\napi_key = os.getenv('ARK_API_KEY')\\n\\nclient = OpenAI(\\n    base_url='https://ark.cn-beijing.volces.com/api/v3',\\n    api_key=api_key,\\n)\\n\\ntools = [{\\n    \\\"type\\\": \\\"function\\\",\\n    \\\"name\\\": \\\"获取天气信息\\\",\\n    \\\"description\\\": \\\"根据给出的位置获取天气信息\\\",\\n    \\\"parameters\\\": {\\n        \\\"type\\\": \\\"object\\\",\\n        \\\"properties\\\": {\\n            \\\"location\\\": {\\n                \\\"type\\\": \\\"string\\\",\\n                \\\"description\\\": \\\"城市名称，例如：北京\\\"\\n            }\\n        },\\n        \\\"required\\\": [\\n            \\\"location\\\"\\n        ]\\n    }\\n}]\\n\\n# 创建一个对话请求\\nresponse = client.responses.create(\\n    model=\\\"doubao-seed-2-1-pro-260915\\\",\\n    input=[{\\\"role\\\": \\\"user\\\", \\\"content\\\": \\\"北京的天气怎么样？\\\"}],\\n    tools=tools,\\n)\\n\\nprint(response)\",\"inputLanguage\":\"python\",\"outputCode\":\"{\\n  \\\"id\\\": \\\"resp_0217****b63e\\\",\\n  \\\"created_at\\\": 1756477803.0,\\n  \\\"error\\\": null,\\n  \\\"incomplete_details\\\": null,\\n  \\\"instructions\\\": null,\\n  \\\"model\\\": \\\"doubao-seed-2-1-pro-260915\\\",\\n  \\\"object\\\": \\\"response\\\",\\n  \\\"output\\\": [\\n    {\\n      \\\"id\\\": \\\"rs_0217****6b15\\\",\\n      \\\"summary\\\": [\\n        {\\n          \\\"text\\\": \\\"让我思考一下，我现在需要回答用户的问题：“北京的天气怎么样？”根据系统提示，我需要调用工具来获取天气信息。首先，我要确认用户的问题是否需要调用工具。用户询问的是当前北京的天气，这属于实时信息，无法通过常识直接回答，所以必须使用提供的工具。\\\\n\\\\n接下来，查看可用的工具列表，只有一个工具叫做“获取天气信息”，它的参数需要一个“location”，类型是字符串，必填项。用户的问题中明确提到了“北京”，所以location参数应该是“北京”。\\\\n\\\\n然后，我需要按照格式要求生成工具调用。系统提示说调用工具需要用包裹，里面是一个JSON数组。这里只需要调用一个工具，所以是单工具调用。参数部分应该是{\\\\\\\"location\\\\\\\": \\\\\\\"北京\\\\\\\"}。\\\\n\\\\n检查是否有其他需要注意的地方，比如参数是否正确，格式是否符合要求。确认无误后，生成调用语句。不需要并行调用，因为只有一个工具可用，且只需要一次调用就能获取所需信息。因此，最终的调用应该是：\\\\n\\\\n\\\",\\n          \\\"type\\\": \\\"summary_text\\\"\\n        }\\n      ],\\n      \\\"type\\\": \\\"reasoning\\\",\\n      \\\"status\\\": \\\"completed\\\"\\n    },\\n    {\\n      \\\"arguments\\\": \\\"{\\\\\\\"location\\\\\\\":\\\\\\\"北京\\\\\\\"}\\\",\\n      \\\"call_id\\\": \\\"call_****a6al\\\",\\n      \\\"name\\\": \\\"获取天气信息\\\",\\n      \\\"type\\\": \\\"function_call\\\",\\n      \\\"id\\\": \\\"fc_0217****c976b\\\",\\n      \\\"status\\\": \\\"completed\\\"\\n    }\\n  ],\\n  \\\"parallel_tool_calls\\\": null,\\n  \\\"temperature\\\": null,\\n  \\\"tool_choice\\\": null,\\n  \\\"tools\\\": [\\n    {\\n      \\\"name\\\": \\\"获取天气信息\\\",\\n      \\\"parameters\\\": {\\n        \\\"type\\\": \\\"object\\\",\\n        \\\"properties\\\": {\\n          \\\"location\\\": {\\n            \\\"type\\\": \\\"string\\\",\\n            \\\"description\\\": \\\"城市名称，例如：北京\\\"\\n          }\\n        },\\n        \\\"required\\\": [\\\"location\\\"]\\n      },\\n      \\\"type\\\": \\\"function\\\",\\n      \\\"description\\\": \\\"根据给出的位置获取天气信息\\\"\\n    }\\n  ],\\n  \\\"top_p\\\": null,\\n  \\\"max_output_tokens\\\": 32768,\\n  \\\"previous_response_id\\\": null,\\n  \\\"thinking\\\": null,\\n  \\\"service_tier\\\": \\\"default\\\",\\n  \\\"status\\\": \\\"completed\\\",\\n  \\\"text\\\": null,\\n  \\\"usage\\\": {\\n    \\\"input_tokens\\\": 454,\\n    \\\"input_tokens_details\\\": {\\n      \\\"cached_tokens\\\": 0\\n    },\\n    \\\"output_tokens\\\": 306,\\n    \\\"output_tokens_details\\\": {\\n      \\\"reasoning_tokens\\\": 279\\n    },\\n    \\\"total_tokens\\\": 760\\n  },\\n  \\\"caching\\\": {\\n    \\\"type\\\": \\\"disabled\\\"\\n  },\\n  \\\"store\\\": true,\\n  \\\"expire_at\\\": 1756737003\\n}\",\"outputLanguage\":\"\",\"key\":\"Kf7FcNJY\"},{\"title\":\"Python\",\"debug\":{\"openDebug\":true,\"debugParams\":{\"envs\":[\"ARK_API_KEY\"],\"packages\":[{\"packageName\":\"arkruntime\",\"packageVersion\":\"\"}],\"value\":[1,2]}},\"inputCode\":\"import os\\nfrom arkruntime import Ark\\n\\n# 从环境变量中获取您的API KEY，配置方法见：https://ark.volcengine.com/region:cn-beijing/docs/quick-start\\napi_key = os.getenv('ARK_API_KEY')\\n\\nclient = Ark(\\n    base_url='https://ark.cn-beijing.volces.com/api/v3',\\n    api_key=api_key,\\n)\\n\\ntools = [{\\n    \\\"type\\\": \\\"function\\\",\\n    \\\"name\\\": \\\"获取天气信息\\\",\\n    \\\"description\\\": \\\"根据给出的位置获取天气信息\\\",\\n    \\\"parameters\\\": {\\n        \\\"type\\\": \\\"object\\\",\\n        \\\"properties\\\": {\\n            \\\"location\\\": {\\n                \\\"type\\\": \\\"string\\\",\\n                \\\"description\\\": \\\"城市名称，例如：北京\\\"\\n            }\\n        },\\n        \\\"required\\\": [\\n            \\\"location\\\"\\n        ]\\n    }\\n}]\\n\\n# 创建一个对话请求\\nresponse = client.responses.create(\\n    model=\\\"doubao-seed-2-1-pro-260915\\\",\\n    input=[{\\\"role\\\": \\\"user\\\", \\\"content\\\": \\\"北京的天气怎么样？\\\"}],\\n    tools=tools,\\n)\\n\\nprint(response)\",\"inputLanguage\":\"python\",\"outputCode\":\"{\\n  \\\"id\\\": \\\"resp_0217****b63e\\\",\\n  \\\"created_at\\\": 1756477803.0,\\n  \\\"error\\\": null,\\n  \\\"incomplete_details\\\": null,\\n  \\\"instructions\\\": null,\\n  \\\"model\\\": \\\"doubao-seed-2-1-pro-260915\\\",\\n  \\\"object\\\": \\\"response\\\",\\n  \\\"output\\\": [\\n    {\\n      \\\"id\\\": \\\"rs_0217****6b15\\\",\\n      \\\"summary\\\": [\\n        {\\n          \\\"text\\\": \\\"让我思考一下，我现在需要回答用户的问题：“北京的天气怎么样？”根据系统提示，我需要调用工具来获取天气信息。首先，我要确认用户的问题是否需要调用工具。用户询问的是当前北京的天气，这属于实时信息，无法通过常识直接回答，所以必须使用提供的工具。\\\\n\\\\n接下来，查看可用的工具列表，只有一个工具叫做“获取天气信息”，它的参数需要一个“location”，类型是字符串，必填项。用户的问题中明确提到了“北京”，所以location参数应该是“北京”。\\\\n\\\\n然后，我需要按照格式要求生成工具调用。系统提示说调用工具需要用包裹，里面是一个JSON数组。这里只需要调用一个工具，所以是单工具调用。参数部分应该是{\\\\\\\"location\\\\\\\": \\\\\\\"北京\\\\\\\"}。\\\\n\\\\n检查是否有其他需要注意的地方，比如参数是否正确，格式是否符合要求。确认无误后，生成调用语句。不需要并行调用，因为只有一个工具可用，且只需要一次调用就能获取所需信息。因此，最终的调用应该是：\\\\n\\\\n\\\",\\n          \\\"type\\\": \\\"summary_text\\\"\\n        }\\n      ],\\n      \\\"type\\\": \\\"reasoning\\\",\\n      \\\"status\\\": \\\"completed\\\"\\n    },\\n    {\\n      \\\"arguments\\\": \\\"{\\\\\\\"location\\\\\\\":\\\\\\\"北京\\\\\\\"}\\\",\\n      \\\"call_id\\\": \\\"call_****a6al\\\",\\n      \\\"name\\\": \\\"获取天气信息\\\",\\n      \\\"type\\\": \\\"function_call\\\",\\n      \\\"id\\\": \\\"fc_0217****c976b\\\",\\n      \\\"status\\\": \\\"completed\\\"\\n    }\\n  ],\\n  \\\"parallel_tool_calls\\\": null,\\n  \\\"temperature\\\": null,\\n  \\\"tool_choice\\\": null,\\n  \\\"tools\\\": [\\n    {\\n      \\\"name\\\": \\\"获取天气信息\\\",\\n      \\\"parameters\\\": {\\n        \\\"type\\\": \\\"object\\\",\\n        \\\"properties\\\": {\\n          \\\"location\\\": {\\n            \\\"type\\\": \\\"string\\\",\\n            \\\"description\\\": \\\"城市名称，例如：北京\\\"\\n          }\\n        },\\n        \\\"required\\\": [\\\"location\\\"]\\n      },\\n      \\\"type\\\": \\\"function\\\",\\n      \\\"description\\\": \\\"根据给出的位置获取天气信息\\\"\\n    }\\n  ],\\n  \\\"top_p\\\": null,\\n  \\\"max_output_tokens\\\": 32768,\\n  \\\"previous_response_id\\\": null,\\n  \\\"thinking\\\": null,\\n  \\\"service_tier\\\": \\\"default\\\",\\n  \\\"status\\\": \\\"completed\\\",\\n  \\\"text\\\": null,\\n  \\\"usage\\\": {\\n    \\\"input_tokens\\\": 454,\\n    \\\"input_tokens_details\\\": {\\n      \\\"cached_tokens\\\": 0\\n    },\\n    \\\"output_tokens\\\": 306,\\n    \\\"output_tokens_details\\\": {\\n      \\\"reasoning_tokens\\\": 279\\n    },\\n    \\\"total_tokens\\\": 760\\n  },\\n  \\\"caching\\\": {\\n    \\\"type\\\": \\\"disabled\\\"\\n  },\\n  \\\"store\\\": true,\\n  \\\"expire_at\\\": 1756737003\\n}\",\"outputLanguage\":\"\",\"key\":\"6FGcLpaX\"},{\"title\":\"Go\",\"debug\":{\"openDebug\":true,\"debugParams\":{\"envs\":[\"ARK_API_KEY\"],\"packages\":[{\"packageName\":\"github.com/volcengine/volcengine-go-sdk\",\"packageVersion\":\"\"}],\"value\":[1,2]}},\"inputCode\":\"package main\\n\\nimport (\\n\\t\\\"context\\\"\\n\\t\\\"encoding/json\\\"\\n\\t\\\"fmt\\\"\\n\\t\\\"os\\\"\\n\\n\\t\\\"github.com/volcengine/ark-runtime-go/arkruntime\\\"\\n\\t\\\"github.com/volcengine/ark-runtime-go/arkruntime/model/responses\\\"\\n)\\n\\nfunc main() {\\n    client := arkruntime.NewClientWithApiKey(\\n\\t\\tos.Getenv(\\\"ARK_API_KEY\\\"),\\n        arkruntime.WithBaseUrl(\\\"https://ark.cn-beijing.volces.com/api/v3\\\"),\\n\\t)\\n\\tresponse, err := client.CreateResponses(context.Background(), &responses.ResponsesRequest{\\n\\t\\tModel: \\\"doubao-seed-2-1-pro-260915\\\",\\n\\t\\tInput: responses.NewStringResponsesInput(\\\"北京的天气怎么样？\\\"),\\n\\t\\tTools: []responses.Tool{\\n\\t\\t\\tfunctionTool(),\\n\\t\\t},\\n\\t})\\n\\tif err != nil {\\n\\t\\tfmt.Printf(\\\"response error: %v\\\\n\\\", err)\\n\\t\\treturn\\n\\t}\\n\\tfmt.Println(response)\\n}\\n\\nfunc functionTool() responses.Tool {\\n\\tvar parameters responses.FunctionToolParameters\\n\\tif err := json.Unmarshal(\\n\\t\\t[]byte(`{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"location\\\":{\\\"type\\\":\\\"string\\\",\\\"description\\\":\\\"城市名称，例如：北京\\\"}},\\\"required\\\":[\\\"location\\\"]}`),\\n\\t\\t&parameters,\\n\\t); err != nil {\\n\\t\\tpanic(err)\\n\\t}\\n\\treturn responses.Tool{\\n\\t\\tOneOf: responses.NewFunctionToolToolSum(\\n\\t\\t\\tresponses.FunctionTool{\\n\\t\\t\\t\\tName:        \\\"get_weather\\\",\\n\\t\\t\\t\\tType:        responses.FunctionToolTypeFunction,\\n\\t\\t\\t\\tDescription: responses.NewOptString(\\\"根据给出的位置获取天气信息\\\"),\\n\\t\\t\\t\\tParameters:  responses.NewOptFunctionToolParameters(parameters),\\n\\t\\t\\t},\\n\\t\\t),\\n\\t}\\n}\",\"inputLanguage\":\"go\",\"outputCode\":\"{\\n  \\\"id\\\": \\\"resp_0217****b63e\\\",\\n  \\\"created_at\\\": 1756477803.0,\\n  \\\"error\\\": null,\\n  \\\"incomplete_details\\\": null,\\n  \\\"instructions\\\": null,\\n  \\\"model\\\": \\\"doubao-seed-2-1-pro-260915\\\",\\n  \\\"object\\\": \\\"response\\\",\\n  \\\"output\\\": [\\n    {\\n      \\\"id\\\": \\\"rs_0217****6b15\\\",\\n      \\\"summary\\\": [\\n        {\\n          \\\"text\\\": \\\"让我思考一下，我现在需要回答用户的问题：“北京的天气怎么样？”根据系统提示，我需要调用工具来获取天气信息。首先，我要确认用户的问题是否需要调用工具。用户询问的是当前北京的天气，这属于实时信息，无法通过常识直接回答，所以必须使用提供的工具。\\\\n\\\\n接下来，查看可用的工具列表，只有一个工具叫做“获取天气信息”，它的参数需要一个“location”，类型是字符串，必填项。用户的问题中明确提到了“北京”，所以location参数应该是“北京”。\\\\n\\\\n然后，我需要按照格式要求生成工具调用。系统提示说调用工具需要用包裹，里面是一个JSON数组。这里只需要调用一个工具，所以是单工具调用。参数部分应该是{\\\\\\\"location\\\\\\\": \\\\\\\"北京\\\\\\\"}。\\\\n\\\\n检查是否有其他需要注意的地方，比如参数是否正确，格式是否符合要求。确认无误后，生成调用语句。不需要并行调用，因为只有一个工具可用，且只需要一次调用就能获取所需信息。因此，最终的调用应该是：\\\\n\\\\n\\\",\\n          \\\"type\\\": \\\"summary_text\\\"\\n        }\\n      ],\\n      \\\"type\\\": \\\"reasoning\\\",\\n      \\\"status\\\": \\\"completed\\\"\\n    },\\n    {\\n      \\\"arguments\\\": \\\"{\\\\\\\"location\\\\\\\":\\\\\\\"北京\\\\\\\"}\\\",\\n      \\\"call_id\\\": \\\"call_****a6al\\\",\\n      \\\"name\\\": \\\"获取天气信息\\\",\\n      \\\"type\\\": \\\"function_call\\\",\\n      \\\"id\\\": \\\"fc_0217****c976b\\\",\\n      \\\"status\\\": \\\"completed\\\"\\n    }\\n  ],\\n  \\\"parallel_tool_calls\\\": null,\\n  \\\"temperature\\\": null,\\n  \\\"tool_choice\\\": null,\\n  \\\"tools\\\": [\\n    {\\n      \\\"name\\\": \\\"获取天气信息\\\",\\n      \\\"parameters\\\": {\\n        \\\"type\\\": \\\"object\\\",\\n        \\\"properties\\\": {\\n          \\\"location\\\": {\\n            \\\"type\\\": \\\"string\\\",\\n            \\\"description\\\": \\\"城市名称，例如：北京\\\"\\n          }\\n        },\\n        \\\"required\\\": [\\\"location\\\"]\\n      },\\n      \\\"type\\\": \\\"function\\\",\\n      \\\"description\\\": \\\"根据给出的位置获取天气信息\\\"\\n    }\\n  ],\\n  \\\"top_p\\\": null,\\n  \\\"max_output_tokens\\\": 32768,\\n  \\\"previous_response_id\\\": null,\\n  \\\"thinking\\\": null,\\n  \\\"service_tier\\\": \\\"default\\\",\\n  \\\"status\\\": \\\"completed\\\",\\n  \\\"text\\\": null,\\n  \\\"usage\\\": {\\n    \\\"input_tokens\\\": 454,\\n    \\\"input_tokens_details\\\": {\\n      \\\"cached_tokens\\\": 0\\n    },\\n    \\\"output_tokens\\\": 306,\\n    \\\"output_tokens_details\\\": {\\n      \\\"reasoning_tokens\\\": 279\\n    },\\n    \\\"total_tokens\\\": 760\\n  },\\n  \\\"caching\\\": {\\n    \\\"type\\\": \\\"disabled\\\"\\n  },\\n  \\\"store\\\": true,\\n  \\\"expire_at\\\": 1756737003\\n}\",\"outputLanguage\":\"\",\"key\":\"55nqbUWQ\"},{\"title\":\"Java\",\"debug\":{\"openDebug\":true,\"debugParams\":{\"envs\":[\"ARK_API_KEY\"],\"packages\":[{\"packageName\":\"com.fasterxml.jackson.core:jackson-core\",\"packageVersion\":\"2.21.3\"},{\"packageName\":\"com.volcengine:ark-runtime\",\"packageVersion\":\"0.9.0\"}],\"value\":[1,2]}},\"inputCode\":\"package com.ark.example;\\nimport com.volcengine.ark.runtime.service.ArkService;\\nimport com.volcengine.ark.runtime.models.responses.*;\\nimport com.fasterxml.jackson.databind.ObjectMapper;\\nimport com.fasterxml.jackson.databind.JsonNode;\\nimport java.util.*;\\n\\npublic class demo {\\n    public static ObjectMapper om = new ObjectMapper();\\n    public static List<Tool> buildTools() {\\n        JsonNode params = om.createObjectNode()\\n                .put(\\\"type\\\", \\\"object\\\")\\n                .set(\\\"properties\\\", om.createObjectNode()\\n                        .set(\\\"location\\\", om.createObjectNode()\\n                                .put(\\\"type\\\", \\\"string\\\")\\n                                .put(\\\"description\\\", \\\"城市名称，例如：北京\\\")));\\n\\n        FunctionTool t = FunctionTool.builder()\\n                .name(\\\"获取天气信息\\\")\\n                .description(\\\"根据给出的位置获取天气信息\\\")\\n                .parameters(om.convertValue(params, Map.class))\\n                .build();\\n\\n        return Arrays.asList(t);\\n    }\\n    public static void main(String[] args) {\\n        String apiKey = System.getenv(\\\"ARK_API_KEY\\\");\\n\\n        // 创建ArkService实例\\n        ArkService arkService = ArkService.builder().apiKey(apiKey)\\n                .baseUrl(\\\"https://ark.cn-beijing.volces.com/api/v3\\\")\\n                .build();\\n        ResponsesRequest req = ResponsesRequest.builder()\\n                .model(\\\"doubao-seed-2-1-pro-260915\\\")\\n                .input(ResponsesInput.ofList(java.util.Arrays.asList(ItemEasyMessage.builder().role(MessageRole.USER).content(\\n                                MessageContent.ofList(java.util.Arrays.asList(ContentItemText.builder().text(\\\"查询北京今天的天气\\\").build()))\\n                        ).build())))\\n                .tools(buildTools())\\n                .build();\\n        Response resp = arkService.createResponse(req);\\n        System.out.println(resp);\\n\\n        arkService.shutdownExecutor();\\n    }\\n}\",\"inputLanguage\":\"java\",\"outputCode\":\"{\\n  \\\"id\\\": \\\"resp_0217****b63e\\\",\\n  \\\"created_at\\\": 1756477803.0,\\n  \\\"error\\\": null,\\n  \\\"incomplete_details\\\": null,\\n  \\\"instructions\\\": null,\\n  \\\"model\\\": \\\"doubao-seed-2-1-pro-260915\\\",\\n  \\\"object\\\": \\\"response\\\",\\n  \\\"output\\\": [\\n    {\\n      \\\"id\\\": \\\"rs_0217****6b15\\\",\\n      \\\"summary\\\": [\\n        {\\n          \\\"text\\\": \\\"让我思考一下，我现在需要回答用户的问题：“北京的天气怎么样？”根据系统提示，我需要调用工具来获取天气信息。首先，我要确认用户的问题是否需要调用工具。用户询问的是当前北京的天气，这属于实时信息，无法通过常识直接回答，所以必须使用提供的工具。\\\\n\\\\n接下来，查看可用的工具列表，只有一个工具叫做“获取天气信息”，它的参数需要一个“location”，类型是字符串，必填项。用户的问题中明确提到了“北京”，所以location参数应该是“北京”。\\\\n\\\\n然后，我需要按照格式要求生成工具调用。系统提示说调用工具需要用包裹，里面是一个JSON数组。这里只需要调用一个工具，所以是单工具调用。参数部分应该是{\\\\\\\"location\\\\\\\": \\\\\\\"北京\\\\\\\"}。\\\\n\\\\n检查是否有其他需要注意的地方，比如参数是否正确，格式是否符合要求。确认无误后，生成调用语句。不需要并行调用，因为只有一个工具可用，且只需要一次调用就能获取所需信息。因此，最终的调用应该是：\\\\n\\\\n\\\",\\n          \\\"type\\\": \\\"summary_text\\\"\\n        }\\n      ],\\n      \\\"type\\\": \\\"reasoning\\\",\\n      \\\"status\\\": \\\"completed\\\"\\n    },\\n    {\\n      \\\"arguments\\\": \\\"{\\\\\\\"location\\\\\\\":\\\\\\\"北京\\\\\\\"}\\\",\\n      \\\"call_id\\\": \\\"call_****a6al\\\",\\n      \\\"name\\\": \\\"获取天气信息\\\",\\n      \\\"type\\\": \\\"function_call\\\",\\n      \\\"id\\\": \\\"fc_0217****c976b\\\",\\n      \\\"status\\\": \\\"completed\\\"\\n    }\\n  ],\\n  \\\"parallel_tool_calls\\\": null,\\n  \\\"temperature\\\": null,\\n  \\\"tool_choice\\\": null,\\n  \\\"tools\\\": [\\n    {\\n      \\\"name\\\": \\\"获取天气信息\\\",\\n      \\\"parameters\\\": {\\n        \\\"type\\\": \\\"object\\\",\\n        \\\"properties\\\": {\\n          \\\"location\\\": {\\n            \\\"type\\\": \\\"string\\\",\\n            \\\"description\\\": \\\"城市名称，例如：北京\\\"\\n          }\\n        },\\n        \\\"required\\\": [\\\"location\\\"]\\n      },\\n      \\\"type\\\": \\\"function\\\",\\n      \\\"description\\\": \\\"根据给出的位置获取天气信息\\\"\\n    }\\n  ],\\n  \\\"top_p\\\": null,\\n  \\\"max_output_tokens\\\": 32768,\\n  \\\"previous_response_id\\\": null,\\n  \\\"thinking\\\": null,\\n  \\\"service_tier\\\": \\\"default\\\",\\n  \\\"status\\\": \\\"completed\\\",\\n  \\\"text\\\": null,\\n  \\\"usage\\\": {\\n    \\\"input_tokens\\\": 454,\\n    \\\"input_tokens_details\\\": {\\n      \\\"cached_tokens\\\": 0\\n    },\\n    \\\"output_tokens\\\": 306,\\n    \\\"output_tokens_details\\\": {\\n      \\\"reasoning_tokens\\\": 279\\n    },\\n    \\\"total_tokens\\\": 760\\n  },\\n  \\\"caching\\\": {\\n    \\\"type\\\": \\\"disabled\\\"\\n  },\\n  \\\"store\\\": true,\\n  \\\"expire_at\\\": 1756737003\\n}\",\"outputLanguage\":\"\",\"key\":\"srmeZl6T\"}],\"key\":\"fzk7lhb9\"}]}"} />);
++```

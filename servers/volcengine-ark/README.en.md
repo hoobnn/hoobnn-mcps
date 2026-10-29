@@ -85,7 +85,7 @@ The standard 2.0 model supports 4k; fast / mini only 480p / 720p. For video edit
 
 `parameters` accepts official top-level options such as `draft`, `return_last_frame` and `output_format`; it cannot override the model or the input media.
 
-`draft=true` requires `resolution="480p"`. Draft task IDs expire 7 days after `created_at`. This tool can create and query Draft videos, but does not support promoting one through `content.draft_task`; passing `parameters` alone cannot enable that flow.
+`draft=true` requires `resolution="480p"`. Draft task IDs expire after `created_at`: 14 days for those created at or after 2026-10-28 10:00 (UTC+8), 7 days for earlier ones; other video task IDs last 7 days. This tool can create and query Draft videos, but does not support promoting one through `content.draft_task`; passing `parameters` alone cannot enable that flow.
 
 ### Chat and retrieval
 
@@ -95,7 +95,7 @@ The standard 2.0 model supports 4k; fast / mini only 480p / 720p. For video edit
 
 Multi-turn history uses the Chat message structure. Responses converts a copy, explicitly adding `type="message"` to assistant messages containing `output_text`, without modifying the caller's history. `response_id` and source annotations are kept, and the full response is available on demand with `include_response=true`. `thinking=true/false` maps to `enabled/disabled`; the 2026-10-22 Chat/Responses API no longer lists `thinking.type="auto"`. `parameters` passes through advanced options the model supports; tool calls returned by the model are not executed. Enable the relevant search component before using web search.
 
-The newly listed `deepseek-v4-1-flash-261017` and `deepseek-v4-1-flash-economy-261017` can be selected explicitly by full model ID; the `pro` default stays unchanged. This describes payload support, not verified account access or cloud behavior. The newly listed System One API (beta) for decision evaluation is a separate API and is not integrated by this tool.
+The newly listed `deepseek-v4-1-flash-261017` and `deepseek-v4-1-flash-economy-261017` can be selected explicitly by full model ID; the `pro` default stays unchanged. This describes payload support, not verified account access or cloud behavior. `kimi-k3-1-pro-261024` (Chat / Responses / Messages API) is likewise selected by full model ID. The official limits are `temperature` fixed at `1.0`, `top_p` fixed at `0.95`, `frequency_penalty` / `presence_penalty` fixed at `0.0`, and at most 5 stop words; other values are rejected. `chat` injects none of these by default; pass valid values through `temperature` / `parameters` when needed. The Chat API `web_search_options` field is not used here: `web_search=true` still goes through the Responses API. The newly listed System One API (beta) for decision evaluation is a separate API and is not integrated by this tool.
 
 The embedding tool requires an explicit model: `texts` is a list of strings; `contents` is the official typed array, for example:
 
