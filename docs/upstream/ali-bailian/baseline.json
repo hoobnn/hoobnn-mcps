@@ -1,6 +1,6 @@
 {
   "format_version": 1,
-  "reviewed_at": "2026-10-28T08:47:45.159750+00:00",
+  "reviewed_at": "2026-10-29T08:41:07.593643+00:00",
   "sources": [
     {
       "key": "ali-bailian/bailian-asr",
@@ -72,8 +72,8 @@
       "tools": [
         "speech_to_text"
       ],
-      "sha256": "8330e0b9b5e1a4c09c96ece1ce33e11a31c5441439376c22ae4e1fe470984640",
-      "bytes": 48119,
+      "sha256": "24475ffa464a452c391224e9e23052f0478586cb032e76e37fd21f99687dd384",
+      "bytes": 48118,
       "models": [
         "Qwen-ASR",
         "Qwen-Audio-ASR",
@@ -1007,8 +1007,8 @@
       "fetch_url": "https://help.aliyun.com/zh/model-studio/model-pricing.md",
       "kind": "models",
       "tools": [],
-      "sha256": "65fd8be1f992f901424f772b4857f4969ea949de682db0f5bf588b3c7a8ac70b",
-      "bytes": 664838,
+      "sha256": "a445ff242df82b36b875639e49b921dedf19187c5579703097184ee522d0ef8f",
+      "bytes": 693850,
       "models": [
         "CosyVoice",
         "DeepSeek-",
@@ -1024,10 +1024,10 @@
         "MiniMax-M3.1-Flash",
         "Qwen",
         "Qwen-Audio",
-        "Qwen-Audio-3.1-ASR-Flash-Message",
-        "Qwen-Audio-3.x-ASR-Flash",
-        "Qwen-Audio-3.x-ASR-Flash-Filetrans",
-        "Qwen-Audio-3.x-ASR-Flash-Streaming",
+        "Qwen-Audio-ASR",
+        "Qwen-Audio-ASR-Filetrans",
+        "Qwen-Audio-ASR-Message",
+        "Qwen-Audio-ASR-Streaming",
         "Qwen-Audio-TTS",
         "Qwen-MT-Uni",
         "Qwen-Omni",
@@ -1475,8 +1475,8 @@
       "fetch_url": "https://help.aliyun.com/zh/model-studio/rate-limit.md",
       "kind": "guide",
       "tools": [],
-      "sha256": "f36d680943eb2b3a9c6bc94770bf3d1d21283e1a5f1423049871495d07c561ce",
-      "bytes": 384507,
+      "sha256": "d952996e6d3de051d34d3662e1a00ae0867740631077544647999f56d517fd67",
+      "bytes": 384315,
       "models": [
         "CosyVoice",
         "DeepSeek-",
@@ -2203,8 +2203,8 @@
       "tools": [
         "clone_voice"
       ],
-      "sha256": "ce2727b95532a089f3d215f44f969613b5d84c30e3ed3be70ff67f23ac3f2d62",
-      "bytes": 23063,
+      "sha256": "66c13e1f123e847f42fad19a115b263b47e0ce574babfed1cff6c4b3b6ada80b",
+      "bytes": 23090,
       "models": [
         "CosyVoice",
         "Qwen-Audio-Realtime",
