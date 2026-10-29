@@ -16,7 +16,7 @@ from .jobs import Store
 STORE = Store("ARK_JOB_DIR", "~/.local/share/volcengine-ark-mcp/jobs")
 VIDEO_MODELS = {"seedance": "doubao-seedance-2-5-260628", "seedance-2": "doubao-seedance-2-0-260128",
                 "seedance-fast": "doubao-seedance-2-0-fast-260128", "seedance-mini": "doubao-seedance-2-0-mini-260615"}
-CHAT_MODELS = {"pro": "doubao-seed-2-1-pro-260628"}
+CHAT_MODELS = {"pro": "doubao-seed-2-1-pro-260915"}
 DOCS = {
     "video": "https://docs.volcengine.com/docs/ark/create-video-generation-task-api?lang=zh",
     "video_query": "https://docs.volcengine.com/docs/ark/get-video-generation-task-api?lang=zh",

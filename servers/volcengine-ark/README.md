@@ -16,6 +16,8 @@
 
 原名 `seedream-mcp`（PyPI 上该名已被他人占用），0.4 起改名，不保留旧命令和 `SEEDREAM_*` 环境变量。
 
+`0.6.4` 将 `chat` 默认 `pro` 升级为 `doubao-seed-2-1-pro-260915`（官方示例现用此版本，上下文 1024k）；旧版 260628 未下线，可显式指定。
+
 `0.6.2` 修复 Responses 多轮 assistant 历史的消息类型；新增 Seedream lite 下线提示，并在官方截止时间后拒绝新生成。已有任务仍可恢复，不会自动替换成能力不同的模型。
 
 `0.6.0` 去掉 `query_video`：视频进度统一用 `get_job(job_id=...)` 或 `get_job(task_id=...)` 查询，完成时自动下载；`generate_image` 新增 `parameters`。这是不兼容变更。
@@ -89,7 +91,7 @@ uv tool install volcengine-ark-mcp
 
 ### 对话与检索
 
-`chat` 默认 `pro` 为 `doubao-seed-2-1-pro-260628`，也可显式指定模型；与生图工具中的 pro 别名含义不同。
+`chat` 默认 `pro` 为 `doubao-seed-2-1-pro-260915`（1024k 上下文），也可显式指定模型，如需旧版传 `doubao-seed-2-1-pro-260628`；与生图工具中的 pro 别名含义不同。
 
 `images` 支持本地图片，`videos` 须公开 URL。不开搜索时使用 Chat API；开启 `web_search` 或提供 `previous_response_id` 时使用 Responses API。
 

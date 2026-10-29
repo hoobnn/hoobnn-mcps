@@ -16,6 +16,8 @@ An MCP server for Volcengine Ark: generate and edit images with Seedream 5.0, Se
 
 Formerly `seedream-mcp` (that name is taken on PyPI by someone else). Renamed in 0.4; the old command and the `SEEDREAM_*` environment variables are not kept.
 
+`0.6.4` upgrades the `chat` default `pro` to `doubao-seed-2-1-pro-260915` (now used in the official examples, 1024k context); the previous 260628 version is not retired and can be selected explicitly.
+
 `0.6.2` fixes assistant history message types on the Responses path. It adds Seedream lite retirement notices and rejects new generation after the official deadline; existing tasks remain recoverable, with no automatic switch to a model with different capabilities.
 
 `0.6.0` removes `query_video`: check video progress with `get_job(job_id=...)` or `get_job(task_id=...)`, which downloads the result on completion; `generate_image` gains `parameters`. This is a breaking change.
@@ -89,7 +91,7 @@ The standard 2.0 model supports 4k; fast / mini only 480p / 720p. For video edit
 
 ### Chat and retrieval
 
-`chat` defaults to `pro`, which is `doubao-seed-2-1-pro-260628`; you can also specify a model explicitly. This is not the same as the pro alias in the image tool.
+`chat` defaults to `pro`, which is `doubao-seed-2-1-pro-260915` (1024k context); you can also specify a model explicitly, such as `doubao-seed-2-1-pro-260628` for the previous version. This is not the same as the pro alias in the image tool.
 
 `images` accepts local images; `videos` must be public URLs. Without search, the Chat API is used; with `web_search` on or a `previous_response_id` given, the Responses API is used.
 
