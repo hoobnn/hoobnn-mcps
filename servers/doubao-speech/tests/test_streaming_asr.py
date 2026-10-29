@@ -98,7 +98,7 @@ class ProtocolTests(unittest.TestCase):
             body, pcm, alignment = asr.prepare_audio(str(path), request)
             self.assertEqual(request, original)
             self.assertEqual(body["audio"], {"language": "ja-JP", "rate": 16000,
-                             "bits": 16, "channel": 2, "format": "pcm", "codec": "raw"})
+                             "bits": 16, "channel": 2, "format": "pcm"})
             self.assertEqual(body["request"]["corpus"], {"custom": "preserved"})
             self.assertEqual(len(pcm), 400)
             self.assertEqual(alignment, 4)

@@ -14,6 +14,8 @@ An MCP server for Doubao Speech.
 
 A stdio MCP server for the Doubao Speech cloud APIs. Endpoints were checked against the [official catalog](https://docs.volcengine.com/docs/doubao-voice) on 2026-10-10.
 
+`0.5.2` aligns with the 2026-10-29 official docs: Seed-Realtime now documents client `response.cancel` interrupts, so the local block is removed; streaming ASR no longer sends `audio.codec`, which the docs dropped; remaining legacy doc links are migrated.
+
 `0.5.1` updates official documentation links after the Volcengine migration. Tool help and examples now use the current library name and slugs; speech request protocols are unchanged.
 
 `0.5.0` switches podcast generation to HTTP SSE by default, persisting the real session ID, complete rounds and resume receipts; pass `transport="websocket"` to use the historical path. Realtime sessions gain image / video-frame input and cancellation playback state through `mode="seed"`; `legacy` remains the default realtime mode.
@@ -176,7 +178,7 @@ Minimal configuration:
 1. Using the returned client `session_id`, send `input_audio_buffer.append` with `audio_file` (16kHz / mono / int16 raw PCM) through `send_realtime_event`, or a Base64 `audio` inside the event.
 2. Send `input_audio_buffer.commit` to force end-of-turn, or let the server detect the pause.
 3. `receive_realtime_events` receives transcripts, replies, audio paths, tool calls and usage. Audio deltas are written to disk automatically with format and sample rate, instead of returning huge Base64.
-4. The caller executes Function Calling, then returns `role=tool` with the matching `call_id` via `conversation.item.create`. With `mode=legacy`, `response.cancel` interrupts. Both modes support context operations and `session.update`.
+4. The caller executes Function Calling, then returns `role=tool` with the matching `call_id` via `conversation.item.create`. `response.cancel` interrupts an in-flight response (both modes). Both modes support context operations and `session.update`.
 5. `close_realtime_session` waits for the close confirmation and releases the connection; exiting the MCP also cleans up all sessions.
 
 Realtime upload sends one packet per 20ms. The MCP does not capture the microphone, play sound or drive the sound card; the client handles device input and output. Simultaneous interpretation needs 16kHz / mono / 16bit WAV or PCM; WAV containers are stripped automatically. Target PCM16k is saved as valid WAV; PCM24k keeps raw float32 PCM and returns format information.
@@ -189,7 +191,7 @@ The official [access guide](https://docs.volcengine.com/docs/doubao-voice/access
 {"mode":"seed","session":{"audio":{"output":{"voice":"zh_female_vv_jupiter_bigtts"}}},"extension":{"video":{"frame_format":"JPEG","frame_rate":"2"}}}
 ```
 
-Send `{"type":"input_image_buffer.append","frame_id":"frame_1"}` with a local PNG/JPEG `image_file`, or a Base64 `image` in the event. Image bytes must match `extension.video.frame_format`. Images are paced independently at at most 2 FPS, while audio keeps its 20ms pacing; the local JSON-event limit is 2MB. Seed rejects `response.cancel`; server VAD interrupts via `response.canceled`. Only `response.created/canceled/done` drive playback state; ASR events are transcript data. A `clear_playback_buffer=true` result from `receive_realtime_events` requires the client to stop playback and clear queued audio, even if queue pressure dropped the cancellation event itself.
+Send `{"type":"input_image_buffer.append","frame_id":"frame_1"}` with a local PNG/JPEG `image_file`, or a Base64 `image` in the event. Image bytes must match `extension.video.frame_format`. Images are paced independently at at most 2 FPS, while audio keeps its 20ms pacing; the local JSON-event limit is 2MB. Seed also accepts `response.cancel`; server VAD interrupts via `response.canceled` as well. Only `response.created/canceled/done` drive playback state; ASR events are transcript data. A `clear_playback_buffer=true` result from `receive_realtime_events` requires the client to stop playback and clear queued audio, even if queue pressure dropped the cancellation event itself.
 
 `generate_podcast` defaults to `transport="sse"`, one POST to `/api/v3/podcast/sse`; `transport="websocket"` retains the legacy interface. SSE succeeds only on **152 with `code=20000000`**. HTTP 200, 363 and usage events cannot terminate success early. `task_id` comes from the first 150 event; resumed requests expose their new `session_id` while keeping that original `task_id`.
 

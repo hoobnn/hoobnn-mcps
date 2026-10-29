@@ -1,0 +1,4531 @@
+{
+  "format_version": 1,
+  "checked_at": "2026-10-29T08:41:36.571735+00:00",
+  "sources": [
+    {
+      "key": "doubao-speech/doubao-access-mustread",
+      "server": "doubao-speech",
+      "id": "doubao-access-mustread",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/access-must-read?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=2549732",
+      "kind": "guide",
+      "tools": [
+        "close_realtime_session",
+        "open_realtime_session",
+        "receive_realtime_events",
+        "send_realtime_event"
+      ],
+      "sha256": "accf62dd5747008c11ec0badca3e234fd19d2eafe23ef0c3358934f2f4353bd3",
+      "bytes": 12700,
+      "models": [
+        "Doubao"
+      ],
+      "endpoints": [],
+      "doc_links": [],
+      "title": "端到端实时语音",
+      "updated_at": "2026-10-26T02:29:18Z",
+      "document_id": "2549732",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-activateservice-activateservice",
+      "server": "doubao-speech",
+      "id": "doubao-activateservice-activateservice",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/activate-service-activate-service?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=1801944",
+      "kind": "api",
+      "tools": [
+        "speech_console"
+      ],
+      "sha256": "aeb4f93b6b4cf16b526a96128c5611efb814bd6ddec16fb72e4c1f1b24f2a6ee",
+      "bytes": 3779,
+      "models": [],
+      "endpoints": [
+        "https://open.volcengineapi.com"
+      ],
+      "doc_links": [
+        "https://www.volcengine.com/docs/6369/67268",
+        "https://www.volcengine.com/docs/6369/68677)文档",
+        "https://www.volcengine.com/docs/6369/80336"
+      ],
+      "title": "开通服务",
+      "updated_at": "2026-09-28T13:19:58Z",
+      "document_id": "1801944",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-aliasresourcepack-updatesoundresourcealiases",
+      "server": "doubao-speech",
+      "id": "doubao-aliasresourcepack-updatesoundresourcealiases",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/alias-resource-pack-update-sound-resource-aliases?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=1801939",
+      "kind": "api",
+      "tools": [
+        "speech_console"
+      ],
+      "sha256": "55929287bf6154c781671347b36511b74c7f7e3e59a3c4dc33b8f7db5c9179b9",
+      "bytes": 7790,
+      "models": [],
+      "endpoints": [
+        "https://open.volcengineapi.com"
+      ],
+      "doc_links": [
+        "https://www.volcengine.com/docs/6369/67268",
+        "https://www.volcengine.com/docs/6369/68677)文档",
+        "https://www.volcengine.com/docs/6369/80336"
+      ],
+      "title": "更新音色资源别名",
+      "updated_at": "2026-09-28T13:20:31Z",
+      "document_id": "1801939",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-apiinterfacedocumentation",
+      "server": "doubao-speech",
+      "id": "doubao-apiinterfacedocumentation",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/api-interface-documentation-2?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=1096680",
+      "kind": "api",
+      "tools": [
+        "speech_raw_request"
+      ],
+      "sha256": "8d68ced31c7ac11db48fd468eca568590c302116f872aff6304fa2b1305e315d",
+      "bytes": 11039,
+      "models": [],
+      "endpoints": [
+        "https://openspeech.bytedance.com/api/v1/tts_async/query",
+        "https://openspeech.bytedance.com/api/v1/tts_async/query?appid=123456&task_id=bd0c2171-4b38-4c05-b685-11f3d240ee8d",
+        "https://openspeech.bytedance.com/api/v1/tts_async/submit",
+        "https://openspeech.bytedance.com/api/v1/tts_async_with_emotion/query",
+        "https://openspeech.bytedance.com/api/v1/tts_async_with_emotion/submit"
+      ],
+      "doc_links": [
+        "https://www.volcengine.com/docs/6561/1096680#%E9%94%99%E8%AF%AF%E7%A0%81%E8%AF%B4%E6%98%8E",
+        "https://www.volcengine.com/docs/6561/1105162",
+        "https://www.volcengine.com/docs/6561/1108211",
+        "https://www.volcengine.com/docs/6561/1108211)，默认为中文"
+      ],
+      "title": "小模型异步长文本合成接口",
+      "updated_at": "2026-05-19T03:38:39Z",
+      "document_id": "1096680",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-apikeyusage",
+      "server": "doubao-speech",
+      "id": "doubao-apikeyusage",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/api-key-usage?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=1816214",
+      "kind": "guide",
+      "tools": [
+        "list_speech_capabilities"
+      ],
+      "sha256": "df518d20075168e230ae88900d62060257453f05b4f339dc04b6fb875e241415",
+      "bytes": 1146,
+      "models": [],
+      "endpoints": [],
+      "doc_links": [
+        "https://www.volcengine.com/docs/6561/1801323",
+        "https://www.volcengine.com/docs/6561/1801959",
+        "https://www.volcengine.com/docs/6561/1801960"
+      ],
+      "title": "API Key使用",
+      "updated_at": "2025-09-02T11:34:20Z",
+      "document_id": "1816214",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-audio-generation-http",
+      "server": "doubao-speech",
+      "id": "doubao-audio-generation-http",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/audio-generation-http?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=2550782",
+      "kind": "api",
+      "tools": [
+        "generate_audio",
+        "speech_raw_request"
+      ],
+      "sha256": "6d3d7b27a30dfc04f8d07d03da45216e9d3489dd36b21b5d1e9f9fb6a2ea9cb0",
+      "bytes": 9618,
+      "models": [],
+      "endpoints": [
+        "https://openspeech.bytedance.com/api/v3/tts/create"
+      ],
+      "doc_links": [
+        "https://docs.volcengine.com/docs/6561/1257544?lang=zh)或声音复刻音色",
+        "https://docs.volcengine.com/docs/6561/2534847?lang=zh",
+        "https://docs.volcengine.com/docs/6561/2534853?lang=zh#2u2ql30k"
+      ],
+      "title": "音频生成",
+      "updated_at": "2026-09-28T11:12:54Z",
+      "document_id": "2550782",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-audio1-5marketingplan",
+      "server": "doubao-speech",
+      "id": "doubao-audio1-5marketingplan",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/audio1-5marketingplan?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=2697433",
+      "kind": "guide",
+      "tools": [
+        "generate_audio"
+      ],
+      "sha256": "703fb2040ca5ee2863f2053b913cc0ec90ac667119aafc38b939650a2d0f2dcf",
+      "bytes": 17230,
+      "models": [],
+      "endpoints": [],
+      "doc_links": [],
+      "title": "Seed Audio 1.5 营销资源合作计划",
+      "updated_at": "2026-10-15T12:02:37Z",
+      "document_id": "2697433",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-audiofilerecognitionstandardedition",
+      "server": "doubao-speech",
+      "id": "doubao-audiofilerecognitionstandardedition",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/AudioFileRecognitionStandardEdition?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=80820",
+      "kind": "api",
+      "tools": [
+        "speech_raw_request"
+      ],
+      "sha256": "18a5a9b36e086524ef2cf42d78db86b240f485a781e1bc3563ceccb9e0be790e",
+      "bytes": 14483,
+      "models": [],
+      "endpoints": [
+        "https://openspeech.bytedance.com/api/v1/auc",
+        "https://openspeech.bytedance.com/api/v1/auc/query",
+        "https://openspeech.bytedance.com/api/v1/auc/submit"
+      ],
+      "doc_links": [
+        "https://www.volcengine.com/docs/6561/107789",
+        "https://www.volcengine.com/docs/6561/155738",
+        "https://www.volcengine.com/docs/6561/163043#step2%EF%BC%9A%E5%BC%80%E9%80%9A%E6%9C%8D%E5%8A%A1)后，显示的",
+        "https://www.volcengine.com/docs/6561/163043)后获得",
+        "https://www.volcengine.com/docs/6561/80820#_3-2-2-%E6%94%AF%E6%8C%81%E8%AF%AD%E7%A7%8D"
+      ],
+      "title": "录音文件识别标准版",
+      "updated_at": "2025-07-03T05:18:28Z",
+      "document_id": "80820",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-audiovideosubtitlegeneration",
+      "server": "doubao-speech",
+      "id": "doubao-audiovideosubtitlegeneration",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/audio-video-sub-title-gene-ration?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=80909",
+      "kind": "api",
+      "tools": [
+        "speech_raw_request"
+      ],
+      "sha256": "2b57d70711b574d7b64e8c6567c8816793981eeb0467bd1bbdb3ca81871ba788",
+      "bytes": 20818,
+      "models": [],
+      "endpoints": [
+        "https://openspeech.bytedance.com/api/v1/vc",
+        "https://openspeech.bytedance.com/api/v1/vc/query",
+        "https://openspeech.bytedance.com/api/v1/vc/query?appid=%s&id=%s",
+        "https://openspeech.bytedance.com/api/v1/vc/query?appid=en0yefmkvssp&id=fbf5edcf-378e-4f54-8a7f-5d8fd5e5e2f1",
+        "https://openspeech.bytedance.com/api/v1/vc/submit",
+        "https://openspeech.bytedance.com/api/v1/vc/submit?appid=${your_appid}&language=zh-CN&use_itn=True&use_capitalize=True&max_lines=1&words_per_line=15",
+        "https://openspeech.bytedance.com/api/v1/vc/submit?appid=%s&language=%s&use_itn=True&use_capitalize=True&max_lines=1&words_per_line=15"
+      ],
+      "doc_links": [
+        "https://www.volcengine.com/docs/6561/107789",
+        "https://www.volcengine.com/docs/6561/80909#_3-1-2-%E6%94%AF%E6%8C%81%E8%AF%AD%E7%A7%8D",
+        "https://www.volcengine.com/docs/6561/80909#_6-%E9%94%99%E8%AF%AF%E7%A0%81"
+      ],
+      "title": "音视频字幕生成",
+      "updated_at": "2025-07-03T05:28:17Z",
+      "document_id": "80909",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-automaticsubtitletyping",
+      "server": "doubao-speech",
+      "id": "doubao-automaticsubtitletyping",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/automatic-sub-title-typing?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=149749",
+      "kind": "api",
+      "tools": [
+        "speech_raw_request"
+      ],
+      "sha256": "56b2c916f4ac774c76b01da1d865cc6a47848c0c2c1d73f41a276f387f015680",
+      "bytes": 12413,
+      "models": [],
+      "endpoints": [
+        "http://openspeech.bytedance.com/api/v1/vc/ata/submit",
+        "https://openspeech.bytedance.com/api/v1/vc/ata/query?appid=${your_appid}&id=fbf5edcf-378e-4f54-8a7f-5d8fd5e5e2f1",
+        "https://openspeech.bytedance.com/api/v1/vc/ata/query](https://openspeech.bytedance.com/api/v1/vc/ata/query",
+        "https://openspeech.bytedance.com/api/v1/vc/ata/submit?appid=${your_appid}&caption_type=speech"
+      ],
+      "doc_links": [
+        "https://www.volcengine.com/docs/6561/107789",
+        "https://www.volcengine.com/docs/6561/80909#_6-%E9%94%99%E8%AF%AF%E7%A0%81"
+      ],
+      "title": "自动字幕打轴",
+      "updated_at": "2025-07-28T09:45:48Z",
+      "document_id": "149749",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-batchlistmegattstrainstatus-pagequeryspeakeridstatus",
+      "server": "doubao-speech",
+      "id": "doubao-batchlistmegattstrainstatus-pagequeryspeakeridstatus",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/batch-list-mega-tts-train-status-page-query-speaker-id-status?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=1801953",
+      "kind": "api",
+      "tools": [
+        "speech_console"
+      ],
+      "sha256": "75ed6c1c769de7157db50841200ba3b77c048cece14e7db4fa89141647a1983c",
+      "bytes": 7796,
+      "models": [],
+      "endpoints": [
+        "https://open.volcengineapi.com"
+      ],
+      "doc_links": [
+        "https://www.volcengine.com/docs/6369/67268",
+        "https://www.volcengine.com/docs/6369/68677)文档",
+        "https://www.volcengine.com/docs/6369/80336"
+      ],
+      "title": "分页查询SpeakerID状态",
+      "updated_at": "2026-09-28T13:21:22Z",
+      "document_id": "1801953",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-bidirectional-streaming-automatic-speech-recognition-websocket",
+      "server": "doubao-speech",
+      "id": "doubao-bidirectional-streaming-automatic-speech-recognition-websocket",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/bidirectional-streaming-automatic-speech-recognition-websocket?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=2630027",
+      "kind": "api",
+      "tools": [
+        "speech_raw_request"
+      ],
+      "sha256": "1dd77941785f7758eb0098250e1e5a44270638579a2c06b942bbcb9f94869a2d",
+      "bytes": 39867,
+      "models": [
+        "bigmodel"
+      ],
+      "endpoints": [
+        "wss://openspeech.bytedance.com/api/v3/sauc/bigmodel_async",
+        "wss://openspeech.bytedance.com/api/v3/sauc/bigmodel_nostream"
+      ],
+      "doc_links": [
+        "https://docs.volcengine.com/docs/6561/2604976?lang=zh)配置热词和上下文信息",
+        "https://docs.volcengine.com/docs/6561/2628951?lang=zh)文档中",
+        "https://docs.volcengine.com/docs/doubao-voice/hot-words-and-context?lang=zh",
+        "https://docs.volcengine.com/docs/doubao-voice/speaker-separation?lang=zh)[",
+        "https://docs.volcengine.com/docs/doubao-voice/speaker-separation?lang=zh)[说话人分离最佳实践](https://docs.volcengine.com/docs/doubao-voice/speaker-separation?lang=zh)配置相关参数"
+      ],
+      "title": "实时语音识别",
+      "updated_at": "2026-10-27T07:18:23Z",
+      "document_id": "2630027",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-bidirectional-streaming-text-to-speech-websocket",
+      "server": "doubao-speech",
+      "id": "doubao-bidirectional-streaming-text-to-speech-websocket",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/bidirectional-streaming-text-to-speech-websocket?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=2532486",
+      "kind": "api",
+      "tools": [
+        "speech_raw_request"
+      ],
+      "sha256": "1f9a255a696972e2b6067dfeddb3d471f40f34237da5b55a505fe49aae686095",
+      "bytes": 23456,
+      "models": [
+        "seed-icl-2.0",
+        "seed-tts-2.0",
+        "seed-tts-2.0-standard"
+      ],
+      "endpoints": [
+        "wss://openspeech.bytedance.com/api/v3/tts/bidirection"
+      ],
+      "doc_links": [
+        "https://docs.volcengine.com/docs/6561/1257544?lang=zh#%E8%B1%86%E5%8C%85%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E6%A8%A1%E5%9E%8B2-0%E3%80%81s2s-o2-0%E3%80%81-s2s-%E5%85%A8%E5%8F%8C%E5%B7%A5-%E9%9F%B3%E8%89%B2%E5%88%97%E8%A1%A8",
+        "https://docs.volcengine.com/docs/6561/1257544?lang=zh#%E8%B1%86%E5%8C%85%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E6%A8%A1%E5%9E%8B2-0%E3%80%81s2s-o2-0%E3%80%81-s2s-%E5%85%A8%E5%8F%8C%E5%B7%A5-%E9%9F%B3%E8%89%B2%E5%88%97%E8%A1%A8)、豆包声音复刻大模型2.0音色",
+        "https://docs.volcengine.com/docs/6561/1257544?lang=zh#%E8%B1%86%E5%8C%85%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E6%A8%A1%E5%9E%8B2-0%E3%80%81s2s-o2-0%E3%80%81-s2s-%E5%85%A8%E5%8F%8C%E5%B7%A5-%E9%9F%B3%E8%89%B2%E5%88%97%E8%A1%A8)中，仅命名为zh_*xxx*_*xxxx*_uranus_bigtts的音色支持",
+        "https://docs.volcengine.com/docs/6561/1257544?lang=zh#%E8%B1%86%E5%8C%85%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E6%A8%A1%E5%9E%8B2-0%E3%80%81s2s-o2-0%E3%80%81-s2s-%E5%85%A8%E5%8F%8C%E5%B7%A5-%E9%9F%B3%E8%89%B2%E5%88%97%E8%A1%A8)时，支持使用语音指令",
+        "https://www.volcengine.com/docs/6561/1257544?lang=zh"
+      ],
+      "title": "双向流式语音合成(WebSocket)",
+      "updated_at": "2026-10-28T13:02:52Z",
+      "document_id": "2532486",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-callvolumequeryinterfacedescription",
+      "server": "doubao-speech",
+      "id": "doubao-callvolumequeryinterfacedescription",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/call-volume-query-interface-description?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=1476625",
+      "kind": "api",
+      "tools": [
+        "speech_console"
+      ],
+      "sha256": "0feb2a7e5d10a81d27df4d3431051606fb4bacbe432a1e926777ef08f7a90e88",
+      "bytes": 27132,
+      "models": [],
+      "endpoints": [
+        "https://open.volcengineapi.com"
+      ],
+      "doc_links": [],
+      "title": "调用量查询接口说明",
+      "updated_at": "2025-03-07T06:32:05Z",
+      "document_id": "1476625",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-createapikey-createapikey",
+      "server": "doubao-speech",
+      "id": "doubao-createapikey-createapikey",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/create-api-key-create-api-key?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=1801958",
+      "kind": "api",
+      "tools": [
+        "speech_console"
+      ],
+      "sha256": "d389fd7e2a154085cfe70c0f0286247bb60daa29a60f7da7bc8c7721fc552d3c",
+      "bytes": 3184,
+      "models": [],
+      "endpoints": [
+        "https://open.volcengineapi.com"
+      ],
+      "doc_links": [
+        "https://www.volcengine.com/docs/6369/67268",
+        "https://www.volcengine.com/docs/6369/68677)文档",
+        "https://www.volcengine.com/docs/6369/80336"
+      ],
+      "title": "创建APIKey",
+      "updated_at": "2026-09-28T13:18:27Z",
+      "document_id": "1801958",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-deleteapikey-deleteapikey",
+      "server": "doubao-speech",
+      "id": "doubao-deleteapikey-deleteapikey",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/delete-api-key-delete-api-key?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=1801959",
+      "kind": "api",
+      "tools": [
+        "speech_console"
+      ],
+      "sha256": "3280731b3cc9fd99f591268c2e80d64005e870d60e3d0f09105a6a3ee18eda05",
+      "bytes": 3157,
+      "models": [],
+      "endpoints": [
+        "https://open.volcengineapi.com"
+      ],
+      "doc_links": [
+        "https://www.volcengine.com/docs/6369/67268",
+        "https://www.volcengine.com/docs/6369/68677)文档",
+        "https://www.volcengine.com/docs/6369/80336"
+      ],
+      "title": "删除APIKey",
+      "updated_at": "2026-09-28T13:18:38Z",
+      "document_id": "1801959",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-doubaovoiceminutes-apiaccessdocumentation",
+      "server": "doubao-speech",
+      "id": "doubao-doubaovoiceminutes-apiaccessdocumentation",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/doubao-voice-minutes-api-access-documentation?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=1798094",
+      "kind": "api",
+      "tools": [
+        "get_job",
+        "recover_job",
+        "summarize_meeting"
+      ],
+      "sha256": "00f013dd5910b248166a8b810db7cef36a5378991a35d057de35316ec1e79614",
+      "bytes": 77607,
+      "models": [],
+      "endpoints": [
+        "https://openspeech.bytedance.com/api/v3/auc/lark/query",
+        "https://openspeech.bytedance.com/api/v3/auc/lark/submit"
+      ],
+      "doc_links": [
+        "https://www.volcengine.com/docs/6561/196768#q1%EF%BC%9A%E5%93%AA%E9%87%8C%E5%8F%AF%E4%BB%A5%E8%8E%B7%E5%8F%96%E5%88%B0%E4%BB%A5%E4%B8%8B%E5%8F%82%E6%95%B0appid%EF%BC%8Ccluster%EF%BC%8Ctoken%EF%BC%8Cauthorization-type%EF%BC%8Csecret-key-%EF%BC%9F",
+        "https://www.volcengine.com/docs/6561/2119699?lang=zh#ew1HctnP"
+      ],
+      "title": "语音妙记",
+      "updated_at": "2026-09-28T11:15:50Z",
+      "document_id": "1798094",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-endtoend-realtime-voice-full-duplex-version",
+      "server": "doubao-speech",
+      "id": "doubao-endtoend-realtime-voice-full-duplex-version",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/end-to-end-real-time-voice-full-duplex-version?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=2549778",
+      "kind": "api",
+      "tools": [
+        "close_realtime_session",
+        "open_realtime_session",
+        "receive_realtime_events",
+        "send_realtime_event"
+      ],
+      "sha256": "e4a44a47278c9e4fcd3215289770897150bacfe8cc2c2f0ae042a9cd2e024c9c",
+      "bytes": 31784,
+      "models": [],
+      "endpoints": [
+        "wss://openspeech.bytedance.com/api/v3/duplex/realtime/dialogue"
+      ],
+      "doc_links": [
+        "https://docs.volcengine.com/docs/6561/1257544?lang=zh",
+        "https://docs.volcengine.com/docs/6561/1257544?lang=zh)，同时也支持复刻音色",
+        "https://docs.volcengine.com/docs/87772/2272949?lang=zh",
+        "https://docs.volcengine.com/docs/87772/2272953?redirect=1&lang=zh",
+        "https://docs.volcengine.com/docs/doubao-voice/access-must-read?lang=zh",
+        "https://docs.volcengine.com/docs/doubao-voice/access-must-read?lang=zh)中的音频约束规范输入音频；人声过轻或背景噪声过大均可能导致效果下降",
+        "https://www.volcengine.com/docs/6561/2549732?AuditDocumentID=397063&lang=zh",
+        "https://www.volcengine.com/docs/6561/2549732?AuditDocumentID=397063&lang=zh)，了解协议设计原则、注意事项与最佳实践，避免因协议不熟悉导致接入异常"
+      ],
+      "title": "端到端实时语音（Seeduplex）",
+      "updated_at": "2026-10-27T07:19:19Z",
+      "document_id": "2549778",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-formalizeresourcepacks-conversioneffectpackage",
+      "server": "doubao-speech",
+      "id": "doubao-formalizeresourcepacks-conversioneffectpackage",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/formalize-resource-packs-conversion-effect-package?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=1801937",
+      "kind": "api",
+      "tools": [
+        "speech_console"
+      ],
+      "sha256": "fda26c97c326d648562bee4f60b7af89c7599154156439beb451928a3b78f9b5",
+      "bytes": 4292,
+      "models": [],
+      "endpoints": [
+        "https://open.volcengineapi.com"
+      ],
+      "doc_links": [
+        "https://www.volcengine.com/docs/6369/67268",
+        "https://www.volcengine.com/docs/6369/68677)文档",
+        "https://www.volcengine.com/docs/6369/80336"
+      ],
+      "title": "转正资源包",
+      "updated_at": "2026-09-28T13:20:15Z",
+      "document_id": "1801937",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-hotwordmanagementapiv10",
+      "server": "doubao-speech",
+      "id": "doubao-hotwordmanagementapiv10",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/hot-word-management-api-v10?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=1742791",
+      "kind": "api",
+      "tools": [
+        "manage_word_table",
+        "speech_console"
+      ],
+      "sha256": "d6fa370207ceee6cc20f685a4d940f379381f8e948b8001998b2a084b7000ef3",
+      "bytes": 24017,
+      "models": [],
+      "endpoints": [
+        "https://openspeech.bytedance.com/api/proxy/invoke?Action=ListBoostingTable",
+        "https://openspeech.bytedance.com/api/proxy/invoke?Action={Action}](https://openspeech.bytedance.com/api/proxy/invoke?Action={Action}"
+      ],
+      "doc_links": [
+        "https://www.volcengine.com/docs/6369/185600",
+        "https://www.volcengine.com/docs/6369/67268"
+      ],
+      "title": "热词管理",
+      "updated_at": "2026-09-28T11:35:29Z",
+      "document_id": "1742791",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-httpchunkedsseunidirectionalstreaming-v3",
+      "server": "doubao-speech",
+      "id": "doubao-httpchunkedsseunidirectionalstreaming-v3",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/http-chunked-sse-unidirectional-streaming-v3?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=1598757",
+      "kind": "api",
+      "tools": [
+        "speech_raw_request",
+        "text_to_speech"
+      ],
+      "sha256": "6ed29dda98c017da0e7281bdbcb1643c77504561c6fc4babc27b508268f883cf",
+      "bytes": 39976,
+      "models": [
+        "seed-icl-1.0",
+        "seed-icl-1.0-concurr",
+        "seed-icl-2.0",
+        "seed-tts-1.0",
+        "seed-tts-1.0-concurr",
+        "seed-tts-2.0",
+        "seed-tts-2.0-expressive",
+        "seed-tts-2.0-standard"
+      ],
+      "endpoints": [
+        "https://openspeech.bytedance.com/api/v3/tts/unidirectional",
+        "https://openspeech.bytedance.com/api/v3/tts/unidirectional/sse",
+        "wss://openspeech.bytedance.com/api/v3/tts/bidirection",
+        "wss://openspeech.bytedance.com/api/v3/tts/unidirectional/stream"
+      ],
+      "doc_links": [
+        "https://www.volcengine.com/docs/6561/1257544",
+        "https://www.volcengine.com/docs/6561/1257544)、声音复刻大模型的音色",
+        "https://www.volcengine.com/docs/6561/1257544)，“豆包声音复刻大模型",
+        "https://www.volcengine.com/docs/6561/1257544?lang=zh#%E8%B1%86%E5%8C%85%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E6%A8%A1%E5%9E%8B1-0-%E9%9F%B3%E8%89%B2%E5%88%97%E8%A1%A8",
+        "https://www.volcengine.com/docs/6561/1257544?lang=zh#%E8%B1%86%E5%8C%85%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E6%A8%A1%E5%9E%8B2-0-%E9%9F%B3%E8%89%B2%E5%88%97%E8%A1%A8",
+        "https://www.volcengine.com/docs/6561/1329505",
+        "https://www.volcengine.com/docs/6561/1598757?lang=zh#_2-http-chunked%E6%A0%BC%E5%BC%8F%E6%8E%A5%E5%8F%A3%E8%AF%B4%E6%98%8E",
+        "https://www.volcengine.com/docs/6561/1598757?lang=zh#_3-sse%E6%A0%BC%E5%BC%8F%E6%8E%A5%E5%8F%A3%E8%AF%B4%E6%98%8E",
+        "https://www.volcengine.com/docs/6561/1719100",
+        "https://www.volcengine.com/docs/6561/196768#q1%EF%BC%9A%E5%93%AA%E9%87%8C%E5%8F%AF%E4%BB%A5%E8%8E%B7%E5%8F%96%E5%88%B0%E4%BB%A5%E4%B8%8B%E5%8F%82%E6%95%B0appid%EF%BC%8Ccluster%EF%BC%8Ctoken%EF%BC%8Cauthorization-type%EF%BC%8Csecret-key-%EF%BC%9F)（旧版控制台使用，新版控制台只需要X",
+        "https://www.volcengine.com/docs/6561/2119699?lang=zh#ew1HctnP"
+      ],
+      "title": "HTTP Chunked/SSE单向流式-V3",
+      "updated_at": "2026-05-25T09:03:36Z",
+      "document_id": "1598757",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-httpinterfaceone-timecomposition-non-streaming",
+      "server": "doubao-speech",
+      "id": "doubao-httpinterfaceone-timecomposition-non-streaming",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/http-interface-one-time-composition-non-streaming?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=79820",
+      "kind": "api",
+      "tools": [
+        "speech_raw_request"
+      ],
+      "sha256": "ef71ab7d12a723741984873498983598eb19f8f5ba6dcf2d6e7a342051a0749d",
+      "bytes": 2264,
+      "models": [],
+      "endpoints": [
+        "https://openspeech.bytedance.com/api/v1/tts**"
+      ],
+      "doc_links": [
+        "https://www.volcengine.com/docs/6561/196768#q1%EF%BC%9A%E5%93%AA%E9%87%8C%E5%8F%AF%E4%BB%A5%E8%8E%B7%E5%8F%96%E5%88%B0%E4%BB%A5%E4%B8%8B%E5%8F%82%E6%95%B0appid%EF%BC%8Ccluster%EF%BC%8Ctoken%EF%BC%8Cauthorization-type%EF%BC%8Csecret-key-%EF%BC%9F",
+        "https://www.volcengine.com/docs/6561/79823"
+      ],
+      "title": "小模型HTTP非流式接口",
+      "updated_at": "2026-05-19T03:38:22Z",
+      "document_id": "79820",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-httpone-timecompositenon-streaminginterface-v1notrecommended",
+      "server": "doubao-speech",
+      "id": "doubao-httpone-timecompositenon-streaminginterface-v1notrecommended",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/http-one-timecompositenon-streaming-interface-v1-not-recommended?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=1257584",
+      "kind": "api",
+      "tools": [
+        "speech_raw_request"
+      ],
+      "sha256": "a4d7b2c501b9303783f15a84bb5492796b28b21d12390a50c9375c3205926c4f",
+      "bytes": 17254,
+      "models": [
+        "seed-tts-1.1"
+      ],
+      "endpoints": [
+        "https://openspeech.bytedance.com/api/v1/tts",
+        "https://openspeech.bytedance.com/api/v3/tts/unidirectional",
+        "https://openspeech.bytedance.com/api/v3/tts/unidirectional/sse",
+        "wss://openspeech.bytedance.com/api/v1/tts/ws_binary",
+        "wss://openspeech.bytedance.com/api/v3/tts/bidirection",
+        "wss://openspeech.bytedance.com/api/v3/tts/unidirectional/stream"
+      ],
+      "doc_links": [
+        "https://www.volcengine.com/docs/6561/1257544",
+        "https://www.volcengine.com/docs/6561/1257544)，比如：",
+        "https://www.volcengine.com/docs/6561/1257584",
+        "https://www.volcengine.com/docs/6561/1329505",
+        "https://www.volcengine.com/docs/6561/1330194",
+        "https://www.volcengine.com/docs/6561/1598757?lang=zh#_2-http-chunked%E6%A0%BC%E5%BC%8F%E6%8E%A5%E5%8F%A3%E8%AF%B4%E6%98%8E",
+        "https://www.volcengine.com/docs/6561/1598757?lang=zh#_3-sse%E6%A0%BC%E5%BC%8F%E6%8E%A5%E5%8F%A3%E8%AF%B4%E6%98%8E",
+        "https://www.volcengine.com/docs/6561/1719100",
+        "https://www.volcengine.com/docs/6561/196768#q1%EF%BC%9A%E5%93%AA%E9%87%8C%E5%8F%AF%E4%BB%A5%E8%8E%B7%E5%8F%96%E5%88%B0%E4%BB%A5%E4%B8%8B%E5%8F%82%E6%95%B0appid%EF%BC%8Ccluster%EF%BC%8Ctoken%EF%BC%8Cauthorization-type%EF%BC%8Csecret-key-%EF%BC%9F"
+      ],
+      "title": "大模型HTTP非流式接口-V1",
+      "updated_at": "2026-05-19T03:38:14Z",
+      "document_id": "1257584",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-largemodelrecordingfileliterecognitionapi",
+      "server": "doubao-speech",
+      "id": "doubao-largemodelrecordingfileliterecognitionapi",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/large-model-recording-file-lite-recognition-api?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=1631584",
+      "kind": "api",
+      "tools": [
+        "speech_raw_request",
+        "speech_to_text"
+      ],
+      "sha256": "ef9dae4d17e1db6487ecb91c5d86dade4499aa40f72084c4cc28944677691bfb",
+      "bytes": 9526,
+      "models": [
+        "bigmodel"
+      ],
+      "endpoints": [
+        "https://openspeech.bytedance.com/api/v3/auc/bigmodel/recognize/flash"
+      ],
+      "doc_links": [
+        "https://www.volcengine.com/docs/6561/196768#q1%EF%BC%9A%E5%93%AA%E9%87%8C%E5%8F%AF%E4%BB%A5%E8%8E%B7%E5%8F%96%E5%88%B0%E4%BB%A5%E4%B8%8B%E5%8F%82%E6%95%B0appid%EF%BC%8Ccluster%EF%BC%8Ctoken%EF%BC%8Cauthorization-type%EF%BC%8Csecret-key-%EF%BC%9F)（旧版控制台使用，新版控制台只需要X"
+      ],
+      "title": "录音文件极速版识别HTTP",
+      "updated_at": "2026-06-26T08:13:27Z",
+      "document_id": "1631584",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-largemodelrecordingfilerecognitionidleversion",
+      "server": "doubao-speech",
+      "id": "doubao-largemodelrecordingfilerecognitionidleversion",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/large-model-recording-file-recognition-idle-version?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=1840838",
+      "kind": "api",
+      "tools": [
+        "get_job",
+        "recover_job",
+        "speech_to_text"
+      ],
+      "sha256": "d5c746c407aa6161b8abc1369365c323979b876ff6dad7e86f7deee1ad39a5b9",
+      "bytes": 7630,
+      "models": [
+        "bigmodel"
+      ],
+      "endpoints": [
+        "https://openspeech.bytedance.com/api/v3/auc/bigmodel/idle/query",
+        "https://openspeech.bytedance.com/api/v3/auc/bigmodel/idle/submit"
+      ],
+      "doc_links": [
+        "https://www.volcengine.com/docs/6561/1354868",
+        "https://www.volcengine.com/docs/6561/196768#q1%EF%BC%9A%E5%93%AA%E9%87%8C%E5%8F%AF%E4%BB%A5%E8%8E%B7%E5%8F%96%E5%88%B0%E4%BB%A5%E4%B8%8B%E5%8F%82%E6%95%B0appid%EF%BC%8Ccluster%EF%BC%8Ctoken%EF%BC%8Cauthorization-type%EF%BC%8Csecret-key-%EF%BC%9F"
+      ],
+      "title": "录音文件识别闲时版HTTP",
+      "updated_at": "2026-06-26T08:12:42Z",
+      "document_id": "1840838",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-largemodelrecordingfilerecognitionstandardversionapi",
+      "server": "doubao-speech",
+      "id": "doubao-largemodelrecordingfilerecognitionstandardversionapi",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/large-model-recording-file-recognition-standard-version-api?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=1354868",
+      "kind": "api",
+      "tools": [
+        "get_job",
+        "recover_job",
+        "speech_to_text"
+      ],
+      "sha256": "a29c026ae801abf446873331f649bdfcd66f276bf7b3b511c5b6fd4941b07fce",
+      "bytes": 23274,
+      "models": [
+        "bigmodel"
+      ],
+      "endpoints": [
+        "https://openspeech.bytedance.com/api/v3/auc/bigmodel/query",
+        "https://openspeech.bytedance.com/api/v3/auc/bigmodel/submit"
+      ],
+      "doc_links": [
+        "https://www.volcengine.com/docs/6561/1206007",
+        "https://www.volcengine.com/docs/6561/155738",
+        "https://www.volcengine.com/docs/6561/196768#q1%EF%BC%9A%E5%93%AA%E9%87%8C%E5%8F%AF%E4%BB%A5%E8%8E%B7%E5%8F%96%E5%88%B0%E4%BB%A5%E4%B8%8B%E5%8F%82%E6%95%B0appid%EF%BC%8Ccluster%EF%BC%8Ctoken%EF%BC%8Cauthorization-type%EF%BC%8Csecret-key-%EF%BC%9F",
+        "https://www.volcengine.com/docs/6561/196768#q1%EF%BC%9A%E5%93%AA%E9%87%8C%E5%8F%AF%E4%BB%A5%E8%8E%B7%E5%8F%96%E5%88%B0%E4%BB%A5%E4%B8%8B%E5%8F%82%E6%95%B0appid%EF%BC%8Ccluster%EF%BC%8Ctoken%EF%BC%8Cauthorization-type%EF%BC%8Csecret-key-%EF%BC%9F)（旧版控制台使用，新版控制台只需要X"
+      ],
+      "title": "录音文件识别标准版HTTP",
+      "updated_at": "2026-06-26T08:23:54Z",
+      "document_id": "1354868",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-largemodelstreamingautomaticspeechrecognitionapi",
+      "server": "doubao-speech",
+      "id": "doubao-largemodelstreamingautomaticspeechrecognitionapi",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/large-model-streaming-automatic-speech-recognition-api-1?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=1354869",
+      "kind": "api",
+      "tools": [
+        "speech_raw_request"
+      ],
+      "sha256": "281e32a82932aa1854ac7b3829e6934e112f59f8491e54c3047e919629a29bc4",
+      "bytes": 34780,
+      "models": [
+        "bigmodel",
+        "bigmodel_nostream"
+      ],
+      "endpoints": [],
+      "doc_links": [
+        "https://www.volcengine.com/docs/6561/1206007",
+        "https://www.volcengine.com/docs/6561/155739",
+        "https://www.volcengine.com/docs/6561/196768#q1%EF%BC%9A%E5%93%AA%E9%87%8C%E5%8F%AF%E4%BB%A5%E8%8E%B7%E5%8F%96%E5%88%B0%E4%BB%A5%E4%B8%8B%E5%8F%82%E6%95%B0appid%EF%BC%8Ccluster%EF%BC%8Ctoken%EF%BC%8Cauthorization-type%EF%BC%8Csecret-key-%EF%BC%9F)（旧版控制台使用，新版控制台只需要X"
+      ],
+      "title": "大模型流式语音识别API",
+      "updated_at": "2026-08-06T09:40:25Z",
+      "document_id": "1354869",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-listapikeys-pullapikeylist",
+      "server": "doubao-speech",
+      "id": "doubao-listapikeys-pullapikeylist",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/list-api-keys-pull-api-key-list?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=1801323",
+      "kind": "api",
+      "tools": [
+        "speech_console"
+      ],
+      "sha256": "ac67ce630fb38bc730e910d5ebbcfee6ff0c5b76b5c58f56d03aa987d659e638",
+      "bytes": 3626,
+      "models": [],
+      "endpoints": [
+        "https://open.volcengineapi.com"
+      ],
+      "doc_links": [
+        "https://www.volcengine.com/docs/6369/67268",
+        "https://www.volcengine.com/docs/6369/68677)，获取更多错误码信息",
+        "https://www.volcengine.com/docs/6369/80336"
+      ],
+      "title": "获取APIKey列表",
+      "updated_at": "2026-09-28T13:18:21Z",
+      "document_id": "1801323",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-listbigmodelttstimbres-largemodelsoundlist",
+      "server": "doubao-speech",
+      "id": "doubao-listbigmodelttstimbres-largemodelsoundlist",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/list-big-model-tts-timbres-large-model-sound-list?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=1770994",
+      "kind": "models",
+      "tools": [
+        "speech_console"
+      ],
+      "sha256": "dc57e41f51c8f8a75d9928e52d9d29fbd836f77802cce87bfc06457e730069cf",
+      "bytes": 7054,
+      "models": [],
+      "endpoints": [
+        "https://open.volcengineapi.com"
+      ],
+      "doc_links": [
+        "https://www.volcengine.com/docs/6369/67268",
+        "https://www.volcengine.com/docs/6369/68677)，获取更多错误码信息",
+        "https://www.volcengine.com/docs/6369/80336"
+      ],
+      "title": "大模型音色列表",
+      "updated_at": "2026-09-28T13:10:03Z",
+      "document_id": "1770994",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-listmegattsbyorderid-querypurchasedsoundsbyorderid",
+      "server": "doubao-speech",
+      "id": "doubao-listmegattsbyorderid-querypurchasedsoundsbyorderid",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/list-mega-tts-by-order-id-query-purchased-sounds-by-order-id?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=1835745",
+      "kind": "api",
+      "tools": [
+        "speech_console"
+      ],
+      "sha256": "dd871300fcaaba1de3ad4ef49de70a9ebdb123e8360952d85e4fd8773f954301",
+      "bytes": 7076,
+      "models": [],
+      "endpoints": [
+        "https://open.volcengineapi.com"
+      ],
+      "doc_links": [
+        "https://www.volcengine.com/docs/6369/67268",
+        "https://www.volcengine.com/docs/6369/68677)文档",
+        "https://www.volcengine.com/docs/6369/80336"
+      ],
+      "title": "查询购买音色",
+      "updated_at": "2026-09-28T13:24:20Z",
+      "document_id": "1835745",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-listmegattstrainstatus-queryspeakeridstatusinformation",
+      "server": "doubao-speech",
+      "id": "doubao-listmegattstrainstatus-queryspeakeridstatusinformation",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/list-mega-tts-train-status-query-speaker-id-status-information?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=1801952",
+      "kind": "api",
+      "tools": [
+        "speech_console"
+      ],
+      "sha256": "cb821ad8ca25c03666de8fc155dfc6d2f06e37c58d0bd337961852c2a5ebe4dd",
+      "bytes": 6608,
+      "models": [],
+      "endpoints": [
+        "https://open.volcengineapi.com"
+      ],
+      "doc_links": [
+        "https://www.volcengine.com/docs/6369/67268",
+        "https://www.volcengine.com/docs/6369/68677)文档",
+        "https://www.volcengine.com/docs/6369/80336"
+      ],
+      "title": "查询SpeakerID状态信息",
+      "updated_at": "2026-09-28T13:21:15Z",
+      "document_id": "1801952",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-listspeakers-largemodelsoundlistnewinterface",
+      "server": "doubao-speech",
+      "id": "doubao-listspeakers-largemodelsoundlistnewinterface",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/list-speakers-large-model-sound-list-new-interface?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=2160690",
+      "kind": "models",
+      "tools": [
+        "speech_console"
+      ],
+      "sha256": "c4a9e14bc19cffb1db034bb3a9770445e7b1b116462f439e320ff12dad630486",
+      "bytes": 6311,
+      "models": [
+        "seed-tts-2.0"
+      ],
+      "endpoints": [
+        "https://open.volcengineapi.com"
+      ],
+      "doc_links": [
+        "https://www.volcengine.com/",
+        "https://www.volcengine.com/docs/6369/67268",
+        "https://www.volcengine.com/docs/6369/68677)文档",
+        "https://www.volcengine.com/docs/6369/80336"
+      ],
+      "title": "大模型音色列表",
+      "updated_at": "2026-09-28T13:18:11Z",
+      "document_id": "2160690",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-listtagsforresources-queryalllabelsattachedtoaresource",
+      "server": "doubao-speech",
+      "id": "doubao-listtagsforresources-queryalllabelsattachedtoaresource",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/list-tags-for-resources-query-all-labels-attached-to-are-source?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=1801949",
+      "kind": "api",
+      "tools": [
+        "speech_console"
+      ],
+      "sha256": "591e3e714fc8a3e5e898679d6b46073eef3bd98f11267aad95f0ca7272548336",
+      "bytes": 5261,
+      "models": [],
+      "endpoints": [
+        "https://open.volcengineapi.com"
+      ],
+      "doc_links": [
+        "https://www.volcengine.com/docs/6369/67268",
+        "https://www.volcengine.com/docs/6369/68677)文档",
+        "https://www.volcengine.com/docs/6369/80336"
+      ],
+      "title": "查询资源所附加的全部标签",
+      "updated_at": "2026-09-28T13:20:55Z",
+      "document_id": "1801949",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-machinetranslationlargemodel-apiaccessdocumentation",
+      "server": "doubao-speech",
+      "id": "doubao-machinetranslationlargemodel-apiaccessdocumentation",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/machine-translation-large-model-api-access-documentation?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=2306735",
+      "kind": "api",
+      "tools": [
+        "translate_text"
+      ],
+      "sha256": "43ebb5e13f081d0bb722fcc050716489a50a47acadcadbda3b8def857e1e21c9",
+      "bytes": 10101,
+      "models": [
+        "volc.speech.mt"
+      ],
+      "endpoints": [
+        "https://openspeech.bytedance.com/api/v3/machine_translation/matx_translate"
+      ],
+      "doc_links": [],
+      "title": "机器翻译",
+      "updated_at": "2026-09-28T11:15:20Z",
+      "document_id": "2306735",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-model-list",
+      "server": "doubao-speech",
+      "id": "doubao-model-list",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/model-list?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=2499930",
+      "kind": "models",
+      "tools": [
+        "generate_audio",
+        "list_speech_capabilities",
+        "open_realtime_session",
+        "speech_raw_request",
+        "speech_to_text",
+        "text_to_speech"
+      ],
+      "sha256": "aa335488e1b7e7d1bd434549a9ba9194287ac4b785e9ea94cd6a85f040c677e0",
+      "bytes": 22642,
+      "models": [
+        "seed-icl-2.0"
+      ],
+      "endpoints": [],
+      "doc_links": [
+        "https://docs.volcengine.com/docs/6561/1257544?lang=zh",
+        "https://docs.volcengine.com/docs/6561/1359370?lang=zh"
+      ],
+      "title": "模型列表",
+      "updated_at": "2026-09-29T10:55:50Z",
+      "document_id": "2499930",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-old-version-console-authentication-reference-example",
+      "server": "doubao-speech",
+      "id": "doubao-old-version-console-authentication-reference-example",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/old-version-console-authentication-reference-example?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=2534847",
+      "kind": "guide",
+      "tools": [
+        "list_speech_capabilities"
+      ],
+      "sha256": "46dadc1bb760c79501cff1141bfdb33fd10bd2fdafbb88fcc70e85f05e201a97",
+      "bytes": 5251,
+      "models": [
+        "seed-icl-2.0",
+        "seed-tts-2.0",
+        "volc.speech.dialog",
+        "volc.speech.mt"
+      ],
+      "endpoints": [],
+      "doc_links": [
+        "https://www.volcengine.com/docs/6561/1257544?lang=zh#%E8%B1%86%E5%8C%85%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E6%A8%A1%E5%9E%8B2-0-%E9%9F%B3%E8%89%B2%E5%88%97%E8%A1%A8",
+        "https://www.volcengine.com/docs/6561/196768#q1%EF%BC%9A%E5%93%AA%E9%87%8C%E5%8F%AF%E4%BB%A5%E8%8E%B7%E5%8F%96%E5%88%B0%E4%BB%A5%E4%B8%8B%E5%8F%82%E6%95%B0appid%EF%BC%8Ccluster%EF%BC%8Ctoken%EF%BC%8Cauthorization-type%EF%BC%8Csecret-key-%EF%BC%9F)，在火山引擎控制台获取的Access",
+        "https://www.volcengine.com/docs/6561/196768?_vtm_=a106466.b106468.0_0.0_0.0.846_7636990835414320667#q1%EF%BC%9A%E5%93%AA%E9%87%8C%E5%8F%AF%E4%BB%A5%E8%8E%B7%E5%8F%96%E5%88%B0%E4%BB%A5%E4%B8%8B%E5%8F%82%E6%95%B0appid%EF%BC%8Ccluster%EF%BC%8Ctoken%EF%BC%8Cauthorization-type%EF%BC%8Csecret-key-%EF%BC%9F)，在火山引擎控制台获取APP"
+      ],
+      "title": "旧版控制台鉴权参考示例",
+      "updated_at": "2026-06-12T08:58:43Z",
+      "document_id": "2534847",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-orderaccessresourcepacks-soundorder",
+      "server": "doubao-speech",
+      "id": "doubao-orderaccessresourcepacks-soundorder",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/order-access-resource-packs-sound-order?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=1801954",
+      "kind": "api",
+      "tools": [
+        "speech_console"
+      ],
+      "sha256": "50cd3ef1fe36c07e96166b75458e836b1b6970c5fd35db54e8ae9544a86e710a",
+      "bytes": 5168,
+      "models": [],
+      "endpoints": [
+        "https://open.volcengineapi.com"
+      ],
+      "doc_links": [
+        "https://www.volcengine.com/docs/6269/67339)获取",
+        "https://www.volcengine.com/docs/6369/67268",
+        "https://www.volcengine.com/docs/6369/68677)文档",
+        "https://www.volcengine.com/docs/6369/80336"
+      ],
+      "title": "音色下单",
+      "updated_at": "2026-09-28T13:21:33Z",
+      "document_id": "1801954",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-orderresourcepacks-buyeffectspackage",
+      "server": "doubao-speech",
+      "id": "doubao-orderresourcepacks-buyeffectspackage",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/order-resource-packs-buyeffectspackage?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=1801940",
+      "kind": "api",
+      "tools": [
+        "speech_console"
+      ],
+      "sha256": "c89efd7df52a4e873c0a136d20bb59b93a68526208a0cb4b9846aee368484012",
+      "bytes": 5148,
+      "models": [],
+      "endpoints": [
+        "https://open.volcengineapi.com"
+      ],
+      "doc_links": [
+        "https://www.volcengine.com/docs/6369/67268",
+        "https://www.volcengine.com/docs/6369/68677)文档",
+        "https://www.volcengine.com/docs/6369/80336"
+      ],
+      "title": "购买资源包",
+      "updated_at": "2026-09-28T13:20:45Z",
+      "document_id": "1801940",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-pauseservice-suspendservice",
+      "server": "doubao-speech",
+      "id": "doubao-pauseservice-suspendservice",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/pause-service-suspend-service?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=1801942",
+      "kind": "api",
+      "tools": [
+        "speech_console"
+      ],
+      "sha256": "9495169d3a17e6ca35ef2209f6dae71ec5f5b42d6db328e8574b399589fa3885",
+      "bytes": 3248,
+      "models": [],
+      "endpoints": [
+        "https://open.volcengineapi.com"
+      ],
+      "doc_links": [
+        "https://www.volcengine.com/docs/6369/67268",
+        "https://www.volcengine.com/docs/6369/68677)文档",
+        "https://www.volcengine.com/docs/6369/80336"
+      ],
+      "title": "暂停服务",
+      "updated_at": "2026-09-28T13:19:44Z",
+      "document_id": "1801942",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-podcast",
+      "server": "doubao-speech",
+      "id": "doubao-podcast",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/podcast?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=2708572",
+      "kind": "api",
+      "tools": [
+        "generate_podcast"
+      ],
+      "sha256": "2eb307876f71d8478776ecae123d0d22df154104e7eda3fec680a107f4e3cf79",
+      "bytes": 8271,
+      "models": [
+        "seed-tts-2.0-standard"
+      ],
+      "endpoints": [
+        "https://openspeech.bytedance.com/api/v3/podcast/sse"
+      ],
+      "doc_links": [
+        "https://docs.volcengine.com/docs/DoubaoVoice/Tonelist-1?lang=zh",
+        "https://docs.volcengine.com/docs/DoubaoVoice/Tonelist-1?lang=zh)、声音复刻音色。请参考[语音合成接口](https://docs.volcengine.com/docs/DoubaoVoice/unidirectional-streaming-text-to-speech-http?lang=zh)配置自定义附加参数（req_params.additions）",
+        "https://docs.volcengine.com/docs/DoubaoVoice/podcast_mustread?lang=zh",
+        "https://docs.volcengine.com/docs/DoubaoVoice/tone-training-http?lang=zh)生成的音色"
+      ],
+      "title": "语音播客",
+      "updated_at": "2026-10-14T08:33:02Z",
+      "document_id": "2708572",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-podcast-mustread",
+      "server": "doubao-speech",
+      "id": "doubao-podcast-mustread",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/podcast-mustread?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=2709746",
+      "kind": "guide",
+      "tools": [
+        "generate_podcast"
+      ],
+      "sha256": "e8ddce704d0c96556ca82f99e6b2665271adf42154824fb4b4d5954ef190ac21",
+      "bytes": 10614,
+      "models": [],
+      "endpoints": [],
+      "doc_links": [
+        "https://docs.volcengine.com/docs/DoubaoVoice/Tonelist",
+        "https://docs.volcengine.com/docs/DoubaoVoice/tone-training-http?lang=zh"
+      ],
+      "title": "语音播客",
+      "updated_at": "2026-10-14T08:33:12Z",
+      "document_id": "2709746",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-podcastapi-websocket-v3protocol",
+      "server": "doubao-speech",
+      "id": "doubao-podcastapi-websocket-v3protocol",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/podcast-api-websocket-v3protocol?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=1668014",
+      "kind": "api",
+      "tools": [
+        "generate_podcast"
+      ],
+      "sha256": "3ca399f1d1e505735f489fed5f58a31e2160b7089451f1fae03f7efcb05ed5d1",
+      "bytes": 33121,
+      "models": [],
+      "endpoints": [
+        "wss://openspeech.bytedance.com/api/v3/sami/podcasttts"
+      ],
+      "doc_links": [
+        "https://www.volcengine.com/docs/6561/1257544?lang=zh",
+        "https://www.volcengine.com/docs/6561/1719100?lang=zh](https://www.volcengine.com/docs/6561/1719100?lang=zh)）里面的",
+        "https://www.volcengine.com/docs/6561/196768#q1%EF%BC%9A%E5%93%AA%E9%87%8C%E5%8F%AF%E4%BB%A5%E8%8E%B7%E5%8F%96%E5%88%B0%E4%BB%A5%E4%B8%8B%E5%8F%82%E6%95%B0appid%EF%BC%8Ccluster%EF%BC%8Ctoken%EF%BC%8Cauthorization-type%EF%BC%8Csecret-key-%EF%BC%9F"
+      ],
+      "title": "语音播客",
+      "updated_at": "2026-09-29T08:52:01Z",
+      "document_id": "1668014",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-qpsconcurrentqueryinterfacedescription",
+      "server": "doubao-speech",
+      "id": "doubao-qpsconcurrentqueryinterfacedescription",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/qps-concurrent-query-interface-description?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=1476626",
+      "kind": "api",
+      "tools": [
+        "speech_console"
+      ],
+      "sha256": "720641c0e71f4f36533a900031406005f3aa69bc602fbc6bf44c8264dbbd19a7",
+      "bytes": 30876,
+      "models": [],
+      "endpoints": [
+        "https://open.volcengineapi.com"
+      ],
+      "doc_links": [],
+      "title": "QPS/并发查询接口说明",
+      "updated_at": "2025-10-10T12:40:52Z",
+      "document_id": "1476626",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-quickstartnewconsole",
+      "server": "doubao-speech",
+      "id": "doubao-quickstartnewconsole",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/quick-start-new-console?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=2119699",
+      "kind": "guide",
+      "tools": [
+        "list_speech_capabilities"
+      ],
+      "sha256": "2f8d91870e7c42c509f2ea3e3d950b44fc1b6e05846fe931ea1e2d31278b5981",
+      "bytes": 36578,
+      "models": [],
+      "endpoints": [],
+      "doc_links": [
+        "https://www.volcengine.com/docs/6561/1871062?lang=zh"
+      ],
+      "title": "快速入门（新版控制台）",
+      "updated_at": "2025-12-09T07:46:44Z",
+      "document_id": "2119699",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-quotamonitoring-quotaqueryinterface",
+      "server": "doubao-speech",
+      "id": "doubao-quotamonitoring-quotaqueryinterface",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/quota-monitoring-quota-query-interface?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=1801956",
+      "kind": "api",
+      "tools": [
+        "speech_console"
+      ],
+      "sha256": "0a19288b7a8afe51a018b3192028cae371689d6bd052a459e606701195823be8",
+      "bytes": 4746,
+      "models": [],
+      "endpoints": [
+        "https://open.volcengineapi.com"
+      ],
+      "doc_links": [
+        "https://www.volcengine.com/docs/6369/67268",
+        "https://www.volcengine.com/docs/6369/68677)文档",
+        "https://www.volcengine.com/docs/6369/80336"
+      ],
+      "title": "Quota查询接口",
+      "updated_at": "2026-09-28T13:24:29Z",
+      "document_id": "1801956",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-recording-file-recognition-lite-http",
+      "server": "doubao-speech",
+      "id": "doubao-recording-file-recognition-lite-http",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/recording-file-recognition-lite-http?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=2608628",
+      "kind": "api",
+      "tools": [
+        "speech_raw_request",
+        "speech_to_text"
+      ],
+      "sha256": "67a6d85192edc03d15d5bf1aec321bd0a113fe84abbe8bedac3881d7bb1b8e63",
+      "bytes": 25095,
+      "models": [
+        "bigmodel"
+      ],
+      "endpoints": [
+        "https://openspeech.bytedance.com/api/v3/auc/bigmodel/recognize/flash"
+      ],
+      "doc_links": [
+        "https://docs.volcengine.com/docs/6561/2604976?lang=zh)配置热词",
+        "https://docs.volcengine.com/docs/6561/2604976?lang=zh)配置热词和上下文"
+      ],
+      "title": "录音文件识别极速版",
+      "updated_at": "2026-10-26T09:22:24Z",
+      "document_id": "2608628",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-renewaccessresourcepacks-tonerenewal",
+      "server": "doubao-speech",
+      "id": "doubao-renewaccessresourcepacks-tonerenewal",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/renew-access-resource-packs-tone-renewal?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=1801955",
+      "kind": "api",
+      "tools": [
+        "speech_console"
+      ],
+      "sha256": "c4f72753983d50c4ff12a31a80155af8fe062d8b5f7422aea83180dbdfd31b8d",
+      "bytes": 4268,
+      "models": [],
+      "endpoints": [
+        "https://open.volcengineapi.com"
+      ],
+      "doc_links": [
+        "https://www.volcengine.com/docs/6269/67339)获取",
+        "https://www.volcengine.com/docs/6369/67268",
+        "https://www.volcengine.com/docs/6369/68677)文档",
+        "https://www.volcengine.com/docs/6369/80336"
+      ],
+      "title": "音色续费",
+      "updated_at": "2026-09-28T13:24:10Z",
+      "document_id": "1801955",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-replacementwordapiv11",
+      "server": "doubao-speech",
+      "id": "doubao-replacementwordapiv11",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/replacement-word-api-v11?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=1742792",
+      "kind": "api",
+      "tools": [
+        "manage_word_table",
+        "speech_console"
+      ],
+      "sha256": "36ea89521d11c6dd377042c657efe9b8e77ee7da8e28f4730ef14c77859d7275",
+      "bytes": 20955,
+      "models": [],
+      "endpoints": [],
+      "doc_links": [
+        "https://www.volcengine.com/docs/6369/185600",
+        "https://www.volcengine.com/docs/6369/67268"
+      ],
+      "title": "替换词管理",
+      "updated_at": "2026-09-28T11:35:35Z",
+      "document_id": "1742792",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-resourcepacksstatus-effectpackagestatusinformation",
+      "server": "doubao-speech",
+      "id": "doubao-resourcepacksstatus-effectpackagestatusinformation",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/resource-packs-status-effect-package-status-information?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=1801938",
+      "kind": "api",
+      "tools": [
+        "speech_console"
+      ],
+      "sha256": "bbf276354bba1a637da346f22683de0f23cd676954896f613fb5b4f38c4c60f8",
+      "bytes": 10343,
+      "models": [],
+      "endpoints": [
+        "https://open.volcengineapi.com"
+      ],
+      "doc_links": [
+        "https://www.volcengine.com/docs/6369/67268",
+        "https://www.volcengine.com/docs/6369/68677)文档",
+        "https://www.volcengine.com/docs/6369/80336"
+      ],
+      "title": "获取资源包状态信息",
+      "updated_at": "2026-09-28T13:20:23Z",
+      "document_id": "1801938",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-result-query-http",
+      "server": "doubao-speech",
+      "id": "doubao-result-query-http",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/result-query-http?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=2608619",
+      "kind": "api",
+      "tools": [
+        "get_job",
+        "recover_job"
+      ],
+      "sha256": "ae26c200fb7759ffbd03ec9affb23dd1dab532d42548ecbcd35709c442a2f05c",
+      "bytes": 2369,
+      "models": [],
+      "endpoints": [
+        "https://openspeech.bytedance.com/api/v3/auc/bigmodel/idle/query"
+      ],
+      "doc_links": [
+        "https://www.volcengine.com/docs/6561/2534847?lang=zh"
+      ],
+      "title": "结果查询",
+      "updated_at": "2026-09-28T11:41:19Z",
+      "document_id": "2608619",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-result-query-http-1",
+      "server": "doubao-speech",
+      "id": "doubao-result-query-http-1",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/result-query-http-1?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=2606792",
+      "kind": "api",
+      "tools": [
+        "get_job",
+        "recover_job"
+      ],
+      "sha256": "adc5e41c993cc98f80d0f4194a26cdab87382bc14ef7d9cada47262c0d089ec9",
+      "bytes": 11871,
+      "models": [],
+      "endpoints": [
+        "https://openspeech.bytedance.com/api/v3/auc/bigmodel/query"
+      ],
+      "doc_links": [],
+      "title": "结果查询",
+      "updated_at": "2026-10-27T07:49:44Z",
+      "document_id": "2606792",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-resultquery",
+      "server": "doubao-speech",
+      "id": "doubao-resultquery",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/result-query?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=2670604",
+      "kind": "api",
+      "tools": [
+        "get_job",
+        "recover_job"
+      ],
+      "sha256": "9c435bf21e4ca5308138a63db50269e72ee208d63c33911c4a9ccb389ba6ec95",
+      "bytes": 3172,
+      "models": [
+        "seed-icl-2.0",
+        "seed-tts-2.0"
+      ],
+      "endpoints": [
+        "https://openspeech.bytedance.com/api/v3/tts/query"
+      ],
+      "doc_links": [
+        "https://www.volcengine.com/docs/6561/2534847?lang=zh"
+      ],
+      "title": "结果查询",
+      "updated_at": "2026-09-28T11:13:42Z",
+      "document_id": "2670604",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-resumeservice-re-enabletheservice",
+      "server": "doubao-speech",
+      "id": "doubao-resumeservice-re-enabletheservice",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/resume-service-re-enable-the-service?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=1801943",
+      "kind": "api",
+      "tools": [
+        "speech_console"
+      ],
+      "sha256": "9a04570fe120999257b1332df7df1d4207359ee5bb54821760258366f1880201",
+      "bytes": 3259,
+      "models": [],
+      "endpoints": [
+        "https://open.volcengineapi.com"
+      ],
+      "doc_links": [
+        "https://www.volcengine.com/docs/6369/67268",
+        "https://www.volcengine.com/docs/6369/68677)文档",
+        "https://www.volcengine.com/docs/6369/80336"
+      ],
+      "title": "重新启用服务",
+      "updated_at": "2026-09-28T13:19:53Z",
+      "document_id": "1801943",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-seedrealtime",
+      "server": "doubao-speech",
+      "id": "doubao-seedrealtime",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/seedrealtime?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=2722879",
+      "kind": "api",
+      "tools": [
+        "close_realtime_session",
+        "open_realtime_session",
+        "receive_realtime_events",
+        "send_realtime_event"
+      ],
+      "sha256": "7cff8cb9ee63d2e8d99e7690996de92559a7cf31a56a29ae7a1030e375bc6850",
+      "bytes": 34961,
+      "models": [
+        "Doubao"
+      ],
+      "endpoints": [
+        "wss://openspeech.bytedance.com/api/v3/seedrealtime"
+      ],
+      "doc_links": [
+        "https://docs.volcengine.com/docs/6561/1257544?lang=zh",
+        "https://docs.volcengine.com/docs/6561/1257544?lang=zh)，同时也支持复刻音色",
+        "https://docs.volcengine.com/docs/87772/2272949?lang=zh",
+        "https://docs.volcengine.com/docs/87772/2272953?redirect=1&lang=zh",
+        "https://docs.volcengine.com/docs/doubao-voice/access-must-read?lang=zh",
+        "https://www.volcengine.com/docs/6561/2549732?AuditDocumentID=397063&lang=zh",
+        "https://www.volcengine.com/docs/6561/2549732?AuditDocumentID=397063&lang=zh)，了解协议设计原则、注意事项与最佳实践等，避免因协议不熟悉导致接入异常"
+      ],
+      "title": "Doubao-Seed-Realtime-1.0",
+      "updated_at": "2026-10-27T09:18:33Z",
+      "document_id": "2722879",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-servicestatus-servicestatus",
+      "server": "doubao-speech",
+      "id": "doubao-servicestatus-servicestatus",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/service-status-service-status?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=1801941",
+      "kind": "api",
+      "tools": [
+        "speech_console"
+      ],
+      "sha256": "2b4edfef685a967f207c9284caa9fdd0a8aa3a72f387629c3ca38763a6583382",
+      "bytes": 6807,
+      "models": [],
+      "endpoints": [
+        "https://open.volcengineapi.com"
+      ],
+      "doc_links": [
+        "https://www.volcengine.com/docs/6369/67268",
+        "https://www.volcengine.com/docs/6369/68677)文档",
+        "https://www.volcengine.com/docs/6369/80336",
+        "https://www.volcengine.com/docs/test/123456789"
+      ],
+      "title": "获取服务状态",
+      "updated_at": "2026-09-28T13:19:36Z",
+      "document_id": "1801941",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-simultaneousinterpretation20apiaccessdocumentation",
+      "server": "doubao-speech",
+      "id": "doubao-simultaneousinterpretation20apiaccessdocumentation",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/simultaneous-interpretation2-0-api-access-documentation?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=1756902",
+      "kind": "api",
+      "tools": [
+        "interpret_audio"
+      ],
+      "sha256": "2ab41656fdbf982e1fff76fd88b4690556e1a0ce5357c0b62c5b124243b36d92",
+      "bytes": 24425,
+      "models": [
+        "seed-icl-1.0",
+        "seed-icl-2.0",
+        "seed-tts-1.0",
+        "seed-tts-2.0"
+      ],
+      "endpoints": [
+        "wss://openspeech.bytedance.com/api/v4/ast/v2/translate"
+      ],
+      "doc_links": [
+        "https://www.volcengine.com/docs/6561/1206007",
+        "https://www.volcengine.com/docs/6561/155739",
+        "https://www.volcengine.com/docs/6561/196768#q1%EF%BC%9A%E5%93%AA%E9%87%8C%E5%8F%AF%E4%BB%A5%E8%8E%B7%E5%8F%96%E5%88%B0%E4%BB%A5%E4%B8%8B%E5%8F%82%E6%95%B0appid%EF%BC%8Ccluster%EF%BC%8Ctoken%EF%BC%8Cauthorization-type%EF%BC%8Csecret-key-%EF%BC%9F)（旧版控制台使用，新版控制台只需要X",
+        "https://www.volcengine.com/docs/6561/196768?lang=zh#q1%EF%BC%9A%E5%93%AA%E9%87%8C%E5%8F%AF%E4%BB%A5%E8%8E%B7%E5%8F%96%E5%88%B0%E4%BB%A5%E4%B8%8B%E5%8F%82%E6%95%B0appid%EF%BC%8Ccluster%EF%BC%8Ctoken%EF%BC%8Cauthorization-type%EF%BC%8Csecret-key-%EF%BC%9F",
+        "https://www.volcengine.com/docs/6561/2119699?lang=zh#ew1HctnP"
+      ],
+      "title": "同声传译",
+      "updated_at": "2026-09-28T11:15:12Z",
+      "document_id": "1756902",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-sounddesignapi",
+      "server": "doubao-speech",
+      "id": "doubao-sounddesignapi",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/sound-design-api?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=2277844",
+      "kind": "api",
+      "tools": [
+        "design_voice"
+      ],
+      "sha256": "083904babafa0f37d9d5ce5b7ed51cb2743a20ef274f7d0f3c7f9079489e1aa7",
+      "bytes": 75574,
+      "models": [
+        "seed-icl-1.0",
+        "seed-icl-1.0-concurr",
+        "seed-icl-2.0"
+      ],
+      "endpoints": [
+        "https://openspeech.bytedance.com/api/v3/tts/unidirectional",
+        "https://openspeech.bytedance.com/api/v3/tts/unidirectional/sse",
+        "https://openspeech.bytedance.com/api/v3/tts/voice_design",
+        "wss://openspeech.bytedance.com/api/v3/tts/bidirection",
+        "wss://openspeech.bytedance.com/api/v3/tts/unidirectional/stream"
+      ],
+      "doc_links": [
+        "https://docs.volcengine.com/docs/DoubaoVoice/ConsoleUsageFAQ?lang=zh)（旧版控制台使用，新版控制台只需要X",
+        "https://www.volcengine.com/docs/6561/1167802?lang=zh",
+        "https://www.volcengine.com/docs/6561/1329505",
+        "https://www.volcengine.com/docs/6561/1598757?lang=zh#_2-http-chunked%E6%A0%BC%E5%BC%8F%E6%8E%A5%E5%8F%A3%E8%AF%B4%E6%98%8E",
+        "https://www.volcengine.com/docs/6561/1598757?lang=zh#_3-sse%E6%A0%BC%E5%BC%8F%E6%8E%A5%E5%8F%A3%E8%AF%B4%E6%98%8E",
+        "https://www.volcengine.com/docs/6561/1719100",
+        "https://www.volcengine.com/docs/6561/2119699?lang=zh#ew1HctnP"
+      ],
+      "title": "音色设计",
+      "updated_at": "2026-09-29T10:58:24Z",
+      "document_id": "2277844",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-soundreplicationorderingandusageguide",
+      "server": "doubao-speech",
+      "id": "doubao-soundreplicationorderingandusageguide",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/sound-replication-ord-erin-gand-usage-guide?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=1167802",
+      "kind": "guide",
+      "tools": [
+        "clone_voice",
+        "design_voice",
+        "get_voice",
+        "upgrade_voice"
+      ],
+      "sha256": "90ecd9509d2118f8d78bdded26ce2cbfc7af0364c497b5132af049a4197588bc",
+      "bytes": 7079,
+      "models": [],
+      "endpoints": [],
+      "doc_links": [
+        "https://docs.volcengine.com/docs/6561/1305191)获取",
+        "https://docs.volcengine.com/docs/6561/1359370",
+        "https://docs.volcengine.com/docs/6561/163043",
+        "https://docs.volcengine.com/docs/6561/2119699?lang=zh)，2",
+        "https://docs.volcengine.com/docs/6561/2534906?lang=zh)、[声音复刻-音色查询](https://docs.volcengine.com/docs/6561/2535742?lang=zh",
+        "https://docs.volcengine.com/docs/6561/2534906?lang=zh)，大致流程如下："
+      ],
+      "title": "声音复刻下单及使用指南",
+      "updated_at": "2026-08-20T13:37:50Z",
+      "document_id": "1167802",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-tagresources-attachtagstoresources",
+      "server": "doubao-speech",
+      "id": "doubao-tagresources-attachtagstoresources",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/tag-resources-attach-tags-to-resources?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=1801951",
+      "kind": "api",
+      "tools": [
+        "speech_console"
+      ],
+      "sha256": "e23ddf55b6119b0c13c22a0aede7659bfc26f8e0c3a688574e39f1c24f310293",
+      "bytes": 3911,
+      "models": [],
+      "endpoints": [
+        "https://open.volcengineapi.com"
+      ],
+      "doc_links": [
+        "https://www.volcengine.com/docs/6369/67268",
+        "https://www.volcengine.com/docs/6369/68677)文档",
+        "https://www.volcengine.com/docs/6369/80336"
+      ],
+      "title": "附加标签",
+      "updated_at": "2026-09-28T13:21:08Z",
+      "document_id": "1801951",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-task-submission-http",
+      "server": "doubao-speech",
+      "id": "doubao-task-submission-http",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/task-submission-http?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=2608618",
+      "kind": "api",
+      "tools": [
+        "speech_to_text"
+      ],
+      "sha256": "386e12156b8f3fb78de3e6938bd7d516868956ed898f41ab4e061e6ff036eabf",
+      "bytes": 22406,
+      "models": [
+        "bigmodel"
+      ],
+      "endpoints": [
+        "https://openspeech.bytedance.com/api/v3/auc/bigmodel/idle/submit"
+      ],
+      "doc_links": [
+        "https://docs.volcengine.com/docs/6561/2604976?lang=zh)配置热词",
+        "https://docs.volcengine.com/docs/6561/2604976?lang=zh)配置热词和上下文",
+        "https://docs.volcengine.com/docs/6561/2608619?lang=zh)获取"
+      ],
+      "title": "任务提交",
+      "updated_at": "2026-10-26T09:22:14Z",
+      "document_id": "2608618",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-task-submission-http-1",
+      "server": "doubao-speech",
+      "id": "doubao-task-submission-http-1",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/task-submission-http-1?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=2606791",
+      "kind": "api",
+      "tools": [
+        "speech_to_text"
+      ],
+      "sha256": "0ffa94f66615a099d17103d842b698a0b3c2f6aeb342c6c80c71bbd3d3f30fda",
+      "bytes": 24797,
+      "models": [
+        "bigmodel"
+      ],
+      "endpoints": [
+        "https://openspeech.bytedance.com/api/v3/auc/bigmodel/submit"
+      ],
+      "doc_links": [
+        "https://docs.volcengine.com/docs/6561/2604976?lang=zh)配置热词",
+        "https://docs.volcengine.com/docs/6561/2604976?lang=zh)配置热词和上下文",
+        "https://docs.volcengine.com/docs/6561/2606792?lang=zh)获取",
+        "https://docs.volcengine.com/docs/doubao-voice/speaker-separation?lang=zh)[",
+        "https://docs.volcengine.com/docs/doubao-voice/speaker-separation?lang=zh)[说话人分离最佳实践](https://docs.volcengine.com/docs/doubao-voice/speaker-separation?lang=zh)配置相关参数"
+      ],
+      "title": "任务提交",
+      "updated_at": "2026-10-27T07:18:37Z",
+      "document_id": "2606791",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-tasksubmission",
+      "server": "doubao-speech",
+      "id": "doubao-tasksubmission",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/task-sub-mission?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=2670603",
+      "kind": "api",
+      "tools": [
+        "text_to_speech"
+      ],
+      "sha256": "bc17c77c4092513bff264c4985be01d890d74498d6584d76cc777593084c0db1",
+      "bytes": 11080,
+      "models": [
+        "seed-icl-2.0",
+        "seed-tts-2.0",
+        "seed-tts-2.0-standard"
+      ],
+      "endpoints": [
+        "https://openspeech.bytedance.com/api/v3/tts/submit"
+      ],
+      "doc_links": [
+        "https://docs.volcengine.com/docs/6561/1257544?lang=zh#%E8%B1%86%E5%8C%85%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E6%A8%A1%E5%9E%8B2-0%E3%80%81s2s-o2-0%E3%80%81-s2s-%E5%85%A8%E5%8F%8C%E5%B7%A5-%E9%9F%B3%E8%89%B2%E5%88%97%E8%A1%A8",
+        "https://www.volcengine.com/docs/6561/1330194?lang=zh",
+        "https://www.volcengine.com/docs/6561/2534847?lang=zh"
+      ],
+      "title": "任务提交",
+      "updated_at": "2026-09-28T11:13:27Z",
+      "document_id": "2670603",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-terminateservice-deactivateservice",
+      "server": "doubao-speech",
+      "id": "doubao-terminateservice-deactivateservice",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/terminate-service-deactivate-service?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=1801945",
+      "kind": "api",
+      "tools": [
+        "speech_console"
+      ],
+      "sha256": "6a1e5d819917eacab9700392ce79daffc65f4dedec281a9d30598bbf6b60cedb",
+      "bytes": 3198,
+      "models": [],
+      "endpoints": [
+        "https://open.volcengineapi.com"
+      ],
+      "doc_links": [
+        "https://www.volcengine.com/docs/6369/67268",
+        "https://www.volcengine.com/docs/6369/68677)文档",
+        "https://www.volcengine.com/docs/6369/80336"
+      ],
+      "title": "停用服务",
+      "updated_at": "2026-09-28T13:20:06Z",
+      "document_id": "1801945",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-termwords",
+      "server": "doubao-speech",
+      "id": "doubao-termwords",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/term-words?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=2306745",
+      "kind": "guide",
+      "tools": [
+        "interpret_audio",
+        "translate_text"
+      ],
+      "sha256": "9d5ab0c476f47e61b6dda44453f78c1db32e66f1975b6e1597943d745edb426c",
+      "bytes": 2603,
+      "models": [],
+      "endpoints": [],
+      "doc_links": [
+        "https://www.volcengine.com/docs/6561/163043#step2%EF%BC%9A%E5%BC%80%E9%80%9A%E6%9C%8D%E5%8A%A1",
+        "https://www.volcengine.com/docs/6561/1756902?lang=zh",
+        "https://www.volcengine.com/docs/6561/2306735?lang=zh"
+      ],
+      "title": "术语词",
+      "updated_at": "2026-04-07T06:29:07Z",
+      "document_id": "2306745",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-tone-query-http",
+      "server": "doubao-speech",
+      "id": "doubao-tone-query-http",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/tone-query-http?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=2535742",
+      "kind": "api",
+      "tools": [
+        "get_voice"
+      ],
+      "sha256": "425ff807f846a137fadf6ab0c1a7426a087f3dd1cdebbd4f114e7da924c790f5",
+      "bytes": 3703,
+      "models": [],
+      "endpoints": [
+        "https://openspeech.bytedance.com/api/v3/tts/get_voice"
+      ],
+      "doc_links": [
+        "https://www.volcengine.com/docs/6561/1167802?lang=zh&_vtm_=a106466.b106468.0_0.0_0.0.902_7636990835414320667#api%E8%B0%83%E7%94%A8%E5%8F%82%E6%95%B0%E8%8E%B7%E5%8F%96",
+        "https://www.volcengine.com/docs/6561/1167802?lang=zh&_vtm_=a106466.b106468.0_0.0_0.0.970_7636990835414320667)）",
+        "https://www.volcengine.com/docs/6561/2534853?lang=zh#ad7BnUTK"
+      ],
+      "title": "音色查询",
+      "updated_at": "2026-09-29T11:02:49Z",
+      "document_id": "2535742",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-tone-training-http",
+      "server": "doubao-speech",
+      "id": "doubao-tone-training-http",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/tone-training-http?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=2534906",
+      "kind": "api",
+      "tools": [
+        "clone_voice"
+      ],
+      "sha256": "de91b9bbba3951458ad96eca856a75705fb718d630b7c77723bb1f1f2012c2f7",
+      "bytes": 7492,
+      "models": [],
+      "endpoints": [
+        "https://openspeech.bytedance.com/api/v3/tts/voice_clone"
+      ],
+      "doc_links": [
+        "https://www.volcengine.com/docs/6561/1167802?lang=zh&_vtm_=a106466.b106468.0_0.0_0.0.902_7636990835414320667#api%E8%B0%83%E7%94%A8%E5%8F%82%E6%95%B0%E8%8E%B7%E5%8F%96",
+        "https://www.volcengine.com/docs/6561/1167802?lang=zh&_vtm_=a106466.b106468.0_0.0_0.0.970_7636990835414320667",
+        "https://www.volcengine.com/docs/6561/1167802?lang=zh&_vtm_=a106466.b106468.0_0.0_0.0.970_7636990835414320667)）",
+        "https://www.volcengine.com/docs/6561/2534853?lang=zh#ad7BnUTK"
+      ],
+      "title": "音色注册",
+      "updated_at": "2026-09-29T11:02:44Z",
+      "document_id": "2534906",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-tone-upgrade-http",
+      "server": "doubao-speech",
+      "id": "doubao-tone-upgrade-http",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/tone-upgrade-http?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=2535751",
+      "kind": "api",
+      "tools": [
+        "upgrade_voice"
+      ],
+      "sha256": "e6b0d5be2c08696b8e02f6cde523b322ddd6b0c507b0f61158951fa5dc6b155b",
+      "bytes": 3995,
+      "models": [],
+      "endpoints": [
+        "https://openspeech.bytedance.com/api/v3/tts/upgrade_voice"
+      ],
+      "doc_links": [
+        "https://www.volcengine.com/docs/6561/1167802?lang=zh&_vtm_=a106466.b106468.0_0.0_0.0.902_7636990835414320667#api%E8%B0%83%E7%94%A8%E5%8F%82%E6%95%B0%E8%8E%B7%E5%8F%96",
+        "https://www.volcengine.com/docs/6561/1167802?lang=zh&_vtm_=a106466.b106468.0_0.0_0.0.970_7636990835414320667)）",
+        "https://www.volcengine.com/docs/6561/2534853?lang=zh#ad7BnUTK"
+      ],
+      "title": "音色升级",
+      "updated_at": "2026-09-29T11:02:57Z",
+      "document_id": "2535751",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-tonelist-1",
+      "server": "doubao-speech",
+      "id": "doubao-tonelist-1",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/tone-list-3?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=1257544",
+      "kind": "models",
+      "tools": [
+        "open_realtime_session",
+        "speech_raw_request",
+        "text_to_speech"
+      ],
+      "sha256": "3fa8492e94233d78aa08cf005ae509e82d883bdb8cbb7f4d02e87c1eaedd46c6",
+      "bytes": 78676,
+      "models": [],
+      "endpoints": [],
+      "doc_links": [
+        "https://www.volcengine.com/docs/6561/1871062?lang=zh"
+      ],
+      "title": "音色列表",
+      "updated_at": "2026-10-13T08:17:11Z",
+      "document_id": "1257544",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-unidirectional-streaming-automatic-speech-recognition-websocket",
+      "server": "doubao-speech",
+      "id": "doubao-unidirectional-streaming-automatic-speech-recognition-websocket",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/unidirectional-streaming-automatic-speech-recognition-websocket?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=2628951",
+      "kind": "api",
+      "tools": [
+        "speech_raw_request"
+      ],
+      "sha256": "5e15d63bd2496945dd8886c6823041caafb2297d6a5015caac741c2ed8ddbab5",
+      "bytes": 28284,
+      "models": [
+        "bigmodel"
+      ],
+      "endpoints": [
+        "wss://openspeech.bytedance.com/api/v3/sauc/bigmodel_nostream"
+      ],
+      "doc_links": [
+        "https://docs.volcengine.com/docs/6561/2604976?lang=zh)配置热词",
+        "https://docs.volcengine.com/docs/doubao-voice/speaker-separation?lang=zh)[",
+        "https://docs.volcengine.com/docs/doubao-voice/speaker-separation?lang=zh)[说话人分离最佳实践](https://docs.volcengine.com/docs/doubao-voice/speaker-separation?lang=zh)配置相关参数"
+      ],
+      "title": "一句话识别",
+      "updated_at": "2026-10-27T07:18:13Z",
+      "document_id": "2628951",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-unidirectional-streaming-text-to-speech-http",
+      "server": "doubao-speech",
+      "id": "doubao-unidirectional-streaming-text-to-speech-http",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/unidirectional-streaming-text-to-speech-http?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=2528925",
+      "kind": "api",
+      "tools": [
+        "speech_raw_request",
+        "text_to_speech"
+      ],
+      "sha256": "343f71ba4602714cea030db8facab913ed68cbd1d5dc5416139b51053e96a26a",
+      "bytes": 30429,
+      "models": [
+        "seed-icl-2.0",
+        "seed-tts-2.0",
+        "seed-tts-2.0-standard"
+      ],
+      "endpoints": [
+        "https://openspeech.bytedance.com/api/v3/tts/unidirectional"
+      ],
+      "doc_links": [
+        "https://docs.volcengine.com/docs/6561/1257544?lang=zh",
+        "https://docs.volcengine.com/docs/6561/1257544?lang=zh#%E8%B1%86%E5%8C%85%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E6%A8%A1%E5%9E%8B2-0%E3%80%81s2s-o2-0%E3%80%81-s2s-%E5%85%A8%E5%8F%8C%E5%B7%A5-%E9%9F%B3%E8%89%B2%E5%88%97%E8%A1%A8",
+        "https://docs.volcengine.com/docs/6561/1257544?lang=zh#%E8%B1%86%E5%8C%85%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E6%A8%A1%E5%9E%8B2-0%E3%80%81s2s-o2-0%E3%80%81-s2s-%E5%85%A8%E5%8F%8C%E5%B7%A5-%E9%9F%B3%E8%89%B2%E5%88%97%E8%A1%A8)、豆包声音复刻大模型2.0音色",
+        "https://docs.volcengine.com/docs/6561/1257544?lang=zh#%E8%B1%86%E5%8C%85%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E6%A8%A1%E5%9E%8B2-0%E3%80%81s2s-o2-0%E3%80%81-s2s-%E5%85%A8%E5%8F%8C%E5%B7%A5-%E9%9F%B3%E8%89%B2%E5%88%97%E8%A1%A8)时，支持使用语音指令",
+        "https://docs.volcengine.com/docs/6561/1330194?lang=zh",
+        "https://docs.volcengine.com/docs/6561/2534853?lang=zh)）",
+        "https://docs.volcengine.com/docs/doubao-voice/tone-list-3?lang=zh#%E8%B1%86%E5%8C%85%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E6%A8%A1%E5%9E%8B2-0%E3%80%81s2s-o2-0%E3%80%81-s2s-%E5%85%A8%E5%8F%8C%E5%B7%A5-%E9%9F%B3%E8%89%B2%E5%88%97%E8%A1%A8)中，仅命名为zh_*xxx*_*xxxx*_uranus_bigtts的音色支持"
+      ],
+      "title": "单向流式语音合成(HTTP)",
+      "updated_at": "2026-10-27T07:36:30Z",
+      "document_id": "2528925",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-unidirectional-streaming-text-to-speech-websocket",
+      "server": "doubao-speech",
+      "id": "doubao-unidirectional-streaming-text-to-speech-websocket",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/unidirectional-streaming-text-to-speech-websocket?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=2534913",
+      "kind": "api",
+      "tools": [
+        "speech_raw_request"
+      ],
+      "sha256": "d6ef0e46f0b00537a5b6e03f51efd82aa7686a09a5c3fb650fb1f67e321fc0e1",
+      "bytes": 23084,
+      "models": [
+        "seed-icl-2.0",
+        "seed-tts-2.0",
+        "seed-tts-2.0-standard"
+      ],
+      "endpoints": [
+        "wss://openspeech.bytedance.com/api/v3/tts/unidirectional/stream"
+      ],
+      "doc_links": [
+        "https://docs.volcengine.com/docs/6561/1257544?lang=zh",
+        "https://docs.volcengine.com/docs/6561/1257544?lang=zh#%E8%B1%86%E5%8C%85%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E6%A8%A1%E5%9E%8B2-0%E3%80%81s2s-o2-0%E3%80%81-s2s-%E5%85%A8%E5%8F%8C%E5%B7%A5-%E9%9F%B3%E8%89%B2%E5%88%97%E8%A1%A8",
+        "https://docs.volcengine.com/docs/6561/1257544?lang=zh#%E8%B1%86%E5%8C%85%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E6%A8%A1%E5%9E%8B2-0%E3%80%81s2s-o2-0%E3%80%81-s2s-%E5%85%A8%E5%8F%8C%E5%B7%A5-%E9%9F%B3%E8%89%B2%E5%88%97%E8%A1%A8)、豆包声音复刻大模型2.0音色支持",
+        "https://docs.volcengine.com/docs/6561/1257544?lang=zh#%E8%B1%86%E5%8C%85%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E6%A8%A1%E5%9E%8B2-0%E3%80%81s2s-o2-0%E3%80%81-s2s-%E5%85%A8%E5%8F%8C%E5%B7%A5-%E9%9F%B3%E8%89%B2%E5%88%97%E8%A1%A8)中，仅命名为zh_*xxx*_*xxxx*_uranus_bigtts的音色支持",
+        "https://docs.volcengine.com/docs/6561/1257544?lang=zh#%E8%B1%86%E5%8C%85%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E6%A8%A1%E5%9E%8B2-0%E3%80%81s2s-o2-0%E3%80%81-s2s-%E5%85%A8%E5%8F%8C%E5%B7%A5-%E9%9F%B3%E8%89%B2%E5%88%97%E8%A1%A8)时，支持使用语音指令",
+        "https://www.volcengine.com/docs/6561/1330194?lang=zh"
+      ],
+      "title": "单向流式语音合成(WebSocket)",
+      "updated_at": "2026-10-27T07:17:08Z",
+      "document_id": "2534913",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-untagresources-removetagsfromresources",
+      "server": "doubao-speech",
+      "id": "doubao-untagresources-removetagsfromresources",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/untag-resources-remove-tags-from-resources?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=1801950",
+      "kind": "api",
+      "tools": [
+        "speech_console"
+      ],
+      "sha256": "4eb3c29b0405ff1eeec8ef2989d94a7395abbba483f92af516329e2475a1444c",
+      "bytes": 3410,
+      "models": [],
+      "endpoints": [
+        "https://open.volcengineapi.com"
+      ],
+      "doc_links": [
+        "https://www.volcengine.com/docs/6369/67268",
+        "https://www.volcengine.com/docs/6369/68677)文档",
+        "https://www.volcengine.com/docs/6369/80336"
+      ],
+      "title": "移除资源标签",
+      "updated_at": "2026-09-28T13:21:03Z",
+      "document_id": "1801950",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-updateapikey-updateapikey",
+      "server": "doubao-speech",
+      "id": "doubao-updateapikey-updateapikey",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/update-api-key-update-api-key?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=1801960",
+      "kind": "api",
+      "tools": [
+        "speech_console"
+      ],
+      "sha256": "cd716617945e79d1bce7db3525f343f097ffde5c8788af2215ca1c9038c5d58e",
+      "bytes": 3418,
+      "models": [],
+      "endpoints": [
+        "https://open.volcengineapi.com"
+      ],
+      "doc_links": [
+        "https://www.volcengine.com/docs/6369/67268",
+        "https://www.volcengine.com/docs/6369/68677)文档",
+        "https://www.volcengine.com/docs/6369/80336"
+      ],
+      "title": "更新APIKey",
+      "updated_at": "2026-09-28T13:18:56Z",
+      "document_id": "1801960",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-usagemonitoring-callqueryinterface",
+      "server": "doubao-speech",
+      "id": "doubao-usagemonitoring-callqueryinterface",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/usage-monitoring-call-query-interface?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=1801957",
+      "kind": "api",
+      "tools": [
+        "speech_console"
+      ],
+      "sha256": "259bc682ce8e6836757bad9693a45a4b88ab0628d1e10961032555221ab38336",
+      "bytes": 3821,
+      "models": [],
+      "endpoints": [
+        "https://open.volcengineapi.com"
+      ],
+      "doc_links": [
+        "https://www.volcengine.com/docs/6369/67268",
+        "https://www.volcengine.com/docs/6369/68677)文档",
+        "https://www.volcengine.com/docs/6369/80336"
+      ],
+      "title": "调用量查询接口",
+      "updated_at": "2026-09-28T13:24:37Z",
+      "document_id": "1801957",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-voice-document-index",
+      "server": "doubao-speech",
+      "id": "doubao-voice-document-index",
+      "url": "https://docs.volcengine.com/docs/doubao-voice",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocList?LibraryID=6561",
+      "kind": "guide",
+      "tools": [
+        "get_speech_usage_examples",
+        "list_speech_capabilities"
+      ],
+      "sha256": "5cd1be01e60bc98d937767c13c90903b837091f3eec47af519403d30169ae58a",
+      "bytes": 46045,
+      "models": [
+        "Doubao-Seed-Realtime-1.0",
+        "doubao-foundation-model-speech-entrepreneur-acceleration-program-customer-notice",
+        "doubao-text-to-speech-20-capability-introduction",
+        "doubao-voice-minutes",
+        "doubao-voice-minutes-api-access-documentation"
+      ],
+      "endpoints": [],
+      "doc_links": [],
+      "title": "doubao-voice-document-index",
+      "documents": 253,
+      "document_codes": [
+        "AudioFileRecognitionStandardEdition",
+        "Automaticspeechrecognitionlargemodel",
+        "BidirectionalStreamingTTS-AndroidSDKInterfaceDocumentation",
+        "Soundreproduction-1",
+        "TextToSpeechLargeModel",
+        "access-must-read",
+        "access-must-read-1",
+        "access-must-read-1-1",
+        "access-process",
+        "access-process-1",
+        "access-process-2",
+        "access-process-3",
+        "activate-service-activate-service",
+        "alias-resource-pack-update-sound-resource-aliases",
+        "android",
+        "android-2",
+        "android-3",
+        "api-access-faq-1",
+        "api-interface-documentation-2",
+        "api-key",
+        "api-key-usage",
+        "api-reference",
+        "apiguide",
+        "application-scenarios-1",
+        "archive",
+        "asynchronous-long-text-text-to-speech",
+        "audio-file-recognition-1-1",
+        "audio-file-recognition-idle-time-edition",
+        "audio-file-recognition-lite",
+        "audio-file-recognition-standard-edition-1",
+        "audio-generation",
+        "audio-generation-http",
+        "audio-video-sub-tit-les",
+        "audio-video-sub-title-gene-ration",
+        "audio1-5marketingplan",
+        "authentication-method",
+        "authentication-method-1",
+        "automatic-speech-recognition-1",
+        "automatic-speech-recognition-large-model-1",
+        "automatic-sub-title-typing",
+        "batch-list-mega-tts-train-status-page-query-speaker-id-status",
+        "best-practices",
+        "bidirectional-streaming-automatic-speech-recognition-websocket",
+        "bidirectional-streaming-text-to-speech-websocket",
+        "bidirectional-streaming-tts-android-sdk-interface-documentation-1",
+        "bidirectional-streaming-tts-ios-sdk-interface-documentation",
+        "bidirectional-streaming-tts-ios-sdk-interface-documentation-1",
+        "billing-faq-1",
+        "billing-instructions",
+        "billing-overview",
+        "c-interface-call-flow",
+        "call-volume-query-interface-description",
+        "calling-flow-2",
+        "calling-flow-3",
+        "calling-flow-6",
+        "calling-flow-7",
+        "console-guidance",
+        "console-related-interfaces",
+        "console-usage-faq",
+        "create-api-key-create-api-key",
+        "delete-api-key-delete-api-key",
+        "development-reference",
+        "doubao-foundation-model-speech-entrepreneur-acceleration-program-customer-notice",
+        "doubao-text-to-speech-20-capability-introduction",
+        "doubao-voice-minutes",
+        "doubao-voice-minutes-api-access-documentation",
+        "due-over-due-shut-down",
+        "end-to-end-android-sdk-interface-documentation",
+        "end-to-end-full-duplex-android-sdk-documentation",
+        "end-to-end-full-duplex-ios-sdk-documentation",
+        "end-to-end-real-time-speech-large-model",
+        "end-to-end-real-time-voice-full-duplex-version",
+        "end-to-endios-sdk-interface-documentation",
+        "end-to-endreal-time-speech-large-model",
+        "end-to-endreal-time-speech-large-model-api-access-document",
+        "error-code-description",
+        "error-code-description-2",
+        "error-code-query",
+        "error-code-query-1",
+        "faqs",
+        "faqs-1",
+        "faqs-3",
+        "faqs-4",
+        "formalize-resource-packs-conversion-effect-package",
+        "from-online-text-to-speech-sdk",
+        "generative-model-service-specific-terms",
+        "his-tori-cal-sound-replication-interface",
+        "historical-end-to-end-real-time-voice-interface",
+        "historical-text-to-speech-interface",
+        "history-docs",
+        "history-podcast",
+        "hot-word-management-api-v10",
+        "hot-words",
+        "hot-words-and-context",
+        "http-chunked-sse-unidirectional-streaming-v3",
+        "http-interface-one-time-composition-non-streaming",
+        "http-one-timecompositenon-streaming-interface-v1-not-recommended",
+        "in-offline-streaming-voice-conversion-sdk",
+        "integration-guide",
+        "integration-guide-1",
+        "integration-guide-10",
+        "integration-guide-11",
+        "integration-guide-13",
+        "integration-guide-4",
+        "integration-guide-5",
+        "integration-guide-8",
+        "integration-guide-9",
+        "ios",
+        "ios-2",
+        "ios-3",
+        "large-model-recording-file-lite-recognition-api",
+        "large-model-recording-file-recognition-idle-version",
+        "large-model-recording-file-recognition-standard-version-api",
+        "large-model-stream-recognition-sdk-1",
+        "large-model-streaming-automatic-speech-recognition-android-sdk-interface",
+        "large-model-streaming-automatic-speech-recognition-api-1",
+        "large-model-streaming-automatic-speech-recognition-ios-sdk-interface",
+        "linux-c-1",
+        "linux-java-1",
+        "list-api-keys-pull-api-key-list",
+        "list-big-model-tts-timbres-large-model-sound-list",
+        "list-mega-tts-by-order-id-query-purchased-sounds-by-order-id",
+        "list-mega-tts-train-status-query-speaker-id-status-information",
+        "list-speakers-large-model-sound-list-new-interface",
+        "list-tags-for-resources-query-all-labels-attached-to-are-source",
+        "machine-translation-large-model",
+        "machine-translation-large-model-api-access-documentation",
+        "model-effect-faq-1",
+        "model-issue",
+        "model-issue-1",
+        "model-issuing-interface-description-v2",
+        "model-issuing-interface-description-v2-1",
+        "model-issuing-interface-description-v4",
+        "model-issuing-interface-description-v4-1",
+        "model-list",
+        "monitoring",
+        "old-version-console-authentication-reference-example",
+        "one-sentence-recognition-1",
+        "order-access-resource-packs-sound-order",
+        "order-resource-packs-buyeffectspackage",
+        "para-meter-basic-description",
+        "parameter-description",
+        "parameter-description-1",
+        "pause-service-suspend-service",
+        "podcast",
+        "podcast-api-websocket-v3protocol",
+        "podcast-mustread",
+        "product-advantages-1",
+        "product-billing-10",
+        "product-billing-5",
+        "product-dynamics-1",
+        "product-overview-10",
+        "product-overview-11",
+        "product-overview-12",
+        "product-overview-13",
+        "product-overview-18",
+        "product-overview-21",
+        "product-overview-22",
+        "product-overview-23",
+        "product-overview-24",
+        "product-overview-25",
+        "product-overview-26",
+        "product-overview-27",
+        "product-overview-7",
+        "product-overview-8",
+        "project-label-billing-function-user-guide",
+        "publish-information",
+        "publish-information-2",
+        "publish-information-3",
+        "publish-information-6",
+        "qps-concurrent-query-interface-description",
+        "quick-start",
+        "quick-start-new-console",
+        "quick-start-old-console",
+        "quota-monitoring-quota-query-interface",
+        "recording-file-recognition-lite-http",
+        "refund-instructions",
+        "related-agreements",
+        "related-agreements-1",
+        "renew-access-resource-packs-tone-renewal",
+        "replacement-word",
+        "replacement-word-api-v11",
+        "resource-packs",
+        "resource-packs-status-effect-package-status-information",
+        "result-query",
+        "result-query-http",
+        "result-query-http-1",
+        "resume-service-re-enable-the-service",
+        "sdk-access-documentation-1",
+        "sdk-overview",
+        "sdk-overview-2",
+        "sdk-overview-3",
+        "seedrealtime",
+        "self-learning-platform",
+        "service",
+        "service-status-service-status",
+        "service-usage",
+        "simultaneous-interpretation2-0-api-access-documentation",
+        "sound-design-api",
+        "sound-replica-api-v3",
+        "sound-replica-icl-best-practices",
+        "sound-replica-sdk-developer-compliance-specification",
+        "sound-replica-sdk-privacy-policy",
+        "sound-replication-20-best-practices",
+        "sound-replication-ord-erin-gand-usage-guide",
+        "sound-replication-sdk",
+        "sound-reproduction-1",
+        "speaker-separation",
+        "speech-sdk",
+        "speech-simultaneous-interpretation-large-model",
+        "ssm-lmarkuplanguage",
+        "ssml-markup-language",
+        "streaming-automatic-speech-recognition-1",
+        "streaming-automatic-speech-recognition-2",
+        "streaming-automatic-speech-recognition-sdk-including-one-sentence",
+        "streaming-voice-conversion-api",
+        "synchronize-text-to-speech",
+        "tag",
+        "tag-resources-attach-tags-to-resources",
+        "task-sub-mission",
+        "task-submission-http",
+        "task-submission-http-1",
+        "taxes-and-invoices",
+        "term-words",
+        "terminate-service-deactivate-service",
+        "text-to-speech-large-model-1",
+        "text-to-speech-sdk-developer-compliance",
+        "text-to-speech-sdk-privacy-policy",
+        "text-to-speech-sdk-usage-faq",
+        "timbre",
+        "tone-design",
+        "tone-list",
+        "tone-list-1",
+        "tone-list-2",
+        "tone-list-3",
+        "tone-query-http",
+        "tone-training-http",
+        "tone-upgrade-http",
+        "unidirectional-streaming-automatic-speech-recognition-websocket",
+        "unidirectional-streaming-text-to-speech-http",
+        "unidirectional-streaming-text-to-speech-websocket",
+        "untag-resources-remove-tags-from-resources",
+        "update-api-key-update-api-key",
+        "usage-monitoring-call-query-interface",
+        "voice-conversion",
+        "voice-pod-cast-large-model",
+        "voice-print-registration-management-api",
+        "volcano-engine-sound-replication-protocol",
+        "volcano-engine-speech-and-audio-grade-of-service-agreement",
+        "volcano-engine-speech-model-experience-service-disclaimerand-service-rules",
+        "websocket-bidirectional-streaming-v3",
+        "websocket-interface",
+        "websocket-unidirectional-streaming-v3"
+      ],
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-websocketbidirectionalstreaming-v3",
+      "server": "doubao-speech",
+      "id": "doubao-websocketbidirectionalstreaming-v3",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/websocket-bidirectional-streaming-v3?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=1329505",
+      "kind": "api",
+      "tools": [
+        "speech_raw_request"
+      ],
+      "sha256": "4124bff73584e35e1d5696694dd85791f536cf85de11992a328b2ebba742e27f",
+      "bytes": 61697,
+      "models": [
+        "seed-icl-1.0",
+        "seed-icl-1.0-concurr",
+        "seed-icl-2.0",
+        "seed-tts-1.0",
+        "seed-tts-1.0-concurr",
+        "seed-tts-2.0",
+        "seed-tts-2.0-expressive",
+        "seed-tts-2.0-standard"
+      ],
+      "endpoints": [
+        "https://openspeech.bytedance.com/api/v3/tts/unidirectional",
+        "https://openspeech.bytedance.com/api/v3/tts/unidirectional/sse",
+        "wss://openspeech.bytedance.com/api/v3/tts/bidirection",
+        "wss://openspeech.bytedance.com/api/v3/tts/unidirectional/stream"
+      ],
+      "doc_links": [
+        "https://www.volcengine.com/docs/6561/1257544",
+        "https://www.volcengine.com/docs/6561/1257544))、ICL1.0生效",
+        "https://www.volcengine.com/docs/6561/1257544)、声音复刻大模型的音色",
+        "https://www.volcengine.com/docs/6561/1257544)，“豆包声音复刻大模型",
+        "https://www.volcengine.com/docs/6561/1257544?lang=zh#%E8%B1%86%E5%8C%85%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E6%A8%A1%E5%9E%8B1-0-%E9%9F%B3%E8%89%B2%E5%88%97%E8%A1%A8",
+        "https://www.volcengine.com/docs/6561/1257544?lang=zh#%E8%B1%86%E5%8C%85%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E6%A8%A1%E5%9E%8B2-0-%E9%9F%B3%E8%89%B2%E5%88%97%E8%A1%A8",
+        "https://www.volcengine.com/docs/6561/1329505",
+        "https://www.volcengine.com/docs/6561/1598757?lang=zh#_2-http-chunked%E6%A0%BC%E5%BC%8F%E6%8E%A5%E5%8F%A3%E8%AF%B4%E6%98%8E",
+        "https://www.volcengine.com/docs/6561/1598757?lang=zh#_3-sse%E6%A0%BC%E5%BC%8F%E6%8E%A5%E5%8F%A3%E8%AF%B4%E6%98%8E",
+        "https://www.volcengine.com/docs/6561/1719100",
+        "https://www.volcengine.com/docs/6561/196768#q1%EF%BC%9A%E5%93%AA%E9%87%8C%E5%8F%AF%E4%BB%A5%E8%8E%B7%E5%8F%96%E5%88%B0%E4%BB%A5%E4%B8%8B%E5%8F%82%E6%95%B0appid%EF%BC%8Ccluster%EF%BC%8Ctoken%EF%BC%8Cauthorization-type%EF%BC%8Csecret-key-%EF%BC%9F",
+        "https://www.volcengine.com/docs/6561/196768#q1%EF%BC%9A%E5%93%AA%E9%87%8C%E5%8F%AF%E4%BB%A5%E8%8E%B7%E5%8F%96%E5%88%B0%E4%BB%A5%E4%B8%8B%E5%8F%82%E6%95%B0appid%EF%BC%8Ccluster%EF%BC%8Ctoken%EF%BC%8Cauthorization-type%EF%BC%8Csecret-key-%EF%BC%9F)（旧版控制台使用，新版控制台只需要X",
+        "https://www.volcengine.com/docs/6561/2119699?lang=zh#ew1HctnP"
+      ],
+      "title": "WebSocket 双向流式-V3",
+      "updated_at": "2026-05-25T08:51:30Z",
+      "document_id": "1329505",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "key": "doubao-speech/doubao-websocketunidirectionalstreaming-v3",
+      "server": "doubao-speech",
+      "id": "doubao-websocketunidirectionalstreaming-v3",
+      "url": "https://docs.volcengine.com/docs/doubao-voice/websocket-unidirectional-streaming-v3?lang=zh",
+      "fetch_url": "https://docs.volcengine.com/api/doc/getDocDetail?LibraryID=6561&DocumentID=1719100",
+      "kind": "api",
+      "tools": [
+        "speech_raw_request"
+      ],
+      "sha256": "dedcada02fad1824e3df9bd27f1f66314012123427b6836f46a3856be27835d2",
+      "bytes": 55155,
+      "models": [
+        "seed-icl-1.0",
+        "seed-icl-1.0-concurr",
+        "seed-icl-2.0",
+        "seed-tts-1.0",
+        "seed-tts-1.0-concurr",
+        "seed-tts-2.0",
+        "seed-tts-2.0-expressive",
+        "seed-tts-2.0-standard"
+      ],
+      "endpoints": [
+        "https://openspeech.bytedance.com/api/v3/tts/unidirectional",
+        "https://openspeech.bytedance.com/api/v3/tts/unidirectional/sse",
+        "wss://openspeech.bytedance.com/api/v3/tts/bidirection",
+        "wss://openspeech.bytedance.com/api/v3/tts/unidirectional/stream"
+      ],
+      "doc_links": [
+        "https://www.volcengine.com/docs/6561/1257544",
+        "https://www.volcengine.com/docs/6561/1257544))、ICL1.0生效",
+        "https://www.volcengine.com/docs/6561/1257544)、声音复刻大模型的音色",
+        "https://www.volcengine.com/docs/6561/1257544)，“豆包声音复刻大模型",
+        "https://www.volcengine.com/docs/6561/1257544?lang=zh#%E8%B1%86%E5%8C%85%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E6%A8%A1%E5%9E%8B1-0-%E9%9F%B3%E8%89%B2%E5%88%97%E8%A1%A8",
+        "https://www.volcengine.com/docs/6561/1257544?lang=zh#%E8%B1%86%E5%8C%85%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E6%A8%A1%E5%9E%8B2-0-%E9%9F%B3%E8%89%B2%E5%88%97%E8%A1%A8",
+        "https://www.volcengine.com/docs/6561/1329505",
+        "https://www.volcengine.com/docs/6561/1598757?lang=zh#_2-http-chunked%E6%A0%BC%E5%BC%8F%E6%8E%A5%E5%8F%A3%E8%AF%B4%E6%98%8E",
+        "https://www.volcengine.com/docs/6561/1598757?lang=zh#_3-sse%E6%A0%BC%E5%BC%8F%E6%8E%A5%E5%8F%A3%E8%AF%B4%E6%98%8E",
+        "https://www.volcengine.com/docs/6561/1719100",
+        "https://www.volcengine.com/docs/6561/196768#q1%EF%BC%9A%E5%93%AA%E9%87%8C%E5%8F%AF%E4%BB%A5%E8%8E%B7%E5%8F%96%E5%88%B0%E4%BB%A5%E4%B8%8B%E5%8F%82%E6%95%B0appid%EF%BC%8Ccluster%EF%BC%8Ctoken%EF%BC%8Cauthorization-type%EF%BC%8Csecret-key-%EF%BC%9F",
+        "https://www.volcengine.com/docs/6561/196768#q1%EF%BC%9A%E5%93%AA%E9%87%8C%E5%8F%AF%E4%BB%A5%E8%8E%B7%E5%8F%96%E5%88%B0%E4%BB%A5%E4%B8%8B%E5%8F%82%E6%95%B0appid%EF%BC%8Ccluster%EF%BC%8Ctoken%EF%BC%8Cauthorization-type%EF%BC%8Csecret-key-%EF%BC%9F)（旧版控制台使用，新版控制台只需要X",
+        "https://www.volcengine.com/docs/6561/2119699?lang=zh#ew1HctnP"
+      ],
+      "title": "WebSocket 单向流式-V3",
+      "updated_at": "2026-05-25T08:49:18Z",
+      "document_id": "1719100",
+      "headers": {
+        "ETag": null,
+        "Last-Modified": null,
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    }
+  ],
+  "changes": [
+    {
+      "key": "doubao-speech/doubao-access-mustread",
+      "status": "changed",
+      "tools": [
+        "close_realtime_session",
+        "open_realtime_session",
+        "receive_realtime_events",
+        "send_realtime_event"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/access-must-read?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-activateservice-activateservice",
+      "status": "changed",
+      "tools": [
+        "speech_console"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/activate-service-activate-service?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-aliasresourcepack-updatesoundresourcealiases",
+      "status": "changed",
+      "tools": [
+        "speech_console"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/alias-resource-pack-update-sound-resource-aliases?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-apiinterfacedocumentation",
+      "status": "changed",
+      "tools": [
+        "speech_raw_request"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/api-interface-documentation-2?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-apikeyusage",
+      "status": "changed",
+      "tools": [
+        "list_speech_capabilities"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/api-key-usage?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-audio-generation-http",
+      "status": "changed",
+      "tools": [
+        "generate_audio",
+        "speech_raw_request"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/audio-generation-http?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-audio1-5marketingplan",
+      "status": "changed",
+      "tools": [
+        "generate_audio"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/audio1-5marketingplan?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-audiofilerecognitionstandardedition",
+      "status": "changed",
+      "tools": [
+        "speech_raw_request"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/AudioFileRecognitionStandardEdition?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-audiovideosubtitlegeneration",
+      "status": "changed",
+      "tools": [
+        "speech_raw_request"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/audio-video-sub-title-gene-ration?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-automaticsubtitletyping",
+      "status": "changed",
+      "tools": [
+        "speech_raw_request"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/automatic-sub-title-typing?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-batchlistmegattstrainstatus-pagequeryspeakeridstatus",
+      "status": "changed",
+      "tools": [
+        "speech_console"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/batch-list-mega-tts-train-status-page-query-speaker-id-status?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-bidirectional-streaming-automatic-speech-recognition-websocket",
+      "status": "changed",
+      "tools": [
+        "speech_raw_request"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/bidirectional-streaming-automatic-speech-recognition-websocket?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [
+        "wss://openspeech.bytedance.com/api/v3/sauc/bigmodel_async",
+        "wss://openspeech.bytedance.com/api/v3/sauc/bigmodel_nostream"
+      ],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [
+        "https://docs.volcengine.com/docs/6561/2604976?lang=zh)配置热词和上下文信息",
+        "https://docs.volcengine.com/docs/6561/2628951?lang=zh)文档中",
+        "https://docs.volcengine.com/docs/doubao-voice/hot-words-and-context?lang=zh",
+        "https://docs.volcengine.com/docs/doubao-voice/speaker-separation?lang=zh)[",
+        "https://docs.volcengine.com/docs/doubao-voice/speaker-separation?lang=zh)[说话人分离最佳实践](https://docs.volcengine.com/docs/doubao-voice/speaker-separation?lang=zh)配置相关参数"
+      ],
+      "doc_links_removed": [
+        "https://docs.volcengine.com/docs/6561/2534847?lang=zh",
+        "https://docs.volcengine.com/docs/6561/2604976?lang=zh",
+        "https://docs.volcengine.com/docs/6561/2628951?lang=zh",
+        "https://docs.volcengine.com/docs/DoubaoVoice/hot-words-and-context?lang=zh",
+        "https://docs.volcengine.com/docs/DoubaoVoice/speaker-separation?lang=zh"
+      ]
+    },
+    {
+      "key": "doubao-speech/doubao-bidirectional-streaming-text-to-speech-websocket",
+      "status": "changed",
+      "tools": [
+        "speech_raw_request"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/bidirectional-streaming-text-to-speech-websocket?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [
+        "https://docs.volcengine.com/docs/6561/1257544?lang=zh#%E8%B1%86%E5%8C%85%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E6%A8%A1%E5%9E%8B2-0%E3%80%81s2s-o2-0%E3%80%81-s2s-%E5%85%A8%E5%8F%8C%E5%B7%A5-%E9%9F%B3%E8%89%B2%E5%88%97%E8%A1%A8)、豆包声音复刻大模型2.0音色",
+        "https://docs.volcengine.com/docs/6561/1257544?lang=zh#%E8%B1%86%E5%8C%85%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E6%A8%A1%E5%9E%8B2-0%E3%80%81s2s-o2-0%E3%80%81-s2s-%E5%85%A8%E5%8F%8C%E5%B7%A5-%E9%9F%B3%E8%89%B2%E5%88%97%E8%A1%A8)中，仅命名为zh_*xxx*_*xxxx*_uranus_bigtts的音色支持",
+        "https://docs.volcengine.com/docs/6561/1257544?lang=zh#%E8%B1%86%E5%8C%85%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E6%A8%A1%E5%9E%8B2-0%E3%80%81s2s-o2-0%E3%80%81-s2s-%E5%85%A8%E5%8F%8C%E5%B7%A5-%E9%9F%B3%E8%89%B2%E5%88%97%E8%A1%A8)时，支持使用语音指令"
+      ],
+      "doc_links_removed": [
+        "https://docs.volcengine.com/docs/DoubaoVoice/Tonelist-1?lang=zh#%E8%B1%86%E5%8C%85%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E6%A8%A1%E5%9E%8B2-0%E3%80%81s2s-o2-0%E3%80%81-s2s-%E5%85%A8%E5%8F%8C%E5%B7%A5-%E9%9F%B3%E8%89%B2%E5%88%97%E8%A1%A8",
+        "https://www.volcengine.com/docs/6561/2534847?lang=zh"
+      ]
+    },
+    {
+      "key": "doubao-speech/doubao-callvolumequeryinterfacedescription",
+      "status": "changed",
+      "tools": [
+        "speech_console"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/call-volume-query-interface-description?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-createapikey-createapikey",
+      "status": "changed",
+      "tools": [
+        "speech_console"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/create-api-key-create-api-key?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-deleteapikey-deleteapikey",
+      "status": "changed",
+      "tools": [
+        "speech_console"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/delete-api-key-delete-api-key?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-doubaovoiceminutes-apiaccessdocumentation",
+      "status": "changed",
+      "tools": [
+        "get_job",
+        "recover_job",
+        "summarize_meeting"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/doubao-voice-minutes-api-access-documentation?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-endtoend-realtime-voice-full-duplex-version",
+      "status": "changed",
+      "tools": [
+        "close_realtime_session",
+        "open_realtime_session",
+        "receive_realtime_events",
+        "send_realtime_event"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/end-to-end-real-time-voice-full-duplex-version?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [
+        "https://docs.volcengine.com/docs/doubao-voice/access-must-read?lang=zh",
+        "https://docs.volcengine.com/docs/doubao-voice/access-must-read?lang=zh)中的音频约束规范输入音频；人声过轻或背景噪声过大均可能导致效果下降"
+      ],
+      "doc_links_removed": [
+        "https://docs.volcengine.com/docs/DoubaoVoice/access-mustread?lang=zh)中的音频约束规范输入音频；人声过轻或背景噪声过大均可能导致效果下降",
+        "https://www.volcengine.com/docs/6561/2549732?AuditDocumentID=397063&lang=zh#llUZxXnt"
+      ]
+    },
+    {
+      "key": "doubao-speech/doubao-formalizeresourcepacks-conversioneffectpackage",
+      "status": "changed",
+      "tools": [
+        "speech_console"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/formalize-resource-packs-conversion-effect-package?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-hotwordmanagementapiv10",
+      "status": "changed",
+      "tools": [
+        "manage_word_table",
+        "speech_console"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/hot-word-management-api-v10?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-httpchunkedsseunidirectionalstreaming-v3",
+      "status": "changed",
+      "tools": [
+        "speech_raw_request",
+        "text_to_speech"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/http-chunked-sse-unidirectional-streaming-v3?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-httpinterfaceone-timecomposition-non-streaming",
+      "status": "changed",
+      "tools": [
+        "speech_raw_request"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/http-interface-one-time-composition-non-streaming?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-httpone-timecompositenon-streaminginterface-v1notrecommended",
+      "status": "changed",
+      "tools": [
+        "speech_raw_request"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/http-one-timecompositenon-streaming-interface-v1-not-recommended?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-largemodelrecordingfileliterecognitionapi",
+      "status": "changed",
+      "tools": [
+        "speech_raw_request",
+        "speech_to_text"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/large-model-recording-file-lite-recognition-api?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-largemodelrecordingfilerecognitionidleversion",
+      "status": "changed",
+      "tools": [
+        "get_job",
+        "recover_job",
+        "speech_to_text"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/large-model-recording-file-recognition-idle-version?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-largemodelrecordingfilerecognitionstandardversionapi",
+      "status": "changed",
+      "tools": [
+        "get_job",
+        "recover_job",
+        "speech_to_text"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/large-model-recording-file-recognition-standard-version-api?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-largemodelstreamingautomaticspeechrecognitionapi",
+      "status": "changed",
+      "tools": [
+        "speech_raw_request"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/large-model-streaming-automatic-speech-recognition-api-1?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-listapikeys-pullapikeylist",
+      "status": "changed",
+      "tools": [
+        "speech_console"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/list-api-keys-pull-api-key-list?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-listbigmodelttstimbres-largemodelsoundlist",
+      "status": "changed",
+      "tools": [
+        "speech_console"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/list-big-model-tts-timbres-large-model-sound-list?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-listmegattsbyorderid-querypurchasedsoundsbyorderid",
+      "status": "changed",
+      "tools": [
+        "speech_console"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/list-mega-tts-by-order-id-query-purchased-sounds-by-order-id?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-listmegattstrainstatus-queryspeakeridstatusinformation",
+      "status": "changed",
+      "tools": [
+        "speech_console"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/list-mega-tts-train-status-query-speaker-id-status-information?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-listspeakers-largemodelsoundlistnewinterface",
+      "status": "changed",
+      "tools": [
+        "speech_console"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/list-speakers-large-model-sound-list-new-interface?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-listtagsforresources-queryalllabelsattachedtoaresource",
+      "status": "changed",
+      "tools": [
+        "speech_console"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/list-tags-for-resources-query-all-labels-attached-to-are-source?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-machinetranslationlargemodel-apiaccessdocumentation",
+      "status": "changed",
+      "tools": [
+        "translate_text"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/machine-translation-large-model-api-access-documentation?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-model-list",
+      "status": "changed",
+      "tools": [
+        "generate_audio",
+        "list_speech_capabilities",
+        "open_realtime_session",
+        "speech_raw_request",
+        "speech_to_text",
+        "text_to_speech"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/model-list?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-old-version-console-authentication-reference-example",
+      "status": "changed",
+      "tools": [
+        "list_speech_capabilities"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/old-version-console-authentication-reference-example?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-orderaccessresourcepacks-soundorder",
+      "status": "changed",
+      "tools": [
+        "speech_console"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/order-access-resource-packs-sound-order?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-orderresourcepacks-buyeffectspackage",
+      "status": "changed",
+      "tools": [
+        "speech_console"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/order-resource-packs-buyeffectspackage?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-pauseservice-suspendservice",
+      "status": "changed",
+      "tools": [
+        "speech_console"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/pause-service-suspend-service?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-podcast",
+      "status": "changed",
+      "tools": [
+        "generate_podcast"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/podcast?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-podcast-mustread",
+      "status": "changed",
+      "tools": [
+        "generate_podcast"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/podcast-mustread?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-podcastapi-websocket-v3protocol",
+      "status": "changed",
+      "tools": [
+        "generate_podcast"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/podcast-api-websocket-v3protocol?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-qpsconcurrentqueryinterfacedescription",
+      "status": "changed",
+      "tools": [
+        "speech_console"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/qps-concurrent-query-interface-description?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-quickstartnewconsole",
+      "status": "changed",
+      "tools": [
+        "list_speech_capabilities"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/quick-start-new-console?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-quotamonitoring-quotaqueryinterface",
+      "status": "changed",
+      "tools": [
+        "speech_console"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/quota-monitoring-quota-query-interface?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-recording-file-recognition-lite-http",
+      "status": "changed",
+      "tools": [
+        "speech_raw_request",
+        "speech_to_text"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/recording-file-recognition-lite-http?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [
+        "https://docs.volcengine.com/docs/6561/2604976?lang=zh)配置热词",
+        "https://docs.volcengine.com/docs/6561/2604976?lang=zh)配置热词和上下文"
+      ],
+      "doc_links_removed": [
+        "https://docs.volcengine.com/docs/6561/2604976?lang=zh",
+        "https://www.volcengine.com/docs/6561/2534847?lang=zh"
+      ]
+    },
+    {
+      "key": "doubao-speech/doubao-renewaccessresourcepacks-tonerenewal",
+      "status": "changed",
+      "tools": [
+        "speech_console"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/renew-access-resource-packs-tone-renewal?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-replacementwordapiv11",
+      "status": "changed",
+      "tools": [
+        "manage_word_table",
+        "speech_console"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/replacement-word-api-v11?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-resourcepacksstatus-effectpackagestatusinformation",
+      "status": "changed",
+      "tools": [
+        "speech_console"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/resource-packs-status-effect-package-status-information?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-result-query-http",
+      "status": "changed",
+      "tools": [
+        "get_job",
+        "recover_job"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/result-query-http?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-result-query-http-1",
+      "status": "changed",
+      "tools": [
+        "get_job",
+        "recover_job"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/result-query-http-1?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": [
+        "https://www.volcengine.com/docs/6561/2534847?lang=zh"
+      ]
+    },
+    {
+      "key": "doubao-speech/doubao-resultquery",
+      "status": "changed",
+      "tools": [
+        "get_job",
+        "recover_job"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/result-query?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-resumeservice-re-enabletheservice",
+      "status": "changed",
+      "tools": [
+        "speech_console"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/resume-service-re-enable-the-service?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-seedrealtime",
+      "status": "changed",
+      "tools": [
+        "close_realtime_session",
+        "open_realtime_session",
+        "receive_realtime_events",
+        "send_realtime_event"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/seedrealtime?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [
+        "https://docs.volcengine.com/docs/doubao-voice/access-must-read?lang=zh"
+      ],
+      "doc_links_removed": [
+        "https://docs.volcengine.com/docs/DoubaoVoice/access-mustread?lang=zh#llUZxXnt",
+        "https://www.volcengine.com/docs/6561/2549732?AuditDocumentID=397063&lang=zh#llUZxXnt"
+      ]
+    },
+    {
+      "key": "doubao-speech/doubao-servicestatus-servicestatus",
+      "status": "changed",
+      "tools": [
+        "speech_console"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/service-status-service-status?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-simultaneousinterpretation20apiaccessdocumentation",
+      "status": "changed",
+      "tools": [
+        "interpret_audio"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/simultaneous-interpretation2-0-api-access-documentation?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-sounddesignapi",
+      "status": "changed",
+      "tools": [
+        "design_voice"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/sound-design-api?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-soundreplicationorderingandusageguide",
+      "status": "changed",
+      "tools": [
+        "clone_voice",
+        "design_voice",
+        "get_voice",
+        "upgrade_voice"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/sound-replication-ord-erin-gand-usage-guide?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-tagresources-attachtagstoresources",
+      "status": "changed",
+      "tools": [
+        "speech_console"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/tag-resources-attach-tags-to-resources?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-task-submission-http",
+      "status": "changed",
+      "tools": [
+        "speech_to_text"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/task-submission-http?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [
+        "https://docs.volcengine.com/docs/6561/2604976?lang=zh)配置热词",
+        "https://docs.volcengine.com/docs/6561/2604976?lang=zh)配置热词和上下文"
+      ],
+      "doc_links_removed": [
+        "https://docs.volcengine.com/docs/6561/2604976?lang=zh",
+        "https://www.volcengine.com/docs/6561/2534847?lang=zh"
+      ]
+    },
+    {
+      "key": "doubao-speech/doubao-task-submission-http-1",
+      "status": "changed",
+      "tools": [
+        "speech_to_text"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/task-submission-http-1?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [
+        "https://docs.volcengine.com/docs/6561/2604976?lang=zh)配置热词",
+        "https://docs.volcengine.com/docs/6561/2604976?lang=zh)配置热词和上下文",
+        "https://docs.volcengine.com/docs/doubao-voice/speaker-separation?lang=zh)[",
+        "https://docs.volcengine.com/docs/doubao-voice/speaker-separation?lang=zh)[说话人分离最佳实践](https://docs.volcengine.com/docs/doubao-voice/speaker-separation?lang=zh)配置相关参数"
+      ],
+      "doc_links_removed": [
+        "https://docs.volcengine.com/docs/6561/2604976?lang=zh",
+        "https://docs.volcengine.com/docs/DoubaoVoice/speaker-separation?lang=zh",
+        "https://www.volcengine.com/docs/6561/2534847?lang=zh"
+      ]
+    },
+    {
+      "key": "doubao-speech/doubao-tasksubmission",
+      "status": "changed",
+      "tools": [
+        "text_to_speech"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/task-sub-mission?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-terminateservice-deactivateservice",
+      "status": "changed",
+      "tools": [
+        "speech_console"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/terminate-service-deactivate-service?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-termwords",
+      "status": "changed",
+      "tools": [
+        "interpret_audio",
+        "translate_text"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/term-words?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-tone-query-http",
+      "status": "changed",
+      "tools": [
+        "get_voice"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/tone-query-http?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-tone-training-http",
+      "status": "changed",
+      "tools": [
+        "clone_voice"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/tone-training-http?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-tone-upgrade-http",
+      "status": "changed",
+      "tools": [
+        "upgrade_voice"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/tone-upgrade-http?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-tonelist-1",
+      "status": "changed",
+      "tools": [
+        "open_realtime_session",
+        "speech_raw_request",
+        "text_to_speech"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/tone-list-3?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-unidirectional-streaming-automatic-speech-recognition-websocket",
+      "status": "changed",
+      "tools": [
+        "speech_raw_request"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/unidirectional-streaming-automatic-speech-recognition-websocket?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [
+        "wss://openspeech.bytedance.com/api/v3/sauc/bigmodel_nostream"
+      ],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [
+        "https://docs.volcengine.com/docs/6561/2604976?lang=zh)配置热词",
+        "https://docs.volcengine.com/docs/doubao-voice/speaker-separation?lang=zh)[",
+        "https://docs.volcengine.com/docs/doubao-voice/speaker-separation?lang=zh)[说话人分离最佳实践](https://docs.volcengine.com/docs/doubao-voice/speaker-separation?lang=zh)配置相关参数"
+      ],
+      "doc_links_removed": [
+        "https://docs.volcengine.com/docs/6561/2604976?lang=zh",
+        "https://docs.volcengine.com/docs/DoubaoVoice/speaker-separation?lang=zh",
+        "https://www.volcengine.com/docs/6561/2534847?lang=zh"
+      ]
+    },
+    {
+      "key": "doubao-speech/doubao-unidirectional-streaming-text-to-speech-http",
+      "status": "changed",
+      "tools": [
+        "speech_raw_request",
+        "text_to_speech"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/unidirectional-streaming-text-to-speech-http?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [
+        "https://docs.volcengine.com/docs/6561/1257544?lang=zh#%E8%B1%86%E5%8C%85%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E6%A8%A1%E5%9E%8B2-0%E3%80%81s2s-o2-0%E3%80%81-s2s-%E5%85%A8%E5%8F%8C%E5%B7%A5-%E9%9F%B3%E8%89%B2%E5%88%97%E8%A1%A8)、豆包声音复刻大模型2.0音色",
+        "https://docs.volcengine.com/docs/6561/1257544?lang=zh#%E8%B1%86%E5%8C%85%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E6%A8%A1%E5%9E%8B2-0%E3%80%81s2s-o2-0%E3%80%81-s2s-%E5%85%A8%E5%8F%8C%E5%B7%A5-%E9%9F%B3%E8%89%B2%E5%88%97%E8%A1%A8)时，支持使用语音指令",
+        "https://docs.volcengine.com/docs/doubao-voice/tone-list-3?lang=zh#%E8%B1%86%E5%8C%85%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E6%A8%A1%E5%9E%8B2-0%E3%80%81s2s-o2-0%E3%80%81-s2s-%E5%85%A8%E5%8F%8C%E5%B7%A5-%E9%9F%B3%E8%89%B2%E5%88%97%E8%A1%A8)中，仅命名为zh_*xxx*_*xxxx*_uranus_bigtts的音色支持"
+      ],
+      "doc_links_removed": [
+        "https://docs.volcengine.com/docs/DoubaoVoice/Tonelist-1?lang=zh#%E8%B1%86%E5%8C%85%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E6%A8%A1%E5%9E%8B2-0%E3%80%81s2s-o2-0%E3%80%81-s2s-%E5%85%A8%E5%8F%8C%E5%B7%A5-%E9%9F%B3%E8%89%B2%E5%88%97%E8%A1%A8"
+      ]
+    },
+    {
+      "key": "doubao-speech/doubao-unidirectional-streaming-text-to-speech-websocket",
+      "status": "changed",
+      "tools": [
+        "speech_raw_request"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/unidirectional-streaming-text-to-speech-websocket?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [
+        "https://docs.volcengine.com/docs/6561/1257544?lang=zh#%E8%B1%86%E5%8C%85%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E6%A8%A1%E5%9E%8B2-0%E3%80%81s2s-o2-0%E3%80%81-s2s-%E5%85%A8%E5%8F%8C%E5%B7%A5-%E9%9F%B3%E8%89%B2%E5%88%97%E8%A1%A8)、豆包声音复刻大模型2.0音色支持",
+        "https://docs.volcengine.com/docs/6561/1257544?lang=zh#%E8%B1%86%E5%8C%85%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E6%A8%A1%E5%9E%8B2-0%E3%80%81s2s-o2-0%E3%80%81-s2s-%E5%85%A8%E5%8F%8C%E5%B7%A5-%E9%9F%B3%E8%89%B2%E5%88%97%E8%A1%A8)中，仅命名为zh_*xxx*_*xxxx*_uranus_bigtts的音色支持",
+        "https://docs.volcengine.com/docs/6561/1257544?lang=zh#%E8%B1%86%E5%8C%85%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E6%A8%A1%E5%9E%8B2-0%E3%80%81s2s-o2-0%E3%80%81-s2s-%E5%85%A8%E5%8F%8C%E5%B7%A5-%E9%9F%B3%E8%89%B2%E5%88%97%E8%A1%A8)时，支持使用语音指令"
+      ],
+      "doc_links_removed": [
+        "https://docs.volcengine.com/docs/DoubaoVoice/Tonelist-1?lang=zh#%E8%B1%86%E5%8C%85%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E6%A8%A1%E5%9E%8B2-0%E3%80%81s2s-o2-0%E3%80%81-s2s-%E5%85%A8%E5%8F%8C%E5%B7%A5-%E9%9F%B3%E8%89%B2%E5%88%97%E8%A1%A8",
+        "https://www.volcengine.com/docs/6561/2534847?lang=zh"
+      ]
+    },
+    {
+      "key": "doubao-speech/doubao-untagresources-removetagsfromresources",
+      "status": "changed",
+      "tools": [
+        "speech_console"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/untag-resources-remove-tags-from-resources?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-updateapikey-updateapikey",
+      "status": "changed",
+      "tools": [
+        "speech_console"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/update-api-key-update-api-key?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-usagemonitoring-callqueryinterface",
+      "status": "changed",
+      "tools": [
+        "speech_console"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/usage-monitoring-call-query-interface?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-voice-document-index",
+      "status": "changed",
+      "tools": [
+        "get_speech_usage_examples",
+        "list_speech_capabilities"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice",
+      "models_added": [
+        "doubao-foundation-model-speech-entrepreneur-acceleration-program-customer-notice",
+        "doubao-text-to-speech-20-capability-introduction",
+        "doubao-voice-minutes",
+        "doubao-voice-minutes-api-access-documentation"
+      ],
+      "models_removed": [
+        "DoubaoFoundationModelSpeechEntrepreneurAccelerationProgram-CustomerNotice",
+        "DoubaoTextToSpeech20CapabilityIntroduction",
+        "DoubaoVoiceMinutes",
+        "DoubaoVoiceMinutes-APIAccessDocumentation"
+      ],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [
+        "access-must-read",
+        "access-must-read-1",
+        "access-must-read-1-1",
+        "access-process",
+        "access-process-1",
+        "access-process-2",
+        "access-process-3",
+        "activate-service-activate-service",
+        "alias-resource-pack-update-sound-resource-aliases",
+        "android",
+        "android-2",
+        "android-3",
+        "api-access-faq-1",
+        "api-interface-documentation-2",
+        "api-key",
+        "api-key-usage",
+        "api-reference",
+        "application-scenarios-1",
+        "archive",
+        "audio-file-recognition-1-1",
+        "audio-file-recognition-lite",
+        "audio-file-recognition-standard-edition-1",
+        "audio-video-sub-tit-les",
+        "audio-video-sub-title-gene-ration",
+        "authentication-method",
+        "authentication-method-1",
+        "automatic-speech-recognition-1",
+        "automatic-speech-recognition-large-model-1",
+        "automatic-sub-title-typing",
+        "batch-list-mega-tts-train-status-page-query-speaker-id-status",
+        "bidirectional-streaming-tts-android-sdk-interface-documentation-1",
+        "bidirectional-streaming-tts-ios-sdk-interface-documentation-1",
+        "billing-faq-1",
+        "billing-instructions",
+        "billing-overview",
+        "c-interface-call-flow",
+        "call-volume-query-interface-description",
+        "calling-flow-2",
+        "calling-flow-3",
+        "calling-flow-6",
+        "calling-flow-7",
+        "console-related-interfaces",
+        "console-usage-faq",
+        "create-api-key-create-api-key",
+        "delete-api-key-delete-api-key",
+        "development-reference",
+        "doubao-foundation-model-speech-entrepreneur-acceleration-program-customer-notice",
+        "doubao-text-to-speech-20-capability-introduction",
+        "doubao-voice-minutes",
+        "doubao-voice-minutes-api-access-documentation",
+        "due-over-due-shut-down",
+        "end-to-end-android-sdk-interface-documentation",
+        "end-to-end-full-duplex-android-sdk-documentation",
+        "end-to-end-real-time-speech-large-model",
+        "end-to-end-real-time-voice-full-duplex-version",
+        "end-to-endios-sdk-interface-documentation",
+        "end-to-endreal-time-speech-large-model",
+        "end-to-endreal-time-speech-large-model-api-access-document",
+        "error-code-description",
+        "error-code-description-2",
+        "faqs",
+        "faqs-1",
+        "faqs-3",
+        "faqs-4",
+        "formalize-resource-packs-conversion-effect-package",
+        "from-online-text-to-speech-sdk",
+        "generative-model-service-specific-terms",
+        "his-tori-cal-sound-replication-interface",
+        "historical-end-to-end-real-time-voice-interface",
+        "historical-text-to-speech-interface",
+        "history-docs",
+        "hot-word-management-api-v10",
+        "hot-words",
+        "http-chunked-sse-unidirectional-streaming-v3",
+        "http-interface-one-time-composition-non-streaming",
+        "http-one-timecompositenon-streaming-interface-v1-not-recommended",
+        "in-offline-streaming-voice-conversion-sdk",
+        "integration-guide",
+        "integration-guide-1",
+        "integration-guide-10",
+        "integration-guide-11",
+        "integration-guide-13",
+        "integration-guide-4",
+        "integration-guide-5",
+        "integration-guide-8",
+        "integration-guide-9",
+        "ios",
+        "ios-2",
+        "ios-3",
+        "large-model-recording-file-lite-recognition-api",
+        "large-model-recording-file-recognition-idle-version",
+        "large-model-recording-file-recognition-standard-version-api",
+        "large-model-stream-recognition-sdk-1",
+        "large-model-streaming-automatic-speech-recognition-android-sdk-interface",
+        "large-model-streaming-automatic-speech-recognition-api-1",
+        "large-model-streaming-automatic-speech-recognition-ios-sdk-interface",
+        "linux-c-1",
+        "linux-java-1",
+        "list-api-keys-pull-api-key-list",
+        "list-big-model-tts-timbres-large-model-sound-list",
+        "list-mega-tts-by-order-id-query-purchased-sounds-by-order-id",
+        "list-mega-tts-train-status-query-speaker-id-status-information",
+        "list-speakers-large-model-sound-list-new-interface",
+        "list-tags-for-resources-query-all-labels-attached-to-are-source",
+        "machine-translation-large-model",
+        "machine-translation-large-model-api-access-documentation",
+        "model-effect-faq-1",
+        "model-issue",
+        "model-issue-1",
+        "model-issuing-interface-description-v2",
+        "model-issuing-interface-description-v2-1",
+        "model-issuing-interface-description-v4",
+        "model-issuing-interface-description-v4-1",
+        "monitoring",
+        "one-sentence-recognition-1",
+        "order-access-resource-packs-sound-order",
+        "order-resource-packs-buyeffectspackage",
+        "para-meter-basic-description",
+        "parameter-description",
+        "parameter-description-1",
+        "pause-service-suspend-service",
+        "podcast-api-websocket-v3protocol",
+        "podcast-mustread",
+        "product-advantages-1",
+        "product-billing-10",
+        "product-billing-5",
+        "product-dynamics-1",
+        "product-overview-10",
+        "product-overview-11",
+        "product-overview-12",
+        "product-overview-13",
+        "product-overview-18",
+        "product-overview-21",
+        "product-overview-22",
+        "product-overview-23",
+        "product-overview-24",
+        "product-overview-25",
+        "product-overview-26",
+        "product-overview-27",
+        "product-overview-7",
+        "product-overview-8",
+        "project-label-billing-function-user-guide",
+        "publish-information",
+        "publish-information-2",
+        "publish-information-3",
+        "publish-information-6",
+        "qps-concurrent-query-interface-description",
+        "quick-start",
+        "quick-start-new-console",
+        "quick-start-old-console",
+        "quota-monitoring-quota-query-interface",
+        "refund-instructions",
+        "related-agreements",
+        "related-agreements-1",
+        "renew-access-resource-packs-tone-renewal",
+        "replacement-word",
+        "replacement-word-api-v11",
+        "resource-packs",
+        "resource-packs-status-effect-package-status-information",
+        "result-query",
+        "resume-service-re-enable-the-service",
+        "sdk-access-documentation-1",
+        "sdk-overview",
+        "sdk-overview-2",
+        "sdk-overview-3",
+        "self-learning-platform",
+        "service-status-service-status",
+        "service-usage",
+        "simultaneous-interpretation2-0-api-access-documentation",
+        "sound-design-api",
+        "sound-replica-api-v3",
+        "sound-replica-icl-best-practices",
+        "sound-replica-sdk-developer-compliance-specification",
+        "sound-replica-sdk-privacy-policy",
+        "sound-replication-20-best-practices",
+        "sound-replication-ord-erin-gand-usage-guide",
+        "sound-replication-sdk",
+        "sound-reproduction-1",
+        "speech-simultaneous-interpretation-large-model",
+        "ssm-lmarkuplanguage",
+        "streaming-automatic-speech-recognition-1",
+        "streaming-automatic-speech-recognition-2",
+        "streaming-automatic-speech-recognition-sdk-including-one-sentence",
+        "streaming-voice-conversion-api",
+        "tag",
+        "tag-resources-attach-tags-to-resources",
+        "task-sub-mission",
+        "taxes-and-invoices",
+        "term-words",
+        "terminate-service-deactivate-service",
+        "text-to-speech-large-model-1",
+        "text-to-speech-sdk-developer-compliance",
+        "text-to-speech-sdk-privacy-policy",
+        "text-to-speech-sdk-usage-faq",
+        "timbre",
+        "tone-list",
+        "tone-list-1",
+        "tone-list-2",
+        "tone-list-3",
+        "untag-resources-remove-tags-from-resources",
+        "update-api-key-update-api-key",
+        "usage-monitoring-call-query-interface",
+        "voice-conversion",
+        "voice-pod-cast-large-model",
+        "voice-print-registration-management-api",
+        "volcano-engine-sound-replication-protocol",
+        "volcano-engine-speech-and-audio-grade-of-service-agreement",
+        "volcano-engine-speech-model-experience-service-disclaimerand-service-rules",
+        "websocket-bidirectional-streaming-v3",
+        "websocket-interface",
+        "websocket-unidirectional-streaming-v3"
+      ],
+      "document_codes_removed": [
+        "APIAccessFAQ",
+        "APIKeyUsage",
+        "APIReference-97",
+        "APIinterfacedocumentation",
+        "Accessmust-read",
+        "Accessmust-read_1",
+        "Accessprocess",
+        "Accessprocess-1",
+        "Accessprocess-2",
+        "Accessprocess-3",
+        "ActivateService-ActivateService",
+        "AliasResourcePack-Updatesoundresourcealiases",
+        "Android",
+        "Android-1",
+        "Android-3",
+        "Applicationscenarios",
+        "Archive",
+        "AudioFileRecognitionLite",
+        "Audiovideosubtitlegeneration",
+        "Audiovideosubtitles",
+        "Authenticationmethod",
+        "Authenticationmethod-1",
+        "Automaticsubtitletyping",
+        "BatchListMegaTTSTrainStatus-PageQuerySpeakerIDStatus",
+        "BidirectionalStreamingTTS-iOSSDKInterfaceDocumentation",
+        "BillingFAQ",
+        "BillingOverview-15",
+        "Billinginstructions-21",
+        "Callingflow",
+        "Callingflow-1",
+        "Callingflow-2",
+        "Callingflow-3",
+        "Callvolumequeryinterfacedescription",
+        "Cinterfacecallflow",
+        "ConsoleUsageFAQ",
+        "Consolerelatedinterfaces",
+        "CreateAPIKey-CreateAPIKey",
+        "DeleteAPIKey-DeleteAPIKey",
+        "Developmentreference-3",
+        "DoubaoFoundationModelSpeechEntrepreneurAccelerationProgram-CustomerNotice",
+        "DoubaoTextToSpeech20CapabilityIntroduction",
+        "DoubaoVoiceMinutes",
+        "DoubaoVoiceMinutes-APIAccessDocumentation",
+        "Dueoverdueshutdown",
+        "End-to-endAndroidSDKinterfacedocumentation",
+        "End-to-endiOSSDKinterfacedocumentation",
+        "End-to-endreal-timespeechlargemodel",
+        "End-to-endreal-timespeechlargemodelAPIaccessdocument",
+        "Errorcodedescription",
+        "Errorcodedescription-1",
+        "FAQs",
+        "FAQs-1",
+        "FAQs-2",
+        "FAQs-4",
+        "FormalizeResourcePacks-Conversioneffectpackage",
+        "FromOnlineTextToSpeechSDK",
+        "Generativemodelservicespecificterms-1",
+        "HTTPChunkedSSEUnidirectionalStreaming-V3",
+        "HTTPinterfaceone-timecomposition-non-streaming",
+        "HTTPone-timecompositenon-streaminginterface-V1notrecommended",
+        "HistoricalTextToSpeechInterface",
+        "Historicalsoundreplicationinterface",
+        "HistoryDocs-9",
+        "HotWordManagementAPIv10",
+        "Hotwords",
+        "InOfflineStreamingVoiceConversionSDK",
+        "Integrationguide",
+        "Integrationguide-1",
+        "Integrationguide-2",
+        "Integrationguide-3",
+        "Integrationguide-4",
+        "Integrationguide-5",
+        "Integrationguide-6",
+        "Integrationguide-7",
+        "Integrationguide-8",
+        "LargeModelStreamRecognitionSDK",
+        "LargemodelrecordingfileLiterecognitionAPI",
+        "Largemodelrecordingfilerecognitionidleversion",
+        "LargemodelrecordingfilerecognitionstandardversionAPI",
+        "LargemodelstreamingautomaticspeechrecognitionAPI",
+        "LinuxC",
+        "LinuxJava",
+        "ListAPIKeys-PullAPIKeyList",
+        "ListBigModelTTSTimbres-LargeModelSoundList",
+        "ListMegaTTSByOrderID-QuerypurchasedsoundsbyorderID",
+        "ListMegaTTSTrainStatus-QuerySpeakerIDstatusinformation",
+        "ListSpeakers-LargeModelSoundListNewInterface",
+        "ListTagsForResources-Queryalllabelsattachedtoaresource",
+        "MachineTranslationLargeModel",
+        "MachineTranslationLargeModel-APIAccessDocumentation",
+        "ModelEffectFAQ",
+        "ModelIssuingInterfaceDescriptionV2",
+        "ModelIssuingInterfaceDescriptionV2-1",
+        "ModelIssuingInterfaceDescriptionV4",
+        "ModelIssuingInterfaceDescriptionV4-1",
+        "Modelissue",
+        "Modelissue-1",
+        "Monitoring-7-1",
+        "One-sentencerecognition",
+        "OrderAccessResourcePacks-SoundOrder",
+        "OrderResourcePacks-Buyeffectspackage",
+        "Parameterbasicdescription",
+        "Parameterdescription",
+        "Parameterdescription-1",
+        "PauseService-SuspendService",
+        "PodcastAPI-websocket-v3protocol",
+        "ProductOverview",
+        "ProductOverview-1",
+        "ProductOverview-10",
+        "ProductOverview-11",
+        "ProductOverview-18",
+        "ProductOverview-2",
+        "ProductOverview-21",
+        "ProductOverview-3",
+        "ProductOverview-4",
+        "ProductOverview-5",
+        "ProductOverview-6",
+        "ProductOverview-7",
+        "ProductOverview-8",
+        "ProductOverview-9",
+        "Productadvantages",
+        "Productbilling",
+        "Productbilling-10",
+        "Productdynamics",
+        "ProjectLabelBillingFunctionUserGuide",
+        "Publishinformation",
+        "Publishinformation-1",
+        "Publishinformation-2",
+        "Publishinformation-3",
+        "QPSConcurrentQueryInterfaceDescription",
+        "QuickStart-56",
+        "QuickStartNewConsole",
+        "QuickStartOldConsole",
+        "QuotaMonitoring-Quotaqueryinterface",
+        "Refundinstructions-1",
+        "Relatedagreements",
+        "Relatedagreements-1",
+        "RenewAccessResourcePacks-ToneRenewal",
+        "ReplacementWordAPIv11",
+        "Replacementword",
+        "ResourcePacksStatus-effectpackagestatusinformation",
+        "Resultquery",
+        "ResumeService-Re-enabletheservice",
+        "SDKAccessDocumentation-1",
+        "SDKOverview",
+        "SDKOverview-1",
+        "SDKOverview-2",
+        "SSMLmarkuplanguage",
+        "Self-learningplatform",
+        "ServiceStatus-ServiceStatus",
+        "Serviceusage",
+        "SimultaneousInterpretation20APIAccessDocumentation",
+        "SoundDesignAPI",
+        "SoundReplicaAPI-V3",
+        "SoundReplicaICL-BestPractices",
+        "SoundReplicaSDKPrivacyPolicy",
+        "SoundReplicaSDKdevelopercompliancespecification",
+        "SoundReplication20BestPractices",
+        "SoundReplicationSDK",
+        "Soundreplicationorderingandusageguide",
+        "Speechsimultaneousinterpretationlargemodel",
+        "StreamingVoiceConversionAPI",
+        "Streamingautomaticspeechrecognition",
+        "StreamingautomaticspeechrecognitionSDKincludingonesentence",
+        "TagResources-Attachtagstoresources",
+        "Tasksubmission",
+        "Taxesandinvoices-15",
+        "TerminateService-DeactivateService",
+        "Termwords",
+        "TextToSpeechSDKPrivacyPolicy",
+        "TextToSpeechSDKUsageFAQ",
+        "TextToSpeechSDKdevelopercompliance",
+        "Timbre",
+        "Tonelist",
+        "Tonelist-1",
+        "Tonelist-2",
+        "Tonelist-3",
+        "UntagResources-Removetagsfromresources",
+        "UpdateAPIKey-UpdateAPIKey",
+        "UsageMonitoring-CallQueryInterface",
+        "VoiceConversion",
+        "Voicepodcastlargemodel",
+        "VolcanoEngine-SpeechAndAudioGradeOfServiceAgreement",
+        "VolcanoEngine-SpeechModelExperienceServiceDisclaimerandServiceRulesDescription",
+        "VolcanoEngineSoundReplicationProtocol",
+        "WebSocketBidirectionalStreaming-V3",
+        "WebSocketUnidirectionalStreaming-V3",
+        "Websocketinterface",
+        "access-mustread",
+        "api_key",
+        "audio-file-recognition",
+        "audio-file-recognition-standard-edition",
+        "automatic-speech-recognition-large-model",
+        "automaticspeechrecognition-1",
+        "bidirectional-streaming-tts-android-sdk-interface-documentation",
+        "endtoend-full-duplex-android-sdk-documentation",
+        "endtoend-realtime-speech-large-model",
+        "endtoend-realtime-voice-full-duplex-version",
+        "historical-endtoend-realtime-voice-interface",
+        "iOS",
+        "iOS-1",
+        "iOS-3",
+        "large-model-streaming-automatic-speech-recognition-android-sdk-interface-documentation",
+        "large-model-streaming-automatic-speech-recognition-ios-sdk-interface-documentation",
+        "podcast_mustread",
+        "resource_packs",
+        "sound-reproduction",
+        "streaming-automatic-speech-recognition",
+        "tag-5",
+        "text-to-speech-large-model",
+        "voiceprint-registration-management-api"
+      ],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-websocketbidirectionalstreaming-v3",
+      "status": "changed",
+      "tools": [
+        "speech_raw_request"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/websocket-bidirectional-streaming-v3?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    },
+    {
+      "key": "doubao-speech/doubao-websocketunidirectionalstreaming-v3",
+      "status": "changed",
+      "tools": [
+        "speech_raw_request"
+      ],
+      "url": "https://docs.volcengine.com/docs/doubao-voice/websocket-unidirectional-streaming-v3?lang=zh",
+      "models_added": [],
+      "models_removed": [],
+      "endpoints_added": [],
+      "endpoints_removed": [],
+      "document_codes_added": [],
+      "document_codes_removed": [],
+      "doc_links_added": [],
+      "doc_links_removed": []
+    }
+  ],
+  "errors": []
+}

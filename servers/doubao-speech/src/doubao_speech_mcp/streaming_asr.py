@@ -1,4 +1,4 @@
-"""ASR WebSocket protocol: https://www.volcengine.com/docs/6561/1354869."""
+"""ASR WebSocket protocol: https://docs.volcengine.com/docs/doubao-voice/large-model-streaming-automatic-speech-recognition-api-1."""
 
 import asyncio
 import copy
@@ -96,7 +96,7 @@ def prepare_audio(audio, request):
     else:
         raise speech.InputError("流式识别仅支持本地 WAV 或 PCM 文件")
     # WAV container is stripped; the wire data must therefore be declared PCM.
-    metadata.update(format="pcm", codec="raw")
+    metadata["format"] = "pcm"
     if metadata["bits"] != 16 or metadata["channel"] not in (1, 2):
         raise speech.InputError("音频必须为 16-bit PCM，声道数为 1 或 2")
     if not isinstance(metadata["rate"], int) or metadata["rate"] <= 0:

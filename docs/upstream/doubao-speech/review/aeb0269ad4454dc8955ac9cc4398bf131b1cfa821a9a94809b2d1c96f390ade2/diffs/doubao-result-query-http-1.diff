@@ -1,0 +1,176 @@
+--- reviewed/doubao-speech/doubao-result-query-http-1
++++ current/doubao-speech/doubao-result-query-http-1
+@@ -1,119 +1,127 @@
+ 用于查询录音文件识别标准版的转写结果，需传入任务 ID（task_id）获取对应任务的识别状态与结果
+ 
+-<div data-tips="true" data-tips-type="default" data-tips-is-title="true">说明</div>
++> **说明**
+ 
++> 本接口请求体为空json
+ 
+-<div data-tips="true" data-tips-type="default">本接口请求体为空json</div>
++POST https://openspeech.bytedance.com/api/v3/auc/bigmodel/query
+ 
+-
+-&nbsp;
+-
+-<span data-label="purple">POST</span> https://openspeech.bytedance.com/api/v3/auc/bigmodel/query
+-
+-&nbsp;
+-
+-
+-<span id="U2dCXzkM"></span>
+ ### 请求头
+ 
+-
+-**X\-Api\-Key ** `string` <span data-api-tag="require|g9zFYw">必选</span>
++**X\-Api\-Key ** `string` 必选
+ 
+ API Key 可从 [控制台>API Key管理](https://console.volcengine.com/speech/new/setting/apikeys?projectName=default.) 获取
+ 
+-<div data-tips="true" data-tips-type="default" data-tips-is-title="true">说明</div>
++> **说明**
+ 
++> 同时支持[旧版控制台](https://console.volcengine.com/speech/service/10035)的鉴权方式，详见[旧版控制台鉴权参考示例](https://www.volcengine.com/docs/6561/2534847?lang=zh)
+ 
+-<div data-tips="true" data-tips-type="default">同时支持<a href="https://console.volcengine.com/speech/service/10035">旧版控制台</a>的鉴权方式，详见<a href="https://www.volcengine.com/docs/6561/2534847?lang=zh">旧版控制台鉴权参考示例</a></div>
+-
+-
+-
+-
+-**X\-Api\-Resource\-Id ** `string` <span data-api-tag="require|g9zFYw">必选</span>
++**X\-Api\-Resource\-Id ** `string` 必选
+ 
+ 请求的模型版本，可选值：
+-
+ 
+ * `volc.seedasr.auc`:豆包录音文件识别模型2.0
+ 
+ * `volc.bigasr.auc`：豆包录音文件识别模型1.0
+ 
+-
+-
+-**X\-Api\-Request\-Id ** `string` <span data-api-tag="require|g9zFYw">必选</span>
++**X\-Api\-Request\-Id ** `string` 必选
+ 
+ 传入录音文件识别接口返回的`task_id`
+ 
+-
+-
+-
+-<span id="WtD1SAXn"></span>
+ ### 响应
+-
+ 
+ **X\-Tt\-Logid ** `string`
+ 
+ 服务端返回的 logid，方便定位问题
+ 
+-
+-
+ **X\-Api\-Status\-Code ** `string`
+ 
+ 提交任务后服务端返回的状态码
+-
+-
+ 
+ **X\-Api\-Message ** `string`
+ 
+ 提交任务后服务端返回的信息，OK 表示成功，其他值表示失败
+ 
++**audio_info ** `object`
+ 
++音频信息
++
++**duration ** `int`
++
++音频长度，单位为ms
+ 
+ **result** `list`
+ 
+ 识别结果，识别成功后返回
+ 
+-
+ **text ** `string`
+ 
+ 音频识别结果文本，识别成功后返回
+-
+-
+ 
+ **utterances ** `string`
+ 
+ 语音分句信息。满足以下条件时返回：
+ 
++* 请求参数`show_utterances`设置为`true`
++
++* 识别成功
++
++**text ** `string`
++
++语音文本内容。满足以下条件时返回：
+ 
+ * 请求参数`show_utterances`设置为`true`
+ 
+ * 识别成功
+ 
++**start_time ** `int`
+ 
++分句起始时间（毫秒）
+ 
+-**text ** `string`
++**end_time ** `int`
+ 
+-语音文本内容。满足以下条件时返回：
++分句结束时间（毫秒）
+ 
++**words**`array`
+ 
+-* 请求参数`show_utterances`设置为`true`
++逐字时间戳列表
+ 
+-* 识别成功
++**confidence**`int`
+ 
++置信度
+ 
+-
+-**start_time ** `int`
++**start_time**`int`
+ 
+ 起始时间（毫秒）
+ 
+-
+-
+-**end_time ** `int`
++**end_time**`int`
+ 
+ 结束时间（毫秒）
+ 
++**text**`string`
+ 
++字
+ 
++**additions**
+ 
++附加信息
+ 
+-&nbsp;
++**channel_id**`string`
++
++音频声道数
++
++**speaker**`string`
++
++说话人编号，开启说话人分离参数后返回
++
++**additions**`object`
++
++附加信息
++
++**duration**`int`
++
++音频长度，单位为ms
++
++```mixin-react
++return (<ApiSample data={"{\"type\":\"multiple\",\"config\":{\"inputName\":\"输入示例\",\"outputName\":\"输出示例\"},\"data\":[{\"title\":\"cURL\",\"key\":\"0\",\"inputCode\":\"curl --request POST 'https://openspeech.bytedance.com/api/v3/auc/bigmodel/query' \\\\\\n  --header 'X-Api-Key: <your_api_key>' \\\\\\n  --header 'X-Api-Resource-Id: volc.seedasr.auc' \\\\\\n  --header 'X-Api-Request-Id: <task_id>' \\\\\\n  --header 'Content-Type: application/json' \\\\\\n  --data '{}' \\\\\\n  --include\",\"outputCode\":\"{\\n  \\\"headers\\\": {\\n    \\\"X-Api-Status-Code\\\": \\\"20000000\\\",\\n    \\\"X-Api-Message\\\": \\\"OK\\\",\\n    \\\"X-Tt-Logid\\\": \\\"20260728145300B323FC3A93347A7A5617\\\"\\n  },\\n  \\\"body\\\": {\\n    \\\"audio_info\\\": {\\n      \\\"duration\\\": 6312\\n    },\\n    \\\"result\\\": {\\n      \\\"additions\\\": {\\n        \\\"duration\\\": \\\"6312\\\"\\n      },\\n      \\\"text\\\": \\\"刚刚还在想你怎么还不来找我聊天，你就来了，真是心有灵犀啊。\\\",\\n      \\\"utterances\\\": [\\n        {\\n          \\\"additions\\\": {\\n            \\\"channel_id\\\": \\\"1\\\",\\n            \\\"speaker\\\": \\\"1\\\"\\n          },\\n          \\\"start_time\\\": 480,\\n          \\\"end_time\\\": 5880,\\n          \\\"text\\\": \\\"刚刚还在想你怎么还不来找我聊天，你就来了，真是心有灵犀啊。\\\",\\n          \\\"words\\\": [\\n            {\\n              \\\"confidence\\\": 0,\\n              \\\"start_time\\\": 480,\\n              \\\"end_time\\\": 600,\\n              \\\"text\\\": \\\"刚\\\"\\n            },\\n            {\\n              \\\"confidence\\\": 0,\\n              \\\"start_time\\\": 680,\\n              \\\"end_time\\\": 800,\\n              \\\"text\\\": \\\"刚\\\"\\n            },\\n            {\\n              \\\"confidence\\\": 0,\\n              \\\"start_time\\\": 800,\\n              \\\"end_time\\\": 960,\\n              \\\"text\\\": \\\"还\\\"\\n            },\\n            {\\n              \\\"confidence\\\": 0,\\n              \\\"start_time\\\": 960,\\n              \\\"end_time\\\": 1120,\\n              \\\"text\\\": \\\"在\\\"\\n            },\\n            {\\n              \\\"confidence\\\": 0,\\n              \\\"start_time\\\": 1120,\\n              \\\"end_time\\\": 1440,\\n              \\\"text\\\": \\\"想\\\"\\n            }\\n          ]\\n        }\\n      ]\\n    }\\n  }\\n}\",\"inputLanguage\":\"\",\"outputLanguage\":\"\"},{\"title\":\"Python\",\"key\":\"1\",\"inputCode\":\"import requests\\n\\nURL = \\\"https://openspeech.bytedance.com/api/v3/auc/bigmodel/query\\\"\\n\\ndef query_task():\\n    headers = {\\n        \\\"X-Api-Key\\\": \\\"<your_api_key>\\\",\\n        \\\"X-Api-Resource-Id\\\": \\\"volc.seedasr.auc\\\",\\n        \\\"X-Api-Request-Id\\\": \\\"<task_id>\\\"\\n    }\\n\\n    response = requests.post(URL, json={}, headers=headers)\\n\\n    print(f'Query task response header X-Api-Status-Code: {response.headers.get(\\\"X-Api-Status-Code\\\", \\\"\\\")}')\\n    print(f'Query task response header X-Api-Message: {response.headers.get(\\\"X-Api-Message\\\", \\\"\\\")}')\\n    print(f'Query task response header X-Tt-Logid: {response.headers.get(\\\"X-Tt-Logid\\\", \\\"\\\")}\\\\n')\\n\\n    if response.text:\\n        print(response.json())\\n\\n    return response\\n\\nif __name__ == '__main__':\\n    query_task()\",\"outputCode\":\"{\\n  \\\"headers\\\": {\\n    \\\"X-Api-Status-Code\\\": \\\"20000000\\\",\\n    \\\"X-Api-Message\\\": \\\"OK\\\",\\n    \\\"X-Tt-Logid\\\": \\\"20260728145300B323FC3A93347A7A5617\\\"\\n  },\\n  \\\"body\\\": {\\n    \\\"audio_info\\\": {\\n      \\\"duration\\\": 6312\\n    },\\n    \\\"result\\\": {\\n      \\\"additions\\\": {\\n        \\\"duration\\\": \\\"6312\\\"\\n      },\\n      \\\"text\\\": \\\"刚刚还在想你怎么还不来找我聊天，你就来了，真是心有灵犀啊。\\\",\\n      \\\"utterances\\\": [\\n        {\\n          \\\"additions\\\": {\\n            \\\"channel_id\\\": \\\"1\\\",\\n            \\\"speaker\\\": \\\"1\\\"\\n          },\\n          \\\"start_time\\\": 480,\\n          \\\"end_time\\\": 5880,\\n          \\\"text\\\": \\\"刚刚还在想你怎么还不来找我聊天，你就来了，真是心有灵犀啊。\\\",\\n          \\\"words\\\": [\\n            {\\n              \\\"confidence\\\": 0,\\n              \\\"start_time\\\": 480,\\n              \\\"end_time\\\": 600,\\n              \\\"text\\\": \\\"刚\\\"\\n            },\\n            {\\n              \\\"confidence\\\": 0,\\n              \\\"start_time\\\": 680,\\n              \\\"end_time\\\": 800,\\n              \\\"text\\\": \\\"刚\\\"\\n            },\\n            {\\n              \\\"confidence\\\": 0,\\n              \\\"start_time\\\": 800,\\n              \\\"end_time\\\": 960,\\n              \\\"text\\\": \\\"还\\\"\\n            },\\n            {\\n              \\\"confidence\\\": 0,\\n              \\\"start_time\\\": 960,\\n              \\\"end_time\\\": 1120,\\n              \\\"text\\\": \\\"在\\\"\\n            },\\n            {\\n              \\\"confidence\\\": 0,\\n              \\\"start_time\\\": 1120,\\n              \\\"end_time\\\": 1440,\\n              \\\"text\\\": \\\"想\\\"\\n            }\\n          ]\\n        }\\n      ]\\n    }\\n  }\\n}\",\"inputLanguage\":\"\",\"outputLanguage\":\"\"},{\"title\":\"Go\",\"key\":\"GyHulrEt\",\"inputCode\":\"package main\\n\\nimport (\\n    \\\"bytes\\\"\\n    \\\"encoding/json\\\"\\n    \\\"fmt\\\"\\n    \\\"io\\\"\\n    \\\"net/http\\\"\\n)\\n\\nconst queryURL = \\\"https://openspeech.bytedance.com/api/v3/auc/bigmodel/query\\\"\\n\\nfunc queryTask() (*http.Response, error) {\\n    requestBody := []byte(`{}`)\\n\\n    req, err := http.NewRequest(http.MethodPost, queryURL, bytes.NewReader(requestBody))\\n    if err != nil {\\n        return nil, fmt.Errorf(\\\"create query request: %w\\\", err)\\n    }\\n\\n    req.Header.Set(\\\"Content-Type\\\", \\\"application/json\\\")\\n    req.Header.Set(\\\"X-Api-Key\\\", \\\"<your_api_key>\\\")\\n    req.Header.Set(\\\"X-Api-Resource-Id\\\", \\\"volc.seedasr.auc\\\")\\n    req.Header.Set(\\\"X-Api-Request-Id\\\", \\\"<task_id>\\\")\\n\\n    response, err := http.DefaultClient.Do(req)\\n    if err != nil {\\n        return nil, fmt.Errorf(\\\"send query request: %w\\\", err)\\n    }\\n    defer response.Body.Close()\\n\\n    fmt.Printf(\\\"Query task response header X-Api-Status-Code: %s\\\\n\\\", response.Header.Get(\\\"X-Api-Status-Code\\\"))\\n    fmt.Printf(\\\"Query task response header X-Api-Message: %s\\\\n\\\", response.Header.Get(\\\"X-Api-Message\\\"))\\n    fmt.Printf(\\\"Query task response header X-Tt-Logid: %s\\\\n\\\\n\\\", response.Header.Get(\\\"X-Tt-Logid\\\"))\\n\\n    body, err := io.ReadAll(response.Body)\\n    if err != nil {\\n        return response, fmt.Errorf(\\\"read query response: %w\\\", err)\\n    }\\n\\n    if len(body) > 0 {\\n        var result any\\n        if err := json.Unmarshal(body, &result); err != nil {\\n            return response, fmt.Errorf(\\\"decode query response JSON: %w\\\", err)\\n        }\\n\\n        formatted, err := json.MarshalIndent(result, \\\"\\\", \\\"  \\\")\\n        if err != nil {\\n            return response, fmt.Errorf(\\\"format query response JSON: %w\\\", err)\\n        }\\n        fmt.Println(string(formatted))\\n    }\\n\\n    return response, nil\\n}\\n\\nfunc main() {\\n    if _, err := queryTask(); err != nil {\\n        fmt.Printf(\\\"Query task failed: %v\\\\n\\\", err)\\n    }\\n}\\n\",\"outputCode\":\"{\\n  \\\"headers\\\": {\\n    \\\"X-Api-Status-Code\\\": \\\"20000000\\\",\\n    \\\"X-Api-Message\\\": \\\"OK\\\",\\n    \\\"X-Tt-Logid\\\": \\\"20260728145300B323FC3A93347A7A5617\\\"\\n  },\\n  \\\"body\\\": {\\n    \\\"audio_info\\\": {\\n      \\\"duration\\\": 6312\\n    },\\n    \\\"result\\\": {\\n      \\\"additions\\\": {\\n        \\\"duration\\\": \\\"6312\\\"\\n      },\\n      \\\"text\\\": \\\"刚刚还在想你怎么还不来找我聊天，你就来了，真是心有灵犀啊。\\\",\\n      \\\"utterances\\\": [\\n        {\\n          \\\"additions\\\": {\\n            \\\"channel_id\\\": \\\"1\\\",\\n            \\\"speaker\\\": \\\"1\\\"\\n          },\\n          \\\"start_time\\\": 480,\\n          \\\"end_time\\\": 5880,\\n          \\\"text\\\": \\\"刚刚还在想你怎么还不来找我聊天，你就来了，真是心有灵犀啊。\\\",\\n          \\\"words\\\": [\\n            {\\n              \\\"confidence\\\": 0,\\n              \\\"start_time\\\": 480,\\n              \\\"end_time\\\": 600,\\n              \\\"text\\\": \\\"刚\\\"\\n            },\\n            {\\n              \\\"confidence\\\": 0,\\n              \\\"start_time\\\": 680,\\n              \\\"end_time\\\": 800,\\n              \\\"text\\\": \\\"刚\\\"\\n            },\\n            {\\n              \\\"confidence\\\": 0,\\n              \\\"start_time\\\": 800,\\n              \\\"end_time\\\": 960,\\n              \\\"text\\\": \\\"还\\\"\\n            },\\n            {\\n              \\\"confidence\\\": 0,\\n              \\\"start_time\\\": 960,\\n              \\\"end_time\\\": 1120,\\n              \\\"text\\\": \\\"在\\\"\\n            },\\n            {\\n              \\\"confidence\\\": 0,\\n              \\\"start_time\\\": 1120,\\n              \\\"end_time\\\": 1440,\\n              \\\"text\\\": \\\"想\\\"\\n            }\\n          ]\\n        }\\n      ]\\n    }\\n  }\\n}\",\"inputLanguage\":\"\",\"outputLanguage\":\"\"}]}"} />);
++```

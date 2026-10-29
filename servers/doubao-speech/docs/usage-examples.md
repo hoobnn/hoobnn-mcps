@@ -570,7 +570,7 @@ MCP 查询：`{"product": "realtime"}`。
 - 实时会话工具默认不启用，需在MCP配置设MCP_TOOL_GROUPS包含realtime并重启。
 - session.instructions定义角色、语气和回答范围；不要照搬音频生成的时间区间标记。
 - 按open→append音频→commit→receive→close处理；输入文件是16kHz单声道int16裸PCM，append后需显式commit。
-- mode=legacy默认使用1.2.6.1，可response.cancel；mode=seed使用独立seedrealtime入口和1.3.0.0，禁止response.cancel。seed由response.created/canceled/done驱动playback_state，ASR仅作转写；clear_playback_buffer=true须立即停播并清空队列。工具调用需按call_id回传结果。
+- mode=legacy默认使用1.2.6.1；mode=seed使用独立seedrealtime入口和1.3.0.0；两种模式均可response.cancel打断。seed由response.created/canceled/done驱动playback_state，ASR仅作转写；clear_playback_buffer=true须立即停播并清空队列。工具调用需按call_id回传结果。
 - session_id是当前MCP进程的句柄，重启后失效；退出或完成后关闭连接。
 
 ### 摄像画面对话

@@ -343,7 +343,9 @@ class RealtimeTests(unittest.IsolatedAsyncioTestCase):
         self.assertNotIn("video", event["session"])
         self.assertEqual(event["extension"]["video"], {"frame_format": "JPEG", "frame_rate": "2"})
         sent = len(self.ws.sent)
-        self.assertFalse((await self.manager.send(handle, {"type": "response.cancel"}))["ok"])
+        self.assertTrue((await self.manager.send(handle, {"type": "response.cancel"}))["ok"])
+        self.assertEqual(self.ws.sent[-1]["type"], "response.cancel")
+        sent = len(self.ws.sent)
         self.assertFalse((await self.manager.send(handle, {"type": "session.update", "session": {"model": "1.2.6.1"}}))["ok"])
         self.assertEqual(len(self.ws.sent), sent)
 

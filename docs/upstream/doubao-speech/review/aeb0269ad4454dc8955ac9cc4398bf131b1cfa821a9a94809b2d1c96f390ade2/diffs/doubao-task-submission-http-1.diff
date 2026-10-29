@@ -1,0 +1,669 @@
+--- reviewed/doubao-speech/doubao-task-submission-http-1
++++ current/doubao-speech/doubao-task-submission-http-1
+@@ -2,84 +2,56 @@
+ 
+ 客户端上传音频文件后，服务端异步处理转写任务，识别结果需通过配套的[查询接口](https://docs.volcengine.com/docs/6561/2606792?lang=zh)获取
+ 
+-<div data-tips="true" data-tips-type="default" data-tips-is-title="true">说明</div>
+-
+-
+-<div data-tips="true" data-tips-type="default">任务通常在 3 小时内完成，如遇任务高峰期可能略有延迟。若超过 3 小时仍未获取到结果，请联系技术支持排查</div>
+-
+-
+-<span data-label="purple">POST</span>https://openspeech.bytedance.com/api/v3/auc/bigmodel/submit
+-
+-
+-<span id="ULAS3Id9"></span>
++> **说明**
++
++> 任务通常在 3 小时内完成，如遇任务高峰期可能略有延迟。若超过 3 小时仍未获取到结果，请联系技术支持排查
++
++POSThttps://openspeech.bytedance.com/api/v3/auc/bigmodel/submit
++
+ ### 请求头
+ 
+-
+-**X\-Api\-Key ** `string` <span data-api-tag="require|1RbFw3">必选</span>
++**X\-Api\-Key ** `string` 必选
+ 
+ API Key 可从 [控制台>API Key管理](https://console.volcengine.com/speech/new/setting/apikeys?projectName=default.) 获取
+ 
+-<div data-tips="true" data-tips-type="default" data-tips-is-title="true">说明</div>
+-
+-
+-
+-* <div data-tips="true" data-tips-type="default">同时支持<a href="https://console.volcengine.com/speech/service/10035">旧版控制台</a>的鉴权方式，详见<a href="https://www.volcengine.com/docs/6561/2534847?lang=zh">旧版控制台鉴权参考示例</a></div>
+-
+-
+-* <div data-tips="true" data-tips-type="default"><strong>API Key 是接入服务的重要凭证，请妥善保管，避免因泄露造成财产损失</strong></div>
+-
+-
+-
+-
+-**X\-Api\-Resource\-Id ** `string` <span data-api-tag="require|W2vM70">必选</span>
++> **说明**
++
++* > 同时支持[旧版控制台](https://console.volcengine.com/speech/service/10035)的鉴权方式，详见[旧版控制台鉴权参考示例](https://www.volcengine.com/docs/6561/2534847?lang=zh)
++
++* > **API Key 是接入服务的重要凭证，请妥善保管，避免因泄露造成财产损失**
++
++**X\-Api\-Resource\-Id ** `string` 必选
+ 
+ 请求的模型版本，可选值：
+ 
+-
+ * `volc.seedasr.auc`：豆包录音文件识别模型 2.0
+ 
+ * `volc.bigasr.auc`：豆包录音文件识别模型 1.0
+ 
+-
+-<div data-tips="true" data-tips-type="default" data-tips-is-title="true">说明</div>
+-
+-
+-<div data-tips="true" data-tips-type="default">豆包录音文件识别模型 1.0 为历史版本，新接入用户请优先选择 2.0；现有 1.0 用户可正常使用，不受影响</div>
+-
+-
+-
+-
+-**X\-Api\-Request\-Id ** `string` <span data-api-tag="require|W2vM70">必选</span>
++> **说明**
++
++> 豆包录音文件识别模型 1.0 为历史版本，新接入用户请优先选择 2.0；现有 1.0 用户可正常使用，不受影响
++
++**X\-Api\-Request\-Id ** `string` 必选
+ 
+ 提交和查询任务的任务ID，推荐传入随机生成的UUID
+ 
+-
+-
+-**X\-Api\-Sequence ** `string` <span data-api-tag="require|W2vM70">必选</span>
++**X\-Api\-Sequence ** `string` 必选
+ 
+ 发包序号，固定值: `-1`
+ 
+-
+-
+-
+-<span id="OG7QrhRG"></span>
+ ### 请求体
+ 
+-
+-**audio ** `dict` <span data-api-tag="require|WnVo1B">必选</span>
+-
+-
+-**url ** `string` <span data-api-tag="require|1zS7c2">必选</span>
++**audio ** `dict` 必选
++
++**url ** `string` 必选
+ 
+ 指定音频链接
+ 
+-
+-
+ **language ** `string`
+ 
+ 指定识别语种，当前支持识别以下语种：
+ 
+-
+ * 中文普通话：`zh-CN`
+ 
+ * 英语：`en-US`
+@@ -122,7 +94,7 @@
+ 
+ * 波兰语：`pl-PL`
+ 
+-* 罗马尼亚语：`ro-R0`
++* 罗马尼亚语：`ro-RO`
+ 
+ * 尼泊尔语：`ne-NP`
+ 
+@@ -130,43 +102,30 @@
+ 
+ * 粤语：`yue-CN`
+ 
+-
+-<div data-tips="true" data-tips-type="default" data-tips-is-title="true">说明</div>
+-
+-
+-<div data-tips="true" data-tips-type="default">当 <code>language</code> 参数为空时，模型支持识别以下语种：中文、英文、上海话、闽南话、四川话、陕西话、粤语、冀鲁官话、兰银官话、江淮官话</div>
+-
+-
+-
+-
+-**format ** `string` <span data-api-tag="require|7sHXWE">必选</span>
++> **说明**
++
++> 当 `language` 参数为空时，模型支持识别以下语种：中文、英文、上海话、闽南话、四川话、陕西话、粤语、冀鲁官话、兰银官话、江淮官话
++
++**format ** `string` 必选
+ 
+ 指定音频格式
+ 
+ 可选值： `wav` / `mp3` / `ogg` / `spx` / `amr` / `aac` / `m4a`
+ 
+-
+-
+ **codec** `string`
+ 
+ 指定音频编码格式，默认为raw（pcm）
+ 
+ 可选值：`raw` / `opus`
+ 
+-
+-
+ **rate** `int`
+ 
+ 指定音频采样率，默认值为 `16000`
+ 
+-
+-
+ **bits** `int`
+ 
+ 指定音频采样点位数，默认值为`16`
+ 
+-
+-
+ **channel** `int`
+ 
+ 指定音频声道数，默认值为 `1`
+@@ -177,42 +136,28 @@
+ 
+ `2`：stereo
+ 
+-
+-
+-
+ **request** `object`
+ 
+-
+-**model_name** `string` <span data-api-tag="require|tXLKeG">必选</span>
++**model_name** `string` 必选
+ 
+ 指定模型名称，目前仅支持 `bigmodel`
+ 
+-
+-
+ **enable_speaker_info** `bool`
+ 
+ 启用说话人分离参数，默认为`false`
+ 
+-<div data-tips="true" data-tips-type="default">说明</div>
+-
+-
+-
+-* <div data-tips="true" data-tips-type="default">开启后需启用<code>show_utterances</code>参数，才能获取到说话人分离结果</div>
+-
+-
+-* <div data-tips="true" data-tips-type="default">仅在 <code>language</code> 未指定，或指定为<code> zh-CN</code> 时生效</div>
+-
+-
+-* <div data-tips="true" data-tips-type="default">为获得最佳说话人分离效果，建议参考<a href="https://docs.volcengine.com/docs/DoubaoVoice/speaker-separation?lang=zh">大模型 ASR</a><a href="https://docs.volcengine.com/docs/DoubaoVoice/speaker-separation?lang=zh">\-</a><a href="https://docs.volcengine.com/docs/DoubaoVoice/speaker-separation?lang=zh">说话人分离最佳实践</a>配置相关参数</div>
+-
+-
+-
++> 说明
++
++* > 开启后需启用`show_utterances`参数，才能获取到说话人分离结果
++
++* > 仅在 `language` 未指定，或指定为`zh-CN` 时生效
++
++* > 为获得最佳说话人分离效果，建议参考[大模型 ASR](https://docs.volcengine.com/docs/doubao-voice/speaker-separation?lang=zh)[\-](https://docs.volcengine.com/docs/doubao-voice/speaker-separation?lang=zh)[说话人分离最佳实践](https://docs.volcengine.com/docs/doubao-voice/speaker-separation?lang=zh)配置相关参数
+ 
+ **ssd_version** `string`
+ 
+ 指定说话人分离场景对应的模型版本，可选值如下：
+ 
+-
+ * `200`：
+ 
+    * 说话人数量建议不超过5人
+@@ -229,19 +174,14 @@
+ 
+    * 需将`enable_speaker_info`和`show_utterances`设置为`true`
+ 
+-
+-
+ **ssd_mode** `int`
+ 
+ 指定说话人分离模式，仅`ssd_version：200`模型支持该参数。可选值如下：
+ 
+-
+ * `0`:普通模式（默认），适用于3分钟以内、说话人数小于5的短音频
+ 
+ * `1`:聚类模式，适用于3分钟以上的长音频，如售车、售房、一对多销售等非会议场景
+ 
+-
+-
+ **enable_itn** `bool`
+ 
+ 启用将语音识别结果转换为规范的书面格式，默认为`true`
+@@ -250,29 +190,22 @@
+ 
+ 效果示例:
+ 
+-
+ * "一九七零年" → "1970 年"
+ 
+ * "一百二十三美元" → "123 美元"
+ 
+-
+-
+ **enable_punc** `bool`
+ 
+ 启用标点，默认为`true`
+ 
+ 开启后，系统会在识别结果中添加逗号、句号、问号等标点符号，提升文本可读性
+ 
+-
+-
+ **enable_ddc** `bool`
+ 
+ 启用语义顺滑，默认为 `false`
+ 
+ 开启后，系统会删除或修正识别结果中的停顿词、语气词、语义重复词等不流畅内容，让文本更连贯、更易读
+ 
+-
+-
+ **enable_channel_split** `bool`
+ 
+ 启用双声道识别，默认为`false`
+@@ -283,37 +216,28 @@
+ 
+ `2` :右声道
+ 
+-
+-
+ **show_utterances** `bool`
+ 
+ 启用输出分句、分词、说话人及语音停顿信息，默认为`false`
+ 
+-
+-
+ **show_speech_rate** `bool`
+ 
+ 启用分句信息携带语速，默认为`false`
+ 
+ 开启后，系统将在分句 `additions` 中返回语速信息，单位为 token/s
+ 
+-
+-
+ **show_volume** `bool`
+ 
+ 启用分句信息携带音量，默认 `false`
+ 
+ 开启后，系统将在分句 `additions` 中返回音量信息，单位为dB
+ 
+-
+-
+ **enable_auto_lang** `bool`
+ 
+ 启用自动识别语种，默认 `false`
+ 
+ 开启后，系统会自动检测音频所属语种。支持自动识别以下语种：
+ 
+-
+ * 中文普通话 `zh-CN`
+ 
+ * 英语：`en-US`
+@@ -364,8 +288,6 @@
+ 
+ * 粤语 `yue-CN`
+ 
+-
+-
+ **enable_lid** `bool`
+ 
+ 启用中英文及方言识别，默认 `false`
+@@ -374,7 +296,6 @@
+ 
+ 开启后，系统将在 `additions` 中返回语种/场景标签，取值如下：
+ 
+-
+ * `singing_en`：英文唱歌
+ 
+ * `singing_mand`：普通话唱歌
+@@ -401,15 +322,12 @@
+ 
+ * 返回为空则代表无法判断（例如传入音频过短等）
+ 
+-
+-
+ **enable_emotion_detection** `bool`
+ 
+ 启用情绪检测，默认为 `False`
+ 
+ 开启后，系统将在分句`additions`中返回对应的情绪标签。支持的情绪标签如下：
+ 
+-
+ * `angry`：表示情绪为生气
+ 
+ * `happy`：表示情绪为开心
+@@ -420,48 +338,31 @@
+ 
+ * `surprise`：表示情绪为惊讶
+ 
+-
+-
+ **enable_gender_detection** `bool`
+ 
+ 启用性别检测，默认为 `False`
+ 
+ 开启后，系统将在分句`additions`中返回性别标签（male/female）
+ 
+-
+-
+ **enable_age_detection**`bool`
+ 
+ 启用年龄检测，默认为`False`
+ 
+ 开启后，系统将在分句`additions`中返回说话人的年龄（age），返回值为字符串类型的浮点数
+ 
+-<div data-tips="true" data-tips-type="default" data-tips-is-title="true">说明</div>
+-
+-
+-<div data-tips="true" data-tips-type="default">年龄检测是模型基于语音特征对说话人年龄做出的估算，结果仅供参考。实际准确率受录音质量、说话语速、及口音等多种因素影响。</div>
+-
+-
+-
++> **说明**
++
++> 年龄检测是模型基于语音特征对说话人年龄做出的估算，结果仅供参考。实际准确率受录音质量、说话语速、及口音等多种因素影响。
+ 
+ **vad_segment** `bool`
+ 
+ 语音活动检测 (VAD) 分句参数，默认为`false`。开启后系统将根据VAD规则进行分句，否则根据语义进行分句
+ 
+-<div data-tips="true" data-tips-type="default" data-tips-is-title="true">说明</div>
+-
+-
+-
+-* <div data-tips="true" data-tips-type="default">当<code>enable_channel_split</code>设置为<code>true</code>时，建议使用语义分句，即将<code>vad_segment</code>设置为<code>false</code></div>
+-
+-
+-* <div data-tips="true" data-tips-type="default">若同时配置了<code>end_window_size</code>，此参数不生效</div>
+-
+-
+-
+-
+-
+-
++> **说明**
++
++* > 当`enable_channel_split`设置为`true`时，建议使用语义分句，即将`vad_segment`设置为`false`
++
++* > 若同时配置了`end_window_size`，此参数不生效
+ 
+ **end_window_size** `int`
+ 
+@@ -470,8 +371,6 @@
+ 范围：`[300,5000] `
+ 
+ 推荐值：`[800,1000]`
+-
+-
+ 
+ **sensitive_words_filter** `string`
+ 
+@@ -483,26 +382,17 @@
+ "sensitive_words_filter":{\"system_reserved_filter\":true,\"filter_with_empty\":[\"敏感词\"],\"filter_with_signed\":[\"敏感词\"]}"
+ ```
+ 
+-
+-
+ **system_reserved_filter ** `bool`
+ 
+ 启用系统内置敏感词库，默认为`false`，启用后，命中的系统敏感词会被替换为 `*`
+ 
+-
+-
+ **filter_with_empty ** `string`
+ 
+ 设置需替换为空字符串的自定义敏感词列表
+ 
+-
+-
+ **filter_with_signed ** `string`
+ 
+ 设置需替换为 `*` 的自定义敏感词列表
+-
+-
+-
+ 
+ **enable_poi_fc** `bool`
+ 
+@@ -519,93 +409,61 @@
+ }
+ ```
+ 
+-
+-
+-
+ **enable_music_fc** `bool`
+ 
+ 启用 Music Function Call，默认为`false`，开启后，对于语音识别困难的词语，能调用专业的音乐领域推荐词服务辅助识别
+ 
+-
+-
+ **corpus** `object`
+ 
+ 配置语境词典，可自定义配置热词、替换词和上下文信息，配置后可提高特定语境下的词语识别准确率
+ 
+-<div data-tips="true" data-tips-type="default" data-tips-is-title="true">说明</div>
+-
+-
+-
+-* <div data-tips="true" data-tips-type="default">使用该能力时，不支持同时设置<code>enable_auto_lang</code>参数</div>
+-
+-
+-* <div data-tips="true" data-tips-type="default">热词总长度不得超过5000词（含<code>context</code>直传热词与热词表热词）。当热词总长度超过5000词时，系统按热词传入顺序从前向后截断，仅前5000热词生效</div>
+-
+-
+-* <div data-tips="true" data-tips-type="default">热词属于提示性参数，用于引导模型优先识别特定词汇，但并非强制约束。模型会在识别过程中优先考虑热词，但受语音清晰度、语境等多种因素影响，不保证所有热词都能 100% 正确转写</div>
+-
+-
+-* <div data-tips="true" data-tips-type="default">识别效果与热词的选词策略、上下文信息有关，为达到最佳效果建议根据<a href="https://docs.volcengine.com/docs/6561/2604976?lang=zh">热词与上下文最佳实践</a>配置热词和上下文</div>
+-
+-
+-
++> **说明**
++
++* > 使用该能力时，不支持同时设置`enable_auto_lang`参数
++
++* > 热词总长度不得超过5000词（含`context`直传热词与热词表热词）。当热词总长度超过5000词时，系统按热词传入顺序从前向后截断，仅前5000热词生效
++
++* > 热词属于提示性参数，用于引导模型优先识别特定词汇，但并非强制约束。模型会在识别过程中优先考虑热词，但受语音清晰度、语境等多种因素影响，不保证所有热词都能 100% 正确转写
++
++* > 识别效果与热词的选词策略、上下文信息有关，为达到最佳效果建议根据[热词与上下文最佳实践](https://docs.volcengine.com/docs/6561/2604976?lang=zh)配置热词和上下文
+ 
+ **boosting_table_name ** `string`
+ 
+ 热词词表名称，可在[控制台>自学习平台](https://console.volcengine.com/speech/new/hot-word?projectName=default)配置热词后获取
+ 
+-
+-
+ **boosting_table_id ** `string`
+ 
+ 热词词表id，可在[控制台>自学习平台](https://console.volcengine.com/speech/new/hot-word?projectName=default)配置热词后获取
+ 
+-<div data-tips="true" data-tips-type="default" data-tips-is-title="true">说明</div>
+-
+-
+-<div data-tips="true" data-tips-type="default">若传入的<code>boosting_table_name</code>和<code>boosting_table_id</code>对应的热词词表不一致，则以<code>boosting_table_id</code>为准</div>
+-
+-
+-
++> **说明**
++
++> 若传入的`boosting_table_name`和`boosting_table_id`对应的热词词表不一致，则以`boosting_table_id`为准
+ 
+ **correct_table_name ** `string`
+ 
+ 替换词词表名称，可在[控制台>自学习平台](https://console.volcengine.com/speech/new/correct-word?projectName=default)配置替换词后获取。配置后，可将模型识别出的特定词汇替换为目标词汇
+ 
+-
+-
+ **correct_table_id ** `string`
+ 
+ 替换词词表id，可在[控制台>自学习平台](https://console.volcengine.com/speech/new/correct-word?projectName=default)配置替换词后获取。配置后，可将模型识别出的特定词汇替换为目标词汇
+ 
+-<div data-tips="true" data-tips-type="default" data-tips-is-title="true">说明</div>
+-
+-
+-<div data-tips="true" data-tips-type="default">若传入的<code>correct_table_name</code>和<code>correct_table_id</code>对应的热词词表不一致，则以<code>correct_table_id</code>为准</div>
+-
+-
+-
++> **说明**
++
++> 若传入的`correct_table_name`和`correct_table_id`对应的热词词表不一致，则以`correct_table_id`为准
+ 
+ **context ** `string`
+ 
+ 上下文功能。在识别请求中传入辅助上下文信息，帮助模型结合语境提升识别准确率。支持传入热词、对话历史、场景描述等多种类型的上下文信息
+ 
+-<div data-tips="true" data-tips-type="default" data-tips-is-title="true">说明</div>
+-
+-
+-
+-* <div data-tips="true" data-tips-type="default">使用该能力时，不支持同时设置<code>enable_auto_lang</code>参数</div>
+-
+-
+-* <div data-tips="true" data-tips-type="default">实际传参时<strong> </strong><strong><code>context</code></strong><strong> 需序列化为 JSON 字符串传入</strong>，如：<code>"context": "{\"hotwords\":[{\"word\":\"自定义热词A\"},,\"context_type\":\"dialog_ctx\",\"context_data\":[{\"speaker\":\"bot\",\"text\":\"最近一轮助手的回答\"}"</code></div>
+-
+-
+-* <div data-tips="true" data-tips-type="default">上下文最大支持上传500 tokens；超出限制时，按时间顺序保留最新内容，截断最早的历史对话</div>
+-
+-
+-* <div data-tips="true" data-tips-type="default">识别效果与热词的选词策略、上下文信息有关，为达到最佳效果建议根据<a href="https://docs.volcengine.com/docs/6561/2604976?lang=zh">热词与上下文最佳实践</a>配置热词和上下文</div>
+-
+-
++> **说明**
++
++* > 使用该能力时，不支持同时设置`enable_auto_lang`参数
++
++* > 实际传参时**`context`****需序列化为 JSON 字符串传入**，如：`"context": "{\"hotwords\":[{\"word\":\"自定义热词A\"},,\"context_type\":\"dialog_ctx\",\"context_data\":[{\"speaker\":\"bot\",\"text\":\"最近一轮助手的回答\"}"`
++
++* > 上下文最大支持上传500 tokens；超出限制时，按时间顺序保留最新内容，截断最早的历史对话
++
++* > 识别效果与热词的选词策略、上下文信息有关，为达到最佳效果建议根据[热词与上下文最佳实践](https://docs.volcengine.com/docs/6561/2604976?lang=zh)配置热词和上下文
+ 
+ 示例：
+ 
+@@ -638,62 +496,39 @@
+ }
+ ```
+ 
+-
+-
+ **hotwords ** `string`
+ 
+ 热词列表直传，用于提升指定词汇的识别准确率
+ 
+-
+ **word** `string`
+ 
+ 热词内容
+ 
+-<div data-tips="true" data-tips-type="default" data-tips-is-title="true">说明</div>
+-
+-
+-
+-* <div data-tips="true" data-tips-type="default">热词属于提示性参数，用于引导模型优先识别特定词汇，但并非强制约束。模型会在识别过程中优先考虑热词，但受语音清晰度、语境等多种因素影响，不保证所有热词都能 100% 正确转写</div>
+-
+-
+-* <div data-tips="true" data-tips-type="default">识别效果与热词的选词策略、上下文信息有关，为达到最佳效果建议根据<a href="https://docs.volcengine.com/docs/6561/2604976?lang=zh">热词与上下文最佳实践</a>配置热词</div>
+-
+-
+-
+-
++> **说明**
++
++* > 热词属于提示性参数，用于引导模型优先识别特定词汇，但并非强制约束。模型会在识别过程中优先考虑热词，但受语音清晰度、语境等多种因素影响，不保证所有热词都能 100% 正确转写
++
++* > 识别效果与热词的选词策略、上下文信息有关，为达到最佳效果建议根据[热词与上下文最佳实践](https://docs.volcengine.com/docs/6561/2604976?lang=zh)配置热词
+ 
+ **context_type** `string`
+ 
+ 上下文类型，目前仅支持`dialog_ctx`
+ 
+-
+-
+ **context_data** `object`
+ 
+ 上下文数据列表，用于传入历史对话等语境信息，需同时配置`context_type`
+ 
+-
+ **text ** `string`
+ 
+ 历史对话文本，帮助模型理解语境，提升识别准确率
+ 
+-
+-
+ **image_url ** `string`
+ 
+ 图片 URL，用于提供视觉上下文，辅助理解语音内容
+ 
+-<div data-tips="true" data-tips-type="default" data-tips-is-title="true">说明</div>
+-
+-
+-<div data-tips="true" data-tips-type="default">仅豆包录音文件识别模型 2.0 支持图片输入。当前限制：最多传入 1 张图片，单张大小不超过 500 KB，支持格式为<code> jpeg </code>/<code>jpg</code>/<code>png</code></div>
+-
+-
+-
+-
+-
+-
+-
++> **说明**
++
++> 仅豆包录音文件识别模型 2.0 支持图片输入。当前限制：最多传入 1 张图片，单张大小不超过 500 KB，支持格式为`jpeg`/`jpg`/`png`
+ 
+ **callback  ** `string`
+ 
+@@ -705,9 +540,6 @@
+ "callback": "http://xxx"
+ ```
+ 
+-
+-
+-
+ **callback_data** `string`
+ 
+ 指定回调信息
+@@ -716,32 +548,24 @@
+ "callback_data":"$Request-Id"
+ ```
+ 
+-
+-
+-
+-
+-<span id="pF6mxalL"></span>
+ ### 响应
+ 
+-
+ **task_id ** `string`
+ 
+ 任务 ID，可通过该 ID 调用识别结果查询接口获取识别结果
+ 
+-
+-
+ **X\-Tt\-Logid ** `string`
+ 
+ 服务端返回的 logid，方便定位问题
+ 
+-
+-
+ **X\-Api\-Status\-Code ** `string`
+ 
+ 提交任务后服务端返回的状态码
+ 
+-
+-
+ **X\-Api\-Message ** `string`
+ 
+ 提交任务后服务端返回的信息，`OK` 表示成功，其他值表示失败
++
++```mixin-react
++return (<ApiSample data={"{\"type\":\"multiple\",\"config\":{\"inputName\":\"输入示例\",\"outputName\":\"输出示例\"},\"data\":[{\"title\":\"cURL\",\"key\":\"0\",\"inputCode\":\"curl --location --request POST 'https://openspeech.bytedance.com/api/v3/auc/bigmodel/submit' \\\\\\n--header 'Content-Type: application/json' \\\\\\n--header 'X-Api-Key: <your_api_key>' \\\\\\n--header 'X-Api-Resource-Id: volc.seedasr.auc' \\\\\\n--header 'X-Api-Request-Id: 550e8400-e29b-41d4-a716-446655440000' \\\\\\n--header 'X-Api-Sequence: -1' \\\\\\n--data-raw '{\\n  \\\"audio\\\": {\\n    \\\"url\\\": \\\"https://lf3-static.bytednsdoc.com/obj/eden-cn/lm_hz_ihsph/ljhwZthlaukjlkulzlp/console/bigtts/zh_female_cancan_mars_bigtts.mp3\\\",\\n    \\\"format\\\": \\\"mp3\\\",\\n    \\\"codec\\\": \\\"raw\\\",\\n    \\\"rate\\\": 16000,\\n    \\\"bits\\\": 16,\\n    \\\"channel\\\": 1\\n  },\\n  \\\"request\\\": {\\n    \\\"model_name\\\": \\\"bigmodel\\\",\\n    \\\"enable_itn\\\": true,\\n    \\\"enable_punc\\\": false,\\n    \\\"enable_ddc\\\": false,\\n    \\\"enable_speaker_info\\\": false,\\n    \\\"enable_channel_split\\\": false,\\n    \\\"show_utterances\\\": false,\\n    \\\"vad_segment\\\": false,\\n    \\\"sensitive_words_filter\\\": \\\"\\\"\\n  }\\n}'\",\"outputCode\":\"{\\n  \\\"task_id\\\": \\\"df05f566-48e4-42f8-b5fa-d5200ec9e2a4\\\",\\n  \\\"X-Api-Status-Code\\\": \\\"20000000\\\",\\n  \\\"X-Api-Message\\\": \\\"OK\\\",\\n  \\\"X-Tt-Logid\\\": \\\"20260723141803A4A502AB634D0113BC7D\\\"\\n}\",\"inputLanguage\":\"\",\"outputLanguage\":\"\"},{\"title\":\"Python\",\"key\":\"1\",\"inputCode\":\"import uuid\\nimport requests\\n\\nURL = \\\"https://openspeech.bytedance.com/api/v3/auc/bigmodel/submit\\\"\\n\\ndef build_headers(task_id, include_sequence=False):\\n    headers = {\\n        \\\"X-Api-Key\\\": \\\"<your_api_key>\\\",\\n        \\\"X-Api-Resource-Id\\\": \\\"volc.seedasr.auc\\\",\\n        \\\"X-Api-Request-Id\\\": task_id\\n    }\\n    if include_sequence:\\n        headers[\\\"X-Api-Sequence\\\"] = \\\"-1\\\"\\n    return headers\\n\\ndef build_submit_body():\\n    return {\\n        \\\"audio\\\": {\\n            \\\"url\\\": \\\"https://lf3-static.bytednsdoc.com/obj/eden-cn/lm_hz_ihsph/ljhwZthlaukjlkulzlp/console/bigtts/zh_female_cancan_mars_bigtts.mp3\\\",\\n            \\\"format\\\": \\\"mp3\\\"\\n        },\\n        \\\"request\\\": {\\n            \\\"enable_channel_split\\\": True,\\n            \\\"enable_ddc\\\": True,\\n            \\\"enable_speaker_info\\\": True,\\n            \\\"enable_punc\\\": True,\\n            \\\"enable_itn\\\": True,\\n        }\\n    }\\n\\ndef submit_task():\\n    task_id = str(uuid.uuid4())\\n    headers = build_headers(task_id, include_sequence=True)\\n    request = build_submit_body()\\n\\n    print(f'Submit task id: {task_id}')\\n    response = requests.post(URL, json=request, headers=headers)\\n    if 'X-Api-Status-Code' in response.headers and response.headers[\\\"X-Api-Status-Code\\\"] == \\\"20000000\\\":\\n        print(f'Submit task response header X-Api-Status-Code: {response.headers[\\\"X-Api-Status-Code\\\"]}')\\n        print(f'Submit task response header X-Api-Message: {response.headers[\\\"X-Api-Message\\\"]}')\\n        print(f'Submit task response header X-Tt-Logid: {response.headers.get(\\\"X-Tt-Logid\\\", \\\"\\\")}\\\\n')\\n        return task_id\\n    else:\\n        print(f'Submit task failed and the response headers are: {response.headers}')\\n        exit(1)\\n    return task_id\\n\\ndef main():\\n    submit_task()\\n\\nif __name__ == '__main__':\\n    main()\",\"outputCode\":\"{\\n  \\\"task_id\\\": \\\"df05f566-48e4-42f8-b5fa-d5200ec9e2a4\\\",\\n  \\\"X-Api-Status-Code\\\": \\\"20000000\\\",\\n  \\\"X-Api-Message\\\": \\\"OK\\\",\\n  \\\"X-Tt-Logid\\\": \\\"20260723141803A4A502AB634D0113BC7D\\\"\\n}\",\"inputLanguage\":\"\",\"outputLanguage\":\"\"},{\"title\":\"Go\",\"key\":\"S4prg182\",\"inputCode\":\"package main\\n\\nimport (\\n\\t\\\"bytes\\\"\\n\\t\\\"crypto/rand\\\"\\n\\t\\\"encoding/json\\\"\\n\\t\\\"fmt\\\"\\n\\t\\\"io\\\"\\n\\t\\\"net/http\\\"\\n\\t\\\"os\\\"\\n\\t\\\"time\\\"\\n)\\n\\nconst defaultSubmitURL = \\\"https://openspeech.bytedance.com/api/v3/auc/bigmodel/submit\\\"\\n\\ntype UserMeta struct {\\n\\tUID        string `json:\\\"uid,omitempty\\\"`\\n\\tDID        string `json:\\\"did,omitempty\\\"`\\n\\tPlatform   string `json:\\\"platform,omitempty\\\"`\\n\\tSDKVersion string `json:\\\"sdk_version,omitempty\\\"`\\n\\tAppVersion string `json:\\\"app_version,omitempty\\\"`\\n}\\n\\ntype AudioMeta struct {\\n\\tFormat  string `json:\\\"format,omitempty\\\"`\\n\\tCodec   string `json:\\\"codec,omitempty\\\"`\\n\\tRate    int    `json:\\\"rate,omitempty\\\"`\\n\\tBits    int    `json:\\\"bits,omitempty\\\"`\\n\\tChannel int    `json:\\\"channel,omitempty\\\"`\\n\\tURL     string `json:\\\"url,omitempty\\\"`\\n}\\n\\ntype CorpusMeta struct {\\n\\tBoostingTableName string `json:\\\"boosting_table_name,omitempty\\\"`\\n\\tCorrectTableName  string `json:\\\"correct_table_name,omitempty\\\"`\\n\\tContext           string `json:\\\"context,omitempty\\\"`\\n}\\n\\ntype RequestMeta struct {\\n\\tModelName      string     `json:\\\"model_name,omitempty\\\"`\\n\\tEnableITN      bool       `json:\\\"enable_itn,omitempty\\\"`\\n\\tEnablePUNC     bool       `json:\\\"enable_punc,omitempty\\\"`\\n\\tEnableDDC      bool       `json:\\\"enable_ddc,omitempty\\\"`\\n\\tShowUtterances bool       `json:\\\"show_utterances,omitempty\\\"`\\n\\tCorpus         CorpusMeta `json:\\\"corpus,omitempty\\\"`\\n}\\n\\ntype AsrRequestPayload struct {\\n\\tUser    UserMeta    `json:\\\"user\\\"`\\n\\tAudio   AudioMeta   `json:\\\"audio\\\"`\\n\\tRequest RequestMeta `json:\\\"request\\\"`\\n}\\n\\nfunc defaultPayload(fileURL string) AsrRequestPayload {\\n\\treturn AsrRequestPayload{\\n\\t\\tUser: UserMeta{UID: \\\"demo_uid\\\"},\\n\\t\\tAudio: AudioMeta{\\n\\t\\t\\tFormat:  \\\"wav\\\",\\n\\t\\t\\tCodec:   \\\"raw\\\",\\n\\t\\t\\tRate:    16000,\\n\\t\\t\\tBits:    16,\\n\\t\\t\\tChannel: 1,\\n\\t\\t\\tURL:     fileURL,\\n\\t\\t},\\n\\t\\tRequest: RequestMeta{\\n\\t\\t\\tModelName:  \\\"bigmodel\\\",\\n\\t\\t\\tEnableITN:  true,\\n\\t\\t\\tEnablePUNC: true,\\n\\t\\t\\tEnableDDC:  true,\\n\\t\\t},\\n\\t}\\n}\\n\\n// newAuthHeader 和请求 Body 一起用于构造完整的 HTTP 请求。\\nfunc newAuthHeader(requestID, apiKey string) http.Header {\\n\\theader := make(http.Header)\\n\\theader.Set(\\\"Content-Type\\\", \\\"application/json\\\")\\n\\theader.Set(\\\"X-Api-Resource-Id\\\", \\\"volc.seedasr.auc\\\")\\n\\theader.Set(\\\"X-Api-Request-Id\\\", requestID)\\n\\theader.Set(\\\"X-Api-Key\\\", apiKey)\\n\\treturn header\\n}\\n\\nfunc newRequestID() (string, error) {\\n\\tvar id [16]byte\\n\\tif _, err := rand.Read(id[:]); err != nil {\\n\\t\\treturn \\\"\\\", err\\n\\t}\\n\\tid[6] = (id[6] & 0x0f) | 0x40\\n\\tid[8] = (id[8] & 0x3f) | 0x80\\n\\treturn fmt.Sprintf(\\\"%08x-%04x-%04x-%04x-%012x\\\",\\n\\t\\tid[0:4], id[4:6], id[6:8], id[8:10], id[10:16]), nil\\n}\\n\\nfunc submit() error {\\n\\tapiKey := os.Getenv(\\\"X_API_KEY\\\")\\n\\tif apiKey == \\\"\\\" {\\n\\t\\treturn fmt.Errorf(\\\"请设置环境变量 X_API_KEY\\\")\\n\\t}\\n\\n\\tfileURL := os.Getenv(\\\"AUC_AUDIO_URL\\\")\\n\\tif fileURL == \\\"\\\" {\\n\\t\\treturn fmt.Errorf(\\\"请设置环境变量 AUC_AUDIO_URL\\\")\\n\\t}\\n\\n\\trequestID := os.Getenv(\\\"X_API_REQUEST_ID\\\")\\n\\tif requestID == \\\"\\\" {\\n\\t\\tgeneratedID, err := newRequestID()\\n\\t\\tif err != nil {\\n\\t\\t\\treturn fmt.Errorf(\\\"生成请求 ID 失败: %w\\\", err)\\n\\t\\t}\\n\\t\\trequestID = generatedID\\n\\t}\\n\\tbody, err := json.Marshal(defaultPayload(fileURL))\\n\\tif err != nil {\\n\\t\\treturn fmt.Errorf(\\\"序列化请求 Body 失败: %w\\\", err)\\n\\t}\\n\\n\\treq, err := http.NewRequest(http.MethodPost, defaultSubmitURL, bytes.NewReader(body))\\n\\tif err != nil {\\n\\t\\treturn fmt.Errorf(\\\"创建 HTTP 请求失败: %w\\\", err)\\n\\t}\\n\\tfor name, values := range newAuthHeader(requestID, apiKey) {\\n\\t\\tfor _, value := range values {\\n\\t\\t\\treq.Header.Add(name, value)\\n\\t\\t}\\n\\t}\\n\\n\\tclient := &http.Client{Timeout: 60 * time.Second}\\n\\tresp, err := client.Do(req)\\n\\tif err != nil {\\n\\t\\treturn fmt.Errorf(\\\"发送 HTTP 请求失败: %w\\\", err)\\n\\t}\\n\\tdefer resp.Body.Close()\\n\\n\\tresponseBody, err := io.ReadAll(resp.Body)\\n\\tif err != nil {\\n\\t\\treturn fmt.Errorf(\\\"读取响应 Body 失败: %w\\\", err)\\n\\t}\\n\\n\\tfmt.Println(\\\"Response headers:\\\")\\n\\tfmt.Printf(\\\"X-Api-Request-Id: %s\\\\n\\\", requestID)\\n\\tfmt.Printf(\\\"X-Api-Status-Code: %s\\\\n\\\", resp.Header.Get(\\\"X-Api-Status-Code\\\"))\\n\\tfmt.Printf(\\\"X-Api-Message: %s\\\\n\\\", resp.Header.Get(\\\"X-Api-Message\\\"))\\n\\tfmt.Printf(\\\"X-Tt-Logid: %s\\\\n\\\", resp.Header.Get(\\\"X-Tt-Logid\\\"))\\n\\tfmt.Printf(\\\"HTTP status: %s\\\\n\\\", resp.Status)\\n\\tfmt.Println(\\\"Response body:\\\")\\n\\tfmt.Println(string(responseBody))\\n\\treturn nil\\n}\\n\\nfunc main() {\\n\\tif err := submit(); err != nil {\\n\\t\\tfmt.Fprintln(os.Stderr, err)\\n\\t\\tos.Exit(1)\\n\\t}\\n}\",\"outputCode\":\"{\\n  \\\"task_id\\\": \\\"df05f566-48e4-42f8-b5fa-d5200ec9e2a4\\\",\\n  \\\"X-Api-Status-Code\\\": \\\"20000000\\\",\\n  \\\"X-Api-Message\\\": \\\"OK\\\",\\n  \\\"X-Tt-Logid\\\": \\\"20260723141803A4A502AB634D0113BC7D\\\"\\n}\",\"inputLanguage\":\"\",\"outputLanguage\":\"\"}]}"} />);
++```
