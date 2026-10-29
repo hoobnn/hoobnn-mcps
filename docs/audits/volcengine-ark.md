@@ -34,8 +34,8 @@
 | 视频 `seedance-2` | `doubao-seedance-2-0-260128` | [2.0系列教程](https://docs.volcengine.com/docs/ark/seedance-2-0?lang=zh)确认。 |
 | 视频 `seedance-fast` | `doubao-seedance-2-0-fast-260128` | 同上。 |
 | 视频 `seedance-mini` | `doubao-seedance-2-0-mini-260615` | 同上。 |
-| 对话 `pro`（保留默认） | `doubao-seed-2-1-pro-260628` | 仍列在推荐模型；当前目录另有260915版本，但未悄悄升级默认。 |
-| 对话完整 ID | 例如 `doubao-seed-2-1-pro-260915` | 公开目录确认1024k上下文；需调用者显式选择。 |
+| 对话 `pro`（0.6.4 起默认） | `doubao-seed-2-1-pro-260915` | 2026-10-29 经用户确认升级默认：官方 Chat/Responses/联网搜索示例均改用此版本，目录确认1024k上下文，能力项与260628一致。 |
+| 对话完整 ID | 例如 `doubao-seed-2-1-pro-260628` | 旧默认，目录仍列出且不在下线名单，需调用者显式选择。 |
 | 多模态向量完整 ID | `doubao-embedding-vision-251215` | 当前目录确认128k输入、2048维及1024降维。工具无隐式默认，显式指定。 |
 | 文本向量完整 ID | 例如 `doubao-embedding-text-240515` | 文本API仍有此示例，但当前推荐目录未列该旧ID；账号实际可用性无法确认，不增加默认别名。 |
 
