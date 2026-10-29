@@ -101,7 +101,7 @@ def generate_video(
     支持文生、首帧、首尾帧、多模态参考；2.5 可在 prompt 明确写视频编辑或延长意图，编辑须 duration=-1、ratio=adaptive。
     图片支持本地路径/URL，参考视频和音频须公网 URL 或 asset://ID；本工具不上传本地视频/音频。
     具体素材数量、时长、分辨率由模型校验。parameters 透传官方顶层选项，如 draft、return_last_frame、output_format、omni_reference_task_type。
-    draft=true 须用 480p，Draft ID 有效 7 天；本工具尚不支持 content.draft_task 转正式成片。
+    draft=true 须用 480p，Draft ID 自 created_at 起有效，2026-10-28 10:00(UTC+8)起创建的为 14 天、此前 7 天；本工具尚不支持 content.draft_task 转正式成片。
     2.5时长4–30秒，2.0系列4–15秒（均支持-1）；首尾帧与参考素材互斥。mini/fast最高720p，2.0支持4k。
     seed/frames仅支持1.0系列；2.5 edit任务可显式传omni_reference_task_type=edit以提前校验。
     wait=0 默认只提交，1–90 秒可轮询，返回 task_id/job_id；之后用 get_job 查进度并在完成时自动下载，下载失败用 recover_job 补。
