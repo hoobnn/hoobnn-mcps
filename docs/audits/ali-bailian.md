@@ -183,3 +183,13 @@ curl --fail --location https://help.aliyun.com/zh/model-studio/list-models.md
 - TTS 模型页重组地域、音色类型和语言列表；仍以具体 HTTP API 的地域/协议说明为准，保留现有模型与默认值。
 
 本次版本为文档和工具帮助补丁，不包含新模型协议实现或付费云端验收。本地验证：百炼 51、方舟 33、豆包语音 155、MiniMax 16、共享与文档链路 42 项，共 297 项测试通过，包含四个真实 stdio 入口；36 个百炼快照 SHA-256 与长度校验、全库 144 个来源覆盖、共享源码同步、actionlint、wheel/sdist 构建及 diff 检查通过。远端 CI 和发布回执见 PR #23 与对应 Actions。
+
+## 2026-10-29 文档复核与 0.7.2
+
+复核 PR #25 的 4 篇变化，原始报告与差异见 [本批次](../upstream/ali-bailian/review/e32af1ab1995452a02a335adf6aa5e9fc32e2497cda502afb0271084d8452b27/report.md)；重新抓取 36 个来源全部成功，相对 PR 捕获无新增差异。
+
+- 声音复刻：新加坡地域新增 `qwen-audio-3.1-tts-flash` 目标模型。`clone_voice` 白名单已含该模型且不按地域拦截，只更新工具帮助，发布 0.7.2。
+- ASR：`qwen-audio-3.0-asr-flash` 文件上限改为 2 GB。`speech_to_text` 仅放行 `qwen3-asr-flash`，其 10MB / 5 分钟限制未变。
+- 价格页 ASR 分组改名为 `Qwen-Audio-ASR*`，模型 ID 不变，3.0 系列免费额度取消；限流页部分 DeepSeek / GLM 模型改为动态限流。本 MCP 不硬编码价格和限额，只记录。
+
+本地验证：百炼 51 项、共享与文档链路 43 项测试通过；来源覆盖、共享同步、diff 检查及 wheel/sdist 构建通过。未执行付费云端请求。
