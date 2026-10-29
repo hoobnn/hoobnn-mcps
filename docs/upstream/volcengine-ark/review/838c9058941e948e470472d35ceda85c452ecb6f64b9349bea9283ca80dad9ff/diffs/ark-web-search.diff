@@ -1,0 +1,649 @@
+--- reviewed/volcengine-ark/ark-web-search
++++ current/volcengine-ark/ark-web-search
+@@ -1,77 +1,49 @@
+ 联网搜索工具可以为大模型获取实时的公开网络信息，适用于新闻、商品、天气、行业动态和事实核验等场景。您可以根据接口协议、搜索来源和搜索控制需求选择合适的工具。
+ 
+-
+ ---
+ 
+-
+-
+-<span id="supported-tools"></span>
+ ## 支持的工具
+ 
+ 联网搜索场景支持以下工具：
+ 
+-
+-<span aceTableMode="list" aceTableWidth="1,3,3"></span>
+ |对比项 |豆包搜索 Custom 版（推荐） |联网内容插件 |
+ |---|---|---|
+-|支持的 API |Responses API（兼容 OpenAI Responses 接口协议）、Messages API（兼容 Anthropic Messages 接口协议） |Responses API（兼容 OpenAI Responses 接口协议） |
+-|支持的模型 |参见[工具调用能力](https://ark.volcengine.com/region:cn-beijing/docs/ark/model-list#f44ceef7) |参见[工具调用能力](https://ark.volcengine.com/region:cn-beijing/docs/ark/model-list#f44ceef7) |
++|支持的 API |Responses API（兼容 OpenAI Responses 接口协议）、Chat API（兼容 OpenAI Chat Completions 接口协议）、Messages API（兼容 Anthropic Messages 接口协议） |Responses API（兼容 OpenAI Responses 接口协议） |
++|支持的模型 |参见[工具调用能力](https://ark.volcengine.com/region:cn-beijing/docs/model-list#f44ceef7) |参见[工具调用能力](https://ark.volcengine.com/region:cn-beijing/docs/model-list#f44ceef7) |
+ |核心功能 |支持多垂类、多信源的实时公开信息，搜索时延低、控制更灵活；支持与函数调用、MCP 等工具组合使用。 |支持多轮自动搜索、图文输入和多工具混合调用；支持同步和流式响应。 |
+-|计费说明 |* Agent Plan 场景：参见[套餐内 AFP 抵扣规则](https://ark.volcengine.com/region:cn-beijing/docs/ark/agent-plan-personal-afp-credits-billing-rules)、[超额后付费规则](https://ark.volcengine.com/region:cn-beijing/docs/ark/agent-plan-personal-over-quota-postpaid-rules)。<br><br>* Coding Plan 场景：参见[套餐概览](https://ark.volcengine.com/region:cn-beijing/docs/ark/coding-plan-personal-plan-overview)。<br><br>* 普通 API 调用场景：参见 [豆包搜索产品计费](https://docs.volcengine.com/docs/87772/2272951?lang=zh#yQ0Kqmsy)。 |按联网内容插件实际使用次数计费。具体收费标准详见[联网内容插件产品计费](https://ark.volcengine.com/region:cn-beijing/docs/ark/online-content-plugin-pricing)。 |
+-
+-
+-<span id="enable-component"></span>
+-## 开通组件
++|计费说明 |* Agent Plan 场景：参见[套餐内 AFP 抵扣规则](https://ark.volcengine.com/region:cn-beijing/docs/agent-plan-personal-afp-credits-billing-rules)、[超额后付费规则](https://ark.volcengine.com/region:cn-beijing/docs/agent-plan-personal-over-quota-postpaid-rules)。<br><br>* Coding Plan 场景：参见[套餐概览](https://ark.volcengine.com/region:cn-beijing/docs/coding-plan-personal-plan-overview)。<br><br>* 普通 API 调用场景：参见 [豆包搜索产品计费](https://docs.volcengine.com/docs/87772/2272951?lang=zh#yQ0Kqmsy)。 |按联网内容插件实际使用次数计费。具体收费标准详见[联网内容插件产品计费](https://ark.volcengine.com/region:cn-beijing/docs/online-content-plugin-pricing)。 |
++
++## 准备工作
+ 
+ 无论您选择使用哪一种联网搜索工具，都必须先开通相应的组件。
+ 
+-
+-<Tabs>
+-<Tab zoneid="c9yI8UjUnu" title="豆包搜索 Custom 版">
+-<TabTitle>豆包搜索 Custom 版</TabTitle>
++**豆包搜索 Custom 版**
+ 
+ 1. 登录方舟控制台，打开[应用组件库 > 豆包搜索](https://ark.volcengine.com/region:cn-beijing/openManagement?advancedActiveKey=component&tab=DoubaoSearch)标签页。
+ 
+ 2. 在**豆包搜索 Custom 版**的**操作**列中点击**开通服务**。
+ 
+-
+-</Tab>
+-<Tab zoneid="Y4A1LND4wF" title="联网内容插件">
+-<TabTitle>联网内容插件</TabTitle>
++**联网内容插件**
+ 
+ 1. 登录方舟控制台，打开[应用组件库 > 应用组件](https://ark.volcengine.com/region:cn-beijing/openManagement?advancedActiveKey=component&tab=DoubaoSearch)标签页。
+ 
+ 2. 在**联网内容插件**的**操作**列中点击**开通服务**。
+ 
+-
+-</Tab>
+-</Tabs>
+-
+-
+-<span id="examples"></span>
+ ## 示例代码
+ 
+-<div data-tips="true" data-tips-type="tip" data-tips-is-title="true">说明</div>
+-
+-
+-<div data-tips="true" data-tips-type="tip">方舟平台的新用户？获取 API Key 及 开通模型等准备工作，请参见 <a href="https://ark.volcengine.com/region:cn-beijing/docs/ark/quick-start">快速入门</a>。</div>
+-
+-
+-<div data-tips="true" data-tips-type="warning" data-tips-is-title="true">注意</div>
+-
+-
+-<div data-tips="true" data-tips-type="warning">调用工具之前，请确认您已经按照本文说明开通相应的组件，否则调用时将会产生错误。</div>
+-
+-
+-<span id=".6LGG5YyF5pCc57SiLWN1c3RvbS3niYg="></span>
++> **说明**
++
++> 方舟平台的新用户？获取 API Key 及 开通模型等准备工作，请参见 [快速入门](https://ark.volcengine.com/region:cn-beijing/docs/quick-start)。
++
++> **注意**
++
++> 调用工具之前，请确认您已经按照本文说明开通相应的组件，否则调用时将会产生错误。
++
+ ### 豆包搜索 Custom 版
+ 
+ 请求示例：
+ 
+-
+-<Tabs>
+-<Tab zoneid="hnHH6Y3If6" title="Responses API（OpenAI Responses 协议）">
+-<TabTitle>Responses API（OpenAI Responses 协议）</TabTitle>
++**Responses API（OpenAI Responses 协议）**
+ 
+ ```Bash
+ curl --location 'https://ark.cn-beijing.volces.com/api/v3/responses' \
+@@ -100,11 +72,29 @@
+ }'
+ ```
+ 
+-
+-
+-</Tab>
+-<Tab zoneid="hv3RzpJXIB" title="Messages API（Anthropic Messages 协议）">
+-<TabTitle>Messages API（Anthropic Messages 协议）</TabTitle>
++**Chat API（OpenAI Chat Completions 协议）**
++
++```Bash
++# web_search_options 传入空对象即可启用 Chat API 内置联网搜索，模型会按用户问题自行判断是否搜索。
++# search_context_size 和 user_location 当前不生效，传入的值会被忽略。
++curl https://ark.cn-beijing.volces.com/api/v3/chat/completions \
++  -H "Content-Type: application/json" \
++  -H "Authorization: Bearer $ARK_API_KEY" \
++  -d '{
++    "model": "doubao-seed-2-1-pro-260915",
++    "temperature": 0,
++    "max_completion_tokens": 320,
++    "messages": [
++      {
++        "role": "user",
++        "content": "请搜索今天 AI 领域的一条热点新闻。只返回一行：标题 | 来源 URL"
++      }
++    ],
++    "web_search_options": {}
++  }'
++```
++
++**Messages API（Anthropic Messages 协议）**
+ 
+ ```Bash
+ curl https://ark.cn-beijing.volces.com/api/compatible/v1/messages \
+@@ -129,18 +119,9 @@
+   }'
+ ```
+ 
+-
+-
+-</Tab>
+-</Tabs>
+-
+-
+ 返回示例：
+ 
+-
+-<Tabs>
+-<Tab zoneid="DDRqmts4WH" title="Responses API">
+-<TabTitle>Responses API</TabTitle>
++**Responses API**
+ 
+ ```Plain Text
+ {
+@@ -212,11 +193,45 @@
+ }
+ ```
+ 
+-
+-
+-</Tab>
+-<Tab zoneid="VxUGkglFgE" title="Messages API">
+-<TabTitle>Messages API</TabTitle>
++**Chat API**
++
++```JSON
++{
++  "id": "02178849100284412b7f0****",
++  "object": "chat.completion",
++  "created": 1788491002,
++  "model": "doubao-seed-2-1-pro-260915",
++  "choices": [
++    {
++      "index": 0,
++      "message": {
++        "role": "assistant",
++        "content": "2026年9月4日 AI 领域的核心热点是 OpenAI 正式发布新一代旗舰大模型 GPT-6 Astra。",
++        "annotations": [
++          {
++            "type": "url_citation",
++            "url_citation": {
++              "title": "OpenAI，发布“地球最强大模型”GPT-6：欢迎进入 AGI 时代！",
++              "url": "https://news.sina.cn/2026-09-04/detail-iniqrpra63****.d.html"
++            }
++          }
++        ]
++      },
++      "finish_reason": "stop"
++    }
++  ],
++  "usage": {
++    "prompt_tokens": 2710,
++    "completion_tokens": 528,
++    "total_tokens": 3238,
++    "tool_usage": {
++      "web_search": 1
++    }
++  }
++}
++```
++
++**Messages API**
+ 
+ ```JSON
+ {
+@@ -277,19 +292,9 @@
+ }
+ ```
+ 
+-
+-
+-</Tab>
+-</Tabs>
+-
+-
+-<span id=".6IGU572R5YaF5a655o-S5Lu2"></span>
+ ### 联网内容插件
+ 
+-
+-<Tabs>
+-<Tab zoneid="qltB3tOJIA" title="cURL">
+-<TabTitle>cURL</TabTitle>
++**cURL**
+ 
+ ```Bash
+ curl --location 'https://ark.cn-beijing.volces.com/api/v3/responses' \
+@@ -318,17 +323,13 @@
+ }'
+ ```
+ 
+-
+-
+-</Tab>
+-<Tab zoneid="uR4JhPcYIn" title="Python SDK">
+-<TabTitle>Python SDK</TabTitle>
++**Python SDK**
+ 
+ ```Python
+ import os
+ from arkruntime import Ark
+ 
+-# To obtain the api key from your environment variables, see: https://ark.volcengine.com/region:cn-beijing/docs/ark/environment-variable-configuration-guide
++# To obtain the api key from your environment variables, see: https://ark.volcengine.com/region:cn-beijing/docs/environment-variable-configuration-guide
+ api_key = os.getenv('ARK_API_KEY')
+ 
+ client = Ark(
+@@ -351,11 +352,7 @@
+ print(response)
+ ```
+ 
+-
+-
+-</Tab>
+-<Tab zoneid="fOf1VzfrY0" title="Java SDK">
+-<TabTitle>Java SDK</TabTitle>
++**Java SDK**
+ 
+ ```Java
+ package com.ark.example;
+@@ -404,11 +401,7 @@
+ }
+ ```
+ 
+-
+-
+-</Tab>
+-<Tab zoneid="OIu8PY49vo" title="Go SDK">
+-<TabTitle>Go SDK</TabTitle>
++**Go SDK**
+ 
+ ```Go
+ package main
+@@ -472,30 +465,16 @@
+ }
+ ```
+ 
+-
+-
+-</Tab>
+-</Tabs>
+-
+-
+-
+ ---
+ 
+-
+-
+-<span id="parameters"></span>
+ ## 参数说明
+ 
+-
+-<Tabs>
+-<Tab zoneid="NUnmZkVamZ" title="豆包搜索 Custom 版">
+-<TabTitle>豆包搜索 Custom 版</TabTitle>
++**豆包搜索 Custom 版**
+ 
+ **Responses API（兼容 OpenAI Responses 接口协议）**
+ 
+ 通过 Responses API 调用豆包搜索 Custom 版时，工具类型仍为 `web_search`，并需要将 `sources` 显式设置为 `["doubao"]`。`doubao` 不能与其他搜索来源同时配置。
+ 
+-
+ * `tools.type`：固定为 `web_search`。
+ 
+ * `tools.sources`：固定传入 `["doubao"]`。
+@@ -508,12 +487,22 @@
+ 
+ * `max_tool_calls`：限制一次模型响应中可执行工具调用的最大轮次。
+ 
++**Chat API（兼容 OpenAI Chat Completions 接口协议）**
++
++通过 Chat API 调用豆包搜索 Custom 版时，使用顶层字段 `web_search_options` 启用和配置联网搜索。
++
++* `web_search_options`：联网搜索开关。传入 `{}` 或包含任意子字段的 object 都会触发搜索准入判定。
++
++* `web_search_options.search_context_size`：参数不生效。
++
++* `web_search_options.user_location`：参数不生效，传入的值将被忽略。
++
++* `tools` 与 `web_search_options` 同时传入时，系统会优先保留自定义工具，联网搜索不会生效。
+ 
+ **Messages API（兼容 Anthropic Messages 接口协议）**
+ 
+ 通过 Messages API 调用豆包搜索 Custom 版时，使用兼容 Anthropic Messages 接口协议的服务端工具配置：
+ 
+-
+ * `tools.name`：工具名称。本文示例固定为 `web_search`。
+ 
+ * `tools.type`：工具类型或版本标识。本文示例使用 `web_search_20250305`。
+@@ -526,73 +515,78 @@
+ 
+ * `tools.blocked_domains`：限制搜索结果不包含禁止访问的域名列表。
+ 
+-
+-</Tab>
+-<Tab zoneid="CSNc23ixMj" title="联网内容插件">
+-<TabTitle>联网内容插件</TabTitle>
+-
+-详情请参见[创建 Responses 模型请求](https://ark.volcengine.com/region:cn-beijing/docs/ark/create-model-responses-api)。
+-
+-
+-</Tab>
+-</Tabs>
+-
+-
++**联网内容插件**
++
++详情请参见[创建 Responses 模型请求](https://ark.volcengine.com/region:cn-beijing/docs/create-model-responses-api)。
+ 
+ ---
+ 
+-
+-
+-<span id="usage-in-agents"></span>
+ ## Agent 场景下的用法
+ 
+ 您可以在 Claude Code 或 Codex 中调用豆包搜索 Custom 版工具，该工具兼容 Anthropic Messages 接口协议和 OpenAI Responses API 接口协议。
+ 
+-
+-<Tabs>
+-<Tab zoneid="HNt6rgbNHx" title="Claude Code">
+-<TabTitle>Claude Code</TabTitle>
+-
+-Claude Code 通过兼容 Anthropic Messages 接口协议的服务调用豆包搜索能力。完成接入配置后，在 Claude Code 中对话时，如果模型判断您的问题需要通过搜索功能才能回答，那么模型会调用 Web Search 工具进行搜索。完整的配置和使用方法参见[在 Claude Code 中使用 Web Search 工具](https://ark.volcengine.com/region:cn-beijing/docs/ark/integrate-third-party-tools#web-search-claude-code)。
+-
+-<div data-tips="true" data-tips-type="warning" data-tips-is-title="true">注意</div>
+-
+-
+-<div data-tips="true" data-tips-type="warning">调用 Web Search 工具时，大模型可能会发起额外的 API 请求来总结搜索结果，因此会消耗额外的 token。</div>
+-
+-
+-<span>![图片](https://arkdocs.tos-cn-beijing.volces.com/images/tool-calling/claude-code-web-search-example.png) </span>
+-
+-
+-</Tab>
+-<Tab zoneid="gyT7amKlWF" title="Codex">
+-<TabTitle>Codex</TabTitle>
+-
+-Codex 通过兼容 OpenAI Responses API 接口协议的服务调用豆包搜索能力。完成接入配置后，在 Codex 中对话时，如果模型判断您的问题需要通过搜索功能才能回答，那么模型会调用 Web Search 工具进行搜索。完整的配置和使用方法参见[在 Codex 中使用 Web Search 工具](https://ark.volcengine.com/region:cn-beijing/docs/ark/integrate-third-party-tools#web-search-codex)。
+-
+-<div data-tips="true" data-tips-type="warning" data-tips-is-title="true">注意</div>
+-
+-
+-<div data-tips="true" data-tips-type="warning">调用 Web Search 工具时，大模型可能会发起额外的 API 请求来总结搜索结果，因此会消耗额外的 token。</div>
+-
+-
+-
+-</Tab>
+-</Tabs>
+-
+-
+-<span id="usage-and-configurations-by-api"></span>
++**Claude Code**
++
++Claude Code 通过兼容 Anthropic Messages 接口协议的服务调用豆包搜索能力。完成接入配置后，在 Claude Code 中对话时，如果模型判断您的问题需要通过搜索功能才能回答，那么模型会调用 Web Search 工具进行搜索。完整的配置和使用方法参见[在 Claude Code 中使用 Web Search 工具](https://ark.volcengine.com/region:cn-beijing/docs/integrate-third-party-tools#web-search-claude-code)。
++
++> **注意**
++
++> 调用 Web Search 工具时，大模型可能会发起额外的 API 请求来总结搜索结果，因此会消耗额外的 token。
++
++![图片](https://arkdocs.tos-cn-beijing.volces.com/images/tool-calling/claude-code-web-search-example.png)
++
++**Codex**
++
++Codex 通过兼容 OpenAI Responses API 接口协议的服务调用豆包搜索能力。完成接入配置后，在 Codex 中对话时，如果模型判断您的问题需要通过搜索功能才能回答，那么模型会调用 Web Search 工具进行搜索。完整的配置和使用方法参见[在 Codex 中使用 Web Search 工具](https://ark.volcengine.com/region:cn-beijing/docs/integrate-third-party-tools#web-search-codex)。
++
++> **注意**
++
++> 调用 Web Search 工具时，大模型可能会发起额外的 API 请求来总结搜索结果，因此会消耗额外的 token。
++
+ ## API 调用场景下的用法与配置
+ 
+ 本节介绍联网搜索场景中的工具用法与常用配置。不同工具的差异以相关说明为准。
+ 
+-<div data-tips="true" data-tips-type="warning" data-tips-is-title="true">注意</div>
+-
+-
+-<div data-tips="true" data-tips-type="warning">本节内容仅适用于 Responses API，不适用于 Messages API。</div>
+-
+-
+-<span id="streaming-call"></span>
++> **注意**
++
++> 以下内容主要介绍 Responses API 与 Chat API 的常用配置。Messages API 的参数差异请以上文“参数说明”为准。
++
++### 使用 Chat API 触发联网搜索
++
++通过 Chat API 调用豆包搜索 Custom 版时，使用顶层字段 `web_search_options` 作为联网搜索开关。系统会在一次请求内由模型自行判断是否发起搜索，并在拿到搜索结果后继续生成最终回答。
++
++示例：
++
++```Bash
++# web_search_options 传入空对象即可启用 Chat API 内置联网搜索，模型会按用户问题自行判断是否搜索。
++# search_context_size 和 user_location 当前不生效，传入的值会被忽略。
++curl https://ark.cn-beijing.volces.com/api/v3/chat/completions \
++  -H "Content-Type: application/json" \
++  -H "Authorization: Bearer $ARK_API_KEY" \
++  -d '{
++    "model": "doubao-seed-2-1-pro-260915",
++    "temperature": 0,
++    "max_completion_tokens": 320,
++    "messages": [
++      {
++        "role": "user",
++        "content": "请搜索今天 AI 领域的一条热点新闻。只返回一行：标题 | 来源 URL"
++      }
++    ],
++    "web_search_options": {}
++  }'
++```
++
++补充说明：
++
++* `web_search_options` 缺省、传入 `null` 或传入非 object 时，系统会静默忽略该字段，不会新增报错。
++
++* `web_search_options.search_context_size` 参数不生效。
++
++* 响应中如引用了搜索结果，会在 `choices[].message.annotations` 中返回去重后的 `url_citation` 列表；`url_citation` 对象包含引用来源的 `title` 和 `url`。
++
++* `usage.tool_usage.web_search` 返回本次请求内实际执行的联网搜索次数。
++
+ ### 开启流式调用
+ 
+ 在 response 中设置 `stream=True`，即可开启流式调用，使响应以流式方式返回，从而更快地获取部分结果，同时可实时查看模型判断是否调用搜索的思考过程。
+@@ -612,13 +606,10 @@
+ )
+ ```
+ 
+-
+-<span id="search-sources"></span>
+ ### 设置搜索来源
+ 
+ 豆包搜索 Custom 版和联网内容插件的搜索来源配置方式不同：
+ 
+-
+ * 豆包搜索 Custom 版：
+ 
+    * 通过 Responses API 调用时，工具类型仍为 `web_search`，并需要将 `sources` 显式设置为 `["doubao"]`。`doubao` 不能与其他搜索来源同时配置。
+@@ -632,7 +623,6 @@
+    * `"moji"`：墨迹天气。
+ 
+    * `"toutiao"`：头条图文。
+-
+ 
+ 示例：
+ 
+@@ -645,8 +635,6 @@
+ ],
+ ```
+ 
+-
+-<span id="user-location"></span>
+ ### 指定用户地理位置
+ 
+ 您可以在 tools 中设置 `user_location` 字段，并提供用户的国家、地区和城市信息，以优化与地理位置相关的搜索结果。
+@@ -667,16 +655,11 @@
+ ],
+ ```
+ 
+-
+-<span id="search-limits"></span>
+ ### 设置搜索限制
+ 
+-<div data-tips="true" data-tips-type="tip" data-tips-is-title="true">说明</div>
+-
+-
+-<div data-tips="true" data-tips-type="tip">以下搜索限制参数仅联网内容插件支持，豆包搜索 Custom 版不支持。即当 <code>sources</code> 的值为 <code>["doubao"]</code> 时，<code>tools.limit</code>、<code>tools.max_keyword</code>、<code>tools.user_location</code> 均不生效，向它们传入的值将被忽略。</div>
+-
+-
++> **说明**
++
++> 以下搜索限制参数仅联网内容插件支持，豆包搜索 Custom 版不支持。即当 `sources` 的值为 `["doubao"]` 时，`tools.limit`、`tools.max_keyword`、`tools.user_location` 均不生效，向它们传入的值将被忽略。
+ 
+ * `tools.`**`max_keyword`**
+ 
+@@ -684,7 +667,7 @@
+ 
+    * 取值范围：`1`～`50`。
+ 
+-   * 示例：如果模型原本计划搜索三个关键词（例如“大模型最新进展”、“2025 年科技创新”），但将 `max_keyword` 设置为 `1`，模型将仅使用第一个关键词进行搜索。关于 `max_keyword` 参数的具体使用方法和示例，请参见 [创建模型响应](https://ark.volcengine.com/region:cn-beijing/docs/ark/create-model-responses-api)。
++   * 示例：如果模型原本计划搜索三个关键词（例如“大模型最新进展”、“2025 年科技创新”），但将 `max_keyword` 设置为 `1`，模型将仅使用第一个关键词进行搜索。关于 `max_keyword` 参数的具体使用方法和示例，请参见 [创建模型响应](https://ark.volcengine.com/region:cn-beijing/docs/create-model-responses-api)。
+ 
+ * `tools.`**`limit`**
+ 
+@@ -703,7 +686,6 @@
+    * 取值范围：`1`～`10`。
+ 
+    * 默认值：`3`。
+-
+ 
+ 示例：
+ 
+@@ -716,30 +698,27 @@
+ max_tool_calls = 3
+ ```
+ 
+-
+-<span id="search-usage"></span>
+ ### 查询搜索用量
+ 
+ 您可以在 API 返回的参数中查看工具使用情况：
+ 
+-
+-* `usage.tool_usage`：显示 Responses API 中工具的总调用次数。
++* `usage.tool_usage`：显示 Responses API 或 Chat API 中工具的总调用次数。
+ 
+ * `usage.tool_usage_details`：显示 Responses API 中每个搜索源的详细调用次数，例如 `search_engine`、`toutiao` 或 `doubao`。
+ 
++* Chat API：通过 `usage.tool_usage.web_search` 查看一次请求内实际执行的联网搜索次数；如回答引用了搜索结果，还会在 `choices[].message.annotations` 中返回引用链接。
++
+ * Messages API：通过 `usage.server_tool_use.web_search_requests` 查看服务端工具发起的联网搜索请求次数。
+ 
+-
+-关于 Responses API 用量参数的详细信息，请参见[创建 Response](https://ark.volcengine.com/region:cn-beijing/docs/ark/create-model-responses-api)。
+-
+-<span id="system-prompt"></span>
++关于 Responses API 用量参数的详细信息，请参见[创建 Response](https://ark.volcengine.com/region:cn-beijing/docs/create-model-responses-api)。
++
+ ### 设置系统提示词
+ 
+ 系统提示词的设置对搜索请求的影响较大，建议进行优化以提升搜索的准确性与效率。以下两种系统提示词模板供您参考。
+ 
+ 模板 1：
+ 
+-```Plaintext
++```Python
+ # 定义系统提示词
+ system_prompt = """
+ 你是AI个人助手，负责解答用户的各种问题。你的主要职责是：
+@@ -764,10 +743,9 @@
+ """
+ ```
+ 
+-
+ 模板 2：
+ 
+-```Plaintext
++```Python
+ # 定义系统提示词
+ system_prompt = """
+ # 角色
+@@ -793,53 +771,48 @@
+ """
+ ```
+ 
+-
+-
+ ---
+ 
+-
+-
+-<span id="notes"></span>
+ ## 注意事项
+ 
+-
+ * 自定义函数名称应避免使用 `web_search`，否则模型可能按内置工具优先级判断调用逻辑。
+ 
++* 使用 Chat API 时，如果同时传入自定义工具和 `web_search_options`，系统只会执行自定义工具，联网搜索不会生效。
++
+ * `doubao` 只能单独配置，不能与 `toutiao`、`douyin`、`moji` 或 `search_engine` 等其他搜索来源同时使用。
+ 
+-* 豆包搜索 Custom 版支持 Responses API 和 Messages API；联网内容插件仅支持 Responses API。
++* 豆包搜索 Custom 版支持 Responses API、Chat API 和 Messages API；联网内容插件仅支持 Responses API。
+ 
+ * 联网内容插件是否触发搜索由模型判断。一轮搜索可能发起多个关键词搜索，可以通过 `max_keyword` 参数限制一轮搜索的关键词数量，以控制调用频次和成本。
+ 
+ * 豆包搜索 Custom 版和联网内容插件均不支持 `caching` 参数，该参数不可与 `tools` 参数一起使用，否则会返回 `400` 错误。
+ 
+-
+-<span id=".55u45YWz5paH5qGj"></span>
++* Agent 场景下，如果您希望把联网搜索作为一个可复用能力模块，建议将其单独封装为 subagent，再由主 Agent 统一编排。
++
+ ## 相关文档
+ 
+-
+ * 计费
+ 
+    * 豆包搜索 Custom 版
+ 
+       * 普通 API 调用场景：[豆包搜索产品计费](https://docs.volcengine.com/docs/87772/2272951?lang=zh#yQ0Kqmsy)
+ 
+-      * Agent Plan 场景：[套餐内 AFP 抵扣规则](https://ark.volcengine.com/region:cn-beijing/docs/ark/agent-plan-personal-afp-credits-billing-rules)、[超额后付费规则](https://ark.volcengine.com/region:cn-beijing/docs/ark/agent-plan-personal-over-quota-postpaid-rules)
+-
+-      * Coding Plan 场景：[套餐概览](https://ark.volcengine.com/region:cn-beijing/docs/ark/coding-plan-personal-plan-overview)
+-
+-   * 联网内容插件：按联网内容插件实际使用次数计费。具体收费标准详见[联网内容插件产品计费](https://ark.volcengine.com/region:cn-beijing/docs/ark/online-content-plugin-pricing)。
++      * Agent Plan 场景：[套餐内 AFP 抵扣规则](https://ark.volcengine.com/region:cn-beijing/docs/agent-plan-personal-afp-credits-billing-rules)、[超额后付费规则](https://ark.volcengine.com/region:cn-beijing/docs/agent-plan-personal-over-quota-postpaid-rules)
++
++      * Coding Plan 场景：[套餐概览](https://ark.volcengine.com/region:cn-beijing/docs/coding-plan-personal-plan-overview)
++
++   * 联网内容插件：按联网内容插件实际使用次数计费。具体收费标准详见[联网内容插件产品计费](https://ark.volcengine.com/region:cn-beijing/docs/online-content-plugin-pricing)。
+ 
+ * Agent 场景使用方法
+ 
+-   * [在 Claude Code 中使用 Web Search 工具](https://ark.volcengine.com/region:cn-beijing/docs/ark/integrate-third-party-tools#web-search-claude-code)
+-
+-   * [在 Codex 中使用 Web Search 工具](https://ark.volcengine.com/region:cn-beijing/docs/ark/integrate-third-party-tools#web-search-codex)
++   * [在 Claude Code 中使用 Web Search 工具](https://ark.volcengine.com/region:cn-beijing/docs/integrate-third-party-tools#web-search-claude-code)
++
++   * [在 Codex 中使用 Web Search 工具](https://ark.volcengine.com/region:cn-beijing/docs/integrate-third-party-tools#web-search-codex)
+ 
+ * API 参考
+ 
+-   * [创建 Response](https://ark.volcengine.com/region:cn-beijing/docs/ark/create-model-responses-api)
+-
+-   * [创建 Message](https://ark.volcengine.com/region:cn-beijing/docs/ark/messages-api)
+-
+-* 错误码说明：[错误码](https://ark.volcengine.com/region:cn-beijing/docs/ark/error-codes)
++   * [创建 Response](https://ark.volcengine.com/region:cn-beijing/docs/create-model-responses-api)
++
++   * [创建 Message](https://ark.volcengine.com/region:cn-beijing/docs/messages-api)
++
++* 错误码说明：[错误码](https://ark.volcengine.com/region:cn-beijing/docs/error-codes)

@@ -1,0 +1,118 @@
+--- reviewed/volcengine-ark/ark-model-deprecation-notice
++++ current/volcengine-ark/ark-model-deprecation-notice
+@@ -1,10 +1,14 @@
+ 随着火山方舟平台模型的升级、发布，新版本模型在效果、推理时延等各方面将远超较旧版本的模型。因此，我们将逐步下线这些旧版本模型。当某个模型确定下线计划时，我们会通过短信、站内信等方式发布通知，请及时关注。
+ 
++> **说明**
++
++> 长期支持（Long\-Term Support，简称 LTS）模型提供至少 1 年的生命周期保障，对于需要长期稳定运行并减少版本迁移的业务，建议优先将 LTS 模型版本作为候选版本，并在接入前完成业务验证。关于 LTS 模型列表及支持机制，请参见 [LTS 机制说明](https://ark.volcengine.com/region:cn-beijing/docs/lts-mechanism)。
++
+ > 历史模型下线公告：
+ 
+-> * [模型下线公告 2025](https://ark.volcengine.com/region:cn-beijing/docs/ark/model-deprecation-announcement-2025)
+-
+-> * [模型下线公告 2024](https://ark.volcengine.com/region:cn-beijing/docs/ark/model-deprecation-announcement-2024)
++> * [模型下线公告 2025](https://ark.volcengine.com/region:cn-beijing/docs/model-deprecation-announcement-2025)
++
++> * [模型下线公告 2024](https://ark.volcengine.com/region:cn-beijing/docs/model-deprecation-announcement-2024)
+ 
+ # 第十批模型下线说明
+ 
+@@ -13,8 +17,8 @@
+ |节点 |时间 |动作&影响 |
+ |---|---|---|
+ |**启动&通知** |2026\-9\-22 10:00:00（UTC+8） |方舟逐步下调模型配额。 |
+-|**EOM**<br><br>模型停止新购 |2026\-9\-24 10:00:00（UTC+8） |用户无法新增接入点等，详细说明见[1.模型停止新购(EOM)](https://ark.volcengine.com/region:cn-beijing/docs/ark/model-deprecation-notice#9665a999)。<br><br>> 建议提前切换至对应的替换模型，并测试验证新模型对业务的影响。 |
+-|**EOS**<br><br>模型服务下线 |**2026\-11\-24 14:00**（UTC+8）<br><br>> **注意**<br><br><br>> **doubao\-seed\-2\-0\-lite\-260215 及 doubao\-seed\-2\-0\-mini\-260215** 模型的 EOS 时间：**2026\-10\-22 14:00**（UTC+8）。到期未迁移，系统会自动迁移到下方表格中给到的建议迁移模型或直接关停。建议提前测试验证新模型对业务的影响。<br> |模型正式下线，残留接入点将自动替换为新模型或直接关停（详见下方模型列表），详细说明[2.模型下线 (EOS)](https://ark.volcengine.com/region:cn-beijing/docs/ark/model-deprecation-notice#b933be49)。 |
++|**EOM**<br><br>模型停止新购 |2026\-9\-24 10:00:00（UTC+8） |用户无法新增接入点等，详细说明见[1.模型停止新购(EOM)](https://ark.volcengine.com/region:cn-beijing/docs/model-deprecation-notice#9665a999)。<br><br>> 建议提前切换至对应的替换模型，并测试验证新模型对业务的影响。 |
++|**EOS**<br><br>模型服务下线 |**2026\-11\-24 14:00**（UTC+8）<br><br>> **注意**<br><br><br>> **doubao\-seed\-2\-0\-lite\-260215 及 doubao\-seed\-2\-0\-mini\-260215** 模型的 EOS 时间：**2026\-10\-22 14:00**（UTC+8）。到期未迁移，系统会自动迁移到下方表格中给到的建议迁移模型或直接关停。建议提前测试验证新模型对业务的影响。<br> |模型正式下线，残留接入点将自动替换为新模型或直接关停（详见下方模型列表），详细说明[2.模型下线 (EOS)](https://ark.volcengine.com/region:cn-beijing/docs/model-deprecation-notice#b933be49)。 |
+ 
+ ## 下线模型
+ 
+@@ -28,8 +32,8 @@
+ 
+ |**模型 ID** |**建议迁移模型**<br><br>> 推荐迁移最新版本模型，下表随模型迭代动态更新 |**到期未迁移，系统替换模型** |
+ |---|---|---|
+-|doubao\-seed\-2\-0\-lite\-260215 |doubao\-seed\-2\-1\-lite\-260915 |doubao\-seed\-2\-0\-lite\-260428 |
+-|doubao\-seed\-2\-0\-mini\-260215 |doubao\-seed\-2\-0\-mini\-260428 |doubao\-seed\-2\-0\-mini\-260428 |
++|doubao\-seed\-2\-0\-lite\-260215 |doubao\-seed\-2\-1\-lite\-260915 |doubao\-seed\-2\-0\-lite\-260428 [LTS](https://ark.volcengine.com/region:cn-beijing/docs/lts-mechanism#lts-model-list) |
++|doubao\-seed\-2\-0\-mini\-260215 |doubao\-seed\-2\-0\-mini\-260428 [LTS](https://ark.volcengine.com/region:cn-beijing/docs/lts-mechanism#lts-model-list) |doubao\-seed\-2\-0\-mini\-260428 [LTS](https://ark.volcengine.com/region:cn-beijing/docs/lts-mechanism#lts-model-list) |
+ |doubao\-seed\-2\-0\-pro\-260215 |doubao\-seed\-2\-1\-lite\-260915 |具体替换模型在服务下线前确定并更新 |
+ |doubao\-embedding\-vision\-250615 |doubao\-embedding\-vision\-251215 |不强制切换 |
+ |doubao\-seedance\-1\-0\-pro\-250528 |doubao\-seedance\-2\-0\-mini\-260615 |关停<br><br>> **说明**<br><br><br>> 建议提前切换至对应的替换模型，并测试验证新模型对业务的影响。<br> |
+@@ -48,14 +52,14 @@
+ |节点 |时间 |动作&影响 |
+ |---|---|---|
+ |**启动&通知** |2026\-7\-3 10:00:00（UTC+8） |方舟逐步下调模型配额。 |
+-|**EOM**<br><br>模型停止新购 |2026\-7\-10 10:00:00（UTC+8） |用户无法新增接入点等，详细说明见[1.模型停止新购(EOM)](https://ark.volcengine.com/region:cn-beijing/docs/ark/model-deprecation-notice#9665a999)。<br><br>> 建议提前切换至对应的替换模型，并测试验证新模型对业务的影响。 |
+-|**EOS**<br><br>模型服务下线 |**2026\-09\-21 14:00**（UTC+8）<br><br>> **注意**<br><br><br>> **deepseek\-v3\-2\-251201** 模型的 EOS 时间：**2026\-07\-30 14:00**（UTC+8）。到期未迁移，系统会自动迁移到下方表格中给到的建议迁移模型或直接关停。建议提前测试验证新模型对业务的影响。<br> |模型正式下线，残留接入点将自动替换为新模型或直接关停（详见下方模型列表），详细说明[2.模型下线 (EOS)](https://ark.volcengine.com/region:cn-beijing/docs/ark/model-deprecation-notice#b933be49)。 |
+-
+-## 下线模型
+-
+-> **注意**
+-
+-* > 若业务使用了 **Bot API** 或 **Context API**，请先按文档进行改造迁移至 **Responses API**，否则模型下线后会出现调用报错。表格中已对支持 **Bot API**、**Context API** 的模型进行标注，迁移教程参见[迁移至 Responses API](https://ark.volcengine.com/region:cn-beijing/docs/ark/responses-api-migration)。
++|**EOM**<br><br>模型停止新购 |2026\-7\-10 10:00:00（UTC+8） |用户无法新增接入点等，详细说明见[1.模型停止新购(EOM)](https://ark.volcengine.com/region:cn-beijing/docs/model-deprecation-notice#9665a999)。<br><br>> 建议提前切换至对应的替换模型，并测试验证新模型对业务的影响。 |
++|**EOS**<br><br>模型服务下线 |**2026\-09\-21 14:00**（UTC+8）<br><br>> **注意**<br><br><br>> **deepseek\-v3\-2\-251201** 模型的 EOS 时间：**2026\-07\-30 14:00**（UTC+8）。到期未迁移，系统会自动迁移到下方表格中给到的建议迁移模型或直接关停。建议提前测试验证新模型对业务的影响。<br> |模型正式下线，残留接入点将自动替换为新模型或直接关停（详见下方模型列表），详细说明[2.模型下线 (EOS)](https://ark.volcengine.com/region:cn-beijing/docs/model-deprecation-notice#b933be49)。 |
++
++## 下线模型
++
++> **注意**
++
++* > 若业务使用了 **Bot API** 或 **Context API**，请先按文档进行改造迁移至 **Responses API**，否则模型下线后会出现调用报错。表格中已对支持 **Bot API**、**Context API** 的模型进行标注，迁移教程参见[迁移至 Responses API](https://ark.volcengine.com/region:cn-beijing/docs/responses-api-migration)。
+ 
+ * > 不同模型/版本支持的能力、API 参数、单价、任务中实际表现存在差异，迁移前请务必仔细阅读模型介绍，并进行必要评测，比较迁移前后模型的表现。
+ 
+@@ -66,15 +70,15 @@
+ |deepseek\-v4\-flash\-260425 |deepseek\-v4\-flash\-ga\-260731 |deepseek\-v4\-flash\-ga\-260731 |
+ |deepseek\-v3\-2\-251201 `支持 Bot API` |deepseek\-v4\-flash\-ga\-260731 |deepseek\-v4\-flash\-ga\-260731 |
+ |doubao\-seed\-code\-preview\-251028 |doubao\-seed\-evolving |doubao\-seed\-evolving |
+-|doubao\-seed\-1\-8\-251228 |doubao\-seed\-2\-0\-lite\-260428 |doubao\-seed\-2\-0\-lite\-260428 |
+-|doubao\-seed\-1\-6\-vision\-250815 |doubao\-seed\-2\-0\-lite\-260428 |doubao\-seed\-2\-0\-lite\-260428 |
+-|doubao\-seed\-1\-6\-250615 |doubao\-seed\-2\-0\-lite\-260428 |doubao\-seed\-2\-0\-lite\-260428 |
+-|doubao\-seed\-1\-6\-251015 |doubao\-seed\-2\-0\-lite\-260428 |doubao\-seed\-2\-0\-lite\-260428 |
+-|doubao\-seed\-1\-6\-flash\-250828 |doubao\-seed\-2\-0\-mini\-260428 |doubao\-seed\-2\-0\-mini\-260428 |
+-|doubao\-seed\-1\-6\-flash\-250615 |doubao\-seed\-2\-0\-mini\-260428 |doubao\-seed\-2\-0\-mini\-260428 |
+-|doubao\-1\-5\-lite\-32k\-250115 `支持 Bot API, Context API` |doubao\-seed\-2\-0\-mini\-260428 |doubao\-seed\-2\-0\-mini\-260428 |
+-|doubao\-1\-5\-vision\-pro\-32k\-250115 `支持 Bot API` |doubao\-seed\-2\-0\-lite\-260428 |doubao\-seed\-2\-0\-lite\-260428 |
+-|doubao\-1\-5\-pro\-32k\-250115 `支持 Bot API, Context API` |doubao\-seed\-2\-0\-lite\-260428 |doubao\-seed\-2\-0\-lite\-260428 |
++|doubao\-seed\-1\-8\-251228 |doubao\-seed\-2\-0\-lite\-260428 [LTS](https://ark.volcengine.com/region:cn-beijing/docs/lts-mechanism#lts-model-list) |doubao\-seed\-2\-0\-lite\-260428 [LTS](https://ark.volcengine.com/region:cn-beijing/docs/lts-mechanism#lts-model-list) |
++|doubao\-seed\-1\-6\-vision\-250815 |doubao\-seed\-2\-0\-lite\-260428 [LTS](https://ark.volcengine.com/region:cn-beijing/docs/lts-mechanism#lts-model-list) |doubao\-seed\-2\-0\-lite\-260428 [LTS](https://ark.volcengine.com/region:cn-beijing/docs/lts-mechanism#lts-model-list) |
++|doubao\-seed\-1\-6\-250615 |doubao\-seed\-2\-0\-lite\-260428 [LTS](https://ark.volcengine.com/region:cn-beijing/docs/lts-mechanism#lts-model-list) |doubao\-seed\-2\-0\-lite\-260428 [LTS](https://ark.volcengine.com/region:cn-beijing/docs/lts-mechanism#lts-model-list) |
++|doubao\-seed\-1\-6\-251015 |doubao\-seed\-2\-0\-lite\-260428 [LTS](https://ark.volcengine.com/region:cn-beijing/docs/lts-mechanism#lts-model-list) |doubao\-seed\-2\-0\-lite\-260428 [LTS](https://ark.volcengine.com/region:cn-beijing/docs/lts-mechanism#lts-model-list) |
++|doubao\-seed\-1\-6\-flash\-250828 |doubao\-seed\-2\-0\-mini\-260428 [LTS](https://ark.volcengine.com/region:cn-beijing/docs/lts-mechanism#lts-model-list) |doubao\-seed\-2\-0\-mini\-260428 [LTS](https://ark.volcengine.com/region:cn-beijing/docs/lts-mechanism#lts-model-list) |
++|doubao\-seed\-1\-6\-flash\-250615 |doubao\-seed\-2\-0\-mini\-260428 [LTS](https://ark.volcengine.com/region:cn-beijing/docs/lts-mechanism#lts-model-list) |doubao\-seed\-2\-0\-mini\-260428 [LTS](https://ark.volcengine.com/region:cn-beijing/docs/lts-mechanism#lts-model-list) |
++|doubao\-1\-5\-lite\-32k\-250115 `支持 Bot API, Context API` |doubao\-seed\-2\-0\-mini\-260428 [LTS](https://ark.volcengine.com/region:cn-beijing/docs/lts-mechanism#lts-model-list) |doubao\-seed\-2\-0\-mini\-260428 [LTS](https://ark.volcengine.com/region:cn-beijing/docs/lts-mechanism#lts-model-list) |
++|doubao\-1\-5\-vision\-pro\-32k\-250115 `支持 Bot API` |doubao\-seed\-2\-0\-lite\-260428 [LTS](https://ark.volcengine.com/region:cn-beijing/docs/lts-mechanism#lts-model-list) |doubao\-seed\-2\-0\-lite\-260428 [LTS](https://ark.volcengine.com/region:cn-beijing/docs/lts-mechanism#lts-model-list) |
++|doubao\-1\-5\-pro\-32k\-250115 `支持 Bot API, Context API` |doubao\-seed\-2\-0\-lite\-260428 [LTS](https://ark.volcengine.com/region:cn-beijing/docs/lts-mechanism#lts-model-list) |doubao\-seed\-2\-0\-lite\-260428 [LTS](https://ark.volcengine.com/region:cn-beijing/docs/lts-mechanism#lts-model-list) |
+ |doubao\-1\-5\-pro\-32k\-character\-250715 `支持 Bot API, Context API` |doubao\-seed\-character\-260628 |doubao\-seed\-character\-260628 |
+ |doubao\-seedance\-1\-5\-pro\-251215<br><br>> **注意**<br><br><br>> **doubao\-seedance\-1\-5\-pro\-251215** 模型到 2026\-09\-21 14:00（UTC+8）后**会直接关停**，不会自动迁移到新模型。请提前切换模型，避免影响业务。<br> |doubao\-seedance\-2\-0\-mini\-260615 |关停 |
+ 
+@@ -85,8 +89,8 @@
+ |节点 |时间 |动作&影响 |
+ |---|---|---|
+ |**启动&通知** |2026\-4\-3 10:00:00（UTC+8） |方舟逐步下调模型配额。 |
+-|**EOM**<br><br>模型停止新购 |2026\-4\-9 10:00:00（UTC+8） |用户无法新增接入点等，详细说明见[1.模型停止新购(EOM)](https://ark.volcengine.com/region:cn-beijing/docs/ark/model-deprecation-notice#9665a999)。<br><br>> 建议提前切换至对应的替换模型，并测试验证新模型对业务的影响。 |
+-|**EOS**<br><br>模型服务下线 |**2026\-05\-11 14:00**（UTC+8） |模型正式下线并残留接入点自动替换为新模型，详细说明[2.模型下线 (EOS)](https://ark.volcengine.com/region:cn-beijing/docs/ark/model-deprecation-notice#b933be49)。 |
++|**EOM**<br><br>模型停止新购 |2026\-4\-9 10:00:00（UTC+8） |用户无法新增接入点等，详细说明见[1.模型停止新购(EOM)](https://ark.volcengine.com/region:cn-beijing/docs/model-deprecation-notice#9665a999)。<br><br>> 建议提前切换至对应的替换模型，并测试验证新模型对业务的影响。 |
++|**EOS**<br><br>模型服务下线 |**2026\-05\-11 14:00**（UTC+8） |模型正式下线并残留接入点自动替换为新模型，详细说明[2.模型下线 (EOS)](https://ark.volcengine.com/region:cn-beijing/docs/model-deprecation-notice#b933be49)。 |
+ 
+ ## 下线模型
+ 
+@@ -196,7 +200,7 @@
+ 
+ * **批量推理**
+ 
+-   * 不可通过控制台发起批量推理任务，但在模型正式下线（EOS）前，支持通过 [Batch Job API](https://ark.volcengine.com/region:cn-beijing/docs/ark/batch-inference) 调用待下线模型。
++   * 不可通过控制台发起批量推理任务，但在模型正式下线（EOS）前，支持通过 [Batch Job API](https://ark.volcengine.com/region:cn-beijing/docs/batch-inference) 调用待下线模型。
+ 
+    * 不可新建待下线模型的批量推理接入点。
+ 
+@@ -249,6 +253,6 @@
+ 
+ ## 场景：精调模型切换
+ 
+-由于精调模型依赖基座模型，如果需要变更精调模型对应的基座模型，需要在新的模型版本上再次 [精调模型](https://ark.volcengine.com/region:cn-beijing/docs/ark/fine-tuning-overview)，并验证效果达到预期后，再创建新的推理接入点，完成相应的代码变更，实现迁移。
++由于精调模型依赖基座模型，如果需要变更精调模型对应的基座模型，需要在新的模型版本上再次 [精调模型](https://ark.volcengine.com/region:cn-beijing/docs/fine-tuning-overview)，并验证效果达到预期后，再创建新的推理接入点，完成相应的代码变更，实现迁移。
+ 
+ 如有其他迁移问题，可以通过提交 [工单](https://console.volcengine.com/workorder/create?step=2&SubProductID=P00001166) 的方式，进行咨询。
