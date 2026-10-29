@@ -96,7 +96,7 @@ def text_to_speech(
       男声 zh_male_m191（云舟，通用）、zh_male_taocheng（小天）、zh_male_liufei（刘飞）、zh_male_shaonianzixin
       （少年梓辛）、zh_male_ruyayichen（儒雅逸辰）、zh_male_jieshuoxiaoming（解说小明）、zh_male_dayi（大壹，视频配音）、
       zh_male_yizhipiannan（译制片男）、zh_male_aojiaobazong（傲娇霸总）；英文 en_male_tim、en_female_dacey、
-      en_female_stokie。完整列表：https://docs.volcengine.com/docs/6561/1257544
+      en_female_stokie。完整列表：https://docs.volcengine.com/docs/doubao-voice/tone-list-3
       声音复刻音色（S_ 开头）会自动改用 seed-icl-2.0，1.0 音色（_moon_bigtts / _mars_bigtts）自动用 seed-tts-1.0。
     - instructions：语音指令，用自然语言控制情绪、语气、语速，如「用特别痛心的语气说」「像深夜电台主持人一样低沉
       缓慢」。只有 2.0 音色支持，不计费。
@@ -611,14 +611,14 @@ async def open_realtime_session(session: dict, extension: dict | None = None, ou
     """打开持久实时会话。mode=legacy（默认）为Seeduplex 3.0 / model=1.2.6.1；mode=seed为Doubao-Seed-Realtime-1.0 / model=1.3.0.0，使用独立seedrealtime入口。
     最简session={audio:{output:{voice:'zh_female_vv_jupiter_bigtts'}}}，输入pcm16k/输出pcm_s16le24k；seed图像需加extension={video:{frame_format:'JPEG',frame_rate:'2'}}。
     可传instructions、tools（function定义）、audio配置；输入格式支持pcm/speech_opus（opus别名自动规范化），extension顶层支持asr/tts/dialog、热词、联网搜索、唱歌等。
-    seed不支持客户端response.cancel；播报状态由response.created/canceled/done驱动，ASR仅作转写。返回客户端session_id，后续send/receive/close；只在本MCP进程内有效，生成音频写本地文件。按实时服务计费。
+    两种模式均可客户端response.cancel打断；seed播报状态由response.created/canceled/done驱动，ASR仅作转写。返回客户端session_id，后续send/receive/close；只在本MCP进程内有效，生成音频写本地文件。按实时服务计费。
     """
     return await realtime.sessions.open(session, target_dir(out_dir), extension, timeout, mode)
 
 
 @mcp.tool()
 async def send_realtime_event(session_id: str, event: dict, audio_file: str | None = None, timeout: float = 30, image_file: str | None = None) -> dict:
-    """向持久实时会话发送官方JSON事件。event须有type：input_audio_buffer.append + audio(base64)，input_audio_buffer.commit强制判停；legacy可response.cancel打断，seed禁止；session.update更新配置。
+    """向持久实时会话发送官方JSON事件。event须有type：input_audio_buffer.append + audio(base64)，input_audio_buffer.commit强制判停；response.cancel打断进行中的回复（legacy与seed均可）；session.update更新配置。
     conversation.item.create/retrieve/delete管理上下文，role=tool+call_id回传Function Calling结果；input_audio_mute.commit/unmute.commit处理静音。
     audio_file可传16kHz/mono/int16裸.pcm，自动20ms分包，文件结束后再发送commit。seed的input_image_buffer.append可传image(base64)或image_file本地PNG/JPEG，须匹配extension.video.frame_format；本地发送间隔至少0.5秒（2FPS），JSON事件上限2MB。音视频独立节流。会话开闭用专用工具。
     """

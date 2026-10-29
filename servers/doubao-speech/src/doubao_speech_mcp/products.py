@@ -20,7 +20,7 @@ DOCS = {
     "voice_upgrade": "https://docs.volcengine.com/docs/doubao-voice/tone-upgrade-http?lang=zh",
     "voice_design": "https://docs.volcengine.com/docs/doubao-voice/sound-design-api?lang=zh",
     "asr_standard": "https://docs.volcengine.com/docs/doubao-voice/large-model-recording-file-recognition-standard-version-api?lang=zh",
-    "asr_idle": "https://www.volcengine.com/docs/6561/1840838?lang=zh",
+    "asr_idle": "https://docs.volcengine.com/docs/doubao-voice/large-model-recording-file-recognition-idle-version?lang=zh",
 }
 ASR_MODES = {
     "standard": ("/api/v3/auc/bigmodel", "volc.seedasr.auc"),

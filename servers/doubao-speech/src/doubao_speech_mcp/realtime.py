@@ -344,8 +344,6 @@ class RealtimeSessions:
                 raise InputError("event 须为包含 type 的对象")
             if event["type"] in ("session.create", "session.close"):
                 raise InputError("请使用 open / close 管理会话生命周期")
-            if state.mode == "seed" and event["type"] == "response.cancel":
-                raise InputError("Seed-Realtime 不支持 response.cancel；服务端通过 response.canceled 打断")
             if not 0 < timeout <= 120:
                 raise InputError("timeout 须在 0 到 120 秒之间")
             payload = copy.deepcopy(event)

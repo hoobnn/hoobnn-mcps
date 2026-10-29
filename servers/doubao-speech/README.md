@@ -14,6 +14,8 @@
 
 豆包语音云 API 的 stdio MCP server。接口依据[官方目录](https://docs.volcengine.com/docs/doubao-voice)于 2026-10-10 核对。
 
+`0.5.2` 对齐 2026-10-29 官方文档：Seed-Realtime 现文档化客户端 `response.cancel` 打断，放开此前的本地拦截；流式识别不再发送官方已移除说明的 `audio.codec`，并补齐剩余旧文档链接。
+
 `0.5.1` 更新火山文档迁移后的官方链接，工具帮助和使用示例同步使用当前文档库名与 slug；语音请求协议保持不变。
 
 `0.5.0` 将播客默认通道改为 HTTP SSE，持久保存真实会话 ID、完整轮次与续传回执；需要历史通道时显式传 `transport="websocket"`。实时会话新增 `mode="seed"` 的图像 / 视频帧输入及取消播放状态，原 `legacy` 模式仍为默认。
@@ -176,7 +178,7 @@ MCP 客户端本地启动命令可指定本项目 `.venv/bin/doubao-speech-mcp` 
 1. 使用返回的客户端 `session_id`，通过 `send_realtime_event` 发送 `input_audio_buffer.append` 与 `audio_file`（16kHz / mono / int16 裸 PCM），或事件里的 Base64 `audio`。
 2. 发送 `input_audio_buffer.commit` 强制判停，或由服务端判断停顿。
 3. `receive_realtime_events` 接收转写、回复、音频路径、工具调用和用量。音频 delta 自动落盘，附格式和采样率，不返回巨大 Base64。
-4. 调用者执行 Function Calling，再通过 `conversation.item.create` 回传 `role=tool` 和对应 `call_id`。`mode=legacy` 可发送 `response.cancel` 打断；上下文增删查和 `session.update` 两种模式均可用。
+4. 调用者执行 Function Calling，再通过 `conversation.item.create` 回传 `role=tool` 和对应 `call_id`。`response.cancel` 可主动打断进行中的回复（两种模式均可）；上下文增删查和 `session.update` 两种模式均可用。
 5. `close_realtime_session` 等待关闭确认并释放连接；MCP 退出也会清理全部会话。
 
 实时上传 20ms 一包。MCP 不直接采集麦克风、播放声音或驱动声卡，客户端负责设备输入输出。同传需 16kHz / mono / 16bit WAV 或 PCM；WAV 自动去容器。目标 PCM16k 保存有效 WAV，PCM24k 保留 float32 原始 PCM 并返回格式信息。
@@ -189,7 +191,7 @@ MCP 客户端本地启动命令可指定本项目 `.venv/bin/doubao-speech-mcp` 
 {"mode":"seed","session":{"audio":{"output":{"voice":"zh_female_vv_jupiter_bigtts"}}},"extension":{"video":{"frame_format":"JPEG","frame_rate":"2"}}}
 ```
 
-用 `send_realtime_event` 发送 `{"type":"input_image_buffer.append","frame_id":"frame_1"}`，并传 `image_file` 本地 PNG/JPEG，或在事件中传 Base64 `image`；编码必须匹配 `extension.video.frame_format`。图像至多 2 FPS，工具独立节流，不阻塞音频 20ms 节奏；单个 JSON 事件本地上限 2MB。Seed 模式禁止 `response.cancel`，由服务端 VAD 通过 `response.canceled` 打断。播放状态只看 `response.created/canceled/done`；ASR 事件只用于转写。`receive_realtime_events` 的 `clear_playback_buffer=true`（即使取消事件因队列拥塞被丢弃也会保留）要求客户端立即停播并清空已缓冲音频。
+用 `send_realtime_event` 发送 `{"type":"input_image_buffer.append","frame_id":"frame_1"}`，并传 `image_file` 本地 PNG/JPEG，或在事件中传 Base64 `image`；编码必须匹配 `extension.video.frame_format`。图像至多 2 FPS，工具独立节流，不阻塞音频 20ms 节奏；单个 JSON 事件本地上限 2MB。Seed 模式同样可发送 `response.cancel`，服务端也会经 VAD 通过 `response.canceled` 打断。播放状态只看 `response.created/canceled/done`；ASR 事件只用于转写。`receive_realtime_events` 的 `clear_playback_buffer=true`（即使取消事件因队列拥塞被丢弃也会保留）要求客户端立即停播并清空已缓冲音频。
 
 `generate_podcast` 默认 `transport="sse"`，向 `/api/v3/podcast/sse` 一次 POST；`transport="websocket"` 保留历史接口。SSE 只有收到 **152 且 `code=20000000`** 才成功，HTTP 200、363 和 usage 均不能提前结束。`task_id` 是首次 150 返回的真实 `session_id`；续传返回新的 `session_id`，`task_id` 始终保留首次值。
 

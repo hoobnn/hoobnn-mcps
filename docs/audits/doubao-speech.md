@@ -14,6 +14,14 @@
 
 新增回归测试覆盖上述官方契约，含独立手工编码 protobuf wire fixture。0.4.0 后豆包语音共 **132 项离线测试通过**。这证明本地实现与已取得文档/协议样本相符，不证明账号开通、生产可用、实际模型效果或每个音色授权。
 
+## 2026-10-29 上游文档复核（PR #27）
+
+重新抓取 **77/77** 个官方来源，0 失败，与 PR 待审基线无新增差异。77 个来源全部显示 changed，是因为 PR #24 迁移到 `docs/doubao-voice/*` slug 与数字 ID 后基线未更新，`url` / `fetch_url` 全部不同；其中 65 个正文 SHA-256 与主分支基线相同，12 个正文有变化，详见 [复核记录](../upstream/doubao-speech/review/aeb0269ad4454dc8955ac9cc4398bf131b1cfa821a9a94809b2d1c96f390ade2/review-notes.md) 与 [报告](../upstream/doubao-speech/review/aeb0269ad4454dc8955ac9cc4398bf131b1cfa821a9a94809b2d1c96f390ade2/report.md)。
+
+两处契约变化已适配（`0.5.2`）：[Seed-Realtime](https://docs.volcengine.com/docs/doubao-voice/seedrealtime?lang=zh) 删除“不再支持客户端打断”的说明，并新增上行事件 `response.cancel`（`response.canceled` 为确认），因此 `mode=seed` 不再本地拦截该事件；[双向](https://docs.volcengine.com/docs/doubao-voice/bidirectional-streaming-automatic-speech-recognition-websocket?lang=zh)与[单向](https://docs.volcengine.com/docs/doubao-voice/unidirectional-streaming-automatic-speech-recognition-websocket?lang=zh)流式 ASR 的音频参数表不再列 `audio.codec`，流式识别不再显式发送 `codec="raw"`（原默认即 raw）。其余为 HTML 转 Markdown、内链迁移、`ro-R0` 变 `ro-RO` 与 `SessioId` 变 `SessionId` 勘误，目录 `DocumentCode` 改为 kebab-case，均无请求构造影响。
+
+未连接真实语音服务，上述两处的线上行为未经账号验证。
+
 ## 2026-10-26 上游文档复核（PR #22）
 
 重新抓取 **77/77** 个官方来源，0 失败，与 PR 捕获基线无新增差异；全部 77 个 gzip 快照解压后 SHA-256 核验通过。主分支到 PR 仅 1 篇变化，见 [报告](../upstream/doubao-speech/review/9bccbdcdda03b22a55f83d7865722525597be1c4a19efdac44574562e64eba3a/report.md) 及同目录 `diffs/`。

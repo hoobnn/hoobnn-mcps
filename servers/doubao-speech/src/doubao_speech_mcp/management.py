@@ -1,8 +1,8 @@
 """Translation, Minutes, learning tables and signed speech console APIs.
 
-Contracts: DoubaoVoice/MachineTranslationLargeModel-APIAccessDocumentation,
-DoubaoVoice/DoubaoVoiceMinutes-APIAccessDocumentation,
-DoubaoVoice/HotWordManagementAPIv10, DoubaoVoice/ReplacementWordAPIv11.
+Contracts: doubao-voice/machine-translation-large-model-api-access-documentation,
+doubao-voice/doubao-voice-minutes-api-access-documentation,
+doubao-voice/hot-word-management-api-v10, doubao-voice/replacement-word-api-v11.
 Console: api.volcengine.com (speech_saas_prod). No third-party signing dependency.
 """
 
