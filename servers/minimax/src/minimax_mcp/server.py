@@ -50,7 +50,7 @@ def generate_video(prompt: str = "", model: str = "MiniMax-H3", content: list[di
                    ratio: str | None = None, wait: int = 0, output_directory: str | None = None,
                    parameters: dict | None = None) -> dict:
     """MiniMax H3 V2 音画视频生成，支持文生、首帧、尾帧、首尾帧和多模态参考。按量计费。
-    H3: 4–15整数秒，768P/2K（默认2K）；H3-Highspeed: 4–15秒，仅768P；H3-Lite: 4–15秒，480P/768P（默认768P），
+    H3: 4–15整数秒，768P/2K（默认2K）；H3-Highspeed: 4–15秒，480P/768P（本工具默认768P）；H3-Lite: 4–15秒，480P/768P（默认768P），
     多模态参考须显式给具体ratio；H3-Max: 5–15秒，480P/768P（默认768P）。后三者不支持2K。
     prompt 与快捷素材参数可组合；或单独传官方 content 数组，不能混用。所有模式需要1个非空text，最多7000字符。
     素材接受公网URL、mm_file://ID、data URI或本地绝对路径；本地文件自动上传，有效期7天。
