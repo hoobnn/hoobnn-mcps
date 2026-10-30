@@ -1,6 +1,6 @@
 {
   "format_version": 1,
-  "reviewed_at": "2026-10-29T08:41:07.168482+00:00",
+  "reviewed_at": "2026-10-30T08:46:52.533088+00:00",
   "sources": [
     {
       "key": "volcengine-ark/ark-base-url-and-authentication",
@@ -1213,8 +1213,8 @@
         "generate_video",
         "list_capabilities"
       ],
-      "sha256": "c758901a3a16767696b1761d2716a4853b2f4e19bdc6a36db7040818195db0ec",
-      "bytes": 66552,
+      "sha256": "c9342f08911675d47ee3b58ac8bf340bf7f4a508fb7459374d43b52be6da8d71",
+      "bytes": 67106,
       "models": [
         "Doubao",
         "Seedance",
@@ -1260,7 +1260,7 @@
       "endpoints": [],
       "doc_links": [],
       "title": "模型列表",
-      "updated_at": "2026-10-29T06:47:37Z",
+      "updated_at": "2026-10-30T08:45:36Z",
       "document_id": "1330310",
       "headers": {
         "ETag": null,
