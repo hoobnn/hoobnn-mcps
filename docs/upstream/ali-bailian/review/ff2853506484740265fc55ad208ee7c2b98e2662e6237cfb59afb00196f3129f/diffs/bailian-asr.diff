@@ -1,0 +1,389 @@
+--- reviewed/ali-bailian/bailian-asr
++++ current/ali-bailian/bailian-asr
+@@ -8,7 +8,7 @@
+ 
+ 不同[模型](/zh/model-studio/non-realtime-speech-recognition-user-guide)支持的接入方式不同，请根据下表选择正确的方式进行集成。
+ 
+-<table style={{ display: "table", tableLayout: "fixed", width: "100%" }}><colgroup><col style={{ width: "21.85%" }} /><col style={{ width: "78.15%" }} /></colgroup><thead><tr><th><p><strong>模型</strong></p></th><th><p><strong>接入方式</strong></p></th></tr></thead><tbody><tr><td><p>千问3-ASR-Flash-Filetrans</p></td><td><p>仅支持<a href="/zh/model-studio/qwen-asr-api-reference#9937e8884002q">DashScope异步调用</a>方式</p></td></tr><tr><td><p>千问3-ASR-Flash</p></td><td><p><a href="/zh/model-studio/qwen-asr-api-reference#d397bcc41eu3q">OpenAI 兼容</a>和<a href="/zh/model-studio/qwen-asr-api-reference#1afc6b20a29ie">DashScope同步调用</a>两种方式</p></td></tr></tbody></table>
++<table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}><colgroup><col style={{ width: "21.85%" }} /><col style={{ width: "78.15%" }} /></colgroup><thead><tr><th style={{ verticalAlign: "top" }}><p><strong>模型</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>接入方式</strong></p></th></tr></thead><tbody><tr><td style={{ verticalAlign: "top" }}><p>千问3-ASR-Flash-Filetrans</p></td><td style={{ verticalAlign: "top" }}><p>仅支持<Link href="/zh/model-studio/qwen-asr-api-reference#9937e8884002q">DashScope异步调用</Link>方式</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>千问3-ASR-Flash</p></td><td style={{ verticalAlign: "top" }}><p><Link href="/zh/model-studio/qwen-asr-api-reference#d397bcc41eu3q">OpenAI 兼容</Link>和<Link href="/zh/model-studio/qwen-asr-api-reference#1afc6b20a29ie">DashScope同步调用</Link>两种方式</p></td></tr></tbody></table>
+ 
+ ## OpenAI 兼容 <span id="d397bcc41eu3q" />
+ 
+@@ -41,11 +41,9 @@
+ 
+   - 华北2（北京）地域：从 `dashscope.aliyuncs.com` 迁移至 `{WorkspaceId}.cn-beijing.maas.aliyuncs.com`
+   - 新加坡地域：从 `dashscope-intl.aliyuncs.com` 迁移至 `{WorkspaceId}.ap-southeast-1.maas.aliyuncs.com`
+-
+-  `{WorkspaceId}`需要替换为真实的[Workspace ID](/zh/model-studio/regions#h2_migrate_domain)。现有域名仍可正常使用。
+ </Tip>
+ 
+-<table bordertype="no-border" style={{ display: "table", tableLayout: "fixed", width: "100%" }}>
++<table bordertype="no-border" style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
+   <colgroup>
+     <col style={{ width: "50%" }} />
+ 
+@@ -54,7 +52,7 @@
+ 
+   <tbody>
+     <tr>
+-      <td>
++      <td style={{ verticalAlign: "top" }}>
+         ### 请求参数 <span id="0eed3f701cd4j" />
+ 
+         <strong>model</strong>`string`<strong>（必选）</strong>
+@@ -90,11 +88,11 @@
+ 
+               固定为`input_audio`，代表输入的是音频。
+ 
+-              <strong>input\_audio</strong>`string`<strong>（必选）</strong>
++              <strong>input\_audio</strong>`object`<strong>（必选）</strong>
+ 
+               待识别音频。具体用法请参见[调用示例](/zh/model-studio/qwen-asr-api-reference#qwen-asr-openai-examples)。
+ 
+-              千问3-ASR-Flash模型在OpenAI兼容模式下支持两种输入形式：Base64编码的文件和公网可访问的待识别文件URL。
++              `input_audio.data` 支持公网可访问的音频文件 URL 和 Base64 Data URI，不支持直接传入本地文件绝对路径。本地音频文件需先读取并编码为 Data URI。
+ 
+               使用SDK时，若录音文件存储在[阿里云OSS](https://help.aliyun.com/zh/oss/user-guide/simple-upload#a632b50f190j8)，不支持使用以 `oss://`为前缀的临时 URL。
+ 
+@@ -117,7 +115,9 @@
+ 
+         用来指定某些功能是否启用。
+ 
+-        > `asr_options`非OpenAI标准参数，若使用OpenAI SDK，请通过`extra_body`传入。
++        <Note>
++          `asr_options` 非 OpenAI 标准参数。使用 OpenAI Python SDK 时，通过 `extra_body` 传入；使用 Node.js SDK 时，将 `asr_options` 作为请求体的顶层参数传入。
++        </Note>
+ 
+         <Accordion title="属性" defaultOpen>
+           <strong>language</strong> *string*（可选）无默认值
+@@ -195,12 +195,18 @@
+           - `true`：包含；
+           - `false`：不包含。
+ 
+-          > 流式输出时，Token 消耗信息仅可出现在响应的最后一个数据块。
++          <Note>
++            流式输出时，Token 消耗信息仅可出现在响应的最后一个数据块。
++          </Note>
+         </Accordion>
+       </td>
+ 
+-      <td>
++      <td style={{ verticalAlign: "top" }}>
+         ### 调用示例 <span id="qwen-asr-openai-examples" />
++
++        <Note>
++          OpenAI Python SDK 版本需不低于 `1.52.0`，Node.js SDK 版本需不低于 `4.68.0`。
++        </Note>
+ 
+         <Tabs>
+           <Tab title="输入内容：音频文件URL">
+@@ -383,7 +389,7 @@
+                   ```python
+                   import base64, pathlib
+ 
+-                  # input.mp3为用于声音复刻的本地音频文件，请替换为自己的音频文件路径，确保其符合音频要求
++                  # 将文件路径替换为待识别的本地音频文件路径，并确保文件符合音频要求。
+                   file_path = pathlib.Path("{YOUR_AUDIO_FILE}")
+                   base64_str = base64.b64encode(file_path.read_bytes()).decode()
+                   data_uri = f"data:audio/mpeg;base64,{base64_str}"
+@@ -395,7 +401,7 @@
+ 
+                   public class Main {
+                       /**
+-                       * filePath为用于声音复刻的本地音频文件，请替换为自己的音频文件路径，确保其符合音频要求
++                       * 将文件路径替换为待识别的本地音频文件路径，并确保文件符合音频要求。
+                        */
+                       public static String toDataUrl(String filePath) throws Exception {
+                           byte[] bytes = Files.readAllBytes(Paths.get(filePath));
+@@ -566,7 +572,7 @@
+   </tbody>
+ </table>
+ 
+-<table bordertype="no-border" style={{ display: "table", tableLayout: "fixed", width: "100%" }}>
++<table bordertype="no-border" style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
+   <colgroup>
+     <col style={{ width: "50%" }} />
+ 
+@@ -575,8 +581,14 @@
+ 
+   <tbody>
+     <tr>
+-      <td>
++      <td style={{ verticalAlign: "top" }}>
+         ### 响应参数 <span id="8c9faf146399l" />
++
++        <Note>
++          Qwen3-ASR-Flash 通过 OpenAI 兼容接口调用时不返回时间戳。如需时间戳，请使用 Qwen-Audio-ASR-Filetrans 系列模型，调用方式请参见 [HTTP API](/zh/model-studio/qwen-audio-asr-filetrans-http-api)。
++        </Note>
++
++        流式输出的情感标签位于 `choices[].delta.annotations[].emotion`，非流式输出位于 `choices[].message.annotations[].emotion`。
+ 
+         <strong>id</strong>`string`
+ 
+@@ -608,7 +620,7 @@
+ 
+             输出消息的角色，固定为assistant。
+ 
+-            <strong>content</strong>`array`
++            <strong>content</strong>`string`
+ 
+             语音识别结果。
+ 
+@@ -657,7 +669,7 @@
+ 
+               <strong>emotion</strong>`string`
+ 
+-              被识别音频的情感。支持的情感如下：
++              被识别音频的情感。情感识别固定开启，无需额外配置。支持的情感如下：
+ 
+               - `surprised`：惊讶
+               - `neutral`：平静
+@@ -729,7 +741,7 @@
+         </Accordion>
+       </td>
+ 
+-      <td>
++      <td style={{ verticalAlign: "top" }}>
+         <CodeGroup>
+           ```json 非流式输出 expandable
+           {
+@@ -826,11 +838,9 @@
+ 
+   - 华北2（北京）地域：从 `dashscope.aliyuncs.com` 迁移至 `{WorkspaceId}.cn-beijing.maas.aliyuncs.com`
+   - 新加坡地域：从 `dashscope-intl.aliyuncs.com` 迁移至 `{WorkspaceId}.ap-southeast-1.maas.aliyuncs.com`
+-
+-  `{WorkspaceId}`需要替换为真实的[Workspace ID](/zh/model-studio/regions#h2_migrate_domain)。现有域名仍可正常使用。
+ </Tip>
+ 
+-<table bordertype="no-border" style={{ display: "table", tableLayout: "fixed", width: "100%" }}>
++<table bordertype="no-border" style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
+   <colgroup>
+     <col style={{ width: "50%" }} />
+ 
+@@ -839,7 +849,7 @@
+ 
+   <tbody>
+     <tr>
+-      <td>
++      <td style={{ verticalAlign: "top" }}>
+         ### 请求参数 <span id="2a1c410015otp" />
+ 
+         <strong>model</strong>`string`<strong>（必选）</strong>
+@@ -850,7 +860,9 @@
+ 
+         消息列表。
+ 
+-        > 通过HTTP调用时，请将<strong>messages</strong>放入 <strong>input</strong> 对象中。
++        <Note>
++          通过HTTP调用时，请将`messages`放入 `input` 对象中。
++        </Note>
+ 
+         <Accordion title="消息类型" defaultOpen>
+           System Message`object`（可选）
+@@ -956,7 +968,7 @@
+         </Accordion>
+       </td>
+ 
+-      <td>
++      <td style={{ verticalAlign: "top" }}>
+         ### 调用示例 <span id="qwen-asr-sync-examples" />
+ 
+         Qwen3-ASR-Flash 支持最长 5 分钟录音，输入支持公网音频文件 URL 或本地文件上传，可流式返回识别结果。
+@@ -1489,7 +1501,7 @@
+   </tbody>
+ </table>
+ 
+-<table bordertype="no-border" style={{ display: "table", tableLayout: "fixed", width: "100%" }}>
++<table bordertype="no-border" style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
+   <colgroup>
+     <col style={{ width: "50%" }} />
+ 
+@@ -1498,14 +1510,16 @@
+ 
+   <tbody>
+     <tr>
+-      <td>
++      <td style={{ verticalAlign: "top" }}>
+         ### 响应参数 <span id="0e1c44902ea1e" />
+ 
+         <strong>request\_id</strong>`string`
+ 
+         本次调用的唯一标识符。
+ 
+-        > Java SDK返回参数为<strong>requestId。</strong>
++        <Note>
++          Java SDK返回参数为`requestId`。
++        </Note>
+ 
+         <strong>output</strong>`object`
+ 
+@@ -1589,7 +1603,7 @@
+ 
+                 <strong>emotion</strong>`string`
+ 
+-                被识别音频的情感。支持的情感如下：
++                被识别音频的情感。情感识别固定开启，无需额外配置。支持的情感如下：
+ 
+                 - `surprised`：惊讶
+                 - `neutral`：平静
+@@ -1634,7 +1648,7 @@
+         </Accordion>
+       </td>
+ 
+-      <td>
++      <td style={{ verticalAlign: "top" }}>
+         ```json expandable
+         {
+             "output": {
+@@ -2084,11 +2098,9 @@
+ 
+   - 华北2（北京）地域：从 `dashscope.aliyuncs.com` 迁移至 `{WorkspaceId}.cn-beijing.maas.aliyuncs.com`
+   - 新加坡地域：从 `dashscope-intl.aliyuncs.com` 迁移至 `{WorkspaceId}.ap-southeast-1.maas.aliyuncs.com`
+-
+-  `{WorkspaceId}`需要替换为真实的[Workspace ID](/zh/model-studio/regions#h2_migrate_domain)。现有域名仍可正常使用。
+ </Tip>
+ 
+-<table bordertype="no-border" style={{ display: "table", tableLayout: "fixed", width: "100%" }}>
++<table bordertype="no-border" style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
+   <colgroup>
+     <col style={{ width: "50%" }} />
+ 
+@@ -2097,7 +2109,7 @@
+ 
+   <tbody>
+     <tr>
+-      <td>
++      <td style={{ verticalAlign: "top" }}>
+         #### 请求参数 <span id="1a2369eebaueh" />
+ 
+         <strong>model</strong>`string`<strong>（必选）</strong>
+@@ -2198,7 +2210,7 @@
+         </Accordion>
+       </td>
+ 
+-      <td>
++      <td style={{ verticalAlign: "top" }}>
+         <Tabs>
+           <Tab title="cURL">
+             ```bash
+@@ -2375,7 +2387,7 @@
+   </tbody>
+ </table>
+ 
+-<table bordertype="no-border" style={{ display: "table", tableLayout: "fixed", width: "100%" }}>
++<table bordertype="no-border" style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
+   <colgroup>
+     <col style={{ width: "50%" }} />
+ 
+@@ -2384,7 +2396,7 @@
+ 
+   <tbody>
+     <tr>
+-      <td>
++      <td style={{ verticalAlign: "top" }}>
+         #### 响应参数 <span id="eca6c7d3f35hn" />
+ 
+         <strong>request\_id</strong>`string`
+@@ -2412,7 +2424,7 @@
+         </Accordion>
+       </td>
+ 
+-      <td>
++      <td style={{ verticalAlign: "top" }}>
+         ```json
+         {
+             "request_id": "92e3decd-0c69-47a8-************",
+@@ -2454,11 +2466,9 @@
+ 
+   - 华北2（北京）地域：从 `dashscope.aliyuncs.com` 迁移至 `{WorkspaceId}.cn-beijing.maas.aliyuncs.com`
+   - 新加坡地域：从 `dashscope-intl.aliyuncs.com` 迁移至 `{WorkspaceId}.ap-southeast-1.maas.aliyuncs.com`
+-
+-  `{WorkspaceId}`需要替换为真实的[Workspace ID](/zh/model-studio/regions#h2_migrate_domain)。现有域名仍可正常使用。
+ </Tip>
+ 
+-<table bordertype="no-border" style={{ display: "table", tableLayout: "fixed", width: "100%" }}>
++<table bordertype="no-border" style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
+   <colgroup>
+     <col style={{ width: "50%" }} />
+ 
+@@ -2467,7 +2477,7 @@
+ 
+   <tbody>
+     <tr>
+-      <td>
++      <td style={{ verticalAlign: "top" }}>
+         #### 请求参数 <span id="6cd669c353c2i" />
+ 
+         <strong>task\_id</strong>`string`<strong>（必选）</strong>
+@@ -2475,7 +2485,7 @@
+         任务ID。将[提交任务](/zh/model-studio/qwen-asr-api-reference#88657039c4x0g)返回结果中的task\_id作为参数传入，查询语音识别结果。
+       </td>
+ 
+-      <td>
++      <td style={{ verticalAlign: "top" }}>
+         <Tabs>
+           <Tab title="cURL">
+             ```bash
+@@ -2561,7 +2571,7 @@
+   </tbody>
+ </table>
+ 
+-<table bordertype="no-border" style={{ display: "table", tableLayout: "fixed", width: "100%" }}>
++<table bordertype="no-border" style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
+   <colgroup>
+     <col style={{ width: "50%" }} />
+ 
+@@ -2570,7 +2580,7 @@
+ 
+   <tbody>
+     <tr>
+-      <td>
++      <td style={{ verticalAlign: "top" }}>
+         #### 响应参数 <span id="b207932046i9z" />
+ 
+         <strong>request\_id</strong>`string`
+@@ -2658,7 +2668,7 @@
+         </Accordion>
+       </td>
+ 
+-      <td>
++      <td style={{ verticalAlign: "top" }}>
+         <CodeGroup>
+           ```json RUNNING
+           {
+@@ -2716,7 +2726,7 @@
+   </tbody>
+ </table>
+ 
+-<table bordertype="no-border" style={{ display: "table", tableLayout: "fixed", width: "100%" }}>
++<table bordertype="no-border" style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
+   <colgroup>
+     <col style={{ width: "50%" }} />
+ 
+@@ -2725,7 +2735,7 @@
+ 
+   <tbody>
+     <tr>
+-      <td>
++      <td style={{ verticalAlign: "top" }}>
+         ### 异步调用识别结果说明 <span id="2c27ad3e80p4y" />
+ 
+         <strong>file\_url</strong> `string`
+@@ -2816,7 +2826,7 @@
+ 
+             <strong>emotion</strong>`string`
+ 
+-            被识别音频的情感。支持的情感如下：
++            被识别音频的情感。情感识别固定开启，无需额外配置。支持的情感如下：
+ 
+             - `surprised`：惊讶
+             - `neutral`：平静
+@@ -2851,7 +2861,7 @@
+         </Accordion>
+       </td>
+ 
+-      <td>
++      <td style={{ verticalAlign: "top" }}>
+         ```json expandable
+         {
+             "file_url": "https://***.mp3",

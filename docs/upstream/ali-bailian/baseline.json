@@ -1,6 +1,6 @@
 {
   "format_version": 1,
-  "reviewed_at": "2026-10-29T08:41:07.593643+00:00",
+  "reviewed_at": "2026-10-30T08:46:55.903634+00:00",
   "sources": [
     {
       "key": "ali-bailian/bailian-asr",
@@ -12,10 +12,11 @@
       "tools": [
         "speech_to_text"
       ],
-      "sha256": "913fc27e498a8294fa83962a58afe0ace1bcd975a8b2ae9f1f57be7018e7c960",
-      "bytes": 124904,
+      "sha256": "d977bdafe502c6040cdce9a403d813843c6d6252a4b29703d7d2f4dded95f905",
+      "bytes": 126302,
       "models": [
         "Qwen-ASR",
+        "Qwen-Audio-ASR-Filetrans",
         "Qwen3-ASR-Flash",
         "QwenTranscription",
         "QwenTranscriptionParam",
@@ -28,6 +29,7 @@
         "qwen-asr-openai-examples",
         "qwen-asr-streaming-examples",
         "qwen-asr-sync-examples",
+        "qwen-audio-asr-filetrans-http-api",
         "qwen3-asr-flash",
         "qwen3-asr-flash-filetrans",
         "qwen_asr."
@@ -578,8 +580,8 @@
       "fetch_url": "https://help.aliyun.com/zh/model-studio/newly-released-models.md",
       "kind": "models",
       "tools": [],
-      "sha256": "2d79ec42f1bb8f37b0bde8bb4da0030cf4b354757dffeb99494df83d1a2f780b",
-      "bytes": 555824,
+      "sha256": "0d8dd920d763da361c91b18ba77b64cd5345a422e27f2931bc1247c20ddc743d",
+      "bytes": 568744,
       "models": [
         "CosyVoice",
         "CosyVoice-v3-Flash",
@@ -623,6 +625,12 @@
         "Qwen-Audio-3.0-ASR-Flash-Filetrans",
         "Qwen-Audio-3.0-TTS-Flash",
         "Qwen-Audio-3.0-TTS-Plus",
+        "Qwen-Audio-3.1-ASR-Flash",
+        "Qwen-Audio-3.1-ASR-Flash-Filetrans",
+        "Qwen-Audio-3.1-ASR-Flash-Message",
+        "Qwen-Audio-3.1-ASR-Flash-Streaming",
+        "Qwen-Audio-3.1-TTS-Flash",
+        "Qwen-Audio-3.1-TTS-Plus",
         "Qwen-Image",
         "Qwen-Image-2.0",
         "Qwen-Image-2.1-Pro",
@@ -715,8 +723,15 @@
         "qwen-audio-3.0-realtime-plus",
         "qwen-audio-3.0-tts-flash",
         "qwen-audio-3.0-tts-plus",
+        "qwen-audio-3.1-asr-flash",
+        "qwen-audio-3.1-asr-flash-filetrans",
+        "qwen-audio-3.1-asr-flash-message",
+        "qwen-audio-3.1-asr-flash-streaming",
         "qwen-audio-3.1-realtime-flash",
         "qwen-audio-3.1-realtime-plus",
+        "qwen-audio-3.1-tts-flash",
+        "qwen-audio-3.1-tts-next",
+        "qwen-audio-3.1-tts-plus",
         "qwen-coder-plus",
         "qwen-coder-turbo",
         "qwen-deep-research",
@@ -1007,8 +1022,8 @@
       "fetch_url": "https://help.aliyun.com/zh/model-studio/model-pricing.md",
       "kind": "models",
       "tools": [],
-      "sha256": "a445ff242df82b36b875639e49b921dedf19187c5579703097184ee522d0ef8f",
-      "bytes": 693850,
+      "sha256": "d689703284aeae247c2ce50bcad8f62a26d448e74bc610d6b9e9010ea26f5632",
+      "bytes": 695313,
       "models": [
         "CosyVoice",
         "DeepSeek-",
@@ -1475,8 +1490,8 @@
       "fetch_url": "https://help.aliyun.com/zh/model-studio/rate-limit.md",
       "kind": "guide",
       "tools": [],
-      "sha256": "d952996e6d3de051d34d3662e1a00ae0867740631077544647999f56d517fd67",
-      "bytes": 384315,
+      "sha256": "7abd19fa51144d630b0f3db0720fef9cc62abd0a4635a2a47ffa0219793b052a",
+      "bytes": 385821,
       "models": [
         "CosyVoice",
         "DeepSeek-",
@@ -1864,8 +1879,8 @@
       "tools": [
         "text_to_speech"
       ],
-      "sha256": "1aef022fb725113fb96908e09dc64b1b97d1dda41b9bb182e5e7434031725468",
-      "bytes": 25182,
+      "sha256": "f7c1acae4865f7145937274cfe5d8f3ca1fb99c01e65728ff9c5d72a33128660",
+      "bytes": 25292,
       "models": [
         "CosyVoice",
         "Qwen-Audio-TTS",
@@ -1914,8 +1929,8 @@
         "design_voice",
         "text_to_speech"
       ],
-      "sha256": "36125220b091a5cee5641df8a9407701348472c6ff9c44a1309a846fd9fa1b65",
-      "bytes": 17852,
+      "sha256": "dc19f65facf4cbc4f150b12ca0efd51f3f9c667d164cb1bc76752368c5f116d2",
+      "bytes": 18730,
       "models": [
         "CosyVoice",
         "Qwen-Audio-TTS",
@@ -1959,8 +1974,8 @@
       "tools": [
         "text_to_speech"
       ],
-      "sha256": "442d4804231a7a825aff764a785d04be4856644b4b705f4031ff87f4de6c90ed",
-      "bytes": 18381,
+      "sha256": "65965e0f7fd2ad89c223f9456a77735464b55523c0aedcbc2944d30d02a21a7b",
+      "bytes": 19281,
       "models": [
         "Qwen-Audio-TTS",
         "qwen-audio-3.0-tts-flash",
@@ -2094,8 +2109,8 @@
       "tools": [
         "chat"
       ],
-      "sha256": "8211e3b6ec16bec665cab93960b99931f652c7826589dcbbfd697b79614f0e83",
-      "bytes": 24969,
+      "sha256": "0193529b7dfe3d76d815d13720503875685dcc01ff6bfa6e6334d957a0c99241",
+      "bytes": 24948,
       "models": [
         "Qwen-OCR",
         "Qwen-Omni",

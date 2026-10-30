@@ -12,6 +12,8 @@
 
 </div>
 
+`0.7.3` 支持 `qwen-audio-3.1-tts-flash` 的 `language="other"`；建议通过 `instructions` 明确语种并与待合成文本一致。其他 TTS 模型不接受 `other`。
+
 `0.7.2` 同步声音复刻地域范围：新加坡新增 `qwen-audio-3.1-tts-flash` 复刻目标模型；复核至 2026-10-29 的官方文档。
 
 `0.7.1` 补充 Qwen-Audio-TTS 方言用法：支持方言指令的系统音色及复刻音色使用 `instructions="请讲上海话。"`（映射到官方 `input.instruction`）；设计音色暂不支持方言。复核至 2026-10-28 的官方文档；SDK 2.0 示例迁移不影响本 MCP 的 HTTP 请求。

@@ -1,0 +1,67 @@
+--- reviewed/ali-bailian/bailian-rate-limit
++++ current/ali-bailian/bailian-rate-limit
+@@ -8871,6 +8871,64 @@
+   </Tab>
+ </Tabs>
+ 
++### Ling-蚂蚁数科直供
++
++<Tabs>
++  <Tab title="华北2（北京）">
++    <table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
++      <colgroup>
++        <col style={{ width: "41.176471%" }} />
++
++        <col style={{ width: "29.411765%" }} />
++
++        <col style={{ width: "29.411765%" }} />
++      </colgroup>
++
++      <thead>
++        <tr>
++          <th rowSpan={2} style={{ verticalAlign: "top" }}>
++            <strong>模型名称</strong>
++          </th>
++
++          <th colSpan={2} style={{ verticalAlign: "top" }}>
++            <strong>限流条件（超出任一数值时触发限流）</strong>
++
++            > <strong>以下为每分钟限流条件，服务可能按 RPS（RPM/60）与 TPS（TPM/60）限制</strong>
++          </th>
++        </tr>
++
++        <tr>
++          <th style={{ verticalAlign: "top" }}>
++            <strong>每分钟调用次数（RPM）</strong>
++          </th>
++
++          <th style={{ verticalAlign: "top" }}>
++            <strong>每分钟消耗Token数（TPM）</strong>
++
++            > <strong>含输入与输出Token</strong>
++          </th>
++        </tr>
++      </thead>
++
++      <tbody>
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
++            antdigital/Ling-3.1-flash
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            300
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            10,000,000
++          </td>
++        </tr>
++      </tbody>
++    </table>
++  </Tab>
++</Tabs>
++
+ ## 图像生成 <span id="5998fd159df49" />
+ 
+ ### 千问（Qwen-Image） <span id="f812e7c63axvx" />
