@@ -157,7 +157,10 @@ def check_tts(model, o, mode):
                 return f"{model}不支持instruction（指令控制）"
             if model in COSYVOICE_TTS and instruction_length(instruction) > 100:
                 return "CosyVoice的instruction不超过100字符（汉字按2个字符计）"
-        if o["language"] and not re.fullmatch(r"[a-z]{2,3}", o["language"]):
+        if o["language"] == "other":
+            if model != "qwen-audio-3.1-tts-flash":
+                return "language=other仅适用于qwen-audio-3.1-tts-flash"
+        elif o["language"] and not re.fullmatch(r"[a-z]{2,3}", o["language"]):
             return "Qwen-Audio-TTS/CosyVoice的language为语种代码，如zh、en、ja"
         if set(extra) & {"text", "voice", "model"}:
             return "parameters不能覆盖text/voice/model"

@@ -243,6 +243,16 @@ class OfficialContracts(unittest.TestCase):
             request.assert_not_called()
         self.assertEqual(media.instruction_length("慢a"), 3)
 
+    def test_other_language_is_scoped_to_qwen_audio_31_flash(self):
+        opts = tts(model="qwen-audio-3.1-tts-flash", voice="v", language="other", instructions="请用荷兰话说")
+        self.assertIsNone(media.check_tts(opts["model"], opts, "local"))
+        body = media.tts_request(opts["model"], opts, "Hallo")[1]
+        self.assertEqual(body["input"]["language_hints"], ["other"])
+        self.assertEqual(body["input"]["instruction"], "请用荷兰话说")
+        for model in set(media.SYNTH_MODELS) - {"qwen-audio-3.1-tts-flash"}:
+            with self.subTest(model=model):
+                self.assertIn("仅适用于", media.check_tts(model, tts(model=model, voice="v", language="other"), "local"))
+
     def test_qwen_audio_instruction_does_not_inherit_cosyvoice_character_limit(self):
         for model in media.QWEN_AUDIO_TTS:
             opts = tts(model=model, voice="v", instructions="慢" * 51)

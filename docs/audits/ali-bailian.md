@@ -193,3 +193,11 @@ curl --fail --location https://help.aliyun.com/zh/model-studio/list-models.md
 - 价格页 ASR 分组改名为 `Qwen-Audio-ASR*`，模型 ID 不变，3.0 系列免费额度取消；限流页部分 DeepSeek / GLM 模型改为动态限流。本 MCP 不硬编码价格和限额，只记录。
 
 本地验证：百炼 51 项、共享与文档链路 43 项测试通过；来源覆盖、共享同步、diff 检查及 wheel/sdist 构建通过。未执行付费云端请求。
+
+
+## 2026-10-30 文档复核（PR #31，0.7.3）
+
+- Qwen-Audio-TTS HTTP 新增 language_hints=["other"]，仅适用于 qwen-audio-3.1-tts-flash 的官方其他语种列表。修正本地校验，其他模型继续拒绝 other；合成请求仍使用 input.language_hints。建议 instructions 明确合成语种且与文本一致，不自动翻译文本或切换模型。此变化不代表复刻样本的 language_hints 同样支持 other，复刻白名单不变。
+- ASR 明确 input_audio 为 object，data 接受公网 URL/Data URI，content 为 string，情感识别固定开启，流式情感在 delta.annotations，非流式在 message.annotations，OpenAI 兼容协议不返回时间戳。当前实现使用同样的音频结构和非流式解析，不新增时间戳承诺或情感开关。其余 ASR 变化为 SDK 注释、域名说明和表格格式。
+- 上架历史补充已有 Qwen Audio 3.1 ASR/TTS 型号，新增 antdigital/Ling-3.1-flash 及价格/限流。补充候选提取器的 Ling 前缀与回归；chat 已接受完整模型 ID，不新设别名或默认参数，也不据目录上架宣称新协议已接入。tts-next 音频生成与新 ASR 系列仍须独立契约适配。
+- 视觉模型页仅调整推荐措辞。八份原始差异与快照均保留，本次不执行付费请求。

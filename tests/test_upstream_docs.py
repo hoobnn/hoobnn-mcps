@@ -146,7 +146,7 @@ class DocumentContracts(unittest.TestCase):
 
     def test_fetch_discovers_deepseek_kimi_and_xiaomi_models_without_url_fragments(self):
         from unittest.mock import MagicMock
-        body = ("# Recent models\n\nNew IDs: `deepseek-v4.1-flash-1017`, `kimi-k3-1-pro-261024`, `xiaomi/mimo-v2.6-pro-ultraspeed`.\n"
+        body = ("# Recent models\n\nNew IDs: `deepseek-v4.1-flash-1017`, `kimi-k3-1-pro-261024`, `xiaomi/mimo-v2.6-pro-ultraspeed`, `antdigital/Ling-3.1-flash`.\n"
                 "Existing qwen3.8-max remains supported.\n"
                 "See https://help.aliyun.com/zh/model-studio/deepseek-not-a-model for the guide.\n")
         response = MagicMock()
@@ -159,7 +159,7 @@ class DocumentContracts(unittest.TestCase):
         with patch.object(docs.urllib.request, "build_opener") as opener:
             opener.return_value.open.return_value = response
             record, _ = docs.fetch(source)
-        self.assertEqual(record["models"], ["deepseek-v4.1-flash-1017", "kimi-k3-1-pro-261024", "qwen3.8-max", "xiaomi/mimo-v2.6-pro-ultraspeed"])
+        self.assertEqual(record["models"], ["antdigital/Ling-3.1-flash", "deepseek-v4.1-flash-1017", "kimi-k3-1-pro-261024", "qwen3.8-max", "xiaomi/mimo-v2.6-pro-ultraspeed"])
 
     def test_fetch_failure_is_not_a_removed_document(self):
         source = {"key": "ark/api", "server": "ark", "id": "api", "url": "https://docs.volcengine.com/api"}

@@ -162,7 +162,7 @@ def text_to_speech(
       CosyVoice 不超过 100 字符（汉字按 2 计）；Qwen-Audio-TTS 官方未公布同一上限，交服务端校验。仅 Qwen-Audio-TTS 与 cosyvoice-v3.5/v3 系列支持；cosyvoice-v3-plus/v3-flash 的
       系统音色须用官方音色列表规定的固定指令，cosyvoice-v3-plus 的自定义音色不支持；qwen3-tts-flash 不支持。
     - language：qwen3-tts-flash 写 Chinese、English、Japanese 等；Qwen-Audio-TTS/CosyVoice 写语种代码（zh、en、ja…，
-      对应 language_hints）。不传自动识别。
+      对应 language_hints）。qwen-audio-3.1-tts-flash 可用 other 合成其他官方支持语种，建议在 instructions 中说明语种，且与文本一致。不传自动识别。
     - out_dir：输出目录，默认 BAILIAN_OUT_DIR 下按时间戳新建。
     - parameters：qwen3-tts-flash 合并进官方 parameters 对象；Qwen-Audio-TTS/CosyVoice 合并进官方 input 对象
       （如 rate、pitch、volume、seed、hot_fix），不能覆盖 text/voice/model，local 交付时 format 只能是 wav。
@@ -195,6 +195,7 @@ def speech_to_text(
       filetrans/realtime、Qwen-Audio-ASR 及 Fun-ASR 使用不同协议。
     - parameters：官方请求体里本工具没单独列出的字段（OpenAI 兼容接口顶层），深度合并，不能覆盖 model/messages/stream。
 
+    Qwen3-ASR-Flash 的 OpenAI 兼容接口不返回时间戳；情感识别固定开启，无需额外开关。
     按音频时长计费。返回 ok、model、text、language、emotion、usage、error。
     """
     return media.speech_to_text(dict(audio=audio, context=context, language=language, itn=itn, model=model,
