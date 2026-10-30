@@ -44,14 +44,16 @@ class Contracts(unittest.TestCase):
         image = "https://example.test/input.png"
         body = video.build_request("generation", prompt="cat", model="MiniMax-H3-Highspeed", duration=4)
         self.assertEqual((body["resolution"], body["duration"]), ("768P", 4))
+        for inputs in ({}, {"first_frame": image}, {"last_frame": image}, {"reference_images": [image]}):
+            body = video.build_request("generation", prompt="cat", model="MiniMax-H3-Highspeed", resolution="480P", **inputs)
+            self.assertEqual(body["resolution"], "480P")
         body = video.build_request("generation", prompt="cat", model="MiniMax-H3-Lite", resolution="480P")
         self.assertEqual(body["resolution"], "480P")
         body = video.build_request("generation", prompt="cat", model="MiniMax-H3-Lite", reference_images=[image], ratio="9:16")
         self.assertEqual(body["ratio"], "9:16")
         self.assertEqual(video.build_request("generation", prompt="cat", model="MiniMax-H3-Lite",
                                              first_frame=image)["ratio"], "adaptive")
-        for kwargs in ({"model": "MiniMax-H3-Highspeed", "resolution": "480P"},
-                       {"model": "MiniMax-H3-Highspeed", "resolution": "2K"},
+        for kwargs in ({"model": "MiniMax-H3-Highspeed", "resolution": "2K"},
                        {"model": "MiniMax-H3-Lite", "resolution": "2K"},
                        {"model": "MiniMax-H3-Lite", "reference_images": [image]},
                        {"model": "MiniMax-H3-Lite", "reference_images": [image], "ratio": "adaptive"},

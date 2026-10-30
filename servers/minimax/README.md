@@ -2,6 +2,8 @@
 
 独立重写的 MiniMax stdio MCP，重点支持 H3 V2。包名 `hoobnn-minimax-mcp`，不是官方 `minimax-mcp`，不依赖后者。沿用本仓库的连接池、超时取消、任务持久化与交付恢复机制。
 
+`0.3.1` 放行官方新增的 H3-Highspeed 480P，保留本工具 768P 默认值与 2K 限制。
+
 `0.3.0` 的 `generate_video` 新增 `MiniMax-H3-Highspeed`（仅 768P）与 `MiniMax-H3-Lite`（480P / 768P，多模态参考需显式指定具体 `ratio`），均为 4–15 秒、不支持 2K。
 
 `0.2.0` 将 `enhance_video_prompt` 更名为 `create_h3_context_ir_task`，与官方「创建 H3-Context-IR 任务」对应；旧名不保留别名，这是不兼容变更。
@@ -42,7 +44,7 @@ uv tool install hoobnn-minimax-mcp
 | `upload_file` | 上传生成素材或音色复刻音频，返回 `mm_file://` 引用 |
 | `list_jobs` / `recover_job` | 本地任务发现及交付恢复，不重新生成 |
 
-`MiniMax-H3` 支持 768P / 2K、4–15 整数秒，默认 2K、5 秒；`MiniMax-H3-Highspeed` 仅支持 768P、4–15 秒；`MiniMax-H3-Lite` 支持 480P / 768P、4–15 秒，默认 768P，多模态参考须显式指定具体 `ratio`（不支持 adaptive）；`MiniMax-H3-Max` 支持 480P / 768P、5–15 秒，默认 768P。后三者均不支持 2K。
+`MiniMax-H3` 支持 768P / 2K、4–15 整数秒，默认 2K、5 秒；`MiniMax-H3-Highspeed` 支持 480P / 768P（本工具默认 768P）、4–15 秒；`MiniMax-H3-Lite` 支持 480P / 768P、4–15 秒，默认 768P，多模态参考须显式指定具体 `ratio`（不支持 adaptive）；`MiniMax-H3-Max` 支持 480P / 768P、5–15 秒，默认 768P。后三者均不支持 2K。
 
 ```json
 {"prompt":"小猫抬头望向窗外，雨点轻敲玻璃，镜头缓慢靠近。", "model":"MiniMax-H3", "resolution":"2K", "duration":5, "ratio":"16:9"}
