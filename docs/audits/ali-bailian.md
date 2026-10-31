@@ -201,3 +201,10 @@ curl --fail --location https://help.aliyun.com/zh/model-studio/list-models.md
 - ASR 明确 input_audio 为 object，data 接受公网 URL/Data URI，content 为 string，情感识别固定开启，流式情感在 delta.annotations，非流式在 message.annotations，OpenAI 兼容协议不返回时间戳。当前实现使用同样的音频结构和非流式解析，不新增时间戳承诺或情感开关。其余 ASR 变化为 SDK 注释、域名说明和表格格式。
 - 上架历史补充已有 Qwen Audio 3.1 ASR/TTS 型号，新增 antdigital/Ling-3.1-flash 及价格/限流。补充候选提取器的 Ling 前缀与回归；chat 已接受完整模型 ID，不新设别名或默认参数，也不据目录上架宣称新协议已接入。tts-next 音频生成与新 ASR 系列仍须独立契约适配。
 - 视觉模型页仅调整推荐措辞。八份原始差异与快照均保留，本次不执行付费请求。
+
+
+## 2026-10-31 价格页复核（PR #32）
+
+北京地域的 qwen-image-2.0-pro、qwen-image-2.0-pro-2026-06-22、qwen-image-2.0-pro-2026-04-22、qwen-image-2.0-pro-2026-03-03、qwen-image-2.0、qwen-image-2.0-2026-03-03 六个型号的免费额度由 100 张改为无；输出单价和 Qwen-Image 2.1 型号额度未变。模型 ID、请求结构、endpoint 均未变化。本 MCP 不硬编码上述免费额度，也没有相关免费额度承诺，无需改实现或包版本。
+
+报告中的 models_added: antdigital/Ling-3.1-flash 来自上轮候选提取器增加前缀后的元数据补全；原始正文差异只改变上述免费额度，不能当作本轮新上架或账号已授权。36 个来源快照 SHA-256 与长度核验通过；保存原始差异和待审基线，未执行付费请求。
