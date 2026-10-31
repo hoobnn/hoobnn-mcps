@@ -1,6 +1,6 @@
 {
   "format_version": 1,
-  "reviewed_at": "2026-10-30T08:46:52.533088+00:00",
+  "reviewed_at": "2026-10-31T08:34:53.767316+00:00",
   "sources": [
     {
       "key": "volcengine-ark/ark-base-url-and-authentication",
@@ -167,8 +167,8 @@
       "fetch_url": "https://docs.volcengine.com/api/doc/getDocList?LibraryID=82379",
       "kind": "guide",
       "tools": [],
-      "sha256": "49cc8877cf8b6df37eb28398c3c4c2b7556adde5b497355d69d859a4c70781d9",
-      "bytes": 154431,
+      "sha256": "b2cfb4c62a11242046c425f6c19928625a25f08ddf4bb40758faef794761a40f",
+      "bytes": 154900,
       "models": [
         "DeepSeek-V4.1-Flash",
         "Doubao",
@@ -202,7 +202,7 @@
       "endpoints": [],
       "doc_links": [],
       "title": "ark-document-index",
-      "documents": 853,
+      "documents": 856,
       "document_codes": [
         "2024-announcements",
         "2025-announcements",
@@ -368,6 +368,9 @@
         "application",
         "application-layer-encryption-for-inference-session-data",
         "apply-patch",
+        "archive-agent-api",
+        "archive-environment-api",
+        "archive-session-api",
         "ark-after-sales-support-scope",
         "ark-cli",
         "ark-cli-command-reference",
