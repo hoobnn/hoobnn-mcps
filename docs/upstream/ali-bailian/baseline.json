@@ -1,6 +1,6 @@
 {
   "format_version": 1,
-  "reviewed_at": "2026-10-30T08:46:55.903634+00:00",
+  "reviewed_at": "2026-10-31T08:34:47.298650+00:00",
   "sources": [
     {
       "key": "ali-bailian/bailian-asr",
@@ -667,6 +667,7 @@
         "Wan2.7-VideoEdit",
         "Wan3.0-Video",
         "Wan3.0-Video-Prime",
+        "antdigital/Ling-3.1-flash",
         "cosyvoice-V2",
         "cosyvoice-clone-v1",
         "cosyvoice-v1",
@@ -1022,8 +1023,8 @@
       "fetch_url": "https://help.aliyun.com/zh/model-studio/model-pricing.md",
       "kind": "models",
       "tools": [],
-      "sha256": "d689703284aeae247c2ce50bcad8f62a26d448e74bc610d6b9e9010ea26f5632",
-      "bytes": 695313,
+      "sha256": "3034d4b4e76e36399efc3ac818031e832b2a19b6d3bbd0958e32e3f09a98e20a",
+      "bytes": 695295,
       "models": [
         "CosyVoice",
         "DeepSeek-",
@@ -1055,6 +1056,7 @@
         "Qwen3.5-Omni-Realtime",
         "Qwen3.6",
         "Qwen3.8",
+        "antdigital/Ling-3.1-flash",
         "cosyvoice-v2",
         "cosyvoice-v3-flash",
         "cosyvoice-v3-plus",
@@ -1521,6 +1523,7 @@
         "Qwen3-TTS-Flash",
         "Qwen3-TTS-Flash-Realtime",
         "Qwen3-TTS-Realtime",
+        "antdigital/Ling-3.1-flash",
         "cosyvoice-v2",
         "cosyvoice-v3-flash",
         "cosyvoice-v3-plus",
