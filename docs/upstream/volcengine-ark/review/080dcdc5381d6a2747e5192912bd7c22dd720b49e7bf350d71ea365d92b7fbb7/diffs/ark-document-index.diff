@@ -1,0 +1,30 @@
+--- reviewed/volcengine-ark/ark-document-index
++++ current/volcengine-ark/ark-document-index
+@@ -1148,6 +1148,27 @@
+     "Status": 2
+   },
+   {
++    "DocumentCode": "archive-agent-api",
++    "DocumentID": 2798352,
++    "Title": "归档智能体",
++    "ParentCode": "agents",
++    "Status": 2
++  },
++  {
++    "DocumentCode": "archive-environment-api",
++    "DocumentID": 2798353,
++    "Title": "归档环境",
++    "ParentCode": "environments",
++    "Status": 2
++  },
++  {
++    "DocumentCode": "archive-session-api",
++    "DocumentID": 2798354,
++    "Title": "归档会话",
++    "ParentCode": "sessions",
++    "Status": 2
++  },
++  {
+     "DocumentCode": "ark-after-sales-support-scope",
+     "DocumentID": 2597514,
+     "Title": "方舟售后支持范围",
