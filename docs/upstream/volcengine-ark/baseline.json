@@ -1,6 +1,6 @@
 {
   "format_version": 1,
-  "reviewed_at": "2026-10-31T08:34:53.767316+00:00",
+  "reviewed_at": "2026-11-02T09:41:09.633755+00:00",
   "sources": [
     {
       "key": "volcengine-ark/ark-base-url-and-authentication",
@@ -1309,8 +1309,8 @@
       "tools": [
         "generate_video"
       ],
-      "sha256": "7c4df2e0b054961203ab3f9f5db23d9682d95d20ee63f085aa51ccf67a2ffe38",
-      "bytes": 84861,
+      "sha256": "f67fa6ca2cbafba02a802a7d490d28dc50e0981591679735606903d522f451af",
+      "bytes": 80753,
       "models": [
         "Doubao",
         "Seedance",
@@ -1323,7 +1323,7 @@
       ],
       "doc_links": [],
       "title": "Doubao Seedance 2.0 系列教程",
-      "updated_at": "2026-09-29T09:27:22Z",
+      "updated_at": "2026-11-02T04:02:31Z",
       "document_id": "2291680",
       "headers": {
         "ETag": null,
