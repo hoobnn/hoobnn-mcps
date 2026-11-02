@@ -1,6 +1,6 @@
 {
   "format_version": 1,
-  "reviewed_at": "2026-10-29T08:41:36.571735+00:00",
+  "reviewed_at": "2026-11-02T09:41:21.471349+00:00",
   "sources": [
     {
       "key": "doubao-speech/doubao-access-mustread",
@@ -351,8 +351,8 @@
       "tools": [
         "speech_raw_request"
       ],
-      "sha256": "1dd77941785f7758eb0098250e1e5a44270638579a2c06b942bbcb9f94869a2d",
-      "bytes": 39867,
+      "sha256": "2ee1926bd612c4b5947dc3d65165d731e3a73a5dcffd9bb345430c1a70250c0c",
+      "bytes": 40112,
       "models": [
         "bigmodel"
       ],
@@ -363,12 +363,13 @@
       "doc_links": [
         "https://docs.volcengine.com/docs/6561/2604976?lang=zh)配置热词和上下文信息",
         "https://docs.volcengine.com/docs/6561/2628951?lang=zh)文档中",
+        "https://docs.volcengine.com/docs/doubao-voice/access-must-read-1-1?lang=zh)文档",
         "https://docs.volcengine.com/docs/doubao-voice/hot-words-and-context?lang=zh",
         "https://docs.volcengine.com/docs/doubao-voice/speaker-separation?lang=zh)[",
         "https://docs.volcengine.com/docs/doubao-voice/speaker-separation?lang=zh)[说话人分离最佳实践](https://docs.volcengine.com/docs/doubao-voice/speaker-separation?lang=zh)配置相关参数"
       ],
       "title": "实时语音识别",
-      "updated_at": "2026-10-27T07:18:23Z",
+      "updated_at": "2026-11-02T09:04:39Z",
       "document_id": "2630027",
       "headers": {
         "ETag": null,
@@ -1436,8 +1437,8 @@
         "speech_raw_request",
         "speech_to_text"
       ],
-      "sha256": "67a6d85192edc03d15d5bf1aec321bd0a113fe84abbe8bedac3881d7bb1b8e63",
-      "bytes": 25095,
+      "sha256": "60e476baa422589c9fecf20d01a862855615b45e2fe3eb1f6e5e2cf979a18909",
+      "bytes": 25335,
       "models": [
         "bigmodel"
       ],
@@ -1446,10 +1447,11 @@
       ],
       "doc_links": [
         "https://docs.volcengine.com/docs/6561/2604976?lang=zh)配置热词",
-        "https://docs.volcengine.com/docs/6561/2604976?lang=zh)配置热词和上下文"
+        "https://docs.volcengine.com/docs/6561/2604976?lang=zh)配置热词和上下文",
+        "https://docs.volcengine.com/docs/doubao-voice/access-must-read-1?lang=zh)文档"
       ],
       "title": "录音文件识别极速版",
-      "updated_at": "2026-10-26T09:22:24Z",
+      "updated_at": "2026-11-02T09:05:39Z",
       "document_id": "2608628",
       "headers": {
         "ETag": null,
@@ -1887,8 +1889,8 @@
       "tools": [
         "speech_to_text"
       ],
-      "sha256": "386e12156b8f3fb78de3e6938bd7d516868956ed898f41ab4e061e6ff036eabf",
-      "bytes": 22406,
+      "sha256": "8b63047b67c44e37b7122c3da747973ceb01d2fe452ed5ede2870d5c3fe9c340",
+      "bytes": 22636,
       "models": [
         "bigmodel"
       ],
@@ -1898,10 +1900,11 @@
       "doc_links": [
         "https://docs.volcengine.com/docs/6561/2604976?lang=zh)配置热词",
         "https://docs.volcengine.com/docs/6561/2604976?lang=zh)配置热词和上下文",
-        "https://docs.volcengine.com/docs/6561/2608619?lang=zh)获取"
+        "https://docs.volcengine.com/docs/6561/2608619?lang=zh)获取",
+        "https://docs.volcengine.com/docs/doubao-voice/access-must-read-1?lang=zh)文档"
       ],
       "title": "任务提交",
-      "updated_at": "2026-10-26T09:22:14Z",
+      "updated_at": "2026-11-02T09:05:23Z",
       "document_id": "2608618",
       "headers": {
         "ETag": null,
@@ -1919,8 +1922,8 @@
       "tools": [
         "speech_to_text"
       ],
-      "sha256": "0ffa94f66615a099d17103d842b698a0b3c2f6aeb342c6c80c71bbd3d3f30fda",
-      "bytes": 24797,
+      "sha256": "bbda10e85713ec8dc5dce8da478de0bc40a5b5b7db6a9cf840ab9ba535336eaa",
+      "bytes": 25027,
       "models": [
         "bigmodel"
       ],
@@ -1931,11 +1934,12 @@
         "https://docs.volcengine.com/docs/6561/2604976?lang=zh)配置热词",
         "https://docs.volcengine.com/docs/6561/2604976?lang=zh)配置热词和上下文",
         "https://docs.volcengine.com/docs/6561/2606792?lang=zh)获取",
+        "https://docs.volcengine.com/docs/doubao-voice/access-must-read-1?lang=zh)文档",
         "https://docs.volcengine.com/docs/doubao-voice/speaker-separation?lang=zh)[",
         "https://docs.volcengine.com/docs/doubao-voice/speaker-separation?lang=zh)[说话人分离最佳实践](https://docs.volcengine.com/docs/doubao-voice/speaker-separation?lang=zh)配置相关参数"
       ],
       "title": "任务提交",
-      "updated_at": "2026-10-27T07:18:37Z",
+      "updated_at": "2026-11-02T09:05:10Z",
       "document_id": "2606791",
       "headers": {
         "ETag": null,
@@ -2165,8 +2169,8 @@
       "tools": [
         "speech_raw_request"
       ],
-      "sha256": "5e15d63bd2496945dd8886c6823041caafb2297d6a5015caac741c2ed8ddbab5",
-      "bytes": 28284,
+      "sha256": "4f7de6d43dca55f338cd2c3eba3f72b8d1220583f0977aa5bf5f6a331482f870",
+      "bytes": 28529,
       "models": [
         "bigmodel"
       ],
@@ -2175,11 +2179,12 @@
       ],
       "doc_links": [
         "https://docs.volcengine.com/docs/6561/2604976?lang=zh)配置热词",
+        "https://docs.volcengine.com/docs/doubao-voice/access-must-read-1-1?lang=zh)文档",
         "https://docs.volcengine.com/docs/doubao-voice/speaker-separation?lang=zh)[",
         "https://docs.volcengine.com/docs/doubao-voice/speaker-separation?lang=zh)[说话人分离最佳实践](https://docs.volcengine.com/docs/doubao-voice/speaker-separation?lang=zh)配置相关参数"
       ],
       "title": "一句话识别",
-      "updated_at": "2026-10-27T07:18:13Z",
+      "updated_at": "2026-11-02T09:04:54Z",
       "document_id": "2628951",
       "headers": {
         "ETag": null,
