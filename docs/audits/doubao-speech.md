@@ -213,4 +213,4 @@ OpenAPI主机、签名service、region、Action和Version逐项依据正文请�
 - [录音文件识别接入必读](https://docs.volcengine.com/docs/doubao-voice/access-must-read-1?lang=zh)
 - [流式识别接入必读](https://docs.volcengine.com/docs/doubao-voice/access-must-read-1-1?lang=zh)
 
-报告：[77 个来源复核](../upstream/doubao-speech/review/1d15e62d7004918f1430978961950c277bf0b127d34cda3b5e646f8652a32a39/report.md)。原始与最新捕获指纹相同，不重复生成同一批次。
+报告：[77 个来源复核](../upstream/doubao-speech/review/1d15e62d7004918f1430978961950c277bf0b127d34cda3b5e646f8652a32a39/report.md)。原始与最新批次均保留；五篇变化均为接入导航及其排版，不包含 API 字段变化。
