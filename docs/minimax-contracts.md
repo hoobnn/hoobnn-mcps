@@ -76,3 +76,10 @@ Python 3.13：新增 15 项测试通过，包括真实 stdio 初始化、工具�
 ## 2026-10-30 文档更新审查
 
 PR #29 的视频创建页明确 H3-Highspeed 支持 480P/768P，仍不支持 2K。更新本地校验、工具帮助和双语说明，回归覆盖文生、首帧、尾帧和参考图模式传递 480P。官方删除 Lite/Max 的默认档位说明不等于要求变更本工具默认值，保留非 H3 模型的本地 768P 默认值。版本更新为 0.3.1；未发送付费请求。
+
+
+## 2026-11-03 文档复核与 0.3.2
+
+复核 PR #37 并重新抓取 14 个官方来源，全部成功。音乐页删除 MiniMax Audio 体验站点链接，保留 [Hugging Face](https://huggingface.co/MiniMaxAI/MiniMax-Music3) 与 [ModelScope](https://modelscope.cn/models/MiniMax/MiniMax-Music3) 开源模型入口。付费 API 仍限历史付费用户，免费 API 停服说明未变；开源 Music3 不作为本工具可调用的 API model 新增。更新工具帮助和说明，未执行付费云端请求。
+
+最新报告：[14 个来源复核](upstream/minimax/review/83a89ac7489d1ae9a458a36fb51b7ac924143c0715519f4aaafd05f7b81e8e14/report.md)。模型、endpoint 和请求结构未变；最新捕获指纹与 PR 相同。
