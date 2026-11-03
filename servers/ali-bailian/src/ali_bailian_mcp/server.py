@@ -111,14 +111,16 @@ def chat(
     - history：之前的多轮对话，OpenAI 格式的列表，如 [{"role": "user", "content": "..."},
       {"role": "assistant", "content": "..."}]，不含本轮 prompt。工具本身不保存会话，多轮要自己带上历史。
     - images：随 prompt 一起发的图片，本地绝对路径或 URL，需要模型支持看图（qwen3.8-max、qwen3.6-plus、
-      qwen3-vl-plus 等）。
+      qwen3-vl-plus 等）。max/plus/flash 对应的当前通用模型均支持图像、视频输入；视频可在 history 的
+      content 中按官方 OpenAI 兼容格式传入，工具没有单独 videos 参数，地域和素材限制以模型文档为准。
     - thinking：是否开启深度思考，不传用模型默认值（千问新模型默认开）。简单问题设 false 更快更省。
       MiniMax/MiniMax-M3 用官方 thinking.type=adaptive/disabled；MiniMax/MiniMax-M3.1-Flash 始终思考，false 本地拒绝。
       M3.1-Flash 固定 reasoning_split=true、n=1；temperature 固定1、top_p固定0.95，其他值由官方忽略。
       MiniMax 直供不支持 thinking_budget；M3.1-Flash思考深度可用 parameters.reasoning_effort=low/medium/high/xhigh/max（默认max），M3不支持。
       thinking_budget：思考的最大 token 数。
     - max_tokens：回答的最大 token 数，MiniMax直供包含思考和回答。temperature：采样温度。
-    - json_mode：要求输出合法 JSON，prompt 里要写明 JSON 结构，且最好同时设 thinking=false。
+    - json_mode：要求输出合法 JSON，须选择支持结构化输出的模型，prompt 里写明 JSON 结构，且最好同时设 thinking=false。
+      当前模型表列 qwen3-coder-flash 支持结构化输出，qwen-long 和 Qwen-Character 不支持。
     - web_search：让模型联网搜索后回答（千问系列支持）。
       parameters.include_tool_usage=true 可返回 usage.x_tools.search；count为搜索意图触发次数，不能用于费用对账。
       MiniMax直供M3系列不支持web_search或json_mode，相关请求本地拒绝。

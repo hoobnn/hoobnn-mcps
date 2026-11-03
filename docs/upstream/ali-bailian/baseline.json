@@ -1,6 +1,6 @@
 {
   "format_version": 1,
-  "reviewed_at": "2026-11-02T09:41:03.159962+00:00",
+  "reviewed_at": "2026-11-03T10:17:04.720677+00:00",
   "sources": [
     {
       "key": "ali-bailian/bailian-asr",
@@ -74,8 +74,8 @@
       "tools": [
         "speech_to_text"
       ],
-      "sha256": "24475ffa464a452c391224e9e23052f0478586cb032e76e37fd21f99687dd384",
-      "bytes": 48118,
+      "sha256": "00394b8da7f937496522eddf31e98b5d90487d78fb135765eb357436f9c31d10",
+      "bytes": 49342,
       "models": [
         "Qwen-ASR",
         "Qwen-Audio-ASR",
@@ -514,8 +514,8 @@
       "fetch_url": "https://help.aliyun.com/zh/model-studio/models.md",
       "kind": "models",
       "tools": [],
-      "sha256": "94189a6697f782386a78c2bb45a959608fc4ee8fd4b22e48c096b4395ecb4655",
-      "bytes": 15009,
+      "sha256": "9fb3f2d3d1ff1a3a131f69483f172d987a0a19b5e16de1fa106ef7bffad8efe5",
+      "bytes": 15117,
       "models": [
         "MiniMax-M3.1-Flash",
         "deepseek-v4-pro-0813",

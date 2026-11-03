@@ -1,0 +1,303 @@
+--- reviewed/ali-bailian/bailian-model-directory
++++ current/ali-bailian/bailian-model-directory
+@@ -4,7 +4,9 @@
+ 
+ <meta property="og:title" content="选择模型" />
+ 
+-## 文本生成 <span id="e2df967646sr4" />
++## 文本 <span id="models-text-group" />
++
++### 文本生成 <span id="e2df967646sr4" />
+ 
+ <CardGroup cols={3}>
+   <Card title="qwen3.8-max" icon="https://img.alicdn.com/imgextra/i3/O1CN01Kmx9dR1wcHOaMMXAk_!!6000000006328-55-tps-28-28.svg" href="https://bailian.console.aliyun.com/cn-beijing/model/market/detail/qwen3.8-max">
+@@ -54,9 +56,7 @@
+ 
+ [查看更多](/zh/model-studio/text-generation-model)
+ 
+-## 图像与视频 <span id="e159002ca82z8" />
+-
+-### 理解 <span id="bb31b7ff62xjx" />
++### 视觉理解 <span id="bb31b7ff62xjx" />
+ 
+ 分析图片和视频内容，返回文本描述或结构化结果
+ 
+@@ -78,9 +78,23 @@
+   </Card>
+ </CardGroup>
+ 
+-[查看更多](/zh/model-studio/vision-model)
+-
+-### 生成 <span id="gen-h3" />
++[查看更多](/zh/model-studio/text-generation-model)
++
++### 决策模型 <span id="dm-models-h2" />
++
++面向高频业务判断的结构化决策模型，一次前向完成分类、是非判断与评分，并返回概率分布与置信度。
++
++<CardGroup cols={3}>
++  <Card title="decision-model-preview" icon="https://img.alicdn.com/imgextra/i3/O1CN01Kmx9dR1wcHOaMMXAk_!!6000000006328-55-tps-28-28.svg" href="https://bailian.console.aliyun.com/cn-beijing/model/market/detail/decision-model-preview">
++    结构化决策
++  </Card>
++</CardGroup>
++
++[查看更多](/zh/model-studio/decision-model-preview)
++
++## 视觉 <span id="e159002ca82z8" />
++
++### 图像与视频生成 <span id="gen-h3" />
+ 
+ 通过文本或图片生成图像与视频，支持编辑、参考与高分辨率输出
+ 
+@@ -116,7 +130,23 @@
+ 
+ [查看更多](/zh/model-studio/image-model)
+ 
+-## 世界模型 <span id="world-model-h2" />
++### 3D模型生成 <span id="3d-gen-h2" />
++
++文生3D模型或图生3D模型，构建三维资产
++
++<CardGroup cols={3}>
++  <Card title="Tripo/Tripo-H3.1" icon="https://img.alicdn.com/imgextra/i2/O1CN019lvk1h1xXWwsSsKes_!!6000000006453-2-tps-300-300.png" href="https://bailian.console.aliyun.com/cn-beijing/model/market/detail/Tripo%2FTripo-H3.1">
++    3D生成
++  </Card>
++
++  <Card title="Tripo/Tripo-P1.0" icon="https://img.alicdn.com/imgextra/i2/O1CN019lvk1h1xXWwsSsKes_!!6000000006453-2-tps-300-300.png" href="https://bailian.console.aliyun.com/cn-beijing/model/market/detail/Tripo%2FTripo-P1.0">
++    3D生成
++  </Card>
++</CardGroup>
++
++[查看更多](/zh/model-studio/tripo-3d-generation-guide)
++
++### 世界模型 <span id="world-model-h2" />
+ 
+ 实时交互的开放式世界模型，覆盖世界探索、实时导演、角色演绎三种模式
+ 
+@@ -140,23 +170,71 @@
+ 
+ [查看更多](/zh/model-studio/happyoyster-overview)
+ 
+-## 3D模型生成 <span id="3d-gen-h2" />
+-
+-文生3D模型或图生3D模型，构建三维资产
+-
+-<CardGroup cols={3}>
+-  <Card title="Tripo/Tripo-H3.1" icon="https://img.alicdn.com/imgextra/i2/O1CN019lvk1h1xXWwsSsKes_!!6000000006453-2-tps-300-300.png" href="https://bailian.console.aliyun.com/cn-beijing/model/market/detail/Tripo%2FTripo-H3.1">
+-    3D生成
+-  </Card>
+-
+-  <Card title="Tripo/Tripo-P1.0" icon="https://img.alicdn.com/imgextra/i2/O1CN019lvk1h1xXWwsSsKes_!!6000000006453-2-tps-300-300.png" href="https://bailian.console.aliyun.com/cn-beijing/model/market/detail/Tripo%2FTripo-P1.0">
+-    3D生成
+-  </Card>
+-</CardGroup>
+-
+-[查看更多](/zh/model-studio/tripo-3d-generation-guide)
+-
+-## 音频与语音 <span id="a232774b11chm" />
++## 语音 <span id="a232774b11chm" />
++
++### 语音识别 <span id="296f30ceddocc" />
++
++将语音转换为文本，覆盖实时语音输入、持续转写和录音文件识别等场景
++
++<CardGroup cols={3}>
++  <Card title="qwen-audio-3.1-asr-flash-message" icon="https://img.alicdn.com/imgextra/i3/O1CN01Kmx9dR1wcHOaMMXAk_!!6000000006328-55-tps-28-28.svg" href="https://bailian.console.aliyun.com/cn-beijing/model/market/detail/qwen-audio-3.1-asr-flash-message">
++    实时语音识别
++  </Card>
++
++  <Card title="qwen-audio-3.1-asr-flash-streaming" icon="https://img.alicdn.com/imgextra/i3/O1CN01Kmx9dR1wcHOaMMXAk_!!6000000006328-55-tps-28-28.svg" href="https://bailian.console.aliyun.com/cn-beijing/model/market/detail/qwen-audio-3.1-asr-flash-streaming">
++    实时语音识别
++  </Card>
++
++  <Card title="qwen-audio-3.1-asr-flash" icon="https://img.alicdn.com/imgextra/i3/O1CN01Kmx9dR1wcHOaMMXAk_!!6000000006328-55-tps-28-28.svg" href="https://bailian.console.aliyun.com/cn-beijing/model/market/detail/qwen-audio-3.1-asr-flash">
++    非实时语音识别
++  </Card>
++
++  <Card title="qwen-audio-3.1-asr-flash-filetrans" icon="https://img.alicdn.com/imgextra/i3/O1CN01Kmx9dR1wcHOaMMXAk_!!6000000006328-55-tps-28-28.svg" href="https://bailian.console.aliyun.com/cn-beijing/model/market/detail/qwen-audio-3.1-asr-flash-filetrans">
++    非实时语音识别
++  </Card>
++</CardGroup>
++
++[查看更多](/zh/model-studio/asr-model)
++
++### 语音合成 <span id="20f18a7f7fakk" />
++
++适用于有声阅读、语音播报、虚拟人等场景
++
++<CardGroup cols={3}>
++  <Card title="qwen-audio-3.1-tts-plus" icon="https://img.alicdn.com/imgextra/i3/O1CN01Kmx9dR1wcHOaMMXAk_!!6000000006328-55-tps-28-28.svg" href="https://bailian.console.aliyun.com/cn-beijing/model/market/detail/qwen-audio-3.1-tts-plus">
++    实时、非实时
++  </Card>
++
++  <Card title="qwen-audio-3.1-tts-flash" icon="https://img.alicdn.com/imgextra/i3/O1CN01Kmx9dR1wcHOaMMXAk_!!6000000006328-55-tps-28-28.svg" href="https://bailian.console.aliyun.com/cn-beijing/model/market/detail/qwen-audio-3.1-tts-flash">
++    实时、非实时
++  </Card>
++</CardGroup>
++
++[查看更多](/zh/model-studio/tts-model)
++
++### 语音转语音 <span id="1ea7c042c50ss" />
++
++端到端语音对话，无需分别调用 ASR 和 TTS
++
++<CardGroup cols={3}>
++  <Card title="qwen-audio-3.1-realtime-plus" icon="https://img.alicdn.com/imgextra/i3/O1CN01Kmx9dR1wcHOaMMXAk_!!6000000006328-55-tps-28-28.svg" href="https://bailian.console.aliyun.com/cn-beijing/model/market/detail/qwen-audio-3.1-realtime-plus">
++    语音转语音
++  </Card>
++
++  <Card title="qwen3.5-omni-plus" icon="https://img.alicdn.com/imgextra/i3/O1CN01Kmx9dR1wcHOaMMXAk_!!6000000006328-55-tps-28-28.svg" href="https://bailian.console.aliyun.com/cn-beijing/model/market/detail/qwen3.5-omni-plus">
++    语音转语音
++  </Card>
++
++  <Card title="qwen3.8-omni-flash-realtime" icon="https://img.alicdn.com/imgextra/i3/O1CN01Kmx9dR1wcHOaMMXAk_!!6000000006328-55-tps-28-28.svg" href="/zh/model-studio/qwen3-8-omni-flash-realtime">
++    语音转语音
++  </Card>
++
++  <Card title="qwen-audio-3.1-realtime-flash" href="/zh/model-studio/qwen-audio-3-1-realtime-flash">
++    语音转语音
++  </Card>
++</CardGroup>
++
++[查看更多](/zh/model-studio/s2s-model)
+ 
+ ### 音频生成 <span id="audio-generation-h3" />
+ 
+@@ -170,69 +248,31 @@
+ 
+ [查看更多](/zh/model-studio/audio-generation)
+ 
+-### 语音合成 <span id="20f18a7f7fakk" />
+-
+-适用于有声阅读、语音播报、虚拟人等场景
+-
+-<CardGroup cols={3}>
+-  <Card title="qwen-audio-3.1-tts-plus" icon="https://img.alicdn.com/imgextra/i3/O1CN01Kmx9dR1wcHOaMMXAk_!!6000000006328-55-tps-28-28.svg" href="https://bailian.console.aliyun.com/cn-beijing/model/market/detail/qwen-audio-3.1-tts-plus">
+-    实时、非实时
+-  </Card>
+-
+-  <Card title="qwen-audio-3.1-tts-flash" icon="https://img.alicdn.com/imgextra/i3/O1CN01Kmx9dR1wcHOaMMXAk_!!6000000006328-55-tps-28-28.svg" href="https://bailian.console.aliyun.com/cn-beijing/model/market/detail/qwen-audio-3.1-tts-flash">
+-    实时、非实时
+-  </Card>
+-</CardGroup>
+-
+-[查看更多](/zh/model-studio/tts-model)
+-
+-### 语音识别 <span id="296f30ceddocc" />
+-
+-将语音转换为文本，覆盖实时语音输入、持续转写和录音文件识别等场景
+-
+-<CardGroup cols={3}>
+-  <Card title="qwen-audio-3.1-asr-flash-message" icon="https://img.alicdn.com/imgextra/i3/O1CN01Kmx9dR1wcHOaMMXAk_!!6000000006328-55-tps-28-28.svg" href="https://bailian.console.aliyun.com/cn-beijing/model/market/detail/qwen-audio-3.1-asr-flash-message">
+-    实时语音识别
+-  </Card>
+-
+-  <Card title="qwen-audio-3.1-asr-flash-streaming" icon="https://img.alicdn.com/imgextra/i3/O1CN01Kmx9dR1wcHOaMMXAk_!!6000000006328-55-tps-28-28.svg" href="https://bailian.console.aliyun.com/cn-beijing/model/market/detail/qwen-audio-3.1-asr-flash-streaming">
+-    实时语音识别
+-  </Card>
+-
+-  <Card title="qwen-audio-3.1-asr-flash" icon="https://img.alicdn.com/imgextra/i3/O1CN01Kmx9dR1wcHOaMMXAk_!!6000000006328-55-tps-28-28.svg" href="https://bailian.console.aliyun.com/cn-beijing/model/market/detail/qwen-audio-3.1-asr-flash">
+-    非实时语音识别
+-  </Card>
+-
+-  <Card title="qwen-audio-3.1-asr-flash-filetrans" icon="https://img.alicdn.com/imgextra/i3/O1CN01Kmx9dR1wcHOaMMXAk_!!6000000006328-55-tps-28-28.svg" href="https://bailian.console.aliyun.com/cn-beijing/model/market/detail/qwen-audio-3.1-asr-flash-filetrans">
+-    非实时语音识别
+-  </Card>
+-</CardGroup>
+-
+-[查看更多](/zh/model-studio/asr-model)
+-
+-### 语音转语音 <span id="1ea7c042c50ss" />
+-
+-端到端语音对话，无需分别调用 ASR 和 TTS
+-
+-<CardGroup cols={3}>
+-  <Card title="qwen-audio-3.1-realtime-plus" icon="https://img.alicdn.com/imgextra/i3/O1CN01Kmx9dR1wcHOaMMXAk_!!6000000006328-55-tps-28-28.svg" href="https://bailian.console.aliyun.com/cn-beijing/model/market/detail/qwen-audio-3.1-realtime-plus">
+-    语音转语音
+-  </Card>
+-
+-  <Card title="qwen3.5-omni-plus" icon="https://img.alicdn.com/imgextra/i3/O1CN01Kmx9dR1wcHOaMMXAk_!!6000000006328-55-tps-28-28.svg" href="https://bailian.console.aliyun.com/cn-beijing/model/market/detail/qwen3.5-omni-plus">
+-    语音转语音
+-  </Card>
+-
+-  <Card title="qwen3.8-omni-flash-realtime" icon="https://img.alicdn.com/imgextra/i3/O1CN01Kmx9dR1wcHOaMMXAk_!!6000000006328-55-tps-28-28.svg" href="/zh/model-studio/qwen3-8-omni-flash-realtime">
+-    语音转语音
+-  </Card>
+-
+-  <Card title="qwen-audio-3.1-realtime-flash" href="/zh/model-studio/qwen-audio-3-1-realtime-flash">
+-    语音转语音
+-  </Card>
+-</CardGroup>
+-
+-[查看更多](/zh/model-studio/s2s-model)
++## 向量 <span id="models-embedding-group" />
++
++### 向量与重排序 <span id="b1af846883a7m" />
++
++文本或图文向量化，配合重排序提升检索精度
++
++<CardGroup cols={3}>
++  <Card title="qwen3.7-text-embedding-flash" icon="https://img.alicdn.com/imgextra/i3/O1CN01Kmx9dR1wcHOaMMXAk_!!6000000006328-55-tps-28-28.svg" href="https://bailian.console.aliyun.com/cn-beijing/model/market/detail/qwen3.7-text-embedding-flash">
++    文本向量
++  </Card>
++
++  <Card title="qwen3.7-text-embedding" icon="https://img.alicdn.com/imgextra/i3/O1CN01Kmx9dR1wcHOaMMXAk_!!6000000006328-55-tps-28-28.svg" href="https://bailian.console.aliyun.com/cn-beijing/model/market/detail/qwen3.7-text-embedding">
++    文本向量
++  </Card>
++
++  <Card title="qwen3-vl-embedding" icon="https://img.alicdn.com/imgextra/i3/O1CN01Kmx9dR1wcHOaMMXAk_!!6000000006328-55-tps-28-28.svg" href="https://bailian.console.aliyun.com/cn-beijing/model/market/detail/qwen3-vl-embedding">
++    图文向量
++  </Card>
++
++  <Card title="qwen3.7-text-rerank" icon="https://img.alicdn.com/imgextra/i3/O1CN01Kmx9dR1wcHOaMMXAk_!!6000000006328-55-tps-28-28.svg" href="https://bailian.console.aliyun.com/cn-beijing/model/market/detail/qwen3.7-text-rerank">
++    重排
++  </Card>
++</CardGroup>
++
++[查看更多](/zh/model-studio/embedding-rerank-model)
+ 
+ ## 全模态 <span id="omni-h2" />
+ 
+@@ -254,42 +294,6 @@
+ 
+ [查看更多](/zh/model-studio/omni)
+ 
+-## 向量与重排序 <span id="b1af846883a7m" />
+-
+-文本或图文向量化，配合重排序提升检索精度
+-
+-<CardGroup cols={3}>
+-  <Card title="qwen3.7-text-embedding-flash" icon="https://img.alicdn.com/imgextra/i3/O1CN01Kmx9dR1wcHOaMMXAk_!!6000000006328-55-tps-28-28.svg" href="https://bailian.console.aliyun.com/cn-beijing/model/market/detail/qwen3.7-text-embedding-flash">
+-    文本向量
+-  </Card>
+-
+-  <Card title="qwen3.7-text-embedding" icon="https://img.alicdn.com/imgextra/i3/O1CN01Kmx9dR1wcHOaMMXAk_!!6000000006328-55-tps-28-28.svg" href="https://bailian.console.aliyun.com/cn-beijing/model/market/detail/qwen3.7-text-embedding">
+-    文本向量
+-  </Card>
+-
+-  <Card title="qwen3-vl-embedding" icon="https://img.alicdn.com/imgextra/i3/O1CN01Kmx9dR1wcHOaMMXAk_!!6000000006328-55-tps-28-28.svg" href="https://bailian.console.aliyun.com/cn-beijing/model/market/detail/qwen3-vl-embedding">
+-    图文向量
+-  </Card>
+-
+-  <Card title="qwen3.7-text-rerank" icon="https://img.alicdn.com/imgextra/i3/O1CN01Kmx9dR1wcHOaMMXAk_!!6000000006328-55-tps-28-28.svg" href="https://bailian.console.aliyun.com/cn-beijing/model/market/detail/qwen3.7-text-rerank">
+-    重排
+-  </Card>
+-</CardGroup>
+-
+-[查看更多](/zh/model-studio/embedding-rerank-model)
+-
+-## 决策模型 <span id="dm-models-h2" />
+-
+-面向高频业务判断的结构化决策模型，一次前向完成分类、是非判断与评分，并返回概率分布与置信度。
+-
+-<CardGroup cols={3}>
+-  <Card title="decision-model-preview" icon="https://img.alicdn.com/imgextra/i3/O1CN01Kmx9dR1wcHOaMMXAk_!!6000000006328-55-tps-28-28.svg" href="https://bailian.console.aliyun.com/cn-beijing/model/market/detail/decision-model-preview">
+-    结构化决策
+-  </Card>
+-</CardGroup>
+-
+-[查看更多](/zh/model-studio/decision-model-preview)
+-
+ ## 查看所有模型 <span id="755074f4a6q17" />
+ 
+ 前往[模型广场](https://bailian.console.aliyun.com/cn-beijing/model/market)查看所有千问、三方、领域及历史版本模型。
