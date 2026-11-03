@@ -1,0 +1,116 @@
+--- reviewed/volcengine-ark/ark-document-index
++++ current/volcengine-ark/ark-document-index
+@@ -1078,6 +1078,90 @@
+     "Status": 1
+   },
+   {
++    "DocumentCode": "ai-tools",
++    "DocumentID": 2797882,
++    "Title": "接入 AI 工具",
++    "ParentCode": "model-invocation",
++    "Status": 1
++  },
++  {
++    "DocumentCode": "ai-tools-claude-code",
++    "DocumentID": 2797884,
++    "Title": "Claude Code",
++    "ParentCode": "ai-tools",
++    "Status": 2
++  },
++  {
++    "DocumentCode": "ai-tools-codex",
++    "DocumentID": 2797883,
++    "Title": "Codex",
++    "ParentCode": "ai-tools",
++    "Status": 2
++  },
++  {
++    "DocumentCode": "ai-tools-deepseek-harness",
++    "DocumentID": 2797891,
++    "Title": "DeepSeek Harness",
++    "ParentCode": "ai-tools",
++    "Status": 2
++  },
++  {
++    "DocumentCode": "ai-tools-hermes-agent",
++    "DocumentID": 2797887,
++    "Title": "Hermes Agent",
++    "ParentCode": "ai-tools",
++    "Status": 2
++  },
++  {
++    "DocumentCode": "ai-tools-openclaw",
++    "DocumentID": 2797886,
++    "Title": "OpenClaw",
++    "ParentCode": "ai-tools",
++    "Status": 2
++  },
++  {
++    "DocumentCode": "ai-tools-opencode",
++    "DocumentID": 2797885,
++    "Title": "OpenCode",
++    "ParentCode": "ai-tools",
++    "Status": 2
++  },
++  {
++    "DocumentCode": "ai-tools-other-tools",
++    "DocumentID": 2797893,
++    "Title": "其他工具",
++    "ParentCode": "ai-tools",
++    "Status": 2
++  },
++  {
++    "DocumentCode": "ai-tools-pi",
++    "DocumentID": 2797892,
++    "Title": "Pi",
++    "ParentCode": "ai-tools",
++    "Status": 2
++  },
++  {
++    "DocumentCode": "ai-tools-trae",
++    "DocumentID": 2797888,
++    "Title": "TRAE",
++    "ParentCode": "ai-tools",
++    "Status": 2
++  },
++  {
++    "DocumentCode": "ai-tools-workbuddy",
++    "DocumentID": 2797889,
++    "Title": "WorkBuddy",
++    "ParentCode": "ai-tools",
++    "Status": 2
++  },
++  {
++    "DocumentCode": "ai-tools-zcode",
++    "DocumentID": 2797890,
++    "Title": "ZCode",
++    "ParentCode": "ai-tools",
++    "Status": 2
++  },
++  {
+     "DocumentCode": "api-key",
+     "DocumentID": 1541594,
+     "Title": "获取 API Key 并配置",
+@@ -2872,7 +2956,7 @@
+   {
+     "DocumentCode": "generate-copyright-video",
+     "DocumentID": 2548867,
+-    "Title": "使用商用版权生成视频",
++    "Title": "使用版权内容生成视频",
+     "ParentCode": "experience-center",
+     "Status": 2
+   },
+@@ -3430,13 +3514,6 @@
+     "Status": 2
+   },
+   {
+-    "DocumentCode": "integrate-third-party-tools",
+-    "DocumentID": 2160841,
+-    "Title": "接入三方工具",
+-    "ParentCode": "model-invocation",
+-    "Status": 2
+-  },
+-  {
+     "DocumentCode": "intelligent-model-routing",
+     "DocumentID": 1828788,
+     "Title": "智能模型路由",

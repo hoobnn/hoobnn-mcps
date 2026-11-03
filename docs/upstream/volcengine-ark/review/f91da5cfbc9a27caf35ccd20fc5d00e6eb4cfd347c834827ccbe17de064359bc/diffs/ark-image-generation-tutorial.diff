@@ -1,0 +1,11 @@
+--- reviewed/volcengine-ark/ark-image-generation-tutorial
++++ current/volcengine-ark/ark-image-generation-tutorial
+@@ -213,7 +213,7 @@
+     output_format="png",
+     response_format="url",
+     extra_body={
+-        "watermark": False,
++        "watermark": True,
+     },
+ )
+ 

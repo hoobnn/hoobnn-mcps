@@ -138,3 +138,8 @@ uv tool install volcengine-ark-mcp
 ## 许可证
 
 [MIT](https://github.com/hoobnn/hoobnn-mcps/blob/main/LICENSE) © 2026 hoobnn。可自由使用、修改和分发，需保留版权声明。
+
+
+## 2026-11-03 文档复核与 0.6.5
+
+复核 PR #35 并重新抓取 17 个官方来源，全部成功。Chat/Responses 新增 prompt_cache_key 使用建议，现有 parameters 已原样透传，补充工具帮助：它仅优化路由，省略不关闭隐式缓存，设置不保证命中；同 Endpoint、模型下连续上下文复用内部 Session ID，不同用户和并行会话隔离，单 key 每分钟 15 请求为建议值。Seedance 2.0 和 Seedream 示例、排版、链接调整不改变 API 默认值，本工具继续显式发送 watermark、音频与比例参数。目录新增 AI 工具接入页、搜索教程链接迁移不引入新请求协议。本版只更新帮助与说明，未执行付费云端请求。

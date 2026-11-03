@@ -1,6 +1,6 @@
 {
   "format_version": 1,
-  "reviewed_at": "2026-10-31T08:34:53.767316+00:00",
+  "reviewed_at": "2026-11-03T10:17:04.019605+00:00",
   "sources": [
     {
       "key": "volcengine-ark/ark-base-url-and-authentication",
@@ -48,8 +48,8 @@
       "tools": [
         "chat"
       ],
-      "sha256": "b8e2191e3211a8dbf330a45860466cc4071cda6bb866ca0215e0d7ebb440bf32",
-      "bytes": 161475,
+      "sha256": "ee491ea25af427aeeef6fc063db4df2e9fc97e1f5d4e8d620dbd344a77cdbf51",
+      "bytes": 162106,
       "models": [
         "deepseek-v4-1-flash-260910",
         "deepseek-v4-1-flash-261017",
@@ -72,7 +72,7 @@
       ],
       "doc_links": [],
       "title": "对话(Chat) API",
-      "updated_at": "2026-10-28T12:32:45Z",
+      "updated_at": "2026-11-02T11:44:16Z",
       "document_id": "1494384",
       "headers": {
         "ETag": null,
@@ -90,8 +90,8 @@
       "tools": [
         "chat"
       ],
-      "sha256": "20d3fca6fa2d3b1c2d9e2f9cdc66fcd035193e742401e834d6869c85ec129dc5",
-      "bytes": 217060,
+      "sha256": "b734231053e815db9120ce1192e2d956c506040027160e89067a430f83fd5d27",
+      "bytes": 217691,
       "models": [
         "Doubao",
         "deepseek-v4-1-flash-260910",
@@ -116,7 +116,7 @@
         "https://www.volcengine.com/docs/84313/1419289#filter-%E8%A1%A8%E8%BE%BE%E5%BC%8F"
       ],
       "title": "创建 Response",
-      "updated_at": "2026-10-28T12:32:45Z",
+      "updated_at": "2026-11-02T11:44:16Z",
       "document_id": "1569618",
       "headers": {
         "ETag": null,
@@ -167,8 +167,8 @@
       "fetch_url": "https://docs.volcengine.com/api/doc/getDocList?LibraryID=82379",
       "kind": "guide",
       "tools": [],
-      "sha256": "b2cfb4c62a11242046c425f6c19928625a25f08ddf4bb40758faef794761a40f",
-      "bytes": 154900,
+      "sha256": "95a3d588267803e045b1f986485b57ac189c088d6c3ce77923fddd3e5ceb1006",
+      "bytes": 156514,
       "models": [
         "DeepSeek-V4.1-Flash",
         "Doubao",
@@ -202,7 +202,7 @@
       "endpoints": [],
       "doc_links": [],
       "title": "ark-document-index",
-      "documents": 856,
+      "documents": 867,
       "document_codes": [
         "2024-announcements",
         "2025-announcements",
@@ -358,6 +358,18 @@
         "ai-suite-arkcli",
         "ai-suite-arkexp",
         "ai-suite-document-access",
+        "ai-tools",
+        "ai-tools-claude-code",
+        "ai-tools-codex",
+        "ai-tools-deepseek-harness",
+        "ai-tools-hermes-agent",
+        "ai-tools-openclaw",
+        "ai-tools-opencode",
+        "ai-tools-other-tools",
+        "ai-tools-pi",
+        "ai-tools-trae",
+        "ai-tools-workbuddy",
+        "ai-tools-zcode",
         "api-key",
         "api-keys",
         "api-reference",
@@ -694,7 +706,6 @@
         "inference-and-training",
         "inner-describe-model-endpoints-api",
         "install-and-upgrade-sdk",
-        "integrate-third-party-tools",
         "intelligent-model-routing",
         "knowledge-base-index",
         "knowledge-base-plugin-data-structures",
@@ -1143,8 +1154,8 @@
       "tools": [
         "generate_image"
       ],
-      "sha256": "3106dcaa05356f6791bb04c6ba28ce78d9f32374a1e6431b32a76630f33db08e",
-      "bytes": 104361,
+      "sha256": "38ad81e87b344aa0668ac5d3e49b4d6413f02c0338eac6b062301ce3f17686e7",
+      "bytes": 104360,
       "models": [
         "Doubao",
         "Seedream",
@@ -1163,7 +1174,7 @@
         "https://www.volcengine.com/experience/ark?mode=vision&model=doubao-seedream-4-0-250828"
       ],
       "title": "图片生成教程",
-      "updated_at": "2026-10-25T11:51:02Z",
+      "updated_at": "2026-11-03T07:22:10Z",
       "document_id": "2742760",
       "headers": {
         "ETag": null,
@@ -1194,7 +1205,7 @@
       "endpoints": [],
       "doc_links": [],
       "title": "模型下线公告",
-      "updated_at": "2026-10-29T03:22:59Z",
+      "updated_at": "2026-11-03T07:23:30Z",
       "document_id": "1350667",
       "headers": {
         "ETag": null,
@@ -1263,7 +1274,7 @@
       "endpoints": [],
       "doc_links": [],
       "title": "模型列表",
-      "updated_at": "2026-10-30T08:45:36Z",
+      "updated_at": "2026-11-03T07:23:30Z",
       "document_id": "1330310",
       "headers": {
         "ETag": null,
@@ -1309,8 +1320,8 @@
       "tools": [
         "generate_video"
       ],
-      "sha256": "7c4df2e0b054961203ab3f9f5db23d9682d95d20ee63f085aa51ccf67a2ffe38",
-      "bytes": 84861,
+      "sha256": "f67fa6ca2cbafba02a802a7d490d28dc50e0981591679735606903d522f451af",
+      "bytes": 80753,
       "models": [
         "Doubao",
         "Seedance",
@@ -1323,7 +1334,7 @@
       ],
       "doc_links": [],
       "title": "Doubao Seedance 2.0 系列教程",
-      "updated_at": "2026-09-29T09:27:22Z",
+      "updated_at": "2026-11-03T07:23:34Z",
       "document_id": "2291680",
       "headers": {
         "ETag": null,
@@ -1362,7 +1373,7 @@
         "https://docs.volcengine.com/docs/TorchObjectStorage/Datasubscription-5?lang=zh)）"
       ],
       "title": "Doubao Seedance 2.5 教程",
-      "updated_at": "2026-10-28T02:00:16Z",
+      "updated_at": "2026-11-03T07:22:52Z",
       "document_id": "2607688",
       "headers": {
         "ETag": null,
@@ -1380,8 +1391,8 @@
       "tools": [
         "generate_image"
       ],
-      "sha256": "63562058f379a0ce53e05acacdc48a1273ee44700efc4cf41da13a60ca03f31f",
-      "bytes": 54812,
+      "sha256": "324b99a00f6d8da82b5dbfeee96d5cab66b0002a729b005b9bdcd60479e38122",
+      "bytes": 48917,
       "models": [
         "Doubao",
         "Seedream",
@@ -1396,7 +1407,7 @@
       ],
       "doc_links": [],
       "title": "Doubao Seedream 5.0 pro / flash 教程",
-      "updated_at": "2026-10-13T03:25:24Z",
+      "updated_at": "2026-11-03T07:22:52Z",
       "document_id": "2582774",
       "headers": {
         "ETag": null,
@@ -1486,8 +1497,8 @@
       "tools": [
         "chat"
       ],
-      "sha256": "99602bb8abcc8b72d611a64427ffc953dc81394b4ba172bb252dc4b916006683",
-      "bytes": 29420,
+      "sha256": "4352db6b80af03909f4b50c57de5a1cfcc2d06ae9666225ee3960ca0f180edca",
+      "bytes": 29172,
       "models": [
         "doubao",
         "doubao-seed-2-1-pro-260915"
@@ -1502,7 +1513,7 @@
         "https://docs.volcengine.com/docs/87772/2272951?lang=zh#yQ0Kqmsy"
       ],
       "title": "联网搜索工具",
-      "updated_at": "2026-10-27T06:55:40Z",
+      "updated_at": "2026-11-03T07:23:31Z",
       "document_id": "1756990",
       "headers": {
         "ETag": null,

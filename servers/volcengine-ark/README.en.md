@@ -138,3 +138,8 @@ Per-tool mapping, model versions, parameter differences and programmatically fet
 ## License
 
 [MIT](https://github.com/hoobnn/hoobnn-mcps/blob/main/LICENSE) © 2026 hoobnn. Free to use, modify and distribute, provided the copyright notice is kept.
+
+
+## 0.6.5 — 2026-11-03
+
+Documents prompt_cache_key for Chat and Responses via parameters: optional routing optimization, no guaranteed cache hit, and omission does not disable implicit caching. Reuse an opaque internal session ID for continuous context on the same endpoint/model; separate users and parallel sessions. The 15 requests/minute/key guidance is not a hard rate limit. Seedance/Seedream example and link changes do not change this package's explicit request defaults. No paid cloud calls.
