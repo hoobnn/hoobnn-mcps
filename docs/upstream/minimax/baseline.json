@@ -1,6 +1,6 @@
 {
   "format_version": 1,
-  "reviewed_at": "2026-10-30T08:46:48.457155+00:00",
+  "reviewed_at": "2026-11-03T09:44:06.993194+00:00",
   "sources": [
     {
       "key": "minimax/file-management-upload",
@@ -26,7 +26,7 @@
       "title": "文件上传",
       "headers": {
         "ETag": null,
-        "Last-Modified": "Fri, 30 Oct 2026 07:34:43 GMT",
+        "Last-Modified": "Tue, 03 Nov 2026 07:21:54 GMT",
         "Content-Type": "text/markdown; charset=utf-8"
       }
     },
@@ -53,7 +53,7 @@
       "title": "图生图",
       "headers": {
         "ETag": null,
-        "Last-Modified": "Fri, 30 Oct 2026 07:52:24 GMT",
+        "Last-Modified": "Tue, 03 Nov 2026 07:28:57 GMT",
         "Content-Type": "text/markdown; charset=utf-8"
       }
     },
@@ -80,7 +80,7 @@
       "title": "文生图",
       "headers": {
         "ETag": null,
-        "Last-Modified": "Fri, 30 Oct 2026 07:37:51 GMT",
+        "Last-Modified": "Tue, 03 Nov 2026 07:19:30 GMT",
         "Content-Type": "text/markdown; charset=utf-8"
       }
     },
@@ -94,8 +94,8 @@
       "tools": [
         "music_generation"
       ],
-      "sha256": "c1f7e1b383d03d7f3845daee27a0198449b0c48c98abd78f13e4740e5d657ed6",
-      "bytes": 10500,
+      "sha256": "b81df12e129e9cc56f2a60097c2d32335ad25b6b8dc26f9ece61fc2f1e5fcdaf",
+      "bytes": 10433,
       "models": [
         "Music-2.6-free",
         "Music-3.0-free",
@@ -114,7 +114,7 @@
       "title": "音乐生成 (Music Generation)",
       "headers": {
         "ETag": null,
-        "Last-Modified": "Fri, 30 Oct 2026 08:03:14 GMT",
+        "Last-Modified": "Tue, 03 Nov 2026 07:17:56 GMT",
         "Content-Type": "text/markdown; charset=utf-8"
       }
     },
@@ -145,7 +145,7 @@
       "title": "同步语音合成",
       "headers": {
         "ETag": null,
-        "Last-Modified": "Fri, 30 Oct 2026 07:31:34 GMT",
+        "Last-Modified": "Tue, 03 Nov 2026 07:17:11 GMT",
         "Content-Type": "text/markdown; charset=utf-8"
       }
     },
@@ -175,7 +175,7 @@
       "title": "创建视频生成任务",
       "headers": {
         "ETag": null,
-        "Last-Modified": "Fri, 30 Oct 2026 07:31:41 GMT",
+        "Last-Modified": "Tue, 03 Nov 2026 07:16:15 GMT",
         "Content-Type": "text/markdown; charset=utf-8"
       }
     },
@@ -199,7 +199,7 @@
       "title": "取消或删除任务",
       "headers": {
         "ETag": null,
-        "Last-Modified": "Fri, 30 Oct 2026 08:06:24 GMT",
+        "Last-Modified": "Tue, 03 Nov 2026 07:20:10 GMT",
         "Content-Type": "text/markdown; charset=utf-8"
       }
     },
@@ -226,7 +226,7 @@
       "title": "创建 H3-Context-IR 任务",
       "headers": {
         "ETag": null,
-        "Last-Modified": "Fri, 30 Oct 2026 07:52:41 GMT",
+        "Last-Modified": "Tue, 03 Nov 2026 07:20:21 GMT",
         "Content-Type": "text/markdown; charset=utf-8"
       }
     },
@@ -254,7 +254,7 @@
       "title": "查询任务列表",
       "headers": {
         "ETag": null,
-        "Last-Modified": "Fri, 30 Oct 2026 07:38:51 GMT",
+        "Last-Modified": "Tue, 03 Nov 2026 07:20:00 GMT",
         "Content-Type": "text/markdown; charset=utf-8"
       }
     },
@@ -282,7 +282,7 @@
       "title": "查询任务",
       "headers": {
         "ETag": null,
-        "Last-Modified": "Fri, 30 Oct 2026 07:31:41 GMT",
+        "Last-Modified": "Tue, 03 Nov 2026 08:48:00 GMT",
         "Content-Type": "text/markdown; charset=utf-8"
       }
     },
@@ -309,7 +309,7 @@
       "title": "创建视频再生成任务",
       "headers": {
         "ETag": null,
-        "Last-Modified": "Fri, 30 Oct 2026 08:14:20 GMT",
+        "Last-Modified": "Tue, 03 Nov 2026 07:20:31 GMT",
         "Content-Type": "text/markdown; charset=utf-8"
       }
     },
@@ -338,7 +338,7 @@
       "title": "音色快速复刻",
       "headers": {
         "ETag": null,
-        "Last-Modified": "Fri, 30 Oct 2026 07:50:29 GMT",
+        "Last-Modified": "Tue, 03 Nov 2026 07:17:54 GMT",
         "Content-Type": "text/markdown; charset=utf-8"
       }
     },
@@ -362,7 +362,7 @@
       "title": "音色设计",
       "headers": {
         "ETag": null,
-        "Last-Modified": "Fri, 30 Oct 2026 07:53:05 GMT",
+        "Last-Modified": "Tue, 03 Nov 2026 07:17:55 GMT",
         "Content-Type": "text/markdown; charset=utf-8"
       }
     },
@@ -386,7 +386,7 @@
       "title": "查询可用音色ID",
       "headers": {
         "ETag": null,
-        "Last-Modified": "Fri, 30 Oct 2026 07:46:37 GMT",
+        "Last-Modified": "Tue, 03 Nov 2026 07:34:38 GMT",
         "Content-Type": "text/markdown; charset=utf-8"
       }
     }
