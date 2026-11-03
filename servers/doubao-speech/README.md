@@ -237,3 +237,11 @@ Speech SDK 的离线模型、端侧 VAD / 音频处理和 Android / iOS 接入�
 ## 许可证
 
 [MIT](https://github.com/hoobnn/hoobnn-mcps/blob/main/LICENSE) © 2026 hoobnn。可自由使用、修改和分发，需保留版权声明。
+
+
+## 2026-11-03 文档复核与 0.5.3
+
+复核 PR #36 并重新抓取 77 个官方来源，全部成功。五篇识别 API 文档新增接入必读链接：录音文件识别的版本选型与功能对比，以及实时/一句话识别的音频要求和交互流程。补充 speech_to_text 帮助和文档导航；请求字段、音频限制、同步/异步语义以及标准版通常 3 小时、闲时版通常 24 小时的说明均未变。本版只更新帮助与说明，未执行付费云端请求。
+
+- [录音文件识别接入必读](https://docs.volcengine.com/docs/doubao-voice/access-must-read-1?lang=zh)
+- [流式识别接入必读](https://docs.volcengine.com/docs/doubao-voice/access-must-read-1-1?lang=zh)

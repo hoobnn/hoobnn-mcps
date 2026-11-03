@@ -288,6 +288,8 @@ def speech_to_text(
 
     按音频时长计费。flash 返回 text、duration_ms、utterances；standard/idle 返回 job_id、job_state。
     实时流式识别和一句话识别用 speech_raw_request(product='asr_stream')。
+    录音版本选型与功能对比见 https://docs.volcengine.com/docs/doubao-voice/access-must-read-1?lang=zh ，
+    流式接口选型、音频要求和交互流程见 https://docs.volcengine.com/docs/doubao-voice/access-must-read-1-1?lang=zh 。
     """
     if mode == "auto":
         mode = "standard" if speakers else "flash"

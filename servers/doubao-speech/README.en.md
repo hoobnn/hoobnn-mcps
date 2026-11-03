@@ -237,3 +237,8 @@ Shared connection pooling, overall timeouts, tool groups, error semantics and mi
 ## License
 
 [MIT](https://github.com/hoobnn/hoobnn-mcps/blob/main/LICENSE) © 2026 hoobnn. Free to use, modify and distribute, provided the copyright notice is kept.
+
+
+## 0.5.3 — 2026-11-03
+
+Adds official integration-guide links for [file recognition](https://docs.volcengine.com/docs/doubao-voice/access-must-read-1?lang=zh) and [streaming recognition](https://docs.volcengine.com/docs/doubao-voice/access-must-read-1-1?lang=zh) to the documentation and speech_to_text help. The five upstream API edits only add navigation; request fields, limits and completion-time guidance are unchanged. No paid cloud calls.

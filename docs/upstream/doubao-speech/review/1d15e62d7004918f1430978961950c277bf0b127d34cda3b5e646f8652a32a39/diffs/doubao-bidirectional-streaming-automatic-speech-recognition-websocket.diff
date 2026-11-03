@@ -1,0 +1,20 @@
+--- reviewed/doubao-speech/doubao-bidirectional-streaming-automatic-speech-recognition-websocket
++++ current/doubao-speech/doubao-bidirectional-streaming-automatic-speech-recognition-websocket
+@@ -1,4 +1,8 @@
+ **实时语音识别**是一种低延迟的流式语音识别服务，在用户说话的过程中持续返回增量识别结果，中间结果可能随后续音频的输入而更新，当一句话结束后返回最终确定的分句结果。适用于会议字幕、直播字幕、智能外呼、实时对话等场景
++
++> **说明**
++
++> 本文仅介绍 API 参数说明，若需了解接口选型、音频质量要求、交互流程及常见问题，请先阅读[《接入必读》](https://docs.volcengine.com/docs/doubao-voice/access-must-read-1-1?lang=zh)文档
+ 
+ > 运行依赖文件
+ 
+@@ -63,7 +67,7 @@
+ 
+ 指定音频格式
+ 
+-可选值：`wav` / `mp3` / `ogg `/ `pcm` /` spx` / `amr` /` aac` / `m4a`
++可选值：`wav` / `mp3` / `ogg `/ `pcm`
+ 
+ **rate** `int`
+ 
