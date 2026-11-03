@@ -167,3 +167,8 @@ All tools and default models were checked against the official documentation on 
 ## License
 
 [MIT](https://github.com/hoobnn/hoobnn-mcps/blob/main/LICENSE) © 2026 hoobnn. Free to use, modify and distribute, provided the copyright notice is kept.
+
+
+## 0.7.4 — 2026-11-03
+
+Clarifies image/video input for the current max/plus/flash aliases and model-specific JSON support after the official text/vision catalogs merged. Video messages can be supplied through history in the official compatible format; there is no separate videos argument. Removed catalog entries do not establish model retirement. Newly listed ASR languages apply to qwen-audio-3.1-asr-flash, not the qwen3-asr-flash endpoint exposed here. Documentation and help update; no paid cloud calls.

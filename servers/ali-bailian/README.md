@@ -168,3 +168,8 @@ HappyHorse 编辑输入视频 3–60 秒，输出最多 15 秒。数字人音频
 ## 许可证
 
 [MIT](https://github.com/hoobnn/hoobnn-mcps/blob/main/LICENSE) © 2026 hoobnn。可自由使用、修改和分发，需保留版权声明。
+
+
+## 2026-11-03 文档复核与 0.7.4
+
+复核 PR #34 并重新抓取 36 个官方来源，全部成功。文本生成与视觉理解页合并：当前 max/plus/flash 对应模型均支持文本、图像和视频输入；工具图片仍用 images，视频可通过 history 的官方消息格式传入。补充结构化输出按模型选择的说明，不把推荐列表删去旧型号或快照当作下线。ASR 新增语种只属于 qwen-audio-3.1-asr-flash，当前 speech_to_text 的 qwen3-asr-flash 协议与限制不变。目录重组未改变现有 HTTP 接口。本版更新帮助与说明，未执行付费云端请求。

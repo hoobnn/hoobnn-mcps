@@ -208,3 +208,10 @@ curl --fail --location https://help.aliyun.com/zh/model-studio/list-models.md
 北京地域的 qwen-image-2.0-pro、qwen-image-2.0-pro-2026-06-22、qwen-image-2.0-pro-2026-04-22、qwen-image-2.0-pro-2026-03-03、qwen-image-2.0、qwen-image-2.0-2026-03-03 六个型号的免费额度由 100 张改为无；输出单价和 Qwen-Image 2.1 型号额度未变。模型 ID、请求结构、endpoint 均未变化。本 MCP 不硬编码上述免费额度，也没有相关免费额度承诺，无需改实现或包版本。
 
 报告中的 models_added: antdigital/Ling-3.1-flash 来自上轮候选提取器增加前缀后的元数据补全；原始正文差异只改变上述免费额度，不能当作本轮新上架或账号已授权。36 个来源快照 SHA-256 与长度核验通过；保存原始差异和待审基线，未执行付费请求。
+
+
+## 2026-11-03 文档复核与 0.7.4
+
+复核 PR #34 并重新抓取 36 个官方来源，全部成功。文本生成与视觉理解页合并：当前 max/plus/flash 对应模型均支持文本、图像和视频输入；工具图片仍用 images，视频可通过 history 的官方消息格式传入。补充结构化输出按模型选择的说明，不把推荐列表删去旧型号或快照当作下线。ASR 新增语种只属于 qwen-audio-3.1-asr-flash，当前 speech_to_text 的 qwen3-asr-flash 协议与限制不变。目录重组未改变现有 HTTP 接口。本版更新帮助与说明，未执行付费云端请求。
+
+最新报告：[36 个来源复核](../upstream/ali-bailian/review/4ffaf64dea961217edb1673d15c740cad4ddb4ac0e964fe5471908ab2f5b617c/report.md)。推荐三型号表中的最大输出改为 128k，本实现原样透传 max_tokens，不硬编码上限。角色模型上下文与功能表调整、Qwen-Long JSON 支持改为不支持、Coder JSON 改为支持，均按目标模型契约选择，不为无效组合新增兼容承诺。
