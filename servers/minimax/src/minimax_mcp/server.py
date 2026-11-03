@@ -212,6 +212,7 @@ def music_generation(prompt: str = "", lyrics: str = "", model: str = "music-3.0
     """生成歌曲或纯音乐，music-3.0（默认）/music-2.6；prompt<=2000字符，lyrics<=3500字符，生成计费。
     人声歌曲须lyrics或lyrics_optimizer=true；纯音乐设is_instrumental=true并填写prompt。
     官方2026-08-20公告：付费音乐API仅历史付费用户可继续使用，免费接口已停止。账号可用性以服务端为准。
+    当前文档指向 MiniMax-Music3 开源模型作为其他使用方式；该开源模型不属于本工具的API model枚举。
     parameters支持audio_setting等官方字段，不支持stream；结果可recover_job补下载。
     """
     return media.music(prompt, lyrics, model, is_instrumental, lyrics_optimizer, parameters, target_dir(output_directory), MODE)

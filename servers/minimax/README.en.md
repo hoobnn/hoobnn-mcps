@@ -23,3 +23,8 @@ Not a fully compatible replacement: no legacy Hailuo V1 tasks or speaker playbac
 Cancellation/deletion is hidden unless `admin` is included in `MCP_TOOL_GROUPS`. The default groups are video,image,speech,music,files,jobs,help.
 
 Contracts verified against the [official China API overview](https://platform.minimax.cn/docs/api-reference/api-overview) on 2026-10-11. Offline contract and stdio tests do not establish live account access or generated media quality. No paid cloud generation is part of the test suite.
+
+
+## 0.3.2 — 2026-11-03
+
+The official music documentation removed the MiniMax Audio site link and retains the [Hugging Face](https://huggingface.co/MiniMaxAI/MiniMax-Music3) and [ModelScope](https://modelscope.cn/models/MiniMax/MiniMax-Music3) open-source Music3 links. Paid APIs remain restricted to existing paid customers; free APIs remain discontinued. The open-source model is not an API model accepted by this tool. Help/documentation update only; no paid cloud calls.

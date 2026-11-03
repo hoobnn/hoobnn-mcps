@@ -82,3 +82,8 @@ python3 scripts/sync_shared.py --check
 python3 scripts/upstream_docs.py --check-coverage
 uv build --project servers/minimax
 ```
+
+
+## 2026-11-03 文档复核与 0.3.2
+
+复核 PR #37 并重新抓取 14 个官方来源，全部成功。音乐页删除 MiniMax Audio 体验站点链接，保留 [Hugging Face](https://huggingface.co/MiniMaxAI/MiniMax-Music3) 与 [ModelScope](https://modelscope.cn/models/MiniMax/MiniMax-Music3) 开源模型入口。付费 API 仍限历史付费用户，免费 API 停服说明未变；开源 Music3 不作为本工具可调用的 API model 新增。更新工具帮助和说明，未执行付费云端请求。
