@@ -124,6 +124,9 @@ def chat(prompt: str, model: str = "pro", system: str | None = None, history: li
     images支持本地图片或URL，videos为公网URL。history用Chat消息格式，工具不保存对话。
     web_search=true或传previous_response_id时使用Responses API，保留sources和response_id；否则走Chat API。
     thinking=true/false映射enabled/disabled；最新API不再列出auto。json_mode要求提示词明确JSON结构；parameters透传模型支持的高级字段。
+    parameters.prompt_cache_key为可选缓存路由标识，Chat与Responses均支持；省略不关闭隐式缓存，设置也不保证命中。
+    同一Endpoint和模型下连续上下文复用不可读内部Session ID，不同用户或并行会话使用不同值；不要传个人信息、凭证或prompt原文。
+    官方建议单key总流量低于每分钟15个请求；这是路由建议而非硬限流，扩缩容等仍可能重新路由。
     返回content、reasoning、usage；include_response=true可取完整response。按token与搜索调用计费，模型和搜索服务须已开通；尚未完成云端验证。
     """
     return products.chat(prompt, model, system, history, images, videos, thinking, max_tokens,

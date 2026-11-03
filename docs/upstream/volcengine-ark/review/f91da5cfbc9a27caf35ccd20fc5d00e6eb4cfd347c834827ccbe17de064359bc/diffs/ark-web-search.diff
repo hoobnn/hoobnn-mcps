@@ -1,0 +1,33 @@
+--- reviewed/volcengine-ark/ark-web-search
++++ current/volcengine-ark/ark-web-search
+@@ -527,7 +527,7 @@
+ 
+ **Claude Code**
+ 
+-Claude Code 通过兼容 Anthropic Messages 接口协议的服务调用豆包搜索能力。完成接入配置后，在 Claude Code 中对话时，如果模型判断您的问题需要通过搜索功能才能回答，那么模型会调用 Web Search 工具进行搜索。完整的配置和使用方法参见[在 Claude Code 中使用 Web Search 工具](https://ark.volcengine.com/region:cn-beijing/docs/integrate-third-party-tools#web-search-claude-code)。
++Claude Code 通过兼容 Anthropic Messages 接口协议的服务调用豆包搜索能力。完成接入配置后，在 Claude Code 中对话时，如果模型判断您的问题需要通过搜索功能才能回答，那么模型会调用 Web Search 工具进行搜索。完整的配置和使用方法参见[Claude Code](https://ark.volcengine.com/region:cn-beijing/docs/ai-tools-claude-code)。
+ 
+ > **注意**
+ 
+@@ -537,7 +537,7 @@
+ 
+ **Codex**
+ 
+-Codex 通过兼容 OpenAI Responses API 接口协议的服务调用豆包搜索能力。完成接入配置后，在 Codex 中对话时，如果模型判断您的问题需要通过搜索功能才能回答，那么模型会调用 Web Search 工具进行搜索。完整的配置和使用方法参见[在 Codex 中使用 Web Search 工具](https://ark.volcengine.com/region:cn-beijing/docs/integrate-third-party-tools#web-search-codex)。
++Codex 通过兼容 OpenAI Responses API 接口协议的服务调用豆包搜索能力。完成接入配置后，在 Codex 中对话时，如果模型判断您的问题需要通过搜索功能才能回答，那么模型会调用 Web Search 工具进行搜索。完整的配置和使用方法参见[Codex](https://ark.volcengine.com/region:cn-beijing/docs/ai-tools-codex)。
+ 
+ > **注意**
+ 
+@@ -805,9 +805,9 @@
+ 
+ * Agent 场景使用方法
+ 
+-   * [在 Claude Code 中使用 Web Search 工具](https://ark.volcengine.com/region:cn-beijing/docs/integrate-third-party-tools#web-search-claude-code)
+-
+-   * [在 Codex 中使用 Web Search 工具](https://ark.volcengine.com/region:cn-beijing/docs/integrate-third-party-tools#web-search-codex)
++   * [Claude Code](https://ark.volcengine.com/region:cn-beijing/docs/ai-tools-claude-code)
++
++   * [Codex](https://ark.volcengine.com/region:cn-beijing/docs/ai-tools-codex)
+ 
+ * API 参考
+ 
