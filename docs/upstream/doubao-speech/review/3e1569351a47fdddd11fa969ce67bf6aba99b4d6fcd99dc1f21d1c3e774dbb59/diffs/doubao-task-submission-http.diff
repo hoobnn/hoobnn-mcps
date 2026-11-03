@@ -1,0 +1,13 @@
+--- reviewed/doubao-speech/doubao-task-submission-http
++++ current/doubao-speech/doubao-task-submission-http
+@@ -4,7 +4,9 @@
+ 
+ > **说明**
+ 
+-> 任务通常在 24 小时内完成，如遇任务高峰期可能略有延迟。若超过 24 小时仍未获取到结果，请联系技术支持排查
++* > 本文仅介绍 API 参数说明，若需了解录音文件识别各版本的应用场景、功能对比等，请先阅读[《接入必读》](https://docs.volcengine.com/docs/doubao-voice/access-must-read-1?lang=zh)文档
++
++* > 任务通常在 24 小时内完成，如遇任务高峰期可能略有延迟。若超过 24 小时仍未获取到结果，请联系技术支持排查
+ 
+ POST https://openspeech.bytedance.com/api/v3/auc/bigmodel/idle/submit
+ 

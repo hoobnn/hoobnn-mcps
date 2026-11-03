@@ -1,0 +1,11 @@
+--- reviewed/doubao-speech/doubao-recording-file-recognition-lite-http
++++ current/doubao-speech/doubao-recording-file-recognition-lite-http
+@@ -1,4 +1,8 @@
+ 本接口提供录音文件转文本能力。上传音频文件后同步返回完整识别结果，无需轮询查询接口。最大支持 100MB 且不超过 2 小时的音频文件，支持wav、mp3、ogg opus格式
++
++> **说明**
++
++> 本文仅介绍 API 参数说明，若需了解录音文件识别各版本的应用场景、功能对比等，请先阅读[《接入必读》](https://docs.volcengine.com/docs/doubao-voice/access-must-read-1?lang=zh)文档
+ 
+ POST https://openspeech.bytedance.com/api/v3/auc/bigmodel/recognize/flash
+ 

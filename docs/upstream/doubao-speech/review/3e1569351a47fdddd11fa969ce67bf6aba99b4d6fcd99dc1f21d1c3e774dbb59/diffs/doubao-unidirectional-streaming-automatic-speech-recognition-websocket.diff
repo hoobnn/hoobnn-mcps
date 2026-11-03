@@ -1,0 +1,11 @@
+--- reviewed/doubao-speech/doubao-unidirectional-streaming-automatic-speech-recognition-websocket
++++ current/doubao-speech/doubao-unidirectional-streaming-automatic-speech-recognition-websocket
+@@ -1,4 +1,8 @@
+ **一句话语音识别**是指在用户说完一句话后，返回整句识别结果的语音识别方式。相比实时语音识别，准确率更高，适合语音输入法、消息语音转写等无需实时出字、对准确率要求较高的场景
++
++> **说明**
++
++> 本文仅介绍 API 参数说明，若需了解接口选型、音频质量要求、交互流程及常见问题，请先阅读[《接入必读》](https://docs.volcengine.com/docs/doubao-voice/access-must-read-1-1?lang=zh)文档
+ 
+ > 运行依赖文件
+ 

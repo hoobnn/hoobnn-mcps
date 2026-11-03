@@ -204,3 +204,13 @@ OpenAPI主机、签名service、region、Action和Version逐项依据正文请�
 6. 公开正文API没有正式稳定性保证；MDContent空、目录节点、错误JSON、HTML空壳必须作为获取失败处理；不存在“任意网页追加.md就能取最新文档”的通用规则。
 
 本轮下载的网页/正文和proto均为官方公开资源；临时分析文件在结束时清理。持久证据保存为正文指纹与来源列表，不把完整官方文章或凭据复制进仓库。
+
+
+## 2026-11-03 文档复核与 0.5.3
+
+复核 PR #36 并重新抓取 77 个官方来源，全部成功。五篇识别 API 文档新增接入必读链接：录音文件识别的版本选型与功能对比，以及实时/一句话识别的音频要求和交互流程。补充 speech_to_text 帮助和文档导航；请求字段、音频限制、同步/异步语义以及标准版通常 3 小时、闲时版通常 24 小时的说明均未变。本版只更新帮助与说明，未执行付费云端请求。
+
+- [录音文件识别接入必读](https://docs.volcengine.com/docs/doubao-voice/access-must-read-1?lang=zh)
+- [流式识别接入必读](https://docs.volcengine.com/docs/doubao-voice/access-must-read-1-1?lang=zh)
+
+报告：[77 个来源复核](../upstream/doubao-speech/review/1d15e62d7004918f1430978961950c277bf0b127d34cda3b5e646f8652a32a39/report.md)。原始与最新批次均保留；五篇变化均为接入导航及其排版，不包含 API 字段变化。
