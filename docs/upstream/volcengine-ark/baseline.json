@@ -1,6 +1,6 @@
 {
   "format_version": 1,
-  "reviewed_at": "2026-11-03T10:17:04.019605+00:00",
+  "reviewed_at": "2026-11-04T09:31:30.065874+00:00",
   "sources": [
     {
       "key": "volcengine-ark/ark-base-url-and-authentication",
@@ -1089,8 +1089,8 @@
         "get_job",
         "recover_job"
       ],
-      "sha256": "5715125bf3af058dd12969390dbb7271a2718f0053033a5c0bcd147b973217bd",
-      "bytes": 14061,
+      "sha256": "75885c6b0e98f4add81b6bfbd13753e42fce76e9a37193d8662b480c78dc7021",
+      "bytes": 14062,
       "models": [
         "Seedance",
         "doubao-seedance-2-0-260128"
@@ -1101,10 +1101,10 @@
         "https://ark.cn-beijing.volces.com/api/v3/contents/generations/tasks/{id}"
       ],
       "doc_links": [
-        "https://docs.volcengine.com/docs/TorchObjectStorage/Datasubscription-5?lang=zh"
+        "https://docs.volcengine.com/docs/torch-object-storage/data-subscription?lang=zh"
       ],
       "title": "查询视频生成任务",
-      "updated_at": "2026-10-28T02:00:16Z",
+      "updated_at": "2026-11-04T03:07:57Z",
       "document_id": "1521309",
       "headers": {
         "ETag": null,
@@ -1123,20 +1123,23 @@
         "generate_image",
         "recover_job"
       ],
-      "sha256": "7fb8038e10dd8e865bc062074050d02ec5699f7e19786671b9f9e7331873719a",
-      "bytes": 35169,
+      "sha256": "1771473355bfcef3a571edc23bb2a8efc005a9367fc1011ef797556ad02a8d60",
+      "bytes": 126225,
       "models": [
         "Doubao",
-        "Seedream"
+        "Seedream",
+        "doubao-seedream-5-0-260128",
+        "doubao-seedream-5-0-pro-260628"
       ],
       "endpoints": [
+        "https://ark.cn-beijing.volces.com/api/v3",
         "https://ark.cn-beijing.volces.com/api/v3/images/generations"
       ],
       "doc_links": [
-        "https://docs.volcengine.com/docs/TorchObjectStorage/Datasubscription-5?lang=zh"
+        "https://docs.volcengine.com/docs/torch-object-storage/data-subscription?lang=zh"
       ],
       "title": "图片生成 API",
-      "updated_at": "2026-10-14T07:35:19Z",
+      "updated_at": "2026-11-04T03:07:57Z",
       "document_id": "1541523",
       "headers": {
         "ETag": null,
@@ -1154,8 +1157,8 @@
       "tools": [
         "generate_image"
       ],
-      "sha256": "38ad81e87b344aa0668ac5d3e49b4d6413f02c0338eac6b062301ce3f17686e7",
-      "bytes": 104360,
+      "sha256": "e1bac74763bd3fc9b4cb3d7116b50f8e4eb594c8c1fbb32cef7c9e0b72fb7aeb",
+      "bytes": 104361,
       "models": [
         "Doubao",
         "Seedream",
@@ -1170,11 +1173,11 @@
         "https://ark.cn-beijing.volces.com/api/v3/images/generations"
       ],
       "doc_links": [
-        "https://docs.volcengine.com/docs/TorchObjectStorage/Datasubscription-5?lang=zh",
+        "https://docs.volcengine.com/docs/torch-object-storage/data-subscription?lang=zh",
         "https://www.volcengine.com/experience/ark?mode=vision&model=doubao-seedream-4-0-250828"
       ],
       "title": "图片生成教程",
-      "updated_at": "2026-11-03T07:22:10Z",
+      "updated_at": "2026-11-04T03:07:58Z",
       "document_id": "2742760",
       "headers": {
         "ETag": null,

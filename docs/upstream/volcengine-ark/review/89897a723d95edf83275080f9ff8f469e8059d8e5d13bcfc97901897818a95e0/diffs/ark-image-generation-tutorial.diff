@@ -1,0 +1,11 @@
+--- reviewed/volcengine-ark/ark-image-generation-tutorial
++++ current/volcengine-ark/ark-image-generation-tutorial
+@@ -2142,7 +2142,7 @@
+ 
+ 图片URL仅保留24小时，超时后会被自动清除。请您务必及时保存生成的图片。
+ 
+-推荐配置火山引擎 TOS 提供的数据订阅功能，将您的模型推理产物自动转存到自己的 TOS 桶中，便于长期备份或二次加工。详细介绍请参见 [TOS 数据订阅](https://docs.volcengine.com/docs/TorchObjectStorage/Datasubscription-5?lang=zh)。
++推荐配置火山引擎 TOS 提供的数据订阅功能，将您的模型推理产物自动转存到自己的 TOS 桶中，便于长期备份或二次加工。详细介绍请参见 [TOS 数据订阅](https://docs.volcengine.com/docs/torch-object-storage/data-subscription?lang=zh)。
+ 
+ **限流说明**
+ 
