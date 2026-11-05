@@ -1,0 +1,42 @@
+--- reviewed/ali-bailian/bailian-embedding
++++ current/ali-bailian/bailian-embedding
+@@ -625,9 +625,7 @@
+           </td>
+ 
+           <td rowSpan={3}>
+-            各50万Token
+-
+-            有效期：自开通百炼/模型发布/申请通过之日起90天（以较晚者为准）
++            无免费额度
+           </td>
+ 
+           <td>
+@@ -686,7 +684,7 @@
+             0.0007元
+           </td>
+ 
+-          <td rowSpan={2}>
++          <td>
+             2000万Token
+ 
+             有效期：自开通百炼/模型发布/申请通过之日起90天（以较晚者为准）
+@@ -700,6 +698,10 @@
+         <tr>
+           <td>
+             text-embedding-async-v1
++          </td>
++
++          <td>
++            无免费额度
+           </td>
+ 
+           <td>
+@@ -876,7 +878,7 @@
+ 
+ <Tabs>
+   <Tab title="北京">
+-    <table style={{ display: "table", tableLayout: "fixed", width: "100%" }}><colgroup><col style={{ width: "14.3%" }} /><col style={{ width: "14.3%" }} /><col style={{ width: "14.3%" }} /><col style={{ width: "14.3%" }} /><col style={{ width: "14.3%" }} /><col style={{ width: "14.3%" }} /><col style={{ width: "14.2%" }} /></colgroup><thead><tr><th><p><strong>模型名称</strong></p></th><th><p><strong>向量维度</strong></p></th><th><p><strong>文本长度限制</strong></p></th><th><p><strong>图片大小限制</strong></p></th><th><p><strong>视频大小限制</strong></p></th><th><p><strong>单价（每千输入Token）</strong></p></th><th><p><strong>免费额度</strong><a href="/zh/model-studio/new-free-quota#977b13081ab56">（注）</a></p></th></tr></thead><tbody><tr><td><p>qwen3-vl-embedding</p></td><td><p>2560（默认）, 2048, 1536, 1024, 768, 512, 256</p></td><td rowSpan={2}><p>32,000 Token</p></td><td><p>单张大小不超过<strong>10 MB</strong></p></td><td rowSpan={2}><p>视频文件大小不超过 <strong>50 MB</strong></p></td><td rowSpan={2}><p>图片/视频：0.0018元</p><p>文本：0.0007元</p></td><td rowSpan={7}><p>100万Token</p><p>有效期：自开通百炼/模型发布/申请通过之日起90天（以较晚者为准）</p></td></tr><tr><td><p>qwen2.5-vl-embedding</p></td><td><p>2048, 1024（默认）, 768, 512</p></td><td><p>单张大小不超过<strong>5 MB</strong></p></td></tr><tr><td><p>tongyi-embedding-vision-plus-2026-03-06</p></td><td><p>1152（默认）, 1024, 512, 256, 128, 64</p></td><td rowSpan={4}><p>1,024 Token</p></td><td rowSpan={2}><p>建议单张大小不超过<strong>5 MB</strong>，最大<strong>10 MB。</strong>支持多图，最多支持输入<strong>64张</strong></p></td><td rowSpan={2}><p>视频文件大小不超过 <strong>50 MB</strong></p><p>且编码类型为H.264/H.265</p></td><td><p>0.0005元</p></td></tr><tr><td><p>tongyi-embedding-vision-flash-2026-03-06</p></td><td><p>768（默认）, 512, 256, 128, 64</p></td><td><p>0.00015元</p></td></tr><tr><td><p>tongyi-embedding-vision-plus</p></td><td><p>1152</p></td><td rowSpan={2}><p>单张大小不超过<strong>3 MB</strong>。支持多图，最多支持输入<strong>8张</strong></p></td><td rowSpan={2}><p>视频文件大小不超过 <strong>10 MB</strong></p></td><td><p>0.0005元</p></td></tr><tr><td><p>tongyi-embedding-vision-flash</p></td><td><p>768</p></td><td><p>0.00015元</p></td></tr><tr><td><p>multimodal-embedding-v1</p></td><td><p>1,024</p></td><td><p>512 Token</p></td><td><p>单张大小不超过<strong>3 MB</strong></p></td><td><p>视频文件大小不超过 <strong>10 MB</strong></p></td><td><p>图片/视频：0.0009 元</p><p>文本：0.0007 元</p></td></tr></tbody></table>
++    <table style={{ display: "table", tableLayout: "fixed", width: "100%" }}><colgroup><col style={{ width: "14.3%" }} /><col style={{ width: "14.3%" }} /><col style={{ width: "14.3%" }} /><col style={{ width: "14.3%" }} /><col style={{ width: "14.3%" }} /><col style={{ width: "14.3%" }} /><col style={{ width: "14.2%" }} /></colgroup><thead><tr><th><p><strong>模型名称</strong></p></th><th><p><strong>向量维度</strong></p></th><th><p><strong>文本长度限制</strong></p></th><th><p><strong>图片大小限制</strong></p></th><th><p><strong>视频大小限制</strong></p></th><th><p><strong>单价（每千输入Token）</strong></p></th><th><p><strong>免费额度</strong><a href="/zh/model-studio/new-free-quota#977b13081ab56">（注）</a></p></th></tr></thead><tbody><tr><td><p>qwen3-vl-embedding</p></td><td><p>2560（默认）, 2048, 1536, 1024, 768, 512, 256</p></td><td rowSpan={2}><p>32,000 Token</p></td><td><p>单张大小不超过<strong>10 MB</strong></p></td><td rowSpan={2}><p>视频文件大小不超过 <strong>50 MB</strong></p></td><td rowSpan={2}><p>图片/视频：0.0018元</p><p>文本：0.0007元</p></td><td><p>100万Token</p><p>有效期：自开通百炼/模型发布/申请通过之日起90天（以较晚者为准）</p></td></tr><tr><td><p>qwen2.5-vl-embedding</p></td><td><p>2048, 1024（默认）, 768, 512</p></td><td><p>单张大小不超过<strong>5 MB</strong></p></td><td><p>无免费额度</p></td></tr><tr><td><p>tongyi-embedding-vision-plus-2026-03-06</p></td><td><p>1152（默认）, 1024, 512, 256, 128, 64</p></td><td rowSpan={4}><p>1,024 Token</p></td><td rowSpan={2}><p>建议单张大小不超过<strong>5 MB</strong>，最大<strong>10 MB。</strong>支持多图，最多支持输入<strong>64张</strong></p></td><td rowSpan={2}><p>视频文件大小不超过 <strong>50 MB</strong></p><p>且编码类型为H.264/H.265</p></td><td><p>0.0005元</p></td><td><p>无免费额度</p></td></tr><tr><td><p>tongyi-embedding-vision-flash-2026-03-06</p></td><td><p>768（默认）, 512, 256, 128, 64</p></td><td><p>0.00015元</p></td><td><p>无免费额度</p></td></tr><tr><td><p>tongyi-embedding-vision-plus</p></td><td><p>1152</p></td><td rowSpan={2}><p>单张大小不超过<strong>3 MB</strong>。支持多图，最多支持输入<strong>8张</strong></p></td><td rowSpan={2}><p>视频文件大小不超过 <strong>10 MB</strong></p></td><td><p>0.0005元</p></td><td><p>100万Token</p><p>有效期：自开通百炼/模型发布/申请通过之日起90天（以较晚者为准）</p></td></tr><tr><td><p>tongyi-embedding-vision-flash</p></td><td><p>768</p></td><td><p>0.00015元</p></td><td><p>100万Token</p><p>有效期：自开通百炼/模型发布/申请通过之日起90天（以较晚者为准）</p></td></tr><tr><td><p>multimodal-embedding-v1</p></td><td><p>1,024</p></td><td><p>512 Token</p></td><td><p>单张大小不超过<strong>3 MB</strong></p></td><td><p>视频文件大小不超过 <strong>10 MB</strong></p></td><td><p>图片/视频：0.0009 元</p><p>文本：0.0007 元</p></td><td><p>无免费额度</p></td></tr></tbody></table>
+   </Tab>
+ 
+   <Tab title="新加坡">

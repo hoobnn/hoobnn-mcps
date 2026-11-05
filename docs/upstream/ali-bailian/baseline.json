@@ -1,6 +1,6 @@
 {
   "format_version": 1,
-  "reviewed_at": "2026-11-03T10:17:04.720677+00:00",
+  "reviewed_at": "2026-11-05T09:40:07.700950+00:00",
   "sources": [
     {
       "key": "ali-bailian/bailian-asr",
@@ -113,8 +113,8 @@
       "tools": [
         "list_models"
       ],
-      "sha256": "c8f573f610e751b16d2b3cdc09c770a0616834ee01b0b3470bb6c84afc2f4872",
-      "bytes": 16559,
+      "sha256": "9643af589174b58bfc2e2f99358d677b10ac15f343e22267ae87b6904bfb1f6a",
+      "bytes": 28951,
       "models": [
         "HappyHorse",
         "Qwen",
@@ -126,7 +126,6 @@
         "qwen3.8-max"
       ],
       "endpoints": [
-        "https://dashscope-intl.aliyuncs.com/api/v1/models](https://dashscope-intl.aliyuncs.com/api/v1/models",
         "https://{WorkspaceId}.cn-beijing.maas.aliyuncs.com/api/v1/models"
       ],
       "doc_links": [],
@@ -147,8 +146,8 @@
       "tools": [
         "chat"
       ],
-      "sha256": "68817fbb4c95897c303e735640d5bdc7e86509ec1817e185b97afd23c9229500",
-      "bytes": 134991,
+      "sha256": "90d74048d6a187dfb49a3d2ca20ad0fd00580581cc10033b3c6472ee6e950991",
+      "bytes": 135934,
       "models": [
         "DeepSeek-V3.2",
         "DeepSeek-V4",
@@ -293,8 +292,8 @@
       "tools": [
         "chat"
       ],
-      "sha256": "2ac1f6c978b33a26a0c188972f7861e2d3a02503acae99cb2e33babaa2a2681e",
-      "bytes": 39691,
+      "sha256": "f68573bec49856543dc371bfaf5ca95791a9ac0fc8761b91084c77a5a2d71659",
+      "bytes": 40034,
       "models": [
         "MiniMax-M3.1-Flash",
         "Qwen",
@@ -313,6 +312,7 @@
         "deepseek-r1-distill-qwen-1.5b",
         "deepseek-v4.1-flash-1017",
         "kimi-k3",
+        "kimi-k3.1-pro",
         "qwen-deep-research",
         "qwen-doc",
         "qwen-flash",
@@ -397,8 +397,8 @@
       "tools": [
         "embed"
       ],
-      "sha256": "ceefb1439986ca72211a614fd82b09469bc04cda293b8f406b8d3e2ebd19afc6",
-      "bytes": 67328,
+      "sha256": "9a6c504f1560fd54a58957482083c206f09c73e4da7798661d77f059a04186b3",
+      "bytes": 67635,
       "models": [
         "Qwen3-Embedding",
         "multimodal-embedding-api-reference",
@@ -1016,8 +1016,8 @@
       "fetch_url": "https://help.aliyun.com/zh/model-studio/model-pricing.md",
       "kind": "models",
       "tools": [],
-      "sha256": "3034d4b4e76e36399efc3ac818031e832b2a19b6d3bbd0958e32e3f09a98e20a",
-      "bytes": 695295,
+      "sha256": "1eecdc5c6ec9a15dd62d7a57e06ae9238031cd684edf9369ebb10387eb9fd6fa",
+      "bytes": 700266,
       "models": [
         "CosyVoice",
         "DeepSeek-",
@@ -1085,6 +1085,7 @@
         "kimi-k2.7-code",
         "kimi-k2.7-code-highspeed",
         "kimi-k3",
+        "kimi-k3-1-pro",
         "kimi-k3.1-pro",
         "kimi-k3.1-pro-highspeed",
         "multimodal-embedding-v1",
@@ -1288,8 +1289,8 @@
       "tools": [
         "embed"
       ],
-      "sha256": "2c4d719b562f72d4e5cf1f394879affdac50aa92a32dc1a1e39cb6a3b6b6672f",
-      "bytes": 58790,
+      "sha256": "6d2f602f581bd1f4f397c0bfbd5fb442ac3a574f2fdcd0fe867be55e6171f0c7",
+      "bytes": 59352,
       "models": [
         "Multimodal-Embedding",
         "Qwen3",
@@ -1485,8 +1486,8 @@
       "fetch_url": "https://help.aliyun.com/zh/model-studio/rate-limit.md",
       "kind": "guide",
       "tools": [],
-      "sha256": "7abd19fa51144d630b0f3db0720fef9cc62abd0a4635a2a47ffa0219793b052a",
-      "bytes": 385821,
+      "sha256": "67be73d60f885e1320c722e36cd6b2671d768f37e374c8bc4c0eea50c9ebb26a",
+      "bytes": 398999,
       "models": [
         "CosyVoice",
         "DeepSeek-",
@@ -1551,6 +1552,7 @@
         "kimi-k2.7-code",
         "kimi-k2.7-code-highspeed",
         "kimi-k3",
+        "kimi-k3-1-pro",
         "kimi-k3.1-pro",
         "kimi-k3.1-pro-highspeed",
         "minimax-h3-video-title",
@@ -2105,8 +2107,8 @@
       "tools": [
         "chat"
       ],
-      "sha256": "2ac1f6c978b33a26a0c188972f7861e2d3a02503acae99cb2e33babaa2a2681e",
-      "bytes": 39691,
+      "sha256": "f68573bec49856543dc371bfaf5ca95791a9ac0fc8761b91084c77a5a2d71659",
+      "bytes": 40034,
       "models": [
         "MiniMax-M3.1-Flash",
         "Qwen",
@@ -2125,6 +2127,7 @@
         "deepseek-r1-distill-qwen-1.5b",
         "deepseek-v4.1-flash-1017",
         "kimi-k3",
+        "kimi-k3.1-pro",
         "qwen-deep-research",
         "qwen-doc",
         "qwen-flash",
@@ -2388,8 +2391,8 @@
         "animate_portrait",
         "get_job"
       ],
-      "sha256": "b8248ff9f9bb5bf95d16f4ba77e62e55dddec418c977d02beb43cbbb0e59a964",
-      "bytes": 19396,
+      "sha256": "6342175e0a53329f3140c0fb7ba6c137b6246190b8f6b1c4d3d9673b07bdd238",
+      "bytes": 18416,
       "models": [
         "wan2.2-s2v"
       ],

@@ -1,0 +1,976 @@
+--- reviewed/ali-bailian/bailian-catalog
++++ current/ali-bailian/bailian-catalog
+@@ -1,435 +1,553 @@
+ # 查询模型列表
+ 
+-> 调用 GET /api/v1/models 接口查询百炼平台上可用的模型列表，支持按模型作者、模态类型、模型能力、部署模式等条件筛选，并获取模型的定价和上下文长度等信息。
++> 查询百炼平台上可用的模型列表，支持按模型作者、模态类型、模型能力、部署模式等条件筛选，并获取模型的定价和上下文长度等信息。
+ 
+ <meta property="og:title" content="查询模型列表" />
+ 
+-## 前提条件 <span id="a1b2c3d4e5f010" />
+-
+-已创建 API Key 并配置为环境变量 `DASHSCOPE_API_KEY`。配置方法请参见[配置API Key到环境变量](/zh/model-studio/configure-api-key-through-environment-variables)。
+-
+-## 请求说明 <span id="a1b2c3d4e5f020" />
+-
+-<strong>HTTP 方法</strong>：GET
+-
+-<strong>请求地址</strong>
+-
+-调用时请将 `{WorkspaceId}` 替换为业务空间 ID。
+-
+-<table style={{ display: "table", tableLayout: "fixed", width: "100%" }}><colgroup><col style={{ width: "30%" }} /><col style={{ width: "70%" }} /></colgroup><thead><tr><th><p><strong>地域</strong></p></th><th><p><strong>Endpoint</strong></p></th></tr></thead><tbody><tr><td><p>华北2（北京）</p></td><td><p><code>https\://\{WorkspaceId}.cn-beijing.maas.aliyuncs.com/api/v1/models</code></p></td></tr><tr><td><p>新加坡</p></td><td><p><code>[https://dashscope-intl.aliyuncs.com/api/v1/models](https://dashscope-intl.aliyuncs.com/api/v1/models)</code></p></td></tr><tr><td><p>中国香港</p></td><td><p><code>[https://cn-hongkong.dashscope.aliyuncs.com/api/v1/models](https://cn-hongkong.dashscope.aliyuncs.com/api/v1/models)</code></p></td></tr><tr><td><p>日本（东京）</p></td><td><p><code>https\://\{WorkspaceId}.ap-northeast-1.maas.aliyuncs.com/api/v1/models</code></p></td></tr><tr><td><p>德国（法兰克福）</p></td><td><p><code>https\://\{WorkspaceId}.eu-central-1.maas.aliyuncs.com/api/v1/models</code></p></td></tr><tr><td><p>美国（弗吉尼亚）</p></td><td><p><code>https\://\{WorkspaceId}.us-east-1.maas.aliyuncs.com/api/v1/models</code></p></td></tr></tbody></table>
+-
+-<strong>认证方式</strong>
+-
+-在请求 Header 中设置 `Authorization: Bearer {API_KEY}`。
+-
+-<Columns cols={2}>
+-  <Column>
+-    ## 请求参数 <span id="a1b2c3d4e5f100" />
+-
+-    所有参数均通过 Query String 传递。
+-
+-    <strong>name</strong> · `String` · 可选
+-
+-    按模型名称进行模糊搜索。示例：`qwen`
+-
+-    <strong>model</strong> · `String` · 可选
+-
+-    按模型 ID 进行精确查询。示例：`qwen3.8-max`
+-
+-    <strong>language</strong> · `String` · 可选
+-
+-    返回结果的语言。可选值：`zh-CN`（中文）、`en-US`（英文）。
+-
+-    <strong>page\_no</strong> · `Integer` · 可选
+-
+-    页码，从 1 开始。默认值：`1`。
+-
+-    <strong>page\_size</strong> · `Integer` · 可选
+-
+-    每页返回的模型数量。默认值：`20`。
+-
+-    <strong>providers</strong> · `Array[String]` · 可选
+-
+-    按模型供应商筛选。
+-
+-    <Accordion title="providers 可选值">
+-      - `qwen`：阿里巴巴-千问
+-      - `zhipu-ai`：智谱AI
+-      - `wan`：阿里巴巴-万相
+-      - `qwen-domain-model`：阿里巴巴-领域模型
+-      - `mini-max`：MiniMax
+-      - `moonshot-ai`：月之暗面
+-      - `deepseek`：DeepSeek
+-      - `happyhorse`：阿里巴巴-HappyHorse
+-      - `kling`：可灵AI
+-      - `pixverse`：PixVerse
+-      - `vidu`：Vidu
+-      - `tripo`：Tripo
+-      - `xiaomi`：小米MiMo
+-    </Accordion>
+-
+-    <strong>inference\_providers</strong> · `Array[String]` · 可选
+-
+-    按推理服务供应商筛选。可选值：
+-
+-    <Accordion title="inference_providers 可选值">
+-      - `aliyun-bailian`：阿里云百炼
+-      - `alibaba-cloud-modelstudio`：Alibaba Cloud Model Studio
+-      - `siliconflow`：硅基流动
+-      - `moonshot`：Kimi
+-      - `mini-max`：MiniMax
+-      - `kling`：Kling AI
+-      - `vidu`：Vidu
+-      - `pixverse`：PixVerse
+-      - `vanchin`：快手万擎
+-      - `xiaomi`：小米MiMo
+-      - `zhipu-ai`：Zhipu AI
+-      - `tripo`：Tripo
+-    </Accordion>
+-
+-    <strong>capabilities</strong> · `Array[String]` · 可选
+-
+-    按模型类型筛选。
+-
+-    <Accordion title="capabilities 可选值">
+-      - `Reasoning`：深度思考
+-      - `VU`：视觉理解
+-      - `IG`：图片生成
+-      - `VG`：视频生成
+-      - `ASR`：语音识别
+-      - `TTS`：语音合成
+-      - `ME`：多模态向量
+-      - `Realtime-Omni`：实时全模态
+-      - `Multimodal-Omni`：全模态
+-      - `Realtime-Text-to-Speech`：实时语音合成
+-      - `TG`：文本生成
+-      - `TR`：文本向量
+-      - `Realtime-ASR`：实时语音识别
+-      - `Realtime-Audio-Translate`：实时语音翻译
+-      - `3D-generation`：3D 生成
+-      - `Realtime-Chatting`：实时语音对话
+-
+-      传入多个值时重复参数名，例如 `capabilities=TG&capabilities=Reasoning`，返回支持文本生成或深度思考的模型。
+-    </Accordion>
+-
+-    <strong>features</strong> · `Array[String]` · 可选
+-
+-    按模型能力筛选。
+-
+-    <Accordion title="features 可选值">
+-      - `model-experience`：模型体验
+-      - `function-calling`：function calling
+-      - `structured-outputs`：结构化输出
+-      - `web-search`：联网搜索
+-      - `prefix-completion`：前缀续写
+-      - `cache`：cache缓存
+-      - `batch`：批量推理
+-      - `fine-tuning`：模型调优
+-    </Accordion>
+-
+-    <strong>context\_window</strong> · `Integer` · 可选
+-
+-    按上下文长度筛选，返回上下文长度严格小于该值的模型。示例：`20000`。
+-
+-    <strong>service\_site</strong> · `String` · 可选
+-
+-    按部署模式筛选。不传时返回所有部署模式的模型。可选值：
+-
+-    <Accordion title="service_site 可选值">
+-      - `global`：全球
+-      - `international`：国际
+-      - `asia-pacific-china`：中国
+-      - `cn-hongkong`：中国香港
+-      - `european-union`：欧盟
+-      - `united-states`：美国
+-      - `japan`：日本
+-    </Accordion>
+-
+-    <strong>supports</strong> · `Array[String]` · 可选
+-
+-    按模型支持的应用场景筛选。默认值：`inference`。可选值：
+-
+-    <Accordion title="supports 可选值">
+-      - `inference`：支持推理的模型
+-      - `deploy`：支持部署的模型
+-    </Accordion>
+-
+-    <strong>deployment\_methods</strong> · `Array[String]` · 可选
+-
+-    按部署方式筛选。可选值：
+-
+-    <Accordion title="deployment_methods 可选值">
+-      - `ptu`：预置吞吐量（Provisioned Throughput Unit）
+-    </Accordion>
+-
+-    <strong>deployment\_ptu\_service\_tiers</strong> · `Array[String]` · 可选
+-
+-    按 PTU 类型筛选，使用时需同时设置 `deployment_methods` 包含 `ptu`。
+-  </Column>
+-
+-  <Column>
+-    ## 请求示例 <span id="a1b2c3d4e5f400" />
+-
+-    <Tabs>
+-      <Tab title="查询所有模型">
+-        不设置筛选条件。示例查询第一页；如需获取所有模型，请递增 `page_no`，直到获取完模型总数（HTTP 接口返回 `output.total`；Python SDK 2.0 取 `resp.total_count`）。
+-
+-        <CodeGroup>
+-          ```bash title="curl"
++<style>/\* API sections: shared markup, theme-aware presentation, no document JavaScript. \*/ .rkb-api \{   --rkb-api-accent: var(--adoc-color-primary, #1677ff);   --rkb-api-muted: var(--adoc-color-text-secondary, #667085);   --rkb-api-border: var(--adoc-color-border, #e4e7ec);   --rkb-api-surface: var(--adoc-color-bg-secondary, #f7f8fa);   --rkb-api-required: var(--adoc-badge-color-red, #b42318);   --rkb-api-required-bg: var(--adoc-badge-color-red-bg, #fef3f2);   --rkb-api-top: calc(var(--topbar-height, 112px) + 16px);   container-type: inline-size;   container-name: rkb-api;   margin-block: 24px 36px;   min-width: 0;   color: inherit;   font-family: inherit; }  .rkb-api, .rkb-api \* \{ box-sizing: border-box; } .dark .rkb-api, \[data-theme="dark"] .rkb-api \{   --rkb-api-required: var(--adoc-badge-color-red, #fda29b);   --rkb-api-required-bg: var(--adoc-badge-color-red-bg, #3b1d20); } .rkb-api .rkb-api-layout \{   display: grid;   grid-template-columns: minmax(0, 1fr);   align-items: start;   gap: 28px; } .rkb-api .rkb-api-fields, .rkb-api .rkb-api-examples \{ min-width: 0; } .rkb-api .rkb-api-endpoint \{   display: flex;   align-items: flex-start;   gap: 12px;   margin: 0 0 28px;   padding: 12px 14px;   border: 1px solid var(--rkb-api-border);   border-radius: 8px;   background: var(--rkb-api-surface);   line-height: 1.6; } .rkb-api .rkb-api-method \{   flex: none;   padding: 2px 7px;   border-radius: 4px;   color: var(--rkb-api-accent);   background: var(--adoc-badge-color-blue-bg, #eaf3ff);   font-size: 12px;   font-weight: 650;   line-height: 20px; } .rkb-api .rkb-api-endpoint > code \{   padding: 2px 0;   border: 0;   background: transparent;   color: inherit;   font-size: 13px;   overflow-wrap: anywhere;   white-space: normal; } .rkb-api .rkb-api-group + .rkb-api-group \{ margin-top: 32px; } .rkb-api .rkb-api-group > h3, .rkb-api .rkb-api-group > h4 \{   margin: 0 0 8px;   padding: 0 0 12px;   border: 0;   border-bottom: 1px solid var(--rkb-api-border);   font-size: 16px;   font-weight: 650;   line-height: 1.6;   color: inherit; } .rkb-api .rkb-api-field \{   margin: 0;   padding: 18px 0;   border-bottom: 1px solid var(--rkb-api-border);   overflow-wrap: anywhere; } .rkb-api .rkb-api-field:last-child \{ border-bottom: 0; } .rkb-api .rkb-api-field-head \{   display: flex;   align-items: baseline;   flex-wrap: wrap;   gap: 6px 8px;   margin: 0 0 9px;   line-height: 1.7; } .rkb-api .rkb-api-field-head > code \{   padding: 0;   border: 0;   border-radius: 0;   background: transparent;   color: var(--rkb-api-accent);   font-size: 14px;   font-weight: 600;   white-space: normal;   overflow-wrap: anywhere; } .rkb-api .rkb-api-type, .rkb-api .rkb-api-required, .rkb-api .rkb-api-optional \{   padding: 1px 6px;   border-radius: 4px;   font-size: 12px;   font-weight: 400;   line-height: 1.65;   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; } .rkb-api .rkb-api-type, .rkb-api .rkb-api-optional \{   color: var(--rkb-api-muted);   background: var(--rkb-api-surface); } .rkb-api .rkb-api-required \{   color: var(--rkb-api-required);   background: var(--rkb-api-required-bg); } .rkb-api .rkb-api-field > p, .rkb-api .rkb-api-field > \[data-as="p"], .rkb-api .rkb-api-field > ul, .rkb-api .rkb-api-field > ol \{   margin: 8px 0;   font-size: 14px;   line-height: 1.75;   color: inherit; } .rkb-api .rkb-api-field > \[data-as="p"] \{ display: block; } .rkb-api .rkb-api-field > :last-child \{ margin-bottom: 0; } .rkb-api .rkb-api-field > .rkb-api-meta \{   color: var(--rkb-api-muted);   font-size: 13px; } .rkb-api .rkb-api-children \{   margin: 16px 0 0 4px;   padding-left: 18px;   border-left: 2px solid var(--rkb-api-border); } .rkb-api .rkb-api-children > .rkb-api-field \{ padding-block: 12px; } .rkb-api .rkb-api-example-title \{   margin: 0 0 10px;   padding: 0;   color: inherit;   font-size: 14px;   font-weight: 600;   line-height: 1.6; } .rkb-api .rkb-api-examples \{   align-self: start;   scrollbar-gutter: stable;   overscroll-behavior: contain; } .rkb-api .rkb-api-examples > :first-child \{ margin-top: 0; } .rkb-api .rkb-api-examples > :last-child \{ margin-bottom: 0; } .rkb-api .rkb-api-examples :is(.code-group, .code-block, .tabbed-codeblock-box, .help-code-block) \{   margin-top: 0;   min-width: 0; } .rkb-api .rkb-api-examples pre \{ max-height: none; } /\* A readable fallback before the portal wraps a compiled code block. \*/ .rkb-api .rkb-api-examples > pre \{   margin: 0;   padding: 16px;   border: 1px solid var(--rkb-api-border);   border-radius: 8px;   background: var(--rkb-api-surface);   overflow: auto;   font-size: 13px;   line-height: 1.7; } .rkb-api .rkb-api-examples \[data-component-part="code-block-root"] \{   height: auto !important;   max-height: none !important; }  /\* The portal's overflow:hidden otherwise becomes sticky's scrolling ancestor. \*/ .markdown-body:has(.rkb-api) \{ overflow: clip; } .markdown-body .rkb-api \{ --rkb-api-top: 128px; }  /\* Use available article width, not the outer browser width. \*/ @container rkb-api (min-width: 720px) \{   .rkb-api .rkb-api-layout \{ grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr); gap: 36px; }   .rkb-api .rkb-api-examples \{     position: sticky;     top: var(--rkb-api-top);     max-height: calc(100vh - var(--rkb-api-top) - 24px);     max-height: calc(100dvh - var(--rkb-api-top) - 24px);     overflow: auto;   } } @media (max-height: 500px) \{   .rkb-api .rkb-api-examples \{ position: static; max-height: none; overflow: visible; } } @media print \{   .rkb-api \{ container-type: normal; }   .rkb-api .rkb-api-layout \{ display: block; }   .rkb-api .rkb-api-examples \{ position: static; max-height: none; overflow: visible; } }</style>
++
++<span id="a1b2c3d4e5f010" />
++
++<span id="前提条件" />
++
++## 请求地址 <span id="a1b2c3d4e5f020" /> <span id="请求说明" />
++
++调用时请将 `{WorkspaceId}` 替换为业务空间 ID，并在请求 Header 中设置 `Authorization: Bearer YOUR_API_KEY`，其中 `YOUR_API_KEY` 需替换为在[百炼控制台](https://bailian.console.aliyun.com/cn-beijing/model/settings/api-key)获取的 API Key。
++
++<Tabs>
++  <Tab title="华北2（北京）">
++    <span style={{ overflowWrap: "anywhere" }}><span>https</span>://\{WorkspaceId}.cn-beijing.maas.aliyuncs.com</span>
++  </Tab>
++
++  <Tab title="新加坡">
++    <span style={{ overflowWrap: "anywhere" }}><span>https</span>://dashscope-intl.aliyuncs.com</span>
++  </Tab>
++
++  <Tab title="中国香港">
++    <span style={{ overflowWrap: "anywhere" }}><span>https</span>://cn-hongkong.dashscope.aliyuncs.com</span>
++  </Tab>
++
++  <Tab title="日本（东京）">
++    <span style={{ overflowWrap: "anywhere" }}><span>https</span>://\{WorkspaceId}.ap-northeast-1.maas.aliyuncs.com</span>
++  </Tab>
++
++  <Tab title="德国（法兰克福）">
++    <span style={{ overflowWrap: "anywhere" }}><span>https</span>://\{WorkspaceId}.eu-central-1.maas.aliyuncs.com</span>
++  </Tab>
++
++  <Tab title="美国（弗吉尼亚）">
++    <span style={{ overflowWrap: "anywhere" }}><span>https</span>://\{WorkspaceId}.us-east-1.maas.aliyuncs.com</span>
++  </Tab>
++</Tabs>
++
++## 请求参数 <span id="a1b2c3d4e5f100" />
++
++<div className="rkb-api">
++  <div className="rkb-api-endpoint"><span className="rkb-api-method">GET</span><code>/api/v1/models</code></div>
++
++  <div className="rkb-api-layout">
++    <div className="rkb-api-fields">
++      <div className="rkb-api-group">
++        所有参数均通过 Query String 传递。
++
++        <div className="rkb-api-field">
++          <div className="rkb-api-field-head"><code>name</code><span className="rkb-api-type">String</span><span className="rkb-api-optional">可选</span></div>
++
++          按模型名称进行模糊搜索。示例：`qwen`
++        </div>
++
++        <div className="rkb-api-field">
++          <div className="rkb-api-field-head"><code>model</code><span className="rkb-api-type">String</span><span className="rkb-api-optional">可选</span></div>
++
++          按模型 ID 进行精确查询。示例：`qwen3.8-max`
++        </div>
++
++        <div className="rkb-api-field">
++          <div className="rkb-api-field-head"><code>language</code><span className="rkb-api-type">String</span><span className="rkb-api-optional">可选</span></div>
++
++          返回结果的语言。可选值：`zh-CN`（中文）、`en-US`（英文）。
++        </div>
++
++        <div className="rkb-api-field">
++          <div className="rkb-api-field-head"><code>page\_no</code><span className="rkb-api-type">Integer</span><span className="rkb-api-optional">可选</span></div>
++
++          页码，从 1 开始。默认值：`1`。
++        </div>
++
++        <div className="rkb-api-field">
++          <div className="rkb-api-field-head"><code>page\_size</code><span className="rkb-api-type">Integer</span><span className="rkb-api-optional">可选</span></div>
++
++          每页返回的模型数量。默认值：`20`。
++        </div>
++
++        <div className="rkb-api-field">
++          <div className="rkb-api-field-head"><code>providers</code><span className="rkb-api-type">Array\[String]</span><span className="rkb-api-optional">可选</span></div>
++
++          按模型供应商筛选。
++
++          <span id="accordion-providers-可选值" />
++
++          <Accordion title="点击查看可选值">
++            - `qwen`：阿里巴巴-千问
++            - `zhipu-ai`：智谱AI
++            - `wan`：阿里巴巴-万相
++            - `qwen-domain-model`：阿里巴巴-领域模型
++            - `mini-max`：MiniMax
++            - `moonshot-ai`：月之暗面
++            - `deepseek`：DeepSeek
++            - `happyhorse`：阿里巴巴-HappyHorse
++            - `kling`：可灵AI
++            - `pixverse`：PixVerse
++            - `vidu`：Vidu
++            - `tripo`：Tripo
++            - `xiaomi`：小米MiMo
++          </Accordion>
++        </div>
++
++        <div className="rkb-api-field">
++          <div className="rkb-api-field-head"><code>inference\_providers</code><span className="rkb-api-type">Array\[String]</span><span className="rkb-api-optional">可选</span></div>
++
++          按推理服务供应商筛选。
++
++          <span id="accordion-inference-providers-可选值" />
++
++          <Accordion title="点击查看可选值">
++            - `aliyun-bailian`：阿里云百炼
++            - `alibaba-cloud-modelstudio`：Alibaba Cloud Model Studio
++            - `siliconflow`：硅基流动
++            - `moonshot`：Kimi
++            - `mini-max`：MiniMax
++            - `kling`：Kling AI
++            - `vidu`：Vidu
++            - `pixverse`：PixVerse
++            - `vanchin`：快手万擎
++            - `xiaomi`：小米MiMo
++            - `zhipu-ai`：Zhipu AI
++            - `tripo`：Tripo
++          </Accordion>
++        </div>
++
++        <div className="rkb-api-field">
++          <div className="rkb-api-field-head"><code>capabilities</code><span className="rkb-api-type">Array\[String]</span><span className="rkb-api-optional">可选</span></div>
++
++          按模型类型筛选。
++
++          <span id="accordion-capabilities-可选值" />
++
++          <Accordion title="点击查看可选值">
++            - `Reasoning`：深度思考
++            - `VU`：视觉理解
++            - `IG`：图片生成
++            - `VG`：视频生成
++            - `ASR`：语音识别
++            - `TTS`：语音合成
++            - `ME`：多模态向量
++            - `Realtime-Omni`：实时全模态
++            - `Multimodal-Omni`：全模态
++            - `Realtime-Text-to-Speech`：实时语音合成
++            - `TG`：文本生成
++            - `TR`：文本向量
++            - `Realtime-ASR`：实时语音识别
++            - `Realtime-Audio-Translate`：实时语音翻译
++            - `3D-generation`：3D 生成
++            - `Realtime-Chatting`：实时语音对话
++
++            传入多个值时重复参数名，例如 `capabilities=TG&capabilities=Reasoning`，返回支持文本生成或深度思考的模型。
++          </Accordion>
++        </div>
++
++        <div className="rkb-api-field">
++          <div className="rkb-api-field-head"><code>features</code><span className="rkb-api-type">Array\[String]</span><span className="rkb-api-optional">可选</span></div>
++
++          按模型能力筛选。
++
++          <span id="accordion-features-可选值" />
++
++          <Accordion title="点击查看可选值">
++            - `model-experience`：模型体验
++            - `function-calling`：function calling
++            - `structured-outputs`：结构化输出
++            - `web-search`：联网搜索
++            - `prefix-completion`：前缀续写
++            - `cache`：cache缓存
++            - `batch`：批量推理
++            - `fine-tuning`：模型调优
++          </Accordion>
++        </div>
++
++        <div className="rkb-api-field">
++          <div className="rkb-api-field-head"><code>context\_window</code><span className="rkb-api-type">Integer</span><span className="rkb-api-optional">可选</span></div>
++
++          按上下文长度筛选，返回上下文长度严格小于该值的模型。示例：`20000`。
++        </div>
++
++        <div className="rkb-api-field">
++          <div className="rkb-api-field-head"><code>service\_site</code><span className="rkb-api-type">String</span><span className="rkb-api-optional">可选</span></div>
++
++          按部署模式筛选。不传时返回所有部署模式的模型。
++
++          <span id="accordion-service-site-可选值" />
++
++          <Accordion title="点击查看可选值">
++            - `global`：全球
++            - `international`：国际
++            - `asia-pacific-china`：中国
++            - `cn-hongkong`：中国香港
++            - `european-union`：欧盟
++            - `united-states`：美国
++            - `japan`：日本
++          </Accordion>
++        </div>
++
++        <div className="rkb-api-field">
++          <div className="rkb-api-field-head"><code>supports</code><span className="rkb-api-type">Array\[String]</span><span className="rkb-api-optional">可选</span></div>
++
++          按模型支持的应用场景筛选。默认值：`inference`。
++
++          <span id="accordion-supports-可选值" />
++
++          <Accordion title="点击查看可选值">
++            - `inference`：支持推理的模型
++            - `deploy`：支持部署的模型
++          </Accordion>
++        </div>
++
++        <div className="rkb-api-field">
++          <div className="rkb-api-field-head"><code>deployment\_methods</code><span className="rkb-api-type">Array\[String]</span><span className="rkb-api-optional">可选</span></div>
++
++          按部署方式筛选。
++
++          <span id="accordion-deployment-methods-可选值" />
++
++          <Accordion title="点击查看可选值">
++            - `ptu`：预置吞吐量（Provisioned Throughput Unit）
++          </Accordion>
++        </div>
++
++        <div className="rkb-api-field">
++          <div className="rkb-api-field-head"><code>deployment\_ptu\_service\_tiers</code><span className="rkb-api-type">Array\[String]</span><span className="rkb-api-optional">可选</span></div>
++
++          按 PTU 类型筛选，使用时需同时设置 `deployment_methods` 包含 `ptu`。
++        </div>
++      </div>
++    </div>
++
++    <div className="rkb-api-examples">
++      <span id="a1b2c3d4e5f400" />
++
++      <span id="请求示例" />
++
++      <Tabs>
++        <Tab title="查询所有模型">
++          不设置筛选条件。示例查询第一页；如需获取所有模型，请递增 `page_no`，直到获取完模型总数（HTTP 接口返回 `output.total`；Python SDK 2.0 取 `resp.total_count`）。
++
++          <CodeGroup>
++            ```bash title="curl"
++            curl --get "https://{WorkspaceId}.cn-beijing.maas.aliyuncs.com/api/v1/models" \
++                --header "Authorization: Bearer $DASHSCOPE_API_KEY" \
++                --header "Content-Type: application/json" \
++                --data-urlencode "page_no=1" \
++                --data-urlencode "page_size=20"
++            ```
++
++            ```python title="Python SDK"
++            import os
++            import dashscope
++
++            client = dashscope.Client(api_key=os.getenv('DASHSCOPE_API_KEY'))
++
++            resp = client.models.list(
++                page_no=1,
++                page_size=20,
++            )
++            # 返回分页对象：resp.models 为当前页模型列表，resp.total_count 为符合条件的模型总数
++            print(resp.models)
++            ```
++          </CodeGroup>
++
++          <Note>
++            DashScope Python SDK 的 `client.models.list()` 方法仅支持 `page_no`、`page_size` 与 `provider` 参数（`provider` 在客户端侧按当前页过滤），不支持按 `capabilities`、`features` 等条件筛选。如需筛选模型，请使用 HTTP API。Python 示例查询第一页，递增 `page_no` 可获取后续页面。
++          </Note>
++        </Tab>
++
++        <Tab title="按模型 ID 查询">
++          设置 `model=qwen3.8-max`，按模型 ID 精确查询。
++
++          ```bash
+           curl --get "https://{WorkspaceId}.cn-beijing.maas.aliyuncs.com/api/v1/models" \
+               --header "Authorization: Bearer $DASHSCOPE_API_KEY" \
+               --header "Content-Type: application/json" \
++              --data-urlencode "model=qwen3.8-max" \
+               --data-urlencode "page_no=1" \
+               --data-urlencode "page_size=20"
+           ```
+-
+-          ```python title="Python SDK"
+-          import os
+-          import dashscope
+-
+-          client = dashscope.Client(api_key=os.getenv('DASHSCOPE_API_KEY'))
+-
+-          resp = client.models.list(
+-              page_no=1,
+-              page_size=20,
+-          )
+-          # 返回分页对象：resp.models 为当前页模型列表，resp.total_count 为符合条件的模型总数
+-          print(resp.models)
++        </Tab>
++
++        <Tab title="查询所有文本生成模型">
++          设置 `capabilities=TG`，查询文本生成模型。示例查询第一页，递增 `page_no` 可获取后续页面。
++
++          ```bash
++          curl --get "https://{WorkspaceId}.cn-beijing.maas.aliyuncs.com/api/v1/models" \
++              --header "Authorization: Bearer $DASHSCOPE_API_KEY" \
++              --header "Content-Type: application/json" \
++              --data-urlencode "capabilities=TG" \
++              --data-urlencode "page_no=1" \
++              --data-urlencode "page_size=20"
+           ```
+-        </CodeGroup>
+-
+-        <Note>
+-          DashScope Python SDK 的 `client.models.list()` 方法仅支持 `page_no`、`page_size` 与 `provider` 参数（`provider` 在客户端侧按当前页过滤），不支持按 `capabilities`、`features` 等条件筛选。如需筛选模型，请使用 HTTP API。Python 示例查询第一页，递增 `page_no` 可获取后续页面。
+-        </Note>
+-      </Tab>
+-
+-      <Tab title="按模型 ID 查询">
+-        设置 `model=qwen3.8-max`，按模型 ID 精确查询。
+-
+-        ```bash
+-        curl --get "https://{WorkspaceId}.cn-beijing.maas.aliyuncs.com/api/v1/models" \
+-            --header "Authorization: Bearer $DASHSCOPE_API_KEY" \
+-            --header "Content-Type: application/json" \
+-            --data-urlencode "model=qwen3.8-max" \
+-            --data-urlencode "page_no=1" \
+-            --data-urlencode "page_size=20"
+-        ```
+-      </Tab>
+-
+-      <Tab title="查询所有文本生成模型">
+-        设置 `capabilities=TG`，查询文本生成模型。示例查询第一页，递增 `page_no` 可获取后续页面。
+-
+-        ```bash
+-        curl --get "https://{WorkspaceId}.cn-beijing.maas.aliyuncs.com/api/v1/models" \
+-            --header "Authorization: Bearer $DASHSCOPE_API_KEY" \
+-            --header "Content-Type: application/json" \
+-            --data-urlencode "capabilities=TG" \
+-            --data-urlencode "page_no=1" \
+-            --data-urlencode "page_size=20"
+-        ```
+-      </Tab>
+-
+-      <Tab title="查询 Qwen 系列的推理模型">
+-        设置 `providers=qwen` 和 `capabilities=Reasoning`，查询 Qwen 系列的推理模型。示例查询第一页，递增 `page_no` 可获取后续页面。
+-
+-        ```bash
+-        curl --get "https://{WorkspaceId}.cn-beijing.maas.aliyuncs.com/api/v1/models" \
+-            --header "Authorization: Bearer $DASHSCOPE_API_KEY" \
+-            --header "Content-Type: application/json" \
+-            --data-urlencode "providers=qwen" \
+-            --data-urlencode "capabilities=Reasoning" \
+-            --data-urlencode "page_no=1" \
+-            --data-urlencode "page_size=100"
+-        ```
+-      </Tab>
+-    </Tabs>
+-  </Column>
+-</Columns>
+-
+-<Columns cols={2}>
+-  <Column>
+-    ## 返回参数 <span id="a1b2c3d4e5f300" />
+-
+-    <strong>request\_id</strong> · `String`
+-
+-    请求 ID，用于问题排查。
+-
+-    <strong>output.total</strong> · `Number`
+-
+-    符合条件的模型总数。
+-
+-    <strong>output.page\_no</strong> · `Number`
+-
+-    当前页码。
+-
+-    <strong>output.page\_size</strong> · `Number`
+-
+-    每页条数。
+-
+-    <Accordion title="output.models[]">
+-      <strong>model</strong> · `String`
+-
+-      模型 ID，用于 API 调用时指定模型。
+-
+-      <strong>name</strong> · `String`
+-
+-      模型的名称。
+-
+-      <strong>description</strong> · `String`
+-
+-      模型的功能描述。
+-
+-      <strong>provider</strong> · `String`
+-
+-      模型作者，如 `qwen`。
+-
+-      <strong>inference\_provider</strong> · `String`
+-
+-      推理服务供应商，如 `aliyun-bailian`。
+-
+-      <strong>capabilities</strong> · `Array[String]`
+-
+-      模型支持的模态类型，取值与请求参数 `capabilities` 一致。
+-
+-      <strong>features</strong> · `Array[String]`
+-
+-      模型支持的能力列表，取值与请求参数 `features` 一致。
+-
+-      <strong>published\_time</strong> · `String`
+-
+-      模型发布时间，格式：`yyyy-MM-dd HH:mm:ss`。可能为 `null`。
+-
+-      <strong>inference\_metadata</strong> · `Object`
+-
+-      模型的输入输出模态信息，包含以下字段：
+-
+-      - `request_modality`（Array\[String]）：输入模态，可选值为 `Text`、`Image`、`Audio`、`Video`。
+-      - `response_modality`（Array\[String]）：输出模态，可选值同上。
+-
+-      <strong>model\_info</strong> · `Object`
+-
+-      模型的上下文长度信息，包含以下字段（值为 `null` 表示无限制或不适用）：
+-
+-      - `context_window`（Integer）：上下文窗口总长度
+-      - `max_input_tokens`（Integer）：最大输入 Token 数
+-      - `max_output_tokens`（Integer）：最大输出 Token 数
+-      - `max_reasoning_tokens`（Integer）：最大推理 Token 数
+-      - `reasoning_max_input_tokens`（Integer）：最大输入（思考）
+-      - `reasoning_max_output_tokens`（Integer）：最大输出（思考）
+-
+-      <strong>prices</strong> · `Array[Object]`
+-
+-      模型定价信息。每个元素包含：
+-
+-      - `range_name`（String）：分段名称。如无分段计费则为 `Default`，如有分段则为具体区间（如 `32k<Input<=128k`）。
+-      - `prices`（Array\[Object]）：价格列表，每项包含 `type`（计费项）、`price`（单价）、`price_unit`（单位，如"每百万tokens"）、`price_name`（价格描述，如"输入"）。
+-
+-      <strong>equivalent\_snapshot</strong> · `String`
+-
+-      对应的快照模型
+-
+-      <strong>inference\_offline\_info</strong> · `Object`
+-
+-      推理场景下线信息
+-
+-      <strong>inference\_offline\_info.\$.offline\_time</strong> · `Date`
+-
+-      预计下线时间
+-    </Accordion>
+-  </Column>
+-
+-  <Column>
+-    ## 返回示例 <span id="a1b2c3d4e5f500" />
+-
+-    以下示例用于展示返回结构，模型信息和价格以实际返回结果为准。
+-
+-    ```json expandable
+-    {
+-        "code": null,
+-        "message": null,
+-        "success": true,
+-        "output": {
+-            "total": 168,
+-            "page_no": 1,
+-            "page_size": 10,
+-            "models": [
+-                {
+-                    "model": "qwen3.8-max",
+-                    "name": "通义千问3.8-Max",
+-                    "description": "通义千问3系列Max模型，适配场景更加复杂的智能体需求。",
+-                    "features": [
+-                        "function-calling",
+-                        "structured-outputs",
+-                        "web-search"
+-                    ],
+-                    "prices": [
+-                        {
+-                            "prices": [
+-                                {
+-                                    "type": "input_token",
+-                                    "price": "2",
+-                                    "price_unit": "每百万tokens",
+-                                    "price_name": "输入"
+-                                },
+-                                {
+-                                    "type": "output_token",
+-                                    "price": "8",
+-                                    "price_unit": "每百万tokens",
+-                                    "price_name": "输出"
+-                                }
+-                            ],
+-                            "range_name": "Default"
+-                        }
+-                    ],
+-                    "published_time": "2025-11-11 12:00:00",
+-                    "inference_metadata": {
+-                        "response_modality": ["Text"],
+-                        "request_modality": ["Text"]
+-                    },
+-                    "model_info": {
+-                        "context_window": 131072,
+-                        "max_input_tokens": 130048,
+-                        "max_output_tokens": 16384,
+-                        "max_reasoning_tokens": null
+-                    }
+-                },
+-                {
+-                    "model": "qwen-image-3.0-pro",
+-                    "name": "Qwen-Image-3.0-Pro",
+-                    "description": "通义千问图像生成模型Max系列。",
+-                    "features": ["model-experience"],
+-                    "prices": [
+-                        {
+-                            "prices": [
+-                                {
+-                                    "type": "image_number",
+-                                    "price": "0.075",
+-                                    "price_unit": "每张",
+-                                    "price_name": "图像生成"
+-                                }
+-                            ],
+-                            "range_name": "Default"
+-                        }
+-                    ],
+-                    "published_time": null,
+-                    "inference_metadata": {
+-                        "response_modality": ["Image"],
+-                        "request_modality": ["Text"]
+-                    },
+-                    "model_info": {
+-                        "context_window": null,
+-                        "max_input_tokens": null,
+-                        "max_output_tokens": null,
+-                        "max_reasoning_tokens": null
+-                    }
+-                }
+-            ]
+-        },
+-        "request_id": "d5f5201f-ee7a-9e3d-8569-bc0eedec21f9"
+-    }
+-    ```
+-  </Column>
+-</Columns>
++        </Tab>
++
++        <Tab title="查询 Qwen 系列的推理模型">
++          设置 `providers=qwen` 和 `capabilities=Reasoning`，查询 Qwen 系列的推理模型。示例查询第一页，递增 `page_no` 可获取后续页面。
++
++          ```bash
++          curl --get "https://{WorkspaceId}.cn-beijing.maas.aliyuncs.com/api/v1/models" \
++              --header "Authorization: Bearer $DASHSCOPE_API_KEY" \
++              --header "Content-Type: application/json" \
++              --data-urlencode "providers=qwen" \
++              --data-urlencode "capabilities=Reasoning" \
++              --data-urlencode "page_no=1" \
++              --data-urlencode "page_size=100"
++          ```
++        </Tab>
++      </Tabs>
++    </div>
++  </div>
++</div>
++
++## 返回参数 <span id="a1b2c3d4e5f300" />
++
++<div className="rkb-api">
++  <div className="rkb-api-layout">
++    <div className="rkb-api-fields">
++      <div className="rkb-api-group">
++        <div className="rkb-api-field">
++          <div className="rkb-api-field-head"><code>request\_id</code><span className="rkb-api-type">String</span></div>
++
++          请求 ID，用于问题排查。
++        </div>
++
++        <div className="rkb-api-field">
++          <div className="rkb-api-field-head"><code>output.total</code><span className="rkb-api-type">Number</span></div>
++
++          符合条件的模型总数。
++        </div>
++
++        <div className="rkb-api-field">
++          <div className="rkb-api-field-head"><code>output.page\_no</code><span className="rkb-api-type">Number</span></div>
++
++          当前页码。
++        </div>
++
++        <div className="rkb-api-field">
++          <div className="rkb-api-field-head"><code>output.page\_size</code><span className="rkb-api-type">Number</span></div>
++
++          每页条数。
++        </div>
++
++        <div className="rkb-api-field">
++          <span id="accordion-output-models" />
++
++          <div className="rkb-api-field-head"><code>output.models\[]</code><span className="rkb-api-type">Array\[Object]</span></div>
++
++          模型列表，每个元素为一个模型对象。
++
++          <div className="rkb-api-children">
++            <div className="rkb-api-field">
++              <div className="rkb-api-field-head"><code>model</code><span className="rkb-api-type">String</span></div>
++
++              模型 ID，用于 API 调用时指定模型。
++            </div>
++
++            <div className="rkb-api-field">
++              <div className="rkb-api-field-head"><code>name</code><span className="rkb-api-type">String</span></div>
++
++              模型的名称。
++            </div>
++
++            <div className="rkb-api-field">
++              <div className="rkb-api-field-head"><code>description</code><span className="rkb-api-type">String</span></div>
++
++              模型的功能描述。
++            </div>
++
++            <div className="rkb-api-field">
++              <div className="rkb-api-field-head"><code>provider</code><span className="rkb-api-type">String</span></div>
++
++              模型作者，如 `qwen`。
++            </div>
++
++            <div className="rkb-api-field">
++              <div className="rkb-api-field-head"><code>inference\_provider</code><span className="rkb-api-type">String</span></div>
++
++              推理服务供应商，如 `aliyun-bailian`。
++            </div>
++
++            <div className="rkb-api-field">
++              <div className="rkb-api-field-head"><code>capabilities</code><span className="rkb-api-type">Array\[String]</span></div>
++
++              模型支持的模态类型，取值与请求参数 `capabilities` 一致。
++            </div>
++
++            <div className="rkb-api-field">
++              <div className="rkb-api-field-head"><code>features</code><span className="rkb-api-type">Array\[String]</span></div>
++
++              模型支持的能力列表，取值与请求参数 `features` 一致。
++            </div>
++
++            <div className="rkb-api-field">
++              <div className="rkb-api-field-head"><code>published\_time</code><span className="rkb-api-type">String</span></div>
++
++              模型发布时间，格式：`yyyy-MM-dd HH:mm:ss`。可能为 `null`。
++            </div>
++
++            <div className="rkb-api-field">
++              <div className="rkb-api-field-head"><code>inference\_metadata</code><span className="rkb-api-type">Object</span></div>
++
++              模型的输入输出模态信息，包含以下字段：
++
++              - `request_modality`（Array\[String]）：输入模态，可选值为 `Text`、`Image`、`Audio`、`Video`。
++              - `response_modality`（Array\[String]）：输出模态，可选值同上。
++            </div>
++
++            <div className="rkb-api-field">
++              <div className="rkb-api-field-head"><code>model\_info</code><span className="rkb-api-type">Object</span></div>
++
++              模型的上下文长度信息，包含以下字段（值为 `null` 表示无限制或不适用）：
++
++              - `context_window`（Integer）：上下文窗口总长度
++              - `max_input_tokens`（Integer）：最大输入 Token 数
++              - `max_output_tokens`（Integer）：最大输出 Token 数
++              - `max_reasoning_tokens`（Integer）：最大推理 Token 数
++              - `reasoning_max_input_tokens`（Integer）：最大输入（思考）
++              - `reasoning_max_output_tokens`（Integer）：最大输出（思考）
++            </div>
++
++            <div className="rkb-api-field">
++              <div className="rkb-api-field-head"><code>prices</code><span className="rkb-api-type">Array\[Object]</span></div>
++
++              模型定价信息。每个元素包含：
++
++              - `range_name`（String）：分段名称。如无分段计费则为 `Default`，如有分段则为具体区间（如 `32k<Input<=128k`）。
++              - `prices`（Array\[Object]）：价格列表，每项包含 `type`（计费项）、`price`（单价）、`price_unit`（单位，如"每百万tokens"）、`price_name`（价格描述，如"输入"）。
++            </div>
++
++            <div className="rkb-api-field">
++              <div className="rkb-api-field-head"><code>equivalent\_snapshot</code><span className="rkb-api-type">String</span></div>
++
++              对应的快照模型
++            </div>
++
++            <div className="rkb-api-field">
++              <div className="rkb-api-field-head"><code>inference\_offline\_info</code><span className="rkb-api-type">Object</span></div>
++
++              推理场景下线信息
++            </div>
++
++            <div className="rkb-api-field">
++              <div className="rkb-api-field-head"><code>inference\_offline\_info.\$.offline\_time</code><span className="rkb-api-type">Date</span></div>
++
++              预计下线时间
++            </div>
++          </div>
++        </div>
++      </div>
++    </div>
++
++    <div className="rkb-api-examples">
++      <span id="a1b2c3d4e5f500" />
++
++      <span id="返回示例" />
++
++      以下示例用于展示返回结构，模型信息和价格以实际返回结果为准。
++
++      ```json expandable
++      {
++          "code": null,
++          "message": null,
++          "success": true,
++          "output": {
++              "total": 168,
++              "page_no": 1,
++              "page_size": 10,
++              "models": [
++                  {
++                      "model": "qwen3.8-max",
++                      "name": "通义千问3.8-Max",
++                      "description": "通义千问3系列Max模型，适配场景更加复杂的智能体需求。",
++                      "features": [
++                          "function-calling",
++                          "structured-outputs",
++                          "web-search"
++                      ],
++                      "prices": [
++                          {
++                              "prices": [
++                                  {
++                                      "type": "input_token",
++                                      "price": "2",
++                                      "price_unit": "每百万tokens",
++                                      "price_name": "输入"
++                                  },
++                                  {
++                                      "type": "output_token",
++                                      "price": "8",
++                                      "price_unit": "每百万tokens",
++                                      "price_name": "输出"
++                                  }
++                              ],
++                              "range_name": "Default"
++                          }
++                      ],
++                      "published_time": "2025-11-11 12:00:00",
++                      "inference_metadata": {
++                          "response_modality": ["Text"],
++                          "request_modality": ["Text"]
++                      },
++                      "model_info": {
++                          "context_window": 131072,
++                          "max_input_tokens": 130048,
++                          "max_output_tokens": 16384,
++                          "max_reasoning_tokens": null
++                      }
++                  },
++                  {
++                      "model": "qwen-image-3.0-pro",
++                      "name": "Qwen-Image-3.0-Pro",
++                      "description": "通义千问图像生成模型Max系列。",
++                      "features": ["model-experience"],
++                      "prices": [
++                          {
++                              "prices": [
++                                  {
++                                      "type": "image_number",
++                                      "price": "0.075",
++                                      "price_unit": "每张",
++                                      "price_name": "图像生成"
++                                  }
++                              ],
++                              "range_name": "Default"
++                          }
++                      ],
++                      "published_time": null,
++                      "inference_metadata": {
++                          "response_modality": ["Image"],
++                          "request_modality": ["Text"]
++                      },
++                      "model_info": {
++                          "context_window": null,
++                          "max_input_tokens": null,
++                          "max_output_tokens": null,
++                          "max_reasoning_tokens": null
++                      }
++                  }
++              ]
++          },
++          "request_id": "d5f5201f-ee7a-9e3d-8569-bc0eedec21f9"
++      }
++      ```
++    </div>
++  </div>
++</div>
+ 
+ ## 错误码 <span id="a1b2c3d4e5f600" />
+ 

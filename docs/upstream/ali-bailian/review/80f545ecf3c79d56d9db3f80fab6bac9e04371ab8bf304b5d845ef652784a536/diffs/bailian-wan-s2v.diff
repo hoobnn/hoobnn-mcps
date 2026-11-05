@@ -1,0 +1,13 @@
+--- reviewed/ali-bailian/bailian-wan-s2v
++++ current/ali-bailian/bailian-wan-s2v
+@@ -12,10 +12,6 @@
+ <Tip>
+   本文档仅适用于华北2（北京）地域，且必须使用该地域的[API Key](https://bailian.console.aliyun.com/model/settings/api-key)。
+ </Tip>
+-
+-## 模型与价格 <span id="f1c3d9948b4tg" />
+-
+-<table style={{ display: "table", tableLayout: "fixed", width: "100%" }}><colgroup><col style={{ width: "17.770768%" }} /><col style={{ width: "15.562566%" }} /><col style={{ width: "20.820189%" }} /><col style={{ width: "19.663512%" }} /><col style={{ width: "26.182965%" }} /></colgroup><thead><tr><th rowSpan={2}><p><strong>模型名称</strong></p></th><th rowSpan={2}><p><strong>计费单价</strong></p></th><th colSpan={2}><p><strong>限流（主账号与RAM子账号共用）</strong></p></th><th rowSpan={2}><p><strong>免费额度</strong><a href="/zh/model-studio/new-free-quota">（查看）</a></p></th></tr><tr><th><p><strong>任务下发接口RPS限制</strong></p></th><th><p><strong>同时处理中任务数量</strong></p></th></tr></thead><tbody><tr><td><p>wan2.2-s2v</p></td><td><p>480P：0.5元/秒</p> <p>720P：0.9元/秒</p></td><td><p>5</p></td><td><p>1</p></td><td><p>100秒</p></td></tr></tbody></table>
+ 
+ ## HTTP调用接口 <span id="2f67df3cf92ii" />
+ 

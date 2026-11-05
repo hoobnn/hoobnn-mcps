@@ -1,0 +1,373 @@
+--- reviewed/ali-bailian/bailian-model-pricing
++++ current/ali-bailian/bailian-model-pricing
+@@ -11959,27 +11959,317 @@
+ 
+ <Tabs>
+   <Tab title="华北2（北京）">
+-    <table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}><colgroup><col style={{ width: "20.04%" }} /><col style={{ width: "20.04%" }} /><col style={{ width: "20.04%" }} /><col style={{ width: "20.04%" }} /><col style={{ width: "19.84%" }} /></colgroup><thead><tr><th style={{ verticalAlign: "top" }}><p><strong>模型 ID（Model ID）</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>模式</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>输入单价（每百万Token）</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>输出单价（每百万Token）</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>免费额度</strong><a href="/zh/model-studio/new-free-quota#977b13081ab56">（注）</a></p><p><sup>有效期：自开通百炼/模型发布/申请通过之日起90天内（以较晚者为准）</sup></p></th></tr></thead><tbody><tr><td style={{ verticalAlign: "top" }}><p>kimi-k3</p></td><td style={{ verticalAlign: "top" }}><p>仅思考模式</p></td><td style={{ verticalAlign: "top" }}><p>20元</p></td><td style={{ verticalAlign: "top" }}><p>100元</p></td><td style={{ verticalAlign: "top" }}><p>100万Token</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>kimi-k2.7-code</p></td><td style={{ verticalAlign: "top" }}><p>仅思考模式</p></td><td style={{ verticalAlign: "top" }}><p>6.5元</p></td><td style={{ verticalAlign: "top" }}><p>27元</p></td><td style={{ verticalAlign: "top" }}><p>100万Token</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>kimi-k2.6</p></td><td style={{ verticalAlign: "top" }}><p>非思考和思考模式</p></td><td style={{ verticalAlign: "top" }}><p>6.5元</p></td><td style={{ verticalAlign: "top" }}><p>27元</p></td><td style={{ verticalAlign: "top" }}><p>无</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>kimi-k2.5</p></td><td style={{ verticalAlign: "top" }}><p>非思考和思考模式</p></td><td style={{ verticalAlign: "top" }}><p>4元</p></td><td style={{ verticalAlign: "top" }}><p>21元</p></td><td style={{ verticalAlign: "top" }}><p>无</p></td></tr></tbody></table>
++    <table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
++      <colgroup>
++        <col style={{ width: "20.04%" }} />
++
++        <col style={{ width: "20.04%" }} />
++
++        <col style={{ width: "20.04%" }} />
++
++        <col style={{ width: "20.04%" }} />
++
++        <col style={{ width: "19.84%" }} />
++      </colgroup>
++
++      <thead>
++        <tr><th style={{ verticalAlign: "top" }}><p><strong>模型 ID（Model ID）</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>模式</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>输入单价（每百万Token）</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>输出单价（每百万Token）</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>免费额度</strong><a href="/zh/model-studio/new-free-quota#977b13081ab56">（注）</a></p><p><sup>有效期：自开通百炼/模型发布/申请通过之日起90天内（以较晚者为准）</sup></p></th></tr>
++      </thead>
++
++      <tbody>
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
++            [kimi-k3.1-pro](/zh/model-studio/kimi-k3-1-pro)
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            思考与非思考（默认开启思考）
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            13元
++
++            缓存命中输入：1.3元
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            68元
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            输入与输出合计100万Token
++          </td>
++        </tr>
++
++        <tr><td style={{ verticalAlign: "top" }}><p>kimi-k3</p></td><td style={{ verticalAlign: "top" }}><p>仅思考模式</p></td><td style={{ verticalAlign: "top" }}><p>20元</p></td><td style={{ verticalAlign: "top" }}><p>100元</p></td><td style={{ verticalAlign: "top" }}><p>100万Token</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>kimi-k2.7-code</p></td><td style={{ verticalAlign: "top" }}><p>仅思考模式</p></td><td style={{ verticalAlign: "top" }}><p>6.5元</p></td><td style={{ verticalAlign: "top" }}><p>27元</p></td><td style={{ verticalAlign: "top" }}><p>100万Token</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>kimi-k2.6</p></td><td style={{ verticalAlign: "top" }}><p>非思考和思考模式</p></td><td style={{ verticalAlign: "top" }}><p>6.5元</p></td><td style={{ verticalAlign: "top" }}><p>27元</p></td><td style={{ verticalAlign: "top" }}><p>无</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>kimi-k2.5</p></td><td style={{ verticalAlign: "top" }}><p>非思考和思考模式</p></td><td style={{ verticalAlign: "top" }}><p>4元</p></td><td style={{ verticalAlign: "top" }}><p>21元</p></td><td style={{ verticalAlign: "top" }}><p>无</p></td></tr>
++      </tbody>
++    </table>
+   </Tab>
+ 
+   <Tab title="美国（弗吉尼亚）">
+-    <table className="table-wide" autofit="false" tablewidth="1165" style={{ overflowWrap: "anywhere" }}><colgroup><col style={{ width: "17.939914%" }} /><col style={{ width: "17.939914%" }} /><col style={{ width: "21.373391%" }} /><col style={{ width: "21.373391%" }} /><col style={{ width: "21.373391%" }} /></colgroup><thead><tr><th style={{ verticalAlign: "top" }}><p><strong>模型 ID（Model ID）</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>服务部署范围</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>模式</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>输入单价（每百万Token）</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>输出单价（每百万Token）</strong></p></th></tr></thead><tbody><tr><td style={{ verticalAlign: "top" }}><p>kimi-k3</p></td><td style={{ verticalAlign: "top" }}><p>全球</p></td><td style={{ verticalAlign: "top" }}><p>仅思考模式</p></td><td style={{ verticalAlign: "top" }}><p>20元</p></td><td style={{ verticalAlign: "top" }}><p>100元</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>kimi-k3</p></td><td style={{ verticalAlign: "top" }}><p>国际</p></td><td style={{ verticalAlign: "top" }}><p>仅思考模式</p></td><td style={{ verticalAlign: "top" }}><p>21.875元</p></td><td style={{ verticalAlign: "top" }}><p>109.376元</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>kimi-k2.7-code</p></td><td style={{ verticalAlign: "top" }}><p>全球</p></td><td style={{ verticalAlign: "top" }}><p>仅思考模式</p></td><td style={{ verticalAlign: "top" }}><p>6.5元</p></td><td style={{ verticalAlign: "top" }}><p>27元</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>kimi-k2.5</p></td><td style={{ verticalAlign: "top" }}><p>全球</p></td><td style={{ verticalAlign: "top" }}><p>非思考和思考模式</p></td><td style={{ verticalAlign: "top" }}><p>4元</p></td><td style={{ verticalAlign: "top" }}><p>21元</p></td></tr></tbody></table>
++    <table className="table-wide" autofit="false" tablewidth="1165" style={{ overflowWrap: "anywhere" }}>
++      <colgroup>
++        <col style={{ width: "17.939914%" }} />
++
++        <col style={{ width: "17.939914%" }} />
++
++        <col style={{ width: "21.373391%" }} />
++
++        <col style={{ width: "21.373391%" }} />
++
++        <col style={{ width: "21.373391%" }} />
++      </colgroup>
++
++      <thead>
++        <tr><th style={{ verticalAlign: "top" }}><p><strong>模型 ID（Model ID）</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>服务部署范围</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>模式</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>输入单价（每百万Token）</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>输出单价（每百万Token）</strong></p></th></tr>
++      </thead>
++
++      <tbody>
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
++            [kimi-k3.1-pro](/zh/model-studio/kimi-k3-1-pro)
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            全球
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            思考与非思考（默认开启思考）
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            13元
++
++            缓存命中输入：1.3元
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            68元
++          </td>
++        </tr>
++
++        <tr><td style={{ verticalAlign: "top" }}><p>kimi-k3</p></td><td style={{ verticalAlign: "top" }}><p>全球</p></td><td style={{ verticalAlign: "top" }}><p>仅思考模式</p></td><td style={{ verticalAlign: "top" }}><p>20元</p></td><td style={{ verticalAlign: "top" }}><p>100元</p></td></tr>
++
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
++            [kimi-k3.1-pro](/zh/model-studio/kimi-k3-1-pro)
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            美国
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            思考与非思考（默认开启思考）
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            14.583元
++
++            缓存命中输入：1.458元
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            72.917元
++          </td>
++        </tr>
++
++        <tr><td style={{ verticalAlign: "top" }}><p>kimi-k3</p></td><td style={{ verticalAlign: "top" }}><p>国际</p></td><td style={{ verticalAlign: "top" }}><p>仅思考模式</p></td><td style={{ verticalAlign: "top" }}><p>21.875元</p></td><td style={{ verticalAlign: "top" }}><p>109.376元</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>kimi-k2.7-code</p></td><td style={{ verticalAlign: "top" }}><p>全球</p></td><td style={{ verticalAlign: "top" }}><p>仅思考模式</p></td><td style={{ verticalAlign: "top" }}><p>6.5元</p></td><td style={{ verticalAlign: "top" }}><p>27元</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>kimi-k2.5</p></td><td style={{ verticalAlign: "top" }}><p>全球</p></td><td style={{ verticalAlign: "top" }}><p>非思考和思考模式</p></td><td style={{ verticalAlign: "top" }}><p>4元</p></td><td style={{ verticalAlign: "top" }}><p>21元</p></td></tr>
++      </tbody>
++    </table>
+   </Tab>
+ 
+   <Tab title="德国（法兰克福）">
+-    <table className="table-wide" autofit="false" tablewidth="1165" style={{ overflowWrap: "anywhere" }}><colgroup><col style={{ width: "17.939914%" }} /><col style={{ width: "17.939914%" }} /><col style={{ width: "21.373391%" }} /><col style={{ width: "21.373391%" }} /><col style={{ width: "21.373391%" }} /></colgroup><thead><tr><th style={{ verticalAlign: "top" }}><p><strong>模型 ID（Model ID）</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>服务部署范围</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>模式</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>输入单价（每百万Token）</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>输出单价（每百万Token）</strong></p></th></tr></thead><tbody><tr><td style={{ verticalAlign: "top" }}><p>kimi-k3</p></td><td style={{ verticalAlign: "top" }}><p>全球</p></td><td style={{ verticalAlign: "top" }}><p>仅思考模式</p></td><td style={{ verticalAlign: "top" }}><p>20元</p></td><td style={{ verticalAlign: "top" }}><p>100元</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>kimi-k2.7-code</p></td><td style={{ verticalAlign: "top" }}><p>全球</p></td><td style={{ verticalAlign: "top" }}><p>仅思考模式</p></td><td style={{ verticalAlign: "top" }}><p>6.5元</p></td><td style={{ verticalAlign: "top" }}><p>27元</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>kimi-k2.5</p></td><td style={{ verticalAlign: "top" }}><p>全球</p></td><td style={{ verticalAlign: "top" }}><p>非思考和思考模式</p></td><td style={{ verticalAlign: "top" }}><p>4元</p></td><td style={{ verticalAlign: "top" }}><p>21元</p></td></tr></tbody></table>
++    <table className="table-wide" autofit="false" tablewidth="1165" style={{ overflowWrap: "anywhere" }}>
++      <colgroup>
++        <col style={{ width: "17.939914%" }} />
++
++        <col style={{ width: "17.939914%" }} />
++
++        <col style={{ width: "21.373391%" }} />
++
++        <col style={{ width: "21.373391%" }} />
++
++        <col style={{ width: "21.373391%" }} />
++      </colgroup>
++
++      <thead>
++        <tr><th style={{ verticalAlign: "top" }}><p><strong>模型 ID（Model ID）</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>服务部署范围</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>模式</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>输入单价（每百万Token）</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>输出单价（每百万Token）</strong></p></th></tr>
++      </thead>
++
++      <tbody>
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
++            [kimi-k3.1-pro](/zh/model-studio/kimi-k3-1-pro)
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            全球
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            思考与非思考（默认开启思考）
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            13元
++
++            缓存命中输入：1.3元
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            68元
++          </td>
++        </tr>
++
++        <tr><td style={{ verticalAlign: "top" }}><p>kimi-k3</p></td><td style={{ verticalAlign: "top" }}><p>全球</p></td><td style={{ verticalAlign: "top" }}><p>仅思考模式</p></td><td style={{ verticalAlign: "top" }}><p>20元</p></td><td style={{ verticalAlign: "top" }}><p>100元</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>kimi-k2.7-code</p></td><td style={{ verticalAlign: "top" }}><p>全球</p></td><td style={{ verticalAlign: "top" }}><p>仅思考模式</p></td><td style={{ verticalAlign: "top" }}><p>6.5元</p></td><td style={{ verticalAlign: "top" }}><p>27元</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>kimi-k2.5</p></td><td style={{ verticalAlign: "top" }}><p>全球</p></td><td style={{ verticalAlign: "top" }}><p>非思考和思考模式</p></td><td style={{ verticalAlign: "top" }}><p>4元</p></td><td style={{ verticalAlign: "top" }}><p>21元</p></td></tr>
++      </tbody>
++    </table>
+   </Tab>
+ 
+   <Tab title="日本（东京）">
+-    <table className="table-wide" autofit="false" tablewidth="1165" style={{ overflowWrap: "anywhere" }}><colgroup><col style={{ width: "17.939914%" }} /><col style={{ width: "17.939914%" }} /><col style={{ width: "21.373391%" }} /><col style={{ width: "21.373391%" }} /><col style={{ width: "21.373391%" }} /></colgroup><thead><tr><th style={{ verticalAlign: "top" }}><p><strong>模型 ID（Model ID）</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>服务部署范围</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>模式</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>输入单价（每百万Token）</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>输出单价（每百万Token）</strong></p></th></tr></thead><tbody><tr><td style={{ verticalAlign: "top" }}><p>kimi-k3</p><blockquote><a href="/zh/model-studio/context-cache">上下文缓存</a>享有折扣</blockquote></td><td style={{ verticalAlign: "top" }}><p>全球</p></td><td style={{ verticalAlign: "top" }}><p>仅思考模式</p></td><td style={{ verticalAlign: "top" }}><p>20元</p></td><td style={{ verticalAlign: "top" }}><p>100元</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>kimi-k2.7-code</p><blockquote><a href="/zh/model-studio/context-cache">上下文缓存</a>享有折扣</blockquote></td><td style={{ verticalAlign: "top" }}><p>全球</p></td><td style={{ verticalAlign: "top" }}><p>仅思考模式</p></td><td style={{ verticalAlign: "top" }}><p>6.5元</p></td><td style={{ verticalAlign: "top" }}><p>27元</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>kimi-k2.5</p></td><td style={{ verticalAlign: "top" }}><p>全球</p></td><td style={{ verticalAlign: "top" }}><p>非思考和思考模式</p></td><td style={{ verticalAlign: "top" }}><p>4元</p></td><td style={{ verticalAlign: "top" }}><p>21元</p></td></tr></tbody></table>
++    <table className="table-wide" autofit="false" tablewidth="1165" style={{ overflowWrap: "anywhere" }}>
++      <colgroup>
++        <col style={{ width: "17.939914%" }} />
++
++        <col style={{ width: "17.939914%" }} />
++
++        <col style={{ width: "21.373391%" }} />
++
++        <col style={{ width: "21.373391%" }} />
++
++        <col style={{ width: "21.373391%" }} />
++      </colgroup>
++
++      <thead>
++        <tr><th style={{ verticalAlign: "top" }}><p><strong>模型 ID（Model ID）</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>服务部署范围</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>模式</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>输入单价（每百万Token）</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>输出单价（每百万Token）</strong></p></th></tr>
++      </thead>
++
++      <tbody>
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
++            [kimi-k3.1-pro](/zh/model-studio/kimi-k3-1-pro)
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            全球
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            思考与非思考（默认开启思考）
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            13元
++
++            缓存命中输入：1.3元
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            68元
++          </td>
++        </tr>
++
++        <tr><td style={{ verticalAlign: "top" }}><p>kimi-k3</p><blockquote><a href="/zh/model-studio/context-cache">上下文缓存</a>享有折扣</blockquote></td><td style={{ verticalAlign: "top" }}><p>全球</p></td><td style={{ verticalAlign: "top" }}><p>仅思考模式</p></td><td style={{ verticalAlign: "top" }}><p>20元</p></td><td style={{ verticalAlign: "top" }}><p>100元</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>kimi-k2.7-code</p><blockquote><a href="/zh/model-studio/context-cache">上下文缓存</a>享有折扣</blockquote></td><td style={{ verticalAlign: "top" }}><p>全球</p></td><td style={{ verticalAlign: "top" }}><p>仅思考模式</p></td><td style={{ verticalAlign: "top" }}><p>6.5元</p></td><td style={{ verticalAlign: "top" }}><p>27元</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>kimi-k2.5</p></td><td style={{ verticalAlign: "top" }}><p>全球</p></td><td style={{ verticalAlign: "top" }}><p>非思考和思考模式</p></td><td style={{ verticalAlign: "top" }}><p>4元</p></td><td style={{ verticalAlign: "top" }}><p>21元</p></td></tr>
++      </tbody>
++    </table>
+   </Tab>
+ 
+   <Tab title="新加坡">
+-    <table className="table-wide" autofit="false" tablewidth="1165" style={{ overflowWrap: "anywhere" }}><colgroup><col style={{ width: "17.939914%" }} /><col style={{ width: "17.939914%" }} /><col style={{ width: "21.373391%" }} /><col style={{ width: "21.373391%" }} /><col style={{ width: "21.373391%" }} /></colgroup><thead><tr><th style={{ verticalAlign: "top" }}><p><strong>模型 ID（Model ID）</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>服务部署范围</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>模式</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>输入单价（每百万Token）</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>输出单价（每百万Token）</strong></p></th></tr></thead><tbody><tr><td style={{ verticalAlign: "top" }}><p>kimi-k3</p></td><td style={{ verticalAlign: "top" }}><p>国际</p></td><td style={{ verticalAlign: "top" }}><p>仅思考模式</p></td><td style={{ verticalAlign: "top" }}><p>21.875元</p></td><td style={{ verticalAlign: "top" }}><p>109.376元</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>kimi-k2.7-code</p></td><td style={{ verticalAlign: "top" }}><p>国际</p></td><td style={{ verticalAlign: "top" }}><p>仅思考模式</p></td><td style={{ verticalAlign: "top" }}><p>7.119元</p></td><td style={{ verticalAlign: "top" }}><p>29.977元</p></td></tr></tbody></table>
++    <table className="table-wide" autofit="false" tablewidth="1165" style={{ overflowWrap: "anywhere" }}>
++      <colgroup>
++        <col style={{ width: "17.939914%" }} />
++
++        <col style={{ width: "17.939914%" }} />
++
++        <col style={{ width: "21.373391%" }} />
++
++        <col style={{ width: "21.373391%" }} />
++
++        <col style={{ width: "21.373391%" }} />
++      </colgroup>
++
++      <thead>
++        <tr><th style={{ verticalAlign: "top" }}><p><strong>模型 ID（Model ID）</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>服务部署范围</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>模式</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>输入单价（每百万Token）</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>输出单价（每百万Token）</strong></p></th></tr>
++      </thead>
++
++      <tbody>
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
++            [kimi-k3.1-pro](/zh/model-studio/kimi-k3-1-pro)
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            国际
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            思考与非思考（默认开启思考）
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            14.583元
++
++            缓存命中输入：1.458元
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            72.917元
++          </td>
++        </tr>
++
++        <tr><td style={{ verticalAlign: "top" }}><p>kimi-k3</p></td><td style={{ verticalAlign: "top" }}><p>国际</p></td><td style={{ verticalAlign: "top" }}><p>仅思考模式</p></td><td style={{ verticalAlign: "top" }}><p>21.875元</p></td><td style={{ verticalAlign: "top" }}><p>109.376元</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>kimi-k2.7-code</p></td><td style={{ verticalAlign: "top" }}><p>国际</p></td><td style={{ verticalAlign: "top" }}><p>仅思考模式</p></td><td style={{ verticalAlign: "top" }}><p>7.119元</p></td><td style={{ verticalAlign: "top" }}><p>29.977元</p></td></tr>
++      </tbody>
++    </table>
+   </Tab>
+ 
+   <Tab title="中国香港">
+-    <table className="table-wide" autofit="false" tablewidth="1165" style={{ overflowWrap: "anywhere" }}><colgroup><col style={{ width: "17.939914%" }} /><col style={{ width: "17.939914%" }} /><col style={{ width: "21.373391%" }} /><col style={{ width: "21.373391%" }} /><col style={{ width: "21.373391%" }} /></colgroup><thead><tr><th style={{ verticalAlign: "top" }}><p><strong>模型 ID（Model ID）</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>服务部署范围</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>模式</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>输入单价（每百万Token）</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>输出单价（每百万Token）</strong></p></th></tr></thead><tbody><tr><td style={{ verticalAlign: "top" }}><p>kimi-k3</p></td><td style={{ verticalAlign: "top" }}><p>全球</p></td><td style={{ verticalAlign: "top" }}><p>仅思考模式</p></td><td style={{ verticalAlign: "top" }}><p>20元</p></td><td style={{ verticalAlign: "top" }}><p>100元</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>kimi-k2.7-code</p></td><td style={{ verticalAlign: "top" }}><p>全球</p></td><td style={{ verticalAlign: "top" }}><p>仅思考模式</p></td><td style={{ verticalAlign: "top" }}><p>6.5元</p></td><td style={{ verticalAlign: "top" }}><p>27元</p></td></tr></tbody></table>
++    <table className="table-wide" autofit="false" tablewidth="1165" style={{ overflowWrap: "anywhere" }}>
++      <colgroup>
++        <col style={{ width: "17.939914%" }} />
++
++        <col style={{ width: "17.939914%" }} />
++
++        <col style={{ width: "21.373391%" }} />
++
++        <col style={{ width: "21.373391%" }} />
++
++        <col style={{ width: "21.373391%" }} />
++      </colgroup>
++
++      <thead>
++        <tr><th style={{ verticalAlign: "top" }}><p><strong>模型 ID（Model ID）</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>服务部署范围</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>模式</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>输入单价（每百万Token）</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>输出单价（每百万Token）</strong></p></th></tr>
++      </thead>
++
++      <tbody>
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
++            [kimi-k3.1-pro](/zh/model-studio/kimi-k3-1-pro)
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            全球
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            思考与非思考（默认开启思考）
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            13元
++
++            缓存命中输入：1.3元
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            68元
++          </td>
++        </tr>
++
++        <tr><td style={{ verticalAlign: "top" }}><p>kimi-k3</p></td><td style={{ verticalAlign: "top" }}><p>全球</p></td><td style={{ verticalAlign: "top" }}><p>仅思考模式</p></td><td style={{ verticalAlign: "top" }}><p>20元</p></td><td style={{ verticalAlign: "top" }}><p>100元</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>kimi-k2.7-code</p></td><td style={{ verticalAlign: "top" }}><p>全球</p></td><td style={{ verticalAlign: "top" }}><p>仅思考模式</p></td><td style={{ verticalAlign: "top" }}><p>6.5元</p></td><td style={{ verticalAlign: "top" }}><p>27元</p></td></tr>
++      </tbody>
++    </table>
+   </Tab>
+ </Tabs>
+ 
+@@ -11989,7 +12279,45 @@
+ 
+ <Tabs>
+   <Tab title="华北2（北京）">
+-    <table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}><colgroup><col style={{ width: "25.05%" }} /><col style={{ width: "25.05%" }} /><col style={{ width: "25.05%" }} /><col style={{ width: "24.85%" }} /></colgroup><thead><tr><th style={{ verticalAlign: "top" }}><p><strong>模型 ID（Model ID）</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>输入单价（每百万Token）</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>输出单价（每百万Token）</strong></p><blockquote><strong>思维链和回答</strong></blockquote></th><th style={{ verticalAlign: "top" }}><p><strong>免费额度</strong><a href="/zh/model-studio/new-free-quota#977b13081ab56">（注）</a></p></th></tr></thead><tbody><tr><td style={{ verticalAlign: "top" }}><p>kimi/kimi-k3.1-pro-highspeed</p><blockquote><a href="/zh/model-studio/context-cache">上下文缓存</a>享有折扣</blockquote></td><td style={{ verticalAlign: "top" }}><p>26元</p></td><td style={{ verticalAlign: "top" }}><p>136元</p></td><td style={{ verticalAlign: "top" }}><p /><p>无</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>kimi/kimi-k3.1-pro</p><blockquote><a href="/zh/model-studio/context-cache">上下文缓存</a>享有折扣</blockquote></td><td style={{ verticalAlign: "top" }}><p>13元</p></td><td style={{ verticalAlign: "top" }}><p>68元</p></td><td style={{ verticalAlign: "top" }}><p /><p>无</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>kimi/kimi-k3</p><blockquote><a href="/zh/model-studio/context-cache">上下文缓存</a>享有折扣</blockquote></td><td style={{ verticalAlign: "top" }}><p>20元</p></td><td style={{ verticalAlign: "top" }}><p>100元</p></td><td style={{ verticalAlign: "top" }}><p /><p>无</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>kimi/kimi-k2.7-code-highspeed</p><blockquote><a href="/zh/model-studio/context-cache">上下文缓存</a>享有折扣</blockquote></td><td style={{ verticalAlign: "top" }}><p>13元</p></td><td style={{ verticalAlign: "top" }}><p>54元</p></td><td style={{ verticalAlign: "top" }}><p /><p>无</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>kimi/kimi-k2.7-code</p><blockquote><a href="/zh/model-studio/context-cache">上下文缓存</a>享有折扣</blockquote></td><td style={{ verticalAlign: "top" }}><p>6.5元</p></td><td style={{ verticalAlign: "top" }}><p>27元</p></td><td style={{ verticalAlign: "top" }}><p /><p>无</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>kimi/kimi-k2.6</p><blockquote><a href="/zh/model-studio/context-cache">上下文缓存</a>享有折扣</blockquote></td><td style={{ verticalAlign: "top" }}><p>6.5元</p></td><td style={{ verticalAlign: "top" }}><p>27元</p></td><td style={{ verticalAlign: "top" }}><p /><p>无</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>kimi/kimi-k2.5</p><blockquote><a href="/zh/model-studio/context-cache">上下文缓存</a>享有折扣</blockquote></td><td style={{ verticalAlign: "top" }}><p>4元</p></td><td style={{ verticalAlign: "top" }}><p>21元</p></td><td style={{ verticalAlign: "top" }}><p /><p>无</p></td></tr></tbody></table>
++    <table style={{ display: "table", tableLayout: "fixed", width: "100%", overflowWrap: "anywhere" }}>
++      <colgroup>
++        <col style={{ width: "25.05%" }} />
++
++        <col style={{ width: "25.05%" }} />
++
++        <col style={{ width: "25.05%" }} />
++
++        <col style={{ width: "24.85%" }} />
++      </colgroup>
++
++      <thead>
++        <tr><th style={{ verticalAlign: "top" }}><p><strong>模型 ID（Model ID）</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>输入单价（每百万Token）</strong></p></th><th style={{ verticalAlign: "top" }}><p><strong>输出单价（每百万Token）</strong></p><blockquote><strong>思维链和回答</strong></blockquote></th><th style={{ verticalAlign: "top" }}><p><strong>免费额度</strong><a href="/zh/model-studio/new-free-quota#977b13081ab56">（注）</a></p></th></tr>
++      </thead>
++
++      <tbody>
++        <tr><td style={{ verticalAlign: "top" }}><p>kimi/kimi-k3.1-pro-highspeed</p><blockquote><a href="/zh/model-studio/context-cache">上下文缓存</a>享有折扣</blockquote></td><td style={{ verticalAlign: "top" }}><p>26元</p></td><td style={{ verticalAlign: "top" }}><p>136元</p></td><td style={{ verticalAlign: "top" }}><p /><p>无</p></td></tr>
++
++        <tr>
++          <td style={{ verticalAlign: "top" }}>
++            <p>kimi/kimi-k3.1-pro</p><blockquote><a href="/zh/model-studio/context-cache">上下文缓存</a>享有折扣</blockquote>
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            <p>13元</p>
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            <p>68元</p>
++          </td>
++
++          <td style={{ verticalAlign: "top" }}>
++            <p /><p>无</p>
++          </td>
++        </tr>
++
++        <tr><td style={{ verticalAlign: "top" }}><p>kimi/kimi-k3</p><blockquote><a href="/zh/model-studio/context-cache">上下文缓存</a>享有折扣</blockquote></td><td style={{ verticalAlign: "top" }}><p>20元</p></td><td style={{ verticalAlign: "top" }}><p>100元</p></td><td style={{ verticalAlign: "top" }}><p /><p>无</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>kimi/kimi-k2.7-code-highspeed</p><blockquote><a href="/zh/model-studio/context-cache">上下文缓存</a>享有折扣</blockquote></td><td style={{ verticalAlign: "top" }}><p>13元</p></td><td style={{ verticalAlign: "top" }}><p>54元</p></td><td style={{ verticalAlign: "top" }}><p /><p>无</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>kimi/kimi-k2.7-code</p><blockquote><a href="/zh/model-studio/context-cache">上下文缓存</a>享有折扣</blockquote></td><td style={{ verticalAlign: "top" }}><p>6.5元</p></td><td style={{ verticalAlign: "top" }}><p>27元</p></td><td style={{ verticalAlign: "top" }}><p /><p>无</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>kimi/kimi-k2.6</p><blockquote><a href="/zh/model-studio/context-cache">上下文缓存</a>享有折扣</blockquote></td><td style={{ verticalAlign: "top" }}><p>6.5元</p></td><td style={{ verticalAlign: "top" }}><p>27元</p></td><td style={{ verticalAlign: "top" }}><p /><p>无</p></td></tr><tr><td style={{ verticalAlign: "top" }}><p>kimi/kimi-k2.5</p><blockquote><a href="/zh/model-studio/context-cache">上下文缓存</a>享有折扣</blockquote></td><td style={{ verticalAlign: "top" }}><p>4元</p></td><td style={{ verticalAlign: "top" }}><p>21元</p></td><td style={{ verticalAlign: "top" }}><p /><p>无</p></td></tr>
++      </tbody>
++    </table>
+   </Tab>
+ </Tabs>
+ 
