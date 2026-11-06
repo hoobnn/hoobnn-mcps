@@ -1,6 +1,6 @@
 [project]
 name = "volcengine-ark-mcp"
-version = "0.6.5"
+version = "0.6.6"
 description = "火山方舟图片、Seedance视频、语言模型、搜索、向量与任务恢复 MCP server"
 readme = "README.md"
 license = "MIT"
@@ -8,7 +8,7 @@ requires-python = ">=3.10"
 authors = [{ name = "hoobnn" }]
 keywords = ["mcp", "mcp-server", "volcengine", "ark", "seedream", "seedance", "doubao"]
 classifiers = [
-    "Development Status :: 4 - Beta",
+    "Development Status :: 7 - Inactive",
     "Intended Audience :: Developers",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",

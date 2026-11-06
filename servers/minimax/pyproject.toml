@@ -1,11 +1,12 @@
 [project]
 name = "hoobnn-minimax-mcp"
-version = "0.3.2"
+version = "0.3.3"
 description = "MiniMax H3 video, speech, image and music MCP with durable task recovery"
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.10"
 authors = [{ name = "hoobnn" }]
+classifiers = ["Development Status :: 7 - Inactive"]
 dependencies = ["mcp>=2.3,<3", "httpx>=0.28,<1"]
 
 [project.urls]
