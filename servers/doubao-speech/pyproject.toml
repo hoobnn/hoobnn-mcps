@@ -1,6 +1,6 @@
 [project]
 name = "doubao-speech-mcp"
-version = "0.5.3"
+version = "0.5.4"
 description = "火山引擎豆包语音全产品 HTTP / WebSocket MCP server"
 readme = "README.md"
 license = "MIT"
@@ -8,7 +8,7 @@ requires-python = ">=3.10"
 authors = [{ name = "hoobnn" }]
 keywords = ["mcp", "mcp-server", "volcengine", "doubao", "tts", "asr", "speech"]
 classifiers = [
-    "Development Status :: 4 - Beta",
+    "Development Status :: 7 - Inactive",
     "Intended Audience :: Developers",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
