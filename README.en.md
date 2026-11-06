@@ -12,6 +12,9 @@ MCP servers for Volcengine Ark, Doubao Speech, Alibaba Cloud Model Studio and Mi
 
 </div>
 
+> [!WARNING]
+> **This repository is no longer maintained (2026-11-06).** The four servers are superseded by [`@modelbay/mcp`](https://www.npmjs.com/package/@modelbay/mcp) from [Modelbay](https://github.com/hoobnn/modelbay): a single `modelbay-mcp <platform>` command covers Volcengine Ark, Alibaba Cloud Model Studio, MiniMax and Doubao Speech, plus OpenAI, with tool parameters derived from model declarations. See [Migrating to Modelbay](#migrating-to-modelbay). The PyPI packages will not be updated; installed versions keep working.
+
 hoobnn's personal collection of MCP servers. Each server is a standalone Python package under `servers/<name>/`. Packages are distributed through PyPI. Installing with [uv](https://docs.astral.sh/uv/) is recommended.
 
 | Server | What it does |
@@ -33,6 +36,52 @@ The servers overlap in places. Each tool description states which scenarios it s
 | Speech synthesis, recognition, cloning | `doubao-speech` (Chinese voices, dialects, subtitles, long text, speaker diarization) | `ali-bailian` (Qwen-Audio-TTS / CosyVoice cloning, design and tone instructions; ASR returns emotion and language) |
 
 A voice cloned or designed with one provider can only be used by that provider's synthesis tool. All three servers use `get_job` to check async job progress and download results automatically on completion; `recover_job` is only for repairing delivery.
+
+## Migrating to Modelbay
+
+Install (requires Node.js and npm):
+
+```bash
+npm i -g @modelbay/mcp
+```
+
+In each client, replace the old command with `modelbay-mcp` and pass the platform as the first argument. MCP names can stay the same:
+
+| Old command | New command |
+|---|---|
+| `~/.local/bin/volcengine-ark-mcp` | `modelbay-mcp ark` |
+| `~/.local/bin/ali-bailian-mcp` | `modelbay-mcp bailian` |
+| `~/.local/bin/hoobnn-minimax-mcp` | `modelbay-mcp minimax` |
+| `~/.local/bin/doubao-speech-mcp` | `modelbay-mcp doubao-speech` |
+| — (new) | `modelbay-mcp openai` |
+
+```bash
+claude mcp add volcengine-ark -s user -- "$(npm prefix -g)/bin/modelbay-mcp" ark
+```
+
+GUI clients that do not inherit `PATH` need the absolute path (`bin/` under `npm prefix -g`). Then remove the old packages: `uv tool uninstall volcengine-ark-mcp ali-bailian-mcp hoobnn-minimax-mcp doubao-speech-mcp`.
+
+Environment variables:
+
+| Old variable | Modelbay |
+|---|---|
+| `ARK_API_KEY` | unchanged |
+| `DASHSCOPE_API_KEY`, `DASHSCOPE_BASE_URL` | still accepted (aliases of `BAILIAN_API_KEY`, `BAILIAN_BASE_URL`) |
+| `MINIMAX_API_KEY` | unchanged |
+| `MINIMAX_API_HOST` | no longer read. The default is the China endpoint, as before; set `MINIMAX_REGION=global` for the international endpoint or `MINIMAX_BASE_URL` for a custom one |
+| `VOLC_SPEECH_API_KEY`, `VOLC_SPEECH_APP_ID`, `VOLC_SPEECH_ACCESS_TOKEN` | still accepted (aliases of `DOUBAO_API_KEY`, `DOUBAO_APP_ID`, `DOUBAO_ACCESS_TOKEN`) |
+| `MCP_TOOL_GROUPS` | now `MODELBAY_MCP_GROUPS`, with groups `core` (default), `realtime`, `management`, `node` |
+| `*_OUT_DIR`, `*_RESOURCE_MODE`, `*_JOB_DIR`, `MINIMAX_MCP_BASE_PATH` | no equivalent; see the behaviour changes below |
+
+Codex filters the environment, so update `env_vars` under `[mcp_servers.<name>]` to the new names (the old names still work as aliases); keep `tool_timeout_sec = 300` for image and video tools.
+
+Behaviour changes:
+
+- **Saving results**: the old servers downloaded to `~/Downloads/<platform>` by default. Modelbay writes files only when a call passes `out_dir`; otherwise images and audio come back as standard MCP base64 blocks and URLs are returned as is.
+- **Job records**: kept in the MCP process memory only, so `list_jobs` is empty after a restart; `get_job` can still look up a task submitted elsewhere by the platform `task_id`.
+- **Tools not yet available**: Ark `embed`, Bailian `edit_video`, Doubao Speech realtime tools and `upgrade_voice`, and `get_job` / `recover_job` / `list_jobs` for Doubao Speech async jobs. MiniMax `query_video_generation` is replaced by `get_job`. See Modelbay's [goals and scope](https://github.com/hoobnn/modelbay/blob/main/docs/goals.md).
+
+The rest of this page is the legacy documentation for users of the old versions.
 
 ## Install
 
@@ -127,7 +176,7 @@ Bump the version in `servers/<name>/pyproject.toml` and commit, then push a `<na
 
 ### Official documentation updates
 
-`python3 scripts/upstream_docs.py --check-coverage` checks source coverage; `python3 scripts/upstream_docs.py --server minimax` fetches one platform only. GitHub Actions checks all four platforms independently every day at 02:23 UTC (10:23 Asia/Shanghai). Changes produce a separate documentation PR per platform, containing captured bodies, diffs, reports and a proposed baseline. Add implementation, tests and documentation to that PR, then merge manually. Pending PR branches are never overwritten by later checks. No API key or Codex trigger is used; nothing is auto-merged or published. Allow Actions to create PRs; see the [integration notes](docs/official-contracts.md#github-actions).
+`python3 scripts/upstream_docs.py --check-coverage` checks source coverage; `python3 scripts/upstream_docs.py --server minimax` fetches one platform only. Until the repository was retired, GitHub Actions checked all four platforms every day at 02:23 UTC (10:23 Asia/Shanghai); the schedule is now disabled and the workflow can only be run manually. Changes produce a separate documentation PR per platform, containing captured bodies, diffs, reports and a proposed baseline. Add implementation, tests and documentation to that PR, then merge manually. Pending PR branches are never overwritten by later checks. No API key or Codex trigger is used; nothing is auto-merged or published. Allow Actions to create PRs; see the [integration notes](docs/official-contracts.md#github-actions).
 
 ## License
 

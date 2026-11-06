@@ -12,6 +12,9 @@
 
 </div>
 
+> [!WARNING]
+> **已停止维护（2026-11-06）。** 本 server 由 [Modelbay](https://github.com/hoobnn/modelbay) 的 [`@modelbay/mcp`](https://www.npmjs.com/package/@modelbay/mcp) 取代，命令改为 `modelbay-mcp ark`。迁移方法（命令、环境变量、行为差异）见[迁移到 Modelbay](https://github.com/hoobnn/hoobnn-mcps#迁移到-modelbay)。本包不再更新，已安装的版本仍可使用。
+
 调用火山方舟（Volcengine Ark）的 MCP server：Seedream 5.0 生成和编辑图片、Seedance 视频、对话与多模态理解、联网搜索和向量化，产物直接存到本地。
 
 原名 `seedream-mcp`（PyPI 上该名已被他人占用），0.4 起改名，不保留旧命令和 `SEEDREAM_*` 环境变量。

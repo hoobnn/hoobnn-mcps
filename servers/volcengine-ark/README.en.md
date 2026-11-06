@@ -12,6 +12,9 @@ An MCP server for Volcengine Ark.
 
 </div>
 
+> [!WARNING]
+> **No longer maintained (2026-11-06).** This server is superseded by [`@modelbay/mcp`](https://www.npmjs.com/package/@modelbay/mcp) from [Modelbay](https://github.com/hoobnn/modelbay); the command is now `modelbay-mcp ark`. See [Migrating to Modelbay](https://github.com/hoobnn/hoobnn-mcps/blob/main/README.en.md#migrating-to-modelbay) for commands, environment variables and behaviour changes. This package will not be updated; installed versions keep working.
+
 An MCP server for Volcengine Ark: generate and edit images with Seedream 5.0, Seedance video, chat and multimodal understanding, web search and embeddings, with outputs saved locally.
 
 Formerly `seedream-mcp` (that name is taken on PyPI by someone else). Renamed in 0.4; the old command and the `SEEDREAM_*` environment variables are not kept.

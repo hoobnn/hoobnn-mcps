@@ -12,6 +12,9 @@ An MCP server for Doubao Speech.
 
 </div>
 
+> [!WARNING]
+> **No longer maintained (2026-11-06).** This server is superseded by [`@modelbay/mcp`](https://www.npmjs.com/package/@modelbay/mcp) from [Modelbay](https://github.com/hoobnn/modelbay); the command is now `modelbay-mcp doubao-speech`. See [Migrating to Modelbay](https://github.com/hoobnn/hoobnn-mcps/blob/main/README.en.md#migrating-to-modelbay) for commands, environment variables and behaviour changes. This package will not be updated; installed versions keep working.
+
 A stdio MCP server for the Doubao Speech cloud APIs. Endpoints were checked against the [official catalog](https://docs.volcengine.com/docs/doubao-voice) on 2026-10-10.
 
 `0.5.2` aligns with the 2026-10-29 official docs: Seed-Realtime now documents client `response.cancel` interrupts, so the local block is removed; streaming ASR no longer sends `audio.codec`, which the docs dropped; remaining legacy doc links are migrated.

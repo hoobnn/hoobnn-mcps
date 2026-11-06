@@ -12,6 +12,9 @@
 
 </div>
 
+> [!WARNING]
+> **已停止维护（2026-11-06）。** 本 server 由 [Modelbay](https://github.com/hoobnn/modelbay) 的 [`@modelbay/mcp`](https://www.npmjs.com/package/@modelbay/mcp) 取代，命令改为 `modelbay-mcp doubao-speech`。迁移方法（命令、环境变量、行为差异）见[迁移到 Modelbay](https://github.com/hoobnn/hoobnn-mcps#迁移到-modelbay)。本包不再更新，已安装的版本仍可使用。
+
 豆包语音云 API 的 stdio MCP server。接口依据[官方目录](https://docs.volcengine.com/docs/doubao-voice)于 2026-10-10 核对。
 
 `0.5.2` 对齐 2026-10-29 官方文档：Seed-Realtime 现文档化客户端 `response.cancel` 打断，放开此前的本地拦截；流式识别不再发送官方已移除说明的 `audio.codec`，并补齐剩余旧文档链接。

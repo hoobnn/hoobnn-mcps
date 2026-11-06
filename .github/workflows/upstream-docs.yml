@@ -8,9 +8,7 @@ on:
         type: choice
         default: all
         options: [all, volcengine-ark, ali-bailian, doubao-speech, minimax]
-  schedule:
-    # 10:23 Asia/Shanghai every day.
-    - cron: '23 2 * * *'
+  # 仓库已停止维护（2026-11-06），不再每天检查；官方文档对账由 Modelbay 的 upstream-docs 工作流负责。
 
 permissions:
   contents: write

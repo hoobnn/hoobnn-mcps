@@ -12,6 +12,9 @@
 
 </div>
 
+> [!WARNING]
+> **已停止维护（2026-11-06）。** 本 server 由 [Modelbay](https://github.com/hoobnn/modelbay) 的 [`@modelbay/mcp`](https://www.npmjs.com/package/@modelbay/mcp) 取代，命令改为 `modelbay-mcp bailian`。迁移方法（命令、环境变量、行为差异）见[迁移到 Modelbay](https://github.com/hoobnn/hoobnn-mcps#迁移到-modelbay)。本包不再更新，已安装的版本仍可使用。
+
 `0.7.3` 支持 `qwen-audio-3.1-tts-flash` 的 `language="other"`；建议通过 `instructions` 明确语种并与待合成文本一致。其他 TTS 模型不接受 `other`。
 
 `0.7.2` 同步声音复刻地域范围：新加坡新增 `qwen-audio-3.1-tts-flash` 复刻目标模型；复核至 2026-10-29 的官方文档。

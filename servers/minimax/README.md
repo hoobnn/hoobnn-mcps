@@ -1,5 +1,8 @@
 # MiniMax MCP
 
+> [!WARNING]
+> **已停止维护（2026-11-06）。** 本 server 由 [Modelbay](https://github.com/hoobnn/modelbay) 的 [`@modelbay/mcp`](https://www.npmjs.com/package/@modelbay/mcp) 取代，命令改为 `modelbay-mcp minimax`。迁移方法（命令、环境变量、行为差异）见[迁移到 Modelbay](https://github.com/hoobnn/hoobnn-mcps#迁移到-modelbay)。本包不再更新，已安装的版本仍可使用。
+
 独立重写的 MiniMax stdio MCP，重点支持 H3 V2。包名 `hoobnn-minimax-mcp`，不是官方 `minimax-mcp`，不依赖后者。沿用本仓库的连接池、超时取消、任务持久化与交付恢复机制。
 
 `0.3.1` 放行官方新增的 H3-Highspeed 480P，保留本工具 768P 默认值与 2K 限制。

@@ -12,6 +12,9 @@ An MCP server for Alibaba Cloud Model Studio (Bailian, DashScope) that saves res
 
 </div>
 
+> [!WARNING]
+> **No longer maintained (2026-11-06).** This server is superseded by [`@modelbay/mcp`](https://www.npmjs.com/package/@modelbay/mcp) from [Modelbay](https://github.com/hoobnn/modelbay); the command is now `modelbay-mcp bailian`. See [Migrating to Modelbay](https://github.com/hoobnn/hoobnn-mcps/blob/main/README.en.md#migrating-to-modelbay) for commands, environment variables and behaviour changes. This package will not be updated; installed versions keep working.
+
 `0.7.3` supports `language="other"` for `qwen-audio-3.1-tts-flash`; specify the language in `instructions` and match the input text. Other TTS models reject `other`.
 
 `0.7.2` syncs the voice-cloning region scope: Singapore now accepts `qwen-audio-3.1-tts-flash` as a clone target model. Official documentation was reviewed through 2026-10-29.
