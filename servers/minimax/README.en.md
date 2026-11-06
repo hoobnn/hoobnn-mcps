@@ -1,5 +1,8 @@
 # MiniMax MCP
 
+> [!WARNING]
+> **No longer maintained (2026-11-06).** This server is superseded by [`@modelbay/mcp`](https://www.npmjs.com/package/@modelbay/mcp) from [Modelbay](https://github.com/hoobnn/modelbay); the command is now `modelbay-mcp minimax`. See [Migrating to Modelbay](https://github.com/hoobnn/hoobnn-mcps/blob/main/README.en.md#migrating-to-modelbay) for commands, environment variables and behaviour changes. This package will not be updated; installed versions keep working.
+
 Independent MiniMax stdio server, distributed as `hoobnn-minimax-mcp`, not the official `minimax-mcp`. See [Chinese documentation](README.md) for the complete contract and migration notes.
 
 `0.3.1` enables the newly documented H3-Highspeed 480P option, keeping this tool's 768P default and rejecting 2K.

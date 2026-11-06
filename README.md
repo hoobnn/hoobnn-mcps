@@ -12,6 +12,9 @@
 
 </div>
 
+> [!WARNING]
+> **本仓库已停止维护（2026-11-06）。** 四个 server 由 [Modelbay](https://github.com/hoobnn/modelbay) 的 [`@modelbay/mcp`](https://www.npmjs.com/package/@modelbay/mcp) 取代：同一个命令 `modelbay-mcp <平台>` 覆盖火山方舟、阿里云百炼、MiniMax、豆包语音，另加 OpenAI，工具参数从模型声明派生。迁移方法见下文[迁移到 Modelbay](#迁移到-modelbay)。PyPI 上的包不再更新，已安装的版本仍可使用。
+
 hoobnn 的个人 MCP server 集合。每个 server 是 `servers/<name>/` 下的一个独立 Python 包。包通过 PyPI 分发。推荐用 [uv](https://docs.astral.sh/uv/) 安装。
 
 | Server | 作用 |
@@ -33,6 +36,52 @@ hoobnn 的个人 MCP server 集合。每个 server 是 `servers/<name>/` 下的�
 | 语音合成、识别、复刻 | `doubao-speech`（中文音色、方言、字幕、长文本、说话人分离） | `ali-bailian`（Qwen-Audio-TTS / CosyVoice 复刻、设计与语气指令；ASR 返回情绪和语种） |
 
 各家复刻 / 设计的音色只能在同一家的合成工具里使用。异步任务统一用 `get_job` 查进度，完成后自动下载结果；`recover_job` 只用来修复交付。
+
+## 迁移到 Modelbay
+
+安装（需要 Node.js 和 npm）：
+
+```bash
+npm i -g @modelbay/mcp
+```
+
+客户端配置里把旧命令换成 `modelbay-mcp`，平台作为第一个参数。MCP 名称可以保持不变：
+
+| 旧命令 | 新命令 |
+|---|---|
+| `~/.local/bin/volcengine-ark-mcp` | `modelbay-mcp ark` |
+| `~/.local/bin/ali-bailian-mcp` | `modelbay-mcp bailian` |
+| `~/.local/bin/hoobnn-minimax-mcp` | `modelbay-mcp minimax` |
+| `~/.local/bin/doubao-speech-mcp` | `modelbay-mcp doubao-speech` |
+| —（新增） | `modelbay-mcp openai` |
+
+```bash
+claude mcp add volcengine-ark -s user -- "$(npm prefix -g)/bin/modelbay-mcp" ark
+```
+
+GUI 客户端找不到 `PATH` 时写 `modelbay-mcp` 的绝对路径（`npm prefix -g` 下的 `bin/`）。改完后卸载旧包：`uv tool uninstall volcengine-ark-mcp ali-bailian-mcp hoobnn-minimax-mcp doubao-speech-mcp`。
+
+环境变量：
+
+| 旧变量 | Modelbay |
+|---|---|
+| `ARK_API_KEY` | 不变 |
+| `DASHSCOPE_API_KEY`、`DASHSCOPE_BASE_URL` | 继续可用（`BAILIAN_API_KEY`、`BAILIAN_BASE_URL` 的别名） |
+| `MINIMAX_API_KEY` | 不变 |
+| `MINIMAX_API_HOST` | 不再读取。默认国内站，与旧版相同；国际站设 `MINIMAX_REGION=global`，自定义地址用 `MINIMAX_BASE_URL` |
+| `VOLC_SPEECH_API_KEY`、`VOLC_SPEECH_APP_ID`、`VOLC_SPEECH_ACCESS_TOKEN` | 继续可用（`DOUBAO_API_KEY`、`DOUBAO_APP_ID`、`DOUBAO_ACCESS_TOKEN` 的别名） |
+| `MCP_TOOL_GROUPS` | 改为 `MODELBAY_MCP_GROUPS`，组名是 `core`（默认）、`realtime`、`management`、`node` |
+| `*_OUT_DIR`、`*_RESOURCE_MODE`、`*_JOB_DIR`、`MINIMAX_MCP_BASE_PATH` | 没有对应变量，见下方行为差异 |
+
+Codex 会过滤环境变量，`[mcp_servers.<name>]` 里的 `env_vars` 要换成新的变量名（旧名作为别名仍然有效）；生图和视频建议保留 `tool_timeout_sec = 300`。
+
+行为差异：
+
+- **结果落盘**：旧版默认下载到 `~/Downloads/<平台>`。Modelbay 只在调用时传 `out_dir` 才写文件，否则图片、音频以 MCP 标准的 base64 块返回，URL 原样返回。
+- **任务记录**：只存在 MCP 进程内存里，重启后 `list_jobs` 为空；`get_job` 仍可按平台的 `task_id` 查询别处提交的任务。
+- **暂未提供的工具**：方舟 `embed`、百炼 `edit_video`、豆包语音的实时会话工具和 `upgrade_voice`、豆包语音异步任务的 `get_job` / `recover_job` / `list_jobs`。MiniMax `query_video_generation` 由 `get_job` 代替。进度见 Modelbay 的[目标与范围](https://github.com/hoobnn/modelbay/blob/main/docs/goals.md)。
+
+以下为旧版文档，仅供已安装旧版本的用户参考。
 
 ## 安装
 
@@ -129,7 +178,7 @@ MiniMax 的 tag 使用 `minimax-v<版本>`（如 `minimax-v0.1.0`），对应 Py
 
 ### 官方文档更新
 
-`python3 scripts/upstream_docs.py --check-coverage` 检查来源覆盖；`python3 scripts/upstream_docs.py --server minimax` 只拉取对应平台。GitHub Actions 每天北京时间 10:23 分别检查四个平台，有变化时按平台创建文档更新 PR，包含正文快照、差异、报告和待审基线。你在 PR 中补充实现、测试和说明后手动合并；已有待审 PR 时不会覆盖人工提交。无需 API Key，不自动触发 Codex、合并或发布。需允许 Actions 创建 PR，详见 [接入说明](docs/official-contracts.md#github-actions)。
+`python3 scripts/upstream_docs.py --check-coverage` 检查来源覆盖；`python3 scripts/upstream_docs.py --server minimax` 只拉取对应平台。停止维护前，GitHub Actions 每天北京时间 10:23 分别检查四个平台（现已停用定时，只能手动触发），有变化时按平台创建文档更新 PR，包含正文快照、差异、报告和待审基线。你在 PR 中补充实现、测试和说明后手动合并；已有待审 PR 时不会覆盖人工提交。无需 API Key，不自动触发 Codex、合并或发布。需允许 Actions 创建 PR，详见 [接入说明](docs/official-contracts.md#github-actions)。
 
 ## 许可证
 
